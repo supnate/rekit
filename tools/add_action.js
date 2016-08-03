@@ -74,7 +74,9 @@ if (!lines.map(line => _.trim(line)).join('')) {
 i = helpers.lineIndex(lines, '} from \'./constants\';');
 lines.splice(i, 0, `  ${actionType},`);
 tpl = `    case ${actionType}:
-      return state;
+      return {
+        ...state,
+      };
 `;
 i = helpers.lineIndex(lines, '    default:');
 lines.splice(i, 0, tpl);

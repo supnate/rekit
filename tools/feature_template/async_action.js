@@ -1,4 +1,4 @@
-/* ===== ${ACTION_NAME} =====*/
+/* ===== ${ACTION_NAME} ===== */
 export function ${CAMEL_ACTION_NAME}() {
   return (dispatch) => {
     dispatch({

@@ -1,4 +1,4 @@
-/* ===== ${ACTION_NAME} =====*/
+    /* ===== ${ACTION_NAME} ===== */
     case ${BEGIN_ACTION_TYPE}:
       return {
         ...state,

@@ -13,7 +13,6 @@ const context = {
   ACTION_NAME: actionName,
   CAMEL_ACTION_NAME: _.camelCase(actionName),
   UPPER_SNAKE_ACTION_NAME: upperSnakeActionName,
-  UPPER_FIRST_CAMEL_ACTION_NAME: _.upperFirst(_.camelCase(actionName)),
 
   BEGIN_ACTION_TYPE: `${upperSnakeActionName}_BEGIN`,
   SUCCESS_ACTION_TYPE: `${upperSnakeActionName}_SUCCESS`,

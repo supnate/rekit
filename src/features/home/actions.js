@@ -7,3 +7,9 @@ export function testAction() {
     type: TEST_ACTION,
   };
 }
+
+export function testAction2() {
+  return {
+    type: TEST_ACTION,
+  };
+}

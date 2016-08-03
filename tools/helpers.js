@@ -1,6 +1,15 @@
+'use strict';
+
 const _ = require('lodash');
 const shell = require('shelljs');
-
+const babel = require('babel-core');
+const babelOptions = {
+  presets: [
+    'es2015',
+    'react',
+    'babel-preset-stage-0'
+  ]
+};
 module.exports = {
   getLines(filePath) {
     return shell.cat(filePath).split('\n');
@@ -8,6 +17,43 @@ module.exports = {
 
   removeLines(lines, str) {
     _.remove(lines, line => line.includes(str));
+  },
+
+  removeAstNode(lines, node) {
+    const loc = node.loc;
+    let start = loc.start.line - 1;
+    let len = loc.end.line - loc.start.line + 1;
+    if (!lines[start - 1]) {
+      // remove the empty line before the function
+      start -= 1;
+      len += 1;
+    }
+    lines.splice(start, len);
+  },
+
+  removeExportFunction(lines, funcName) {
+    const code = lines.join('\n');
+    const ast = babel.transform(code, babelOptions).ast.program;
+    const funcElement = _.find(ast.body, { type: 'FunctionDeclaration', id: { name: funcName } });
+    if (funcElement) {
+      this.removeAstNode(lines, funcElement);
+    } else {
+      console.log('no func: ', funcName);
+    }
+  },
+
+  removeSwitchCase(lines, caseName) {
+    const code = lines.join('\n');
+    // const ast = esprima.parse(code, { sourceType: 'module', range: true });
+    const ast = babel.transform(code, babelOptions).ast.program;
+    const funcElement = _.find(_.toArray(ast.body), { type: 'FunctionDeclaration', id: { name: 'reducer' } });
+    const switchElement = _.find(funcElement.body.body, { type: 'SwitchStatement' });
+    const caseElement = _.find(switchElement.cases, { test: { name: caseName } });
+    if (caseElement) {
+      this.removeAstNode(lines, caseElement);
+    } else {
+      console.log('no reducer for: ', caseName);
+    }
   },
 
   lineIndex(lines, str) {

@@ -15,7 +15,6 @@ function mapFeatureFile(file) {
 }
 
 function exec(cmd) {
-  // shell.exec(cmd);
   console.log('Test: ', cmd);
   expect(shell.exec(cmd, { silent: true }).code).to.equal(0);
 }
@@ -57,14 +56,6 @@ function expectNoLine(file, line) {
 
 function expectNoLines(file, lines) {
   lines.forEach(line => expectNoLine(file, line));
-}
-
-function expectValidJsFile(file) {
-
-}
-
-function expectValidJsFiles(files) {
-  files.forEach(expectValidJsFile);
 }
 
 const startTime = new Date().getTime();
@@ -156,6 +147,75 @@ expectLines(mapFeatureFile('route.js'), [
   '  TestPage,',
 ]);
 
+/* ===== Test Add Feature Component =====*/
+exec('npm run add:component test/test-component');
+expectFiles([
+  'TestComponent.js',
+  'TestComponent.less',
+].map(mapFeatureFile));
+expectLines(mapFeatureFile('style.less'), [
+  '@import \'./TestComponent.less\';'
+]);
+expectLines(mapFeatureFile('index.js'), [
+  'import TestComponent from \'./TestComponent\';',
+  '  TestComponent,',
+]);
+
+/* ===== Test Add Common Component =====*/
+exec('npm run add:component common-component');
+expectFiles([
+  'components/CommonComponent.js',
+  'components/CommonComponent.less',
+].map(mapFile));
+expectLines(mapFile('components/style.less'), [
+  '@import \'./CommonComponent.less\';'
+]);
+expectLines(mapFile('components/index.js'), [
+  'import CommonComponent from \'./CommonComponent\';',
+  '  CommonComponent,',
+]);
+
+/* ===== Test Remove Normal Action =====*/
+exec('npm run rm:action test/test-action');
+expectNoLines(mapFeatureFile('constants.js'), [
+  'export const TEST_ACTION = \'TEST_ACTION\';',
+]);
+expectNoLines(mapFeatureFile('actions.js'), [
+  '  TEST_ACTION,',
+  'export function testAction() {',
+]);
+expectNoLines(mapFeatureFile('reducer.js'), [
+  '  TEST_ACTION,',
+  '    case TEST_ACTION:',
+]);
+
+/* ===== Test Remove Async Action =====*/
+exec('npm run rm:async-action test/async-action');
+expectNoLines(mapFeatureFile('constants.js'), [
+  'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
+  'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',
+  'export const ASYNC_ACTION_FAILURE = \'ASYNC_ACTION_FAILURE\';',
+  'export const ASYNC_ACTION_DISMISS_ERROR = \'ASYNC_ACTION_DISMISS_ERROR\';',
+]);
+expectNoLines(mapFeatureFile('actions.js'), [
+  '  ASYNC_ACTION_BEGIN,',
+  '  ASYNC_ACTION_SUCCESS,',
+  '  ASYNC_ACTION_FAILURE,',
+  '  ASYNC_ACTION_DISMISS_ERROR,',
+  'export function asyncAction() {',
+  'export function dismissAsyncActionError() {',
+]);
+expectNoLines(mapFeatureFile('reducer.js'), [
+  '  ASYNC_ACTION_BEGIN,',
+  '  ASYNC_ACTION_SUCCESS,',
+  '  ASYNC_ACTION_FAILURE,',
+  '  ASYNC_ACTION_DISMISS_ERROR,',
+  '    case ASYNC_ACTION_BEGIN:',
+  '    case ASYNC_ACTION_SUCCESS:',
+  '    case ASYNC_ACTION_FAILURE:',
+  '    case ASYNC_ACTION_DISMISS_ERROR:',
+]);
+
 /* ===== Test Remove Page =====*/
 exec('npm run rm:page test/test-page');
 expectNoFiles([
@@ -174,20 +234,6 @@ expectNoLines(mapFeatureFile('route.js'), [
   '  TestPage,',
 ]);
 
-/* ===== Test Add Feature Component =====*/
-exec('npm run add:component test/test-component');
-expectFiles([
-  'TestComponent.js',
-  'TestComponent.less',
-].map(mapFeatureFile));
-expectLines(mapFeatureFile('style.less'), [
-  '@import \'./TestComponent.less\';'
-]);
-expectLines(mapFeatureFile('index.js'), [
-  'import TestComponent from \'./TestComponent\';',
-  '  TestComponent,',
-]);
-
 /* ===== Test Remove Feature Component =====*/
 exec('npm run rm:component test/test-component');
 expectNoFiles([
@@ -200,20 +246,6 @@ expectNoLines(mapFeatureFile('style.less'), [
 expectNoLines(mapFeatureFile('index.js'), [
   'import TestComponent from \'./TestComponent\';',
   '  TestComponent,',
-]);
-
-/* ===== Test Add Common Component =====*/
-exec('npm run add:component common-component');
-expectFiles([
-  'components/CommonComponent.js',
-  'components/CommonComponent.less',
-].map(mapFile));
-expectLines(mapFile('components/style.less'), [
-  '@import \'./CommonComponent.less\';'
-]);
-expectLines(mapFile('components/index.js'), [
-  'import CommonComponent from \'./CommonComponent\';',
-  '  CommonComponent,',
 ]);
 
 /* ===== Test Remove Common Component =====*/

@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
+    "test": "node ./test.js",
     "build:test": "node ./tools/build_test_server.js",
     "add:feature": "node ./tools/add_feature.js",
     "add:action": "node ./tools/add_action.js",

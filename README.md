@@ -201,6 +201,7 @@ npm run rm:action-action feature-name/async-action-name
 Limitations
 =====
 * Unit test support
+* Rename features, pages, components, actions
 
 License
 =====

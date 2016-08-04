@@ -1,15 +1,16 @@
 import {
-  TEST_ACTION,
+  DEMO_COUNT,
+  RESET_COUNT,
 } from './constants';
 
-export function testAction() {
+export function demoCount() {
   return {
-    type: TEST_ACTION,
+    type: DEMO_COUNT,
   };
 }
 
-export function testAction2() {
+export function resetCount() {
   return {
-    type: TEST_ACTION,
+    type: RESET_COUNT,
   };
 }

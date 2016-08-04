@@ -12,7 +12,7 @@ class TestPage2 extends Component {
   render() {
     return (
       <div className="home-test-page-2">
-        Page Content: TestPage2
+        Page Content: home/TestPage2
       </div>
     );
   }

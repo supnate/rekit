@@ -15,6 +15,8 @@ if (!prjName) {
   process.exit(1);
 }
 
+console.log('Welcome to rekit, now creating your project...');
+
 const prjPath = path.join(process.cwd(), prjName);
 if (shell.test('-e', prjPath)) {
   console.error('Error: target folder has been existed: ', prjName);
@@ -22,6 +24,7 @@ if (shell.test('-e', prjPath)) {
 }
 shell.mkdir(prjPath);
 
+console.log('Copying files...');
 shell.cp('-R', path.join(__dirname, './src'), prjPath);
 shell.cp('-R', path.join(__dirname, './tools'), prjPath);
 
@@ -35,7 +38,6 @@ shell.cp('-R', path.join(__dirname, './tools'), prjPath);
   shell.cp(path.join(__dirname, file), prjPath);
 });
 
-process.exit(0);
 const prjConfig = {
   dependencies: [
     'lodash',
@@ -85,22 +87,24 @@ const prjConfig = {
 
 const pkgVersions = {};
 
-console.log('Getting packages versions...');
+console.log('Getting dependencies versions...');
 const promises = [].concat(prjConfig.dependencies, prjConfig.devDependencies).map(dep => new Promise((resolve, reject) => {
   exec(`npm show ${dep} version`, (err, stdout, stderr) => {
     const version = stdout.replace(/[\r\n]/g, '');
-    console.log(dep, ':', version);
     pkgVersions[dep] = `^${version}`;
     resolve();
   });
 }));
 
 Promise.all(promises).then(() => {
-  console.log('Get versions done.');
   pkgJson.dependencies = _.pick(pkgVersions, prjConfig.dependencies);
   pkgJson.devDependencies = _.pick(pkgVersions, prjConfig.devDependencies);
   shell.ShellString(JSON.stringify(pkgJson, null, '  ')).to(path.join(prjPath, 'package.json'));
-  console.log('package.json is created.');
+  console.log('Project creation success!');
+  console.log(`To run the project, please go to the project folder "${prjName}" and:`);
+  console.log('  1. run "npm install" to install dependencies.');
+  console.log('  2. run "npm start" to start the dev server.');
+  console.log('Enjoy!');
 }).catch(err => console.log(err.stack || err));
 
 

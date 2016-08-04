@@ -9,6 +9,10 @@ const featureName = arr[0];
 const actionName = _.upperFirst(_.camelCase(arr[1]));
 const upperSnakeActionName = _.snakeCase(arr[1]).toUpperCase();
 
+if (!actionName) {
+  throw new Error('Please specify the action name.');
+}
+
 const context = {
   ACTION_NAME: actionName,
   CAMEL_ACTION_NAME: _.camelCase(actionName),
@@ -101,4 +105,4 @@ toSave(targetPath, lines);
 
 // Save files
 helpers.saveFiles(filesToSave);
-console.log('done.');
+console.log('Add async action success: ', actionName);

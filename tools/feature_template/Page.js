@@ -12,7 +12,7 @@ class ${PAGE_NAME} extends Component {
   render() {
     return (
       <div className="${KEBAB_FEATURE_NAME}-${KEBAB_PAGE_NAME}">
-        Page Content: ${PAGE_NAME}
+        Page Content: ${FEATURE_NAME}/${PAGE_NAME}
       </div>
     );
   }

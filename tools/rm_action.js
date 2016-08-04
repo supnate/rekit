@@ -44,4 +44,4 @@ toSave(targetPath, lines);
 
 // save files
 helpers.saveFiles(filesToSave);
-console.log('Remove action done:', actionName);
+console.log('Remove action success: ', actionName);

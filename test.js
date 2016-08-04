@@ -71,14 +71,14 @@ expectFiles([
   'index.js',
   'reducer.js',
   'route.js',
-  'SamplePage.js',
-  'SamplePage.less',
+  'DefaultPage.js',
+  'DefaultPage.less',
   'selectors.js',
   'style.less',
 ].map(mapFeatureFile));
 expectLines(mapFile('common/rootReducer.js'), [
   'import testReducer from \'../features/test/reducer\';',
-  '  testReducer,',
+  '  test: testReducer,',
 ]);
 expectLines(mapFile('common/routeConfig.js'), [
   'import testRoute from \'../features/test/route\';',
@@ -267,7 +267,7 @@ exec('npm run rm:feature test');
 expectNoFile(mapFile('test'));
 expectNoLines(mapFile('common/rootReducer.js'), [
   'import testReducer from \'../features/test/reducer\';',
-  '  testReducer,',
+  '  test: testReducer,',
 ]);
 expectNoLines(mapFile('common/routeConfig.js'), [
   'import testRoute from \'../features/test/route\';',

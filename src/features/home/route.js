@@ -1,10 +1,15 @@
-import index from './index';
+import {
+  DefaultPage,
+  TestPage1,
+  TestPage2,
+} from './index';
 
 export default {
   path: '',
-  siteIndexRoute: { component: index.Page },
+  name: 'home',
+  siteIndexRoute: { component: DefaultPage },
   childRoutes: [
-    { path: 'test-page', component: index.TestPage },
-    { path: 'test-page-2', component: index.TestPage2 },
+    { path: 'test-page-1', component: TestPage1 },
+    { path: 'test-page-2', component: TestPage2 },
   ],
 };

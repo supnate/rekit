@@ -15,7 +15,6 @@ module.exports = {
       'redux-thunk',
     ],
   },
-
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
   ],

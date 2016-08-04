@@ -49,7 +49,7 @@ console.log('Remove from root reducer.');
 targetPath = path.join(__dirname, '../src/common/rootReducer.js');
 lines = helpers.getLines(targetPath);
 helpers.removeLines(lines, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/reducer';`);
-helpers.removeLines(lines, `  ${context.CAMEL_FEATURE_NAME}Reducer,`);
+helpers.removeLines(lines, `  ${context.CAMEL_FEATURE_NAME}: ${context.CAMEL_FEATURE_NAME}Reducer,`);
 toSave(targetPath, lines);
 
 /* ===== Remove route from routeConfig.js ===== */
@@ -69,4 +69,4 @@ toSave(targetPath, lines);
 
 // Save files
 helpers.saveFiles(filesToSave);
-console.log('Remove feature done: ', context.KEBAB_FEATURE_NAME);
+console.log('Remove feature success: ', context.KEBAB_FEATURE_NAME);

@@ -64,4 +64,4 @@ toSave(targetPath, lines);
 
 // save files
 helpers.saveFiles(filesToSave);
-console.log('Remove async action done: ', actionName);
+console.log('Remove async action success: ', actionName);

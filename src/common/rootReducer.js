@@ -4,7 +4,7 @@ import homeReducer from '../features/home/reducer';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
-  homeReducer,
+  home: homeReducer,
 });
 
 export default rootReducer;

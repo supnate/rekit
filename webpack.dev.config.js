@@ -1,7 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 
 module.exports = {
   devtool: 'eval',

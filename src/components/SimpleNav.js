@@ -1,10 +1,12 @@
 /*
-  This is a very simple navigation tree designed for test purpose.
+ * This is a very simple navigation tree for testing purpose.
+ * It groups URLs by features.
 */
-import React, { Component, PropTypes } from 'react';
+
+import React, { PureComponent, PropTypes } from 'react';
 import { Link } from 'react-router';
 
-export default class SimpleNav extends Component {
+export default class SimpleNav extends PureComponent {
   static propTypes = {
     routes: PropTypes.array.isRequired,
   };
@@ -22,7 +24,7 @@ export default class SimpleNav extends Component {
             } else {
               path = `${basePath}/${item.path}`;
             }
-            prev.push(<li key={path}><Link to={path}>{item.path === '/' ? 'root' : item.path}</Link></li>);
+            prev.push(<li key={path}><Link to={path}>{item.name || item.path}</Link></li>);
 
             if (item.childRoutes && item.childRoutes.length) {
               prev.push(<li key={`${path}_wrapper`}>{this.renderLinks(item.childRoutes, path)}</li>);
@@ -35,6 +37,10 @@ export default class SimpleNav extends Component {
   }
 
   render() {
-    return this.renderLinks(this.props.routes, '');
+    return (
+      <div  className="component-simple-nav">
+        {this.renderLinks(this.props.routes[0].childRoutes, '')}
+      </div>
+    );
   }
 }

@@ -1,9 +1,9 @@
-import Page from './Page';
-import TestPage from './TestPage';
+import DefaultPage from './DefaultPage';
+import TestPage1 from './TestPage1';
 import TestPage2 from './TestPage2';
 
-export default {
-  Page,
-  TestPage,
+export {
+  DefaultPage,
+  TestPage1,
   TestPage2,
 };

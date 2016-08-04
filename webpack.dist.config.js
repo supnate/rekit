@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
   devtool: false,
@@ -16,6 +17,7 @@ module.exports = {
     publicPath: '/static/'
   },
   plugins: [
+    new LodashModuleReplacementPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),

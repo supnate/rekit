@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './actions';
 
-class TestPage extends Component {
+class TestPage1 extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
@@ -11,8 +11,8 @@ class TestPage extends Component {
 
   render() {
     return (
-      <div className="home-test-page">
-        Page Content: TestPage
+      <div className="home-test-page-1">
+        Page Content: home/TestPage1
       </div>
     );
   }
@@ -33,4 +33,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TestPage);
+)(TestPage1);

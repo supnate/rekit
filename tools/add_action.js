@@ -10,6 +10,15 @@ const actionName = _.kebabCase(arr[1]);
 const actionType = _.snakeCase(actionName || arr[4]).toUpperCase();
 const camelActionName = _.camelCase(actionName);
 
+if (!actionName) {
+  throw new Error('Please specify the action name.');
+}
+
+const context = {
+  CAMEL_ACTION_NAME: camelActionName,
+  ACTION_TYPE: actionType,
+};
+
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
@@ -48,14 +57,9 @@ if (!lines.map(line => _.trim(line)).join('')) {
 }
 i = helpers.lineIndex(lines, '} from \'./constants\';');
 lines.splice(i, 0, `  ${actionType},`);
-
-tpl = `export function ${camelActionName}() {
-  return {
-    type: ${actionType},
-  };
-}`;
+tpl = shell.cat(path.join(__dirname, 'feature_template/actions.js'));
+tpl = helpers.processTemplate(tpl, context);
 lines.push(tpl);
-lines.push('');
 toSave(targetPath, lines);
 
 /* Update reducer.js */
@@ -84,4 +88,4 @@ toSave(targetPath, lines);
 
 // save files
 helpers.saveFiles(filesToSave);
-console.log('done.');
+console.log('Add action success: ', actionName);

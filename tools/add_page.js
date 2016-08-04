@@ -26,6 +26,7 @@ pageName = _.upperFirst(_.camelCase(pageName));
 const targetDir = `${__dirname}/../src/features/${featureName}`;
 
 const context = {
+  FEATURE_NAME: featureName,
   PAGE_NAME: pageName,
   CAMEL_FEATURE_NAME: _.camelCase(featureName),
   KEBAB_PAGE_NAME: _.kebabCase(pageName),
@@ -86,8 +87,10 @@ targetPath = path.join(targetDir, 'route.js');
 lines = helpers.getLines(targetPath);
 i = helpers.lineIndex(lines, '} from \'./index\';');
 lines.splice(i, 0, `  ${context.PAGE_NAME},`);
-
-i = helpers.lineIndex(lines, /^ +\],$/);
+i = helpers.lineIndex(lines, 'path: \'*\'');
+if (i === -1) {
+  i = helpers.lastLineIndex(lines, /^ {2}\]/);
+}
 lines.splice(i, 0, `    { path: '${urlPath}', component: ${context.PAGE_NAME} },`);
 toSave(targetPath, lines);
 

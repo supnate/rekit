@@ -66,7 +66,7 @@ lines = helpers.getLines(targetPath);
 i = helpers.lastLineIndex(lines, /^import /);
 lines.splice(i + 1, 0, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/reducer';`);
 i = helpers.lastLineIndex(lines, /^\}\);$/);
-lines.splice(i, 0, `  ${context.CAMEL_FEATURE_NAME}Reducer,`);
+lines.splice(i, 0, `  ${context.CAMEL_FEATURE_NAME}: ${context.CAMEL_FEATURE_NAME}Reducer,`);
 toSave(targetPath, lines);
 
 /* ===== Add route to routeConfig.js ===== */
@@ -78,7 +78,10 @@ if (i === -1) {
   i = helpers.lineIndex(lines, /^import /);
 }
 lines.splice(i + 1, 0, `import ${context.CAMEL_FEATURE_NAME}Route from '../features/${context.KEBAB_FEATURE_NAME}/route';`);
-i = helpers.lastLineIndex(lines, /^ {2}\]/);
+i = helpers.lineIndex(lines, 'path: \'*\'');
+if (i === -1) {
+  i = helpers.lastLineIndex(lines, /^ {2}\]/);
+}
 lines.splice(i, 0, `    ${context.CAMEL_FEATURE_NAME}Route,`);
 toSave(targetPath, lines);
 
@@ -95,5 +98,5 @@ helpers.saveFiles(filesToSave);
 console.log('Add feature done: ', featureName);
 
 /* ==== Add sample page and test action ===== */
-shell.exec(`node ${__dirname}/add_action.js ${context.KEBAB_FEATURE_NAME}/test-${context.KEBAB_FEATURE_NAME}-action`);
-shell.exec(`node ${__dirname}/add_page.js ${context.KEBAB_FEATURE_NAME}/sample-page`);
+shell.exec(`node ${__dirname}/add_action.js ${context.KEBAB_FEATURE_NAME}/${context.KEBAB_FEATURE_NAME}-test-action`);
+shell.exec(`node ${__dirname}/add_page.js ${context.KEBAB_FEATURE_NAME}/default-page`);

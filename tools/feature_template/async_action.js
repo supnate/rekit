@@ -11,7 +11,7 @@ export function ${CAMEL_ACTION_NAME}() {
           data: {},
         });
         resolve();
-        /* Uncomment below for error */
+        /* Un-comment below for error handling */
         // dispatch({
         //   type: ${FAILURE_ACTION_TYPE},
         //   data: {

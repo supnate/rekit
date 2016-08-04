@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import Hello from '../components/Hello';
 import routeConfig from '../common/routeConfig';
 import SimpleNav from '../components/SimpleNav';
 
@@ -10,8 +9,8 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <Hello />
+      <div className="app">
+        <h1>My Awesome Project!</h1>
         <SimpleNav routes={routeConfig} />
         <div className="page-container">
           {this.props.children}

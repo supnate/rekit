@@ -1,5 +1,10 @@
 Rekit
 ======
+
+[![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit)
+[![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
 Rekit is a toolkit to create and mange a React + Redux + React-router based SPA project. It uses  the feature oriented project structure I prefer. That is all code is organized by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. If you are also comfortable with this pattern, you may find Rekit very useful because you can only be focus on your application logic instead of technical details.
 
 Install
@@ -50,7 +55,7 @@ Rekit provides a basic tool set for a typical React project. Once the project is
 Concepts
 ======
 Before starting a Rekit project, some basic concepts of the project needs to be explained:
-##### Feature
+### Feature
 This is the top level concept of a project, also it may be the only new concept for you. Each feature corresponds to a logical part of an application. For example, an EShop application usually contains below features:
  * customer: manage basic customer information.
  * product: manage products on sale.
@@ -61,16 +66,16 @@ This is the top level concept of a project, also it may be the only new concept 
 
 A feature usually always contains multiple actions, components and pages.
 
-##### Component
+### Component
 It's just React component. In a Rekit project, components are divided to two types: one is common component which is not related with any features, it's put at the components folder. The other is feature component which is provided by a feature, so it is put under the feature folder.
 
-##### Page
+### Page
 Page is some of a special component which is used as router component. That is a page is usually mapped to a specific URL pattern. When creating a page, the tool also registers a URL in the react router config. Page is usually displayed directly in the container.
 
-##### Action
+### Action
 It's just Redux action.
 
-##### Container
+### Container
 It's just the concept of container in High Order Component patter.
 
 
@@ -78,7 +83,7 @@ How to Use
 ======
 There are two parts of Rekit. One is the `rekit` command itself which is only used to create a new project. The other part is command line tools which manage the project elements.
 
-##### Create a Project
+### Create a Project
 Usage:
 ```
 rekit feature-name
@@ -99,7 +104,7 @@ npm start
 ```
 Then access http://localhost:6076, you should see the sample page!
 
-##### Build the project
+### Build the project
 There is a pre-defined npm script to quickly build the project:
 ```
 npm run build
@@ -110,7 +115,7 @@ npm run build:test
 ```
 The build result is put at build folder, the you can deploy it to the product server. Then access http://localhost:6077, you should see the same page as above.
 
-##### Change the default port
+### Change the default port
 There are two ports defined in package.json:
  * `webpackDevServerPort`: defaults to 6076, you can change it as you want.
  * `buildTestServerPort`: defaults to 6077, you can change it as you want.
@@ -119,7 +124,7 @@ Command Line Tools
 ======
 The most important part of Rekit is the command line tools copied to your project. They help you to quickly create the boilerplate of frequently-used elements such as features, actions, pages, components etc.
 
-##### Naming
+### Naming
 Before introducing the command line tools, here is the naming rules used for the tools to generate code or files. And what ever names provided to the command line tools, they will be converted to follow below rules:
  * `feature`: Folder name: kebab case. For example: `npm run add:feature myFeature` will create a folder named `my-feature`.
  * `page`: File name and class name: upper first letter. For example: `npm run add:page feature/my-page` will create files `MyPage.js` and `MyPage.less`.
@@ -129,7 +134,7 @@ Before introducing the command line tools, here is the naming rules used for the
  * `action type`: Constant name and value: upper snake case. Action types are created when an action is created.  For example: `npm run add:action feature/my-action` will create a action type `MY_ACTION`.
 
 
-##### Add a feature
+### Add a feature
 Usage:
 ```
 npm run add:feature feature-name
@@ -147,47 +152,47 @@ What it does:
 * Create a default page: `DefaultPage`. See `npm run add:page` command for details.
 * Create a sample action: `productSampleAction`. See `npm run add:action` command for details.
 
-##### Remove a feature
+### Remove a feature
 Usage:
 ```
 npm run rm:feature feature-name
 ```
-##### Add a page
+### Add a page
 Usage:
 ```
 npm run add:page feature-name/page-name
 ```
-##### Remove a page
+### Remove a page
 Usage:
 ```
 npm run rm:page feature-name/page-name
 ```
-##### Add a component
+### Add a component
 Usage:
 ```
 npm run add:component feature-name/component-name
 ```
-##### Remove a component
+### Remove a component
 Usage:
 ```
 npm run rm:component feature-name/component-name
 ```
-##### Add an action
+### Add an action
 Usage:
 ```
 npm run add:action feature-name/action-name
 ```
-##### Remove an action
+### Remove an action
 Usage:
 ```
 npm run rm:action feature-name/action-name
 ```
-##### Add an async action
+### Add an async action
 Usage:
 ```
 npm run add:action-action feature-name/async-action-name
 ```
-##### Remove an async action
+### Remove an async action
 Usage:
 ```
 npm run rm:action-action feature-name/async-action-name

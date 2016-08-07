@@ -14,6 +14,7 @@
     case ${FAILURE_ACTION_TYPE}:
       return {
         ...state,
+        ${CAMEL_ACTION_NAME}Pending: false,
         ${CAMEL_ACTION_NAME}Error: action.data.error,
       };
 

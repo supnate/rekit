@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
-export default class ${COMPONENT_NAME} extends Component {
+export default class ${COMPONENT_NAME} extends PureComponent {
   static propTypes = {
 
   };
@@ -8,7 +8,7 @@ export default class ${COMPONENT_NAME} extends Component {
   render() {
     return (
       <div className="${CSS_PREFIX}-${KEBAB_COMPONENT_NAME}">
-        Component content: ${COMPONENT_NAME}
+        Component content: ${KEBAB_FEATURE_NAME}/${COMPONENT_NAME}
       </div>
     );
   }

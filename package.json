@@ -35,7 +35,7 @@
   "buildTestServerPort": 6077,
   "dependencies": {
     "lodash": "^4.14.1",
-    "memobind": "^0.4.0",
+    "memobind": "^0.5.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-redux": "^4.4.5",

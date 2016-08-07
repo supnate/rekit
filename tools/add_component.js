@@ -32,6 +32,7 @@ if (featureName) {
 
 const context = {
   COMPONENT_NAME: componentName,
+  KEBAB_FEATURE_NAME: _.kebabCase(featureName || 'components'),
   KEBAB_COMPONENT_NAME: _.kebabCase(componentName),
   CSS_PREFIX: featureName || 'component',
   CSS_MIXINS_PATH: featureName ? '../../styles/mixins.less' : '../styles/mixins.less',

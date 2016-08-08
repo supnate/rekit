@@ -30,6 +30,8 @@ console.log('Copying files...');
 shell.cp('-R', path.join(__dirname, './src'), prjPath);
 shell.cp('-R', path.join(__dirname, './tools'), prjPath);
 
+shell.rm('-rf', path.join(prjPath, 'src/_tmp')); // in case _tmp folder is copied.
+
 [
   '.eslintrc',
   '.gitignore',

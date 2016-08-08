@@ -54,6 +54,7 @@ if (
   !shell.test('-e', manifestPath) // dll doesn't exist
   || require(manifestPath).name !== dllName // dll hash has changed
 ) {
+  delete require.cache[require.resolve(manifestPath)]; // force reload the new manifest
   console.log('vendors have changed, rebuilding dll...');
   // build dll
   dllConfig.output = {

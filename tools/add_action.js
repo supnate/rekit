@@ -4,10 +4,11 @@ const shell = require('shelljs');
 const _ = require('lodash');
 const helpers = require('./helpers');
 
-const arr = (process.argv[2] || '').split('/');
+const args = process.argv;
+const arr = (args[2] || '').split('/');
 const featureName = arr[0];
 const actionName = _.kebabCase(arr[1]);
-const actionType = _.snakeCase(actionName || arr[4]).toUpperCase();
+const actionType = _.snakeCase(args[3] || actionName).toUpperCase();
 const camelActionName = _.camelCase(actionName);
 
 if (!actionName) {

@@ -102,6 +102,20 @@ expectLines(mapFeatureFile('reducer.js'), [
   '    case TEST_ACTION:',
 ]);
 
+/* ===== Test Add Normal Action With Custom Action Type ===== */
+exec('npm run add:action test/test-action-2 my-action-type');
+expectLines(mapFeatureFile('constants.js'), [
+  'export const MY_ACTION_TYPE = \'MY_ACTION_TYPE\';',
+]);
+expectLines(mapFeatureFile('actions.js'), [
+  '  MY_ACTION_TYPE,',
+  'export function testAction2() {',
+]);
+expectLines(mapFeatureFile('reducer.js'), [
+  '  MY_ACTION_TYPE,',
+  '    case MY_ACTION_TYPE:',
+]);
+
 /* ===== Test Add Async Action =====*/
 exec('npm run add:async-action test/async-action');
 expectLines(mapFeatureFile('constants.js'), [
@@ -149,6 +163,24 @@ expectLines(mapFeatureFile('route.js'), [
   '  TestPage,',
 ]);
 
+/* ===== Test Add Page With Url Path =====*/
+exec('npm run add:page test/test-page test-path');
+expectFiles([
+  'TestPage.js',
+  'TestPage.less',
+].map(mapFeatureFile));
+expectLines(mapFeatureFile('style.less'), [
+  '@import \'./TestPage.less\';'
+]);
+expectLines(mapFeatureFile('index.js'), [
+  'import TestPage from \'./TestPage\';',
+  '  TestPage,',
+]);
+expectLines(mapFeatureFile('route.js'), [
+  '    { path: \'test-path\', component: TestPage },',
+  '  TestPage,',
+]);
+
 /* ===== Test Add Feature Component =====*/
 exec('npm run add:component test/test-component');
 expectFiles([
@@ -189,6 +221,20 @@ expectNoLines(mapFeatureFile('actions.js'), [
 expectNoLines(mapFeatureFile('reducer.js'), [
   '  TEST_ACTION,',
   '    case TEST_ACTION:',
+]);
+
+/* ===== Test Remove Normal Action With Custom Action Type =====*/
+exec('npm run rm:action test/test-action my-action-type');
+expectNoLines(mapFeatureFile('constants.js'), [
+  'export const MY_ACTION_TYPE = \'MY_ACTION_TYPE\';',
+]);
+expectNoLines(mapFeatureFile('actions.js'), [
+  '  MY_ACTION_TYPE,',
+  'export function testAction() {',
+]);
+expectNoLines(mapFeatureFile('reducer.js'), [
+  '  MY_ACTION_TYPE,',
+  '    case MY_ACTION_TYPE:',
 ]);
 
 /* ===== Test Remove Async Action =====*/
@@ -235,6 +281,24 @@ expectNoLines(mapFeatureFile('index.js'), [
 ]);
 expectNoLines(mapFeatureFile('route.js'), [
   '    { path: \'test-page\', component: TestPage },',
+  '  TestPage,',
+]);
+
+/* ===== Test Remove Page With Url Path =====*/
+exec('npm run rm:page test/test-page');
+expectNoFiles([
+  'TestPage.js',
+  'TestPage.less',
+].map(mapFeatureFile));
+expectNoLines(mapFeatureFile('style.less'), [
+  '@import \'./TestPage.less\';'
+]);
+expectNoLines(mapFeatureFile('index.js'), [
+  'import TestPage from \'./TestPage\';',
+  '  TestPage,',
+]);
+expectNoLines(mapFeatureFile('route.js'), [
+  '    { path: \'test-path\', component: TestPage },',
   '  TestPage,',
 ]);
 

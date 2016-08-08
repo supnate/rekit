@@ -51,11 +51,11 @@ module.exports = {
     }
   },
 
-  lineIndex(lines, str) {
+  lineIndex(lines, str, fromIndex) {
     if (typeof str === 'string') {
-      return _.findIndex(lines, l => l.indexOf(str) >= 0);
+      return _.findIndex(lines, l => l.indexOf(str) >= 0, fromIndex || 0);
     }
-    return _.findIndex(lines, l => str.test(l));
+    return _.findIndex(lines, l => str.test(l), fromIndex || 0);
   },
 
   lastLineIndex(lines, str) {

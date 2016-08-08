@@ -4,10 +4,12 @@ const shell = require('shelljs');
 const _ = require('lodash');
 
 const pkgJson = require('./package.json');
+
 delete pkgJson.bin;
 delete pkgJson.version;
 delete pkgJson.name;
 delete pkgJson.description;
+delete pkgJson.scripts.test;
 
 const prjName = process.argv[2];
 if (!prjName) {
@@ -52,7 +54,6 @@ const prjConfig = {
     'redux-thunk',
     'reselect',
     'style-loader',
-    'superagent',
   ],
   devDependencies: [
     'babel-core',
@@ -89,7 +90,7 @@ const pkgVersions = {};
 
 console.log('Getting dependencies versions...');
 const promises = [].concat(prjConfig.dependencies, prjConfig.devDependencies).map(dep => new Promise((resolve, reject) => {
-  exec(`npm show ${dep} version`, (err, stdout, stderr) => {
+  exec(`npm show ${dep} version`, (err, stdout) => {
     const version = stdout.replace(/[\r\n]/g, '');
     pkgVersions[dep] = `^${version}`;
     resolve();
@@ -106,8 +107,3 @@ Promise.all(promises).then(() => {
   console.log('  2. run "npm start" to start the dev server.');
   console.log('Enjoy!');
 }).catch(err => console.log(err.stack || err));
-
-
-
-
-

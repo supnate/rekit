@@ -1,6 +1,10 @@
 {
   'extends': './node_modules/eslint-config-airbnb/.eslintrc',
   'parser': 'babel-eslint',
+  'globals': {
+    'document': true,
+    'window': true
+  },
   'rules': {
     'guard-for-in': 0,
     'max-len': 0,

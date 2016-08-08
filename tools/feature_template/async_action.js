@@ -1,6 +1,6 @@
 /* ===== ${ACTION_NAME} ===== */
 export function ${CAMEL_ACTION_NAME}() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
       type: ${BEGIN_ACTION_TYPE},
     });

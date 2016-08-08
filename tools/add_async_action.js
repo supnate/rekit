@@ -97,6 +97,12 @@ lines.splice(i, 0,
   `  ${context.FAILURE_ACTION_TYPE},`,
   `  ${context.DISMISS_ERROR_ACTION_TYPE},`
 );
+
+i = helpers.lineIndex(lines, 'const initialState = {');
+i = helpers.lineIndex(lines, '};', i);
+lines.splice(i, 0, `  ${context.CAMEL_ACTION_NAME}Pending: false,`);
+lines.splice(i, 0, `  ${context.CAMEL_ACTION_NAME}Error: null,`);
+
 i = helpers.lineIndex(lines, '    default:');
 tpl = shell.cat(path.join(__dirname, './feature_template/async_reducer.js'));
 tpl = helpers.processTemplate(tpl, context);

@@ -28,7 +28,8 @@ class DefaultPage extends Component {
       <div className="home-default-page">
         <h5>Welcome to Rekit project!</h5>
         <p>
-          The project is initialized with one feature named "home" and two test pages. To remove the test pages, run below commands:
+          This is the sample page of the project. Seeing this page means everything works well now!<br/>
+          This project is initialized with one feature named "home" and two test pages. To remove the test pages, run below commands:
         </p>
         <ul>
           <li>npm run rm:page home/test-page-1</li>

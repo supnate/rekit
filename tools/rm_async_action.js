@@ -54,6 +54,8 @@ helpers.removeLines(lines, `  ${BEGIN_ACTION_TYPE}`);
 helpers.removeLines(lines, `  ${SUCCESS_ACTION_TYPE}`);
 helpers.removeLines(lines, `  ${FAILURE_ACTION_TYPE}`);
 helpers.removeLines(lines, `  ${DISMISS_ERROR_ACTION_TYPE}`);
+helpers.removeLines(lines, `  ${camelActionName}Error:`);
+helpers.removeLines(lines, `  ${camelActionName}Pending:`);
 helpers.removeLines(lines, `    /* ===== ${ACTION_NAME} ===== */`);
 
 helpers.removeSwitchCase(lines, BEGIN_ACTION_TYPE);

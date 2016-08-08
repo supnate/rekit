@@ -5,7 +5,7 @@ Rekit
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-Rekit is a toolkit to create and manage a React + Redux + React-router based and production-ready SPA project. It uses the feature oriented project folder structure which is my prefer. That is all code is organized by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. If you are also comfortable with this pattern, you may find Rekit very useful because it helps you be focused on your application logic instead of technical details.
+Rekit is a toolkit to create and manage a React + Redux + React-router based SPA project. It uses the feature oriented project folder structure. That is all code is organized by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. If you are also comfortable with this pattern, you may find Rekit very useful because it helps you be focused on your application logic instead of technical details.
 
 Install
 ======
@@ -21,16 +21,16 @@ What Rekit Does
 
 See the example
 =====
-To demostrate how to use Rekit to create and develop an application, I created [rekit-example](http://github.com/supnate/rekit-example), which is a very simple forum application. From which you can see how to use pages, actions, async-actions and especially how different features work together in that example application.
+To demostrate how to use Rekit to create and develop an application, I created [rekit-example](http://github.com/supnate/rekit-example), which is a very simple forum application. From which you can see how to use pages, actions, async-actions and especially how different features work together.
 
 Motivation
 ======
-I've been using the draft version of this toolkit for about half of a year and found it is really helpful for improve development efficiency and it also helps to make code consistent among different application logic. Now I'm about to give an online session about how to use React and Redux, so I created this project and the example project to better introducing the technical details. The project was initially created as react-init but that name has existed on npm so I moved it here and named it Rekit.
+I've been using the draft version of this toolkit for about half of a year and found it is really helpful for improve development efficiency and it also helps to make code consistent among different application logic. Now I'm about to give an online session about how to use React and Redux, so I created this project and the example project to better introduce the technical details. The project was initially created as react-init but that name has existed on npm so I moved it here and named it Rekit.
 
 Key Features
 ======
  * Always pull the latest package versions when creating a project. That is the new created project always has the latest dependencies.
- * All command line tools are copied to the project so that you fully own it, you can modify the tool set to better match your project needs. Once the project is created, Rekit itself is no longer needed.
+ * All command line tools are copied to the project so that you fully own it, you can modify the tools to better match your project needs. Once the project is created, Rekit itself is no longer needed.
  * The project structure is designed to be flexible, extensible and predictable.
  * It's production-ready but not a starter kit.
  * Embed build script and test server for the build result.
@@ -43,8 +43,8 @@ Key Features
  * 404 page configured for React-router.
  * Use [Webpack dll plugin](http://webpack.github.io/docs/list-of-plugins.html#dllplugin) to improve dev-time build performance.
  * Use [Less](http://lesscss.org/) as CSS transpiler.
- * Use eslint-config-airbnb for code style check.
- * Support Redux dev tools.
+ * Use [eslint-config-airbnb](https://github.com/airbnb/javascript) for code style check.
+ * Support [Redux dev tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd).
  * Command line tools to mange actions, reducers, components and pages.
 
 Design Philosophy
@@ -56,7 +56,7 @@ You don't want to jump among different folders to edit code for the same functio
 Configuration errors often cause weird behaviors of your application and they are usually very hard to debug. If you don't know how each part of your project works together, you are at the risk of wasting tons of time on configuration errors. So Rekit just creates the project with an initial correct config and put every line of configuration into your project, you should understand and is responsible to maintain it.
 
 3. ***Developer should understand what a tool exactly does when using it.***
-Tools could accelerate your development and reduce errors. But if you don't understand what it does behind, then you are in risk. So Rekit copies all tools with source code into your project instead of hiding it behind some commands. Read the source code to understand them.
+Tools could accelerate your development and reduce errors. But if you don't understand what it does behind, then you are at risk. So Rekit copies all tools with source code into your project instead of hiding it behind some commands. The source code is just there for your reference.
 
 4. ***Developer should have his own tool set for the development.***
 Rekit provides a basic tool set for a typical React + Redux project. Once the project is created, the tool set has no relationship with Rekit. So they could be easily customized so that it better fits the specific project needs.
@@ -65,6 +65,7 @@ Project Folder structure
 =====
 A Rekit project has below folder structure:
 
+```
 |-- project-name
 |    |-- src 
 |    |    |-- features
@@ -91,14 +92,15 @@ A Rekit project has below folder structure:
 |-- .gitignore
 |-- .webpack.dev.config.js
 |-- ...
+```
 
 This Rekit repo itself is also a Rekit project, you can also browse the project source code to understand the folder structure. Actually this repo itself is the base for creating a new project.
 
 Concepts
 ======
-Before starting a Rekit project, some basic concepts of the project needs to be explained:
+Before starting a Rekit project, some basic concepts of the project need to be explained:
 ### Feature
-This is the top level concept of a project, also it may be the only new concept for you. Each feature corresponds to a logical part of an application. For example, an EShop application usually contains below features:
+This is the top level concept of a project, also it may be the only new concept here. Each feature corresponds to a logical part of an application. For example, an EShop application usually contains below features:
  * `customer`: manage basic customer information.
  * `product`: manage products on sale.
  * `category`: manage product categories.
@@ -109,10 +111,10 @@ This is the top level concept of a project, also it may be the only new concept 
 A feature usually always contains multiple actions, components and pages.
 
 ### Component
-It's just React component. In a Rekit project, components are divided to two types: one is common component which is not related with any features, it's put at the `src/components` folder. The other is feature component which is provided by a feature, so it is put under the feature folder.
+It's just React component. In a Rekit project, there are two types of component: one is common component which is not related with any features, it's put in the `src/components` folder. The other is feature component which is provided by a feature, so it is put under the feature folder.
 
 ### Page
-Page is some of a special component which maps to the concept of 'Container' in the best practice of [separating presentational and container components](http://redux.js.org/docs/basics/UsageWithReact.html) pattern. A page also usually maps to a specific URL path, so when creating a page also needs to create a route config.
+Page is some of special component which maps to the concept of 'Container' in the best practice of [separating presentational and container components](http://redux.js.org/docs/basics/UsageWithReact.html) pattern. A page also usually maps to a specific URL path, so when creating a page also needs to create a routing definition.
 
 ### Action
 It's just [Redux action](http://redux.js.org/docs/basics/Actions.html).
@@ -124,7 +126,7 @@ When developing a web application, we often need to request data from server sid
 It's just [Redux reducer](http://redux.js.org/docs/basics/Reducers.html).
 
 ### Container
-The top level container of the application, it usually defines the top level UI layout and it's the container of pages. They are put in `src/containers` folder.
+The top level container of the application, it usually defines the top level UI layout and it's the container of pages. They are put in `src/containers` folder. Very few containers are needed.
 
 How to Use
 ======
@@ -133,9 +135,9 @@ There are two parts of Rekit. One is the `rekit` command itself which is only us
 ### Create a Project
 Usage:
 ```
-rekit feature-name
+rekit app-name
 ```
- * `feature-name`: 
+ * `app-name`: The app name, it's just used as the project folder name.
 
 Example:
 ```
@@ -143,7 +145,8 @@ rekit my-app
 ```
 
 Result:
-It creates an empty project and all latest dependencies defined in package.json. Before start the application, you need to install the dependencies manually:
+
+It creates an empty project with some initial sample pages and all latest dependencies defined in package.json. Before start the application, you need to install the dependencies manually:
 ```
 cd my-app
 npm install
@@ -160,7 +163,7 @@ To test the build result, you could run below command:
 ```
 npm run build:test
 ```
-The build result is put at build folder, the you can deploy it to the product server. Then access http://localhost:6077, you should see the same page as which of dev-time.
+The build result is put in the build folder, then you can deploy it to the product server. You should see the same page as which of dev-time at http://localhost:6077.
 
 ### Change the default port
 There are two ports defined in package.json:
@@ -169,7 +172,7 @@ There are two ports defined in package.json:
 
 Command Line Tools
 ======
-The most important part of Rekit is the command line tools copied to your project. They help you to quickly create the boilerplate of frequently-used elements such as features, actions, pages, components etc.
+The most important part of Rekit is the command line tools copied to your project. They help you to quickly create the boilerplate of frequently-used artifacts such as features, actions, pages, components etc.
 
 ### Naming
 Before introducing the command line tools, here is the naming rules used for the tools to generate code or files. And what ever names provided to the command line tools, they will be converted to follow below rules:
@@ -179,6 +182,8 @@ Before introducing the command line tools, here is the naming rules used for the
  * `component`: File name and class name: upper first letter. For example: `npm run add:component feature/my-component` will create files `MyComponent.js` and `MyComponent.less`.
  * `action`: Function name: camel case. For example: `npm run add:action feature/my-action` will create a function named `myAction` in actions.js.
  * `action type`: Constant name and value: upper snake case. Action types are created when an action is created.  For example: `npm run add:action feature/my-action` will create a action type `MY_ACTION`.
+
+ For example, by running `npm run add:page home/my-page` will create a component named `MyPage.js` even if the provided component name is in kebab case.
 
 
 ### Add a feature
@@ -266,7 +271,7 @@ Result:
 * Remove MyPage.less import in `src/features/my-feature/style.less`.
 * Remove routing config in `src/features/my-feature/route.js`.
 
-### Add a component of a feature
+### Add a component for a feature
 Usage:
 ```
 npm run add:component feature-name/component-name
@@ -287,7 +292,7 @@ Result:
 * Export the component in `src/features/my-feature/index.js`.
 * Import MyComponent.less in `src/features/my-feature/style.less`.
 
-### Remove a component of a feature
+### Remove a component from a feature
 Usage:
 ```
 npm run rm:component feature-name/component-name

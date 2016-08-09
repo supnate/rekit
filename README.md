@@ -14,12 +14,23 @@ npm install -g rekit
 ```
 This will install a global command `rekit` to the system. Run the command to create a new project.
 
+A Quick Look
+======
+When your project is created and npm installed. You can use npm scripts in your project, for example, by running:
+```
+npm run add:async-action my-feature/save-article
+```
+You will get code generated for the Redux async action as below:
+![Async action code.](/images/async_action.png?raw=true)
+
+More npm scripts usage, see the below documentation.
+
 What Rekit Does
 ======
 1. Create a React + Redux + React-router based project boilerplate with all necessary configurations.
 2. Provide command line tools in your project to create and delete features, actions, reducers, components and pages.
 
-See the example
+See the Example
 =====
 To demostrate how to use Rekit to create and develop an application, I created [rekit-example](http://github.com/supnate/rekit-example), which is a very simple forum application. From which you can see how to use pages, actions, async-actions and especially how different features work together.
 

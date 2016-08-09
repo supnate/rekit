@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "0.2.1",
+  "version": "0.2.4",
   "description": "Boilerplate and tools for React, Redux and React-router based project.",
   "bin": {
     "rekit": "./bin/cli.js"
@@ -34,6 +34,7 @@
   "webpackDevServerPort": 6076,
   "buildTestServerPort": 6077,
   "dependencies": {
+    "chai": "^3.5.0",
     "lodash": "^4.14.1",
     "memobind": "^0.5.0",
     "react": "^15.3.0",
@@ -59,7 +60,6 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.11.6",
-    "chai": "^3.5.0",
     "css-loader": "^0.23.1",
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",

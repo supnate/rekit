@@ -1,0 +1,10 @@
+build
+node_modules
+npm-debug.log
+target
+node
+src/_tmp
+src/features/test
+static
+dist
+.DS_Store

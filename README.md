@@ -186,15 +186,13 @@ Command Line Tools
 The most important part of Rekit is the command line tools copied to your project. They help you to quickly create the boilerplate of frequently-used artifacts such as features, actions, pages, components etc.
 
 ### Naming
-Before introducing the command line tools, here is the naming rules used for the tools to generate code or files. And what ever names provided to the command line tools, they will be converted to follow below rules:
+Before introducing the command line tools, here is the naming rules used for the tools to generate code or files. And what ever names provided to the command line tools, they will be converted to follow below rules. For example, by running `npm run add:page home/my-page` will create a component named `MyPage.js` even if the provided component name is in kebab case.
  * `feature`: Folder name: kebab case. For example: `npm run add:feature myFeature` will create a folder named `my-feature`.
  * `page`: File name and class name: upper first letter. For example: `npm run add:page feature/my-page` will create files `MyPage.js` and `MyPage.less`.
  * `url path`: kebab case. It's converted from the page name as it's always mapped to a page. For above command, it defines url path as 'my-page' in the route config.
  * `component`: File name and class name: upper first letter. For example: `npm run add:component feature/my-component` will create files `MyComponent.js` and `MyComponent.less`.
  * `action`: Function name: camel case. For example: `npm run add:action feature/my-action` will create a function named `myAction` in actions.js.
  * `action type`: Constant name and value: upper snake case. Action types are created when an action is created.  For example: `npm run add:action feature/my-action` will create a action type `MY_ACTION`.
-
- For example, by running `npm run add:page home/my-page` will create a component named `MyPage.js` even if the provided component name is in kebab case.
 
 
 ### Add a feature
@@ -463,7 +461,7 @@ Result:
 * Remove the switch case `case FETCH_TOPIC_LIST_SUCCESS:` from `src/features/my-feature/reducer.js`.
 * Remove the switch case `case FETCH_TOPIC_LIST_FAILURE:` from `src/features/my-feature/reducer.js`.
 
-Limitations
+Todos
 =====
 * Unit test support.
 * Tools to rename/move features, pages, components, actions.

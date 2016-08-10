@@ -5,7 +5,13 @@ Rekit
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-Rekit is a toolkit to create and manage a React + Redux + React-router based SPA project. It uses the feature oriented project folder structure. That is all code is organized by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. If you are also comfortable with this pattern, you may find Rekit very useful because it helps you be focused on your application logic instead of technical details.
+Rekit is a toolkit for create and manage React + Redux + React-route projects. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.
+
+The Rekit project boilerplate is designed to be extensible and production-ready, so all technical artifacts are grouped by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. Such folder structure is extensible so that it supports large projects.
+
+See the Online Example
+=====
+There is a simple forum application created with Rekit for your reference: [http://github.com/supnate/rekit-example](http://github.com/supnate/rekit-example)
 
 Install
 ======
@@ -29,10 +35,6 @@ What Rekit Does
 ======
 1. Create a React + Redux + React-router based project boilerplate with all necessary configurations.
 2. Provide command line tools in your project to create and delete features, actions, reducers, components and pages.
-
-See the Example
-=====
-To demostrate how to use Rekit to create and develop an application, I created [rekit-example](http://github.com/supnate/rekit-example), which is a very simple forum application. From which you can see how to use pages, actions, async-actions and especially how different features work together.
 
 Motivation
 ======
@@ -464,8 +466,9 @@ Result:
 Todos
 =====
 * Unit test support.
-* Tools to rename/move features, pages, components, actions.
+* Localization support.
 * [Sass](http://sass-lang.com/) support.
+* Tools to rename/move features, pages, components, actions.
 
 FAQ
 =====

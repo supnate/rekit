@@ -39,7 +39,7 @@ if (shell.test('-e', targetDir)) {
 ].forEach(fileName => {
   console.log('processing file: ', fileName);
   const filePath = `${targetDir}/${fileName}`;
-  const tpl = shell.cat(`${__dirname}/feature_template/${fileName}`);
+  const tpl = helpers.readTemplate(fileName);
   toSave(filePath, helpers.processTemplate(tpl, context));
 });
 

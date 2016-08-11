@@ -44,7 +44,7 @@ let targetPath;
 /* ==== Generate page class ==== */
 console.log('Create page class');
 targetPath = `${targetDir}/${pageName}.js`;
-tpl = shell.cat(`${__dirname}/feature_template/Page.js`);
+tpl = helpers.readTemplate('Page.js');
 if (!shell.test('-e', targetPath)) {
   toSave(targetPath, helpers.processTemplate(tpl, context));
 }
@@ -52,7 +52,7 @@ if (!shell.test('-e', targetPath)) {
 /* ==== Generate page less ==== */
 console.log('Create page less');
 targetPath = `${targetDir}/${pageName}.less`;
-tpl = shell.cat(`${__dirname}/feature_template/Page.less`);
+tpl = helpers.readTemplate('Page.less');
 if (!shell.test('-e', targetPath)) {
   toSave(targetPath, helpers.processTemplate(tpl, context));
 }

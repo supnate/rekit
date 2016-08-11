@@ -1,8 +1,10 @@
 'use strict';
 
+const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
 const babel = require('babel-core');
+
 const babelOptions = {
   presets: [
     'es2015',
@@ -11,8 +13,12 @@ const babelOptions = {
   ]
 };
 module.exports = {
+  readTemplate(name) {
+    return shell.cat(path.join(__dirname, 'feature_template', name)).replace(/\r/g, '');
+  },
+
   getLines(filePath) {
-    return shell.cat(filePath).split('\n');
+    return shell.cat(filePath).split('\n').map(line => line.replace(/\r/g, ''));
   },
 
   removeLines(lines, str) {

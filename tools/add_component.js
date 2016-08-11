@@ -49,7 +49,7 @@ let targetPath;
 /* ==== Generate component class ==== */
 console.log('Create component class');
 targetPath = `${targetDir}/${componentName}.js`;
-tpl = shell.cat(`${__dirname}/feature_template/Component.js`);
+tpl = helpers.readTemplate('Component.js');
 if (!shell.test('-e', targetPath)) {
   toSave(targetPath, helpers.processTemplate(tpl, context));
 }
@@ -57,7 +57,7 @@ if (!shell.test('-e', targetPath)) {
 /* ==== Generate component less ==== */
 console.log('Create component less');
 targetPath = `${targetDir}/${componentName}.less`;
-tpl = shell.cat(`${__dirname}/feature_template/Component.less`);
+tpl = helpers.readTemplate('Component.less');
 if (!shell.test('-e', targetPath)) {
   toSave(targetPath, helpers.processTemplate(tpl, context));
 }
@@ -83,7 +83,7 @@ toSave(targetPath, lines);
 /* ==== Add to style.less ==== */
 console.log('Add entry to style.less');
 targetPath = path.join(targetDir, 'style.less');
-lines = shell.cat(targetPath).split('\n');
+lines = helpers.getLines(targetPath);
 i = helpers.lastLineIndex(lines, '@import ');
 lines.splice(i + 1, 0, `@import './${componentName}.less';`);
 toSave(targetPath, lines);

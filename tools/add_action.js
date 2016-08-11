@@ -58,7 +58,7 @@ if (!lines.map(line => _.trim(line)).join('')) {
 }
 i = helpers.lineIndex(lines, '} from \'./constants\';');
 lines.splice(i, 0, `  ${actionType},`);
-tpl = shell.cat(path.join(__dirname, 'feature_template/actions.js'));
+tpl = helpers.readTemplate('actions.js');
 tpl = helpers.processTemplate(tpl, context);
 lines.push(tpl);
 toSave(targetPath, lines);

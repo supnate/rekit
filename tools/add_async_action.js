@@ -72,7 +72,7 @@ lines.splice(i, 0,
   `  ${context.DISMISS_ERROR_ACTION_TYPE},`
 );
 
-tpl = shell.cat(path.join(__dirname, './feature_template/async_action.js'));
+tpl = helpers.readTemplate('async_action.js');
 tpl = helpers.processTemplate(tpl, context);
 lines.push(tpl);
 lines.push('');
@@ -104,7 +104,7 @@ lines.splice(i, 0, `  ${context.CAMEL_ACTION_NAME}Pending: false,`);
 lines.splice(i, 0, `  ${context.CAMEL_ACTION_NAME}Error: null,`);
 
 i = helpers.lineIndex(lines, '    default:');
-tpl = shell.cat(path.join(__dirname, './feature_template/async_reducer.js'));
+tpl = helpers.readTemplate('async_reducer.js');
 tpl = helpers.processTemplate(tpl, context);
 lines.splice(i, 0, tpl);
 toSave(targetPath, lines);

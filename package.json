@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Boilerplate and tools for React, Redux and React-router based project.",
   "bin": {
     "rekit": "./bin/cli.js"
@@ -34,8 +34,9 @@
   "webpackDevServerPort": 6076,
   "buildTestServerPort": 6077,
   "dependencies": {
+    "babel-core": "^6.13.2",
     "chai": "^3.5.0",
-    "lodash": "^4.14.1",
+    "lodash": "^4.14.2",
     "memobind": "^0.5.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
@@ -51,12 +52,11 @@
     "superagent": "^2.1.0"
   },
   "devDependencies": {
-    "babel-core": "^6.11.4",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
     "babel-plugin-lodash": "^3.2.6",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-es2015": "^6.9.0",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.11.6",
@@ -64,14 +64,14 @@
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",
     "eslint-plugin-import": "^1.12.0",
-    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.0.0",
     "estraverse": "^4.2.0",
     "estraverse-fb": "^1.3.1",
     "file-loader": "^0.9.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
-    "lodash-webpack-plugin": "^0.9.3",
+    "lodash-webpack-plugin": "^0.9.4",
     "react-hot-loader": "^1.3.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",

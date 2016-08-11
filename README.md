@@ -40,7 +40,7 @@ What Rekit Does
 
 Motivation
 ======
-I've been using the draft version of this toolkit for about half of a year and found it is really helpful for improve development efficiency and it also helps to make code consistent among different application logic. Now I'm about to give an online session about how to use React and Redux, so I created this project and the example project to better introduce the technical details. The project was initially created as react-init but that name has existed on npm so I moved it here and named it Rekit.
+I've been using the draft version of this toolkit for about half of a year and found it is really helpful for improve development efficiency and it also helps to make code consistent among different application logic. Now I'm about to give an online session about how to use React and Redux, so I created this project and the example project to better introduce the technical details. The project was initially created as [react-init](https://github.com/supnate/react-init) but that name has existed on npm so I moved it here and named it Rekit.
 
 Key Features
 ======

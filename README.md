@@ -135,7 +135,7 @@ Page is some of special component which maps to the concept of 'Container' in th
 It's just [Redux action](http://redux.js.org/docs/basics/Actions.html).
 
 ### Async action
-When developing a web application, we often need to request data from server side. It needs to be implemented as an `async-action`. Actually it is not anything new but just combining some normal actions and reducers. In Rekit, when creating an async-action, it creates the code skeleton to handle request begin, request pending, request success, request failure action types. And maintain the requestPending, requestError state in the reducer. With the command line tool `npm run add:async-action` it automatically creates the skeketon and you only need to fill the application logic in different technical artifacts. See below command line tools guide to see more details.
+When developing a web application, we often need to request data from server side. It needs to be implemented as an `async-action`. Actually it is not anything new but just combining some normal actions and reducers. In Rekit, when creating an async-action, it creates the code skeleton to handle request begin, request pending, request success, request failure action types. And maintain the requestPending, requestError state in the reducer. With the command line tool `npm run add:async-action` it automatically creates the skeleton and you only need to fill the application logic in different technical artifacts. See below command line tools guide to see more details.
 
 ### Reducer
 It's just [Redux reducer](http://redux.js.org/docs/basics/Reducers.html).

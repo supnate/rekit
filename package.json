@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "description": "Boilerplate and tools for React, Redux and React-router based project.",
   "bin": {
     "rekit": "./bin/cli.js"

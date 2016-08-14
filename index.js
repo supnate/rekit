@@ -71,6 +71,7 @@ shell.mv(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
 
 const prjConfig = {
   dependencies: [
+    'enzyme',
     'lodash',
     'memobind',
     'react',

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './actions';
 
-class ${PAGE_NAME} extends Component {
+export class ${PAGE_NAME} extends Component {
   static propTypes = {
     ${CAMEL_FEATURE_NAME}: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,

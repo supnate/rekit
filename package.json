@@ -78,6 +78,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
     "webpack-bundle-size-analyzer": "^2.0.2",
+    "webpack-dashboard": "0.0.1",
     "webpack-dev-server": "^1.14.1"
   }
 }

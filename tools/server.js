@@ -27,6 +27,7 @@ function startDevServer() {
     contentBase: devConfig.devServer.contentBase,
     hot: true,
     noInfo: false,
+    quiet: true,
     https: false,
     historyApiFallback: true,
   }).listen(PORT, (err) => {
@@ -83,4 +84,3 @@ if (
   console.log('vendors dll is up to date, no need to rebuild.');
   startDevServer();
 }
-

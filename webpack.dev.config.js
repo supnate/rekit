@@ -1,6 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 
+// Webpak Dashboard
+var Dashboard = require('webpack-dashboard');
+var DashboardPlugin = require('webpack-dashboard/plugin');
+var dashboard = new Dashboard();
+
 module.exports = {
   devtool: 'eval',
   cache: true,
@@ -22,7 +27,8 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       ENV: '"dev"',
-    })
+    }),
+    new DashboardPlugin(dashboard.setData)
   ],
   module: {
     loaders: [

@@ -471,6 +471,8 @@ Todos
 * Localization support.
 * [Sass](http://sass-lang.com/) support.
 * Tools to rename/move features, pages, components, actions.
+* Sublime Text plugin.
+* Support nested folder in feature folder.
 
 FAQ
 =====

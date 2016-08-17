@@ -5,7 +5,7 @@ const _ = require('lodash');
 const helpers = require('./helpers');
 
 const arr = (process.argv[2] || '').split('/');
-const featureName = arr[0];
+const featureName = _.kebabCase(arr[0]);
 const actionName = _.upperFirst(_.camelCase(arr[1]));
 const upperSnakeActionName = _.snakeCase(arr[1]).toUpperCase();
 

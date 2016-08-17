@@ -12,7 +12,7 @@ const shell = require('shelljs');
 const helpers = require('./helpers');
 
 const arr = (process.argv[2] || '').split('/');
-const featureName = arr[0];
+const featureName = _.kebabCase(arr[0]);
 let pageName = arr[1];
 
 if (!featureName || !pageName) {

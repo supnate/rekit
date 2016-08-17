@@ -111,7 +111,7 @@ const prjConfig = {
     'shelljs',
     'url-loader',
     'webpack',
-    'webpack-bundle-size-analyzer',
+    'webpack-dashboard',
     'webpack-dev-server',
   ],
 };

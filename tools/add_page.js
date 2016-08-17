@@ -10,10 +10,9 @@ const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
 const helpers = require('./helpers');
-
 const args = process.argv;
 const arr = (args[2] || '').split('/');
-const featureName = arr[0];
+const featureName = _.kebabCase(arr[0]);
 let pageName = arr[1];
 const urlPath = args[3] || _.kebabCase(pageName);
 

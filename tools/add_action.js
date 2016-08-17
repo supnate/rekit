@@ -6,7 +6,7 @@ const helpers = require('./helpers');
 
 const args = process.argv;
 const arr = (args[2] || '').split('/');
-const featureName = arr[0];
+const featureName = _.kebabCase(arr[0]);
 const actionName = _.kebabCase(arr[1]);
 const actionType = _.snakeCase(args[3] || actionName).toUpperCase();
 const camelActionName = _.camelCase(actionName);

@@ -10,7 +10,8 @@ const shell = require('shelljs');
 const helpers = require('./helpers');
 
 const arr = (process.argv[2] || '').split('/');
-let featureName = arr[0];
+let featureName = _.kebabCase(arr[0]);
+
 let componentName = arr[1];
 
 if (!componentName) {
@@ -18,11 +19,9 @@ if (!componentName) {
   featureName = '';
 }
 
-
 if (!componentName) {
   throw new Error('Please set the component name');
 }
-featureName = _.kebabCase(featureName);
 componentName = _.upperFirst(_.camelCase(componentName));
 
 const filesToSave = [];

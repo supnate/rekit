@@ -10,7 +10,7 @@ const shell = require('shelljs');
 const helpers = require('./helpers');
 
 const arr = (process.argv[2] || '').split('/');
-let featureName = arr[0];
+let featureName = _.kebabCase(arr[0]);
 let componentName = arr[1];
 
 if (!componentName) {
@@ -22,7 +22,6 @@ if (!componentName) {
   throw new Error('Please specify the component name');
 }
 
-featureName = _.kebabCase(featureName);
 componentName = _.upperFirst(_.camelCase(componentName));
 
 let targetDir = `${__dirname}/../src/components`;

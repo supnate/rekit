@@ -7,7 +7,7 @@ Rekit
 [![Demo](https://img.shields.io/badge/demo-link-brightgreen.svg)](https://supnate.github.io/rekit-example)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-Rekit is a toolkit for creating and managing React + Redux + React-route projects. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.
+Rekit is a toolkit for creating and managing [React](https://github.com/facebook/react) + [Redux](https://github.com/reactjs/redux/) + [React-router](https://github.com/reactjs/react-router) projects. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.
 
 The Rekit project boilerplate is designed to be extensible and production-ready, so all technical artifacts are grouped by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. Such folder structure supports large and complicated projects.
 

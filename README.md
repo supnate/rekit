@@ -7,7 +7,7 @@ Rekit
 [![Demo](https://img.shields.io/badge/demo-link-brightgreen.svg)](https://supnate.github.io/rekit-example)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-Rekit is a toolkit for creating and managing [React](https://github.com/facebook/react) + [Redux](https://github.com/reactjs/redux/) + [React-router](https://github.com/reactjs/react-router) projects. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.
+Rekit is a toolkit for creating and managing React + Redux + React-route projects. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.
 
 The Rekit project boilerplate is designed to be extensible and production-ready, so all technical artifacts are grouped by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. Such folder structure supports large and complicated projects.
 
@@ -192,7 +192,7 @@ The most important part of Rekit is the command line tools copied to your projec
 
 ### Naming
 Before introducing the command line tools, here is the naming rules used for the tools to generate code or files. And what ever names provided to the command line tools, they will be converted to follow below rules. For example, by running `npm run add:page home/my-page` will create a component named `MyPage.js` even if the provided component name is in kebab case.
- * `feature`: Folder name: kebab case. For example: `npm run add:feature my-feature` will create a folder named `my-feature`.
+ * `feature`: Folder name: kebab case. For example: `npm run add:feature myFeature` will create a folder named `my-feature`.
  * `page`: File name and class name: upper first letter. For example: `npm run add:page feature/my-page` will create files `MyPage.js` and `MyPage.less`.
  * `url path`: kebab case. It's converted from the page name as it's always mapped to a page. For above command, it defines url path as 'my-page' in the route config.
  * `component`: File name and class name: upper first letter. For example: `npm run add:component feature/my-component` will create files `MyComponent.js` and `MyComponent.less`.

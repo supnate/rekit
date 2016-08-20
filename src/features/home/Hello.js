@@ -1,15 +1,11 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
 
 export default class Hello extends PureComponent {
-  static propTypes = {
-
-  };
-
   render() {
     return (
-      <div className="home-hello">
-        Hello
-      </div>
+      <h5 className="home-hello">
+        Welcome to Rekit project!
+      </h5>
     );
   }
 }

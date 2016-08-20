@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Hello } from './';
 import * as actions from './actions';
 
 class DefaultPage extends Component {
@@ -26,7 +27,7 @@ class DefaultPage extends Component {
   render() {
     return (
       <div className="home-default-page">
-        <h5>Welcome to Rekit project!</h5>
+        <Hello />
         <p>
           This is the sample page of the project. Seeing this page means everything works well now!<br />
           This project is initialized with one feature named "home" and two test pages. To remove the test pages, run below commands:

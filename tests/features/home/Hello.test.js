@@ -11,7 +11,7 @@ describe('<Hello />', () => {
     );
 
     expect(
-      renderedComponent.find('div.home-hello').node
+      renderedComponent.find('.home-hello').node
     ).to.exist;
   });
 });

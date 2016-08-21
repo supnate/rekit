@@ -38,6 +38,10 @@ What Rekit Does
 1. Create a React + Redux + React-router based project boilerplate with all necessary configurations.
 2. Provide command line tools in your project to create and delete features, actions, reducers, components and pages.
 
+More Than Boilerplate
+======
+Rekit uses a fixed project folder structure and follows strict naming rules, so it could do more things besides only generating code. For examples, it auto register a route path when you creat a page component. It auto bind root reducers when creating a new feature. The opposite actions are taken when deleting such elements. You can see below command line tools doc for more details.
+
 Motivation
 ======
 I've been using the draft version of this toolkit for about half of a year and found it is really helpful for improve development efficiency and it also helps to make code consistent among different application logic. Now I'm about to give an online session about how to use React and Redux, so I created this project and the example project to better introduce the technical details. The project was initially created as [react-init](https://github.com/supnate/react-init) but that name has existed on npm so I moved it here and named it Rekit.

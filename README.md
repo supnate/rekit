@@ -40,7 +40,7 @@ What Rekit Does
 
 More Than Boilerplate
 ======
-Rekit uses a fixed project folder structure and follows strict naming rules, so it could do more things besides only generating code. For examples, it auto register a route path when you creat a page component. It auto bind root reducers when creating a new feature. The opposite actions are taken when deleting such elements. You can see below command line tools doc for more details.
+Rekit uses a fixed project folder structure and follows strict naming rules, so it could do more things besides only generating code. For examples, it auto register a route path when creating a page component. It auto binds reducers when creating a new feature. The opposite actions are taken when deleting such elements. You can look at below command line tools doc for more details.
 
 Motivation
 ======

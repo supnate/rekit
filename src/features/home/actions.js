@@ -1,16 +1,23 @@
 import {
-  DEMO_COUNT,
-  RESET_COUNT,
+  RESET_COUNTER,
+  COUNTER_MINUS_ONE,
+  COUNTER_PLUS_ONE,
 } from './constants';
-
-export function demoCount() {
-  return {
-    type: DEMO_COUNT,
-  };
-}
 
 export function resetCount() {
   return {
-    type: RESET_COUNT,
+    type: RESET_COUNTER,
+  };
+}
+
+export function counterMinusOne() {
+  return {
+    type: COUNTER_MINUS_ONE,
+  };
+}
+
+export function counterPlusOne() {
+  return {
+    type: COUNTER_PLUS_ONE,
   };
 }

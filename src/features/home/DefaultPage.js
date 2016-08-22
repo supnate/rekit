@@ -12,12 +12,17 @@ class DefaultPage extends Component {
 
   constructor(props) {
     super(props);
-    this.handleAddOne = ::this.handleAddOne;
+    this.handlePlusOne = ::this.handlePlusOne;
+    this.handleMinusOne = ::this.handleMinusOne;
     this.handleReset = ::this.handleReset;
   }
 
-  handleAddOne() {
-    this.props.actions.demoCount();
+  handlePlusOne() {
+    this.props.actions.counterPlusOne();
+  }
+
+  handleMinusOne() {
+    this.props.actions.counterMinusOne();
   }
 
   handleReset() {
@@ -42,7 +47,8 @@ class DefaultPage extends Component {
         <p>To quickly see how Redux works in the project, here is the demo of a simple counter:</p>
         <div className="demo-count">
           <label>{this.props.home.count}</label>
-          <button onClick={this.handleAddOne}>Add one</button>
+          <button onClick={this.handlePlusOne}>+</button>
+          <button onClick={this.handleMinusOne} disabled={this.props.home.count === 0}>-</button>
           <button onClick={this.handleReset}>Reset</button>
         </div>
         <p>Enjoy!</p>

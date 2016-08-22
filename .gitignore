@@ -7,4 +7,6 @@ src/_tmp
 src/features/test
 static
 dist
+coverage
+.tmp
 .DS_Store

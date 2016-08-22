@@ -1,2 +1,3 @@
-export const DEMO_COUNT = 'DEMO_COUNT';
-export const RESET_COUNT = 'RESET_COUNT';
+export const RESET_COUNTER = 'RESET_COUNTER';
+export const COUNTER_MINUS_ONE = 'COUNTER_MINUS_ONE';
+export const COUNTER_PLUS_ONE = 'COUNTER_PLUS_ONE';

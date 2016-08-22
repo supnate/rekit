@@ -1,10 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
+const Dashboard = require('webpack-dashboard');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 
-// Webpak Dashboard
-var Dashboard = require('webpack-dashboard');
-var DashboardPlugin = require('webpack-dashboard/plugin');
-var dashboard = new Dashboard();
+const dashboard = new Dashboard();
 
 module.exports = {
   devtool: 'eval',

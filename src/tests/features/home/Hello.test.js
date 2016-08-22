@@ -1,8 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Hello } from '../../../src/features/home';
-
-const expect = require('chai').expect;
+import { expect } from 'chai';
+import { Hello } from 'features/home';
 
 describe('<Hello />', () => {
   it('renders a <Hello>', () => {

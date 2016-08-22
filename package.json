@@ -9,7 +9,8 @@
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
     "test": "node ./test.js",
-    "test:app": "mocha --compilers js:babel-core/register ./tests/**/*.test.js",
+    "test:app": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha-webpack --webpack-config webpack.test.config.js src/tests/**/*.test.js",
+    "test:app2": "nyc mocha --compilers js:babel-register src/tests/**/reducer.test.js",
     "build:test": "node ./tools/build_test_server.js",
     "add:feature": "node ./tools/add_feature.js",
     "add:action": "node ./tools/add_action.js",
@@ -29,8 +30,38 @@
       "babel-preset-stage-0"
     ],
     "plugins": [
-      "lodash"
-    ]
+      "lodash",
+      [
+        "module-alias",
+        [
+          {
+            "src": "./src",
+            "expose": "src"
+          },
+          {
+            "src": "./src/features",
+            "expose": "features"
+          }
+        ]
+      ]
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          [
+            "istanbul",
+            {
+              "include": "src",
+              "exclude": "src/tests"
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false
   },
   "webpackDevServerPort": 6076,
   "buildTestServerPort": 6077,
@@ -55,12 +86,16 @@
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
+    "babel-plugin-istanbul": "^2.0.0",
     "babel-plugin-lodash": "^3.2.6",
+    "babel-plugin-module-alias": "^1.6.0",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.11.6",
+    "blanket": "^1.2.3",
+    "cross-env": "^2.0.0",
     "css-loader": "^0.23.1",
     "enzyme": "^2.4.1",
     "eslint": "^3.2.2",
@@ -71,16 +106,22 @@
     "estraverse": "^4.2.0",
     "estraverse-fb": "^1.3.1",
     "file-loader": "^0.9.0",
+    "jscover": "^1.0.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "lodash-webpack-plugin": "^0.9.4",
     "mocha": "^3.0.2",
+    "mocha-lcov-reporter": "^1.2.0",
+    "mocha-multi": "^0.9.1",
+    "mocha-webpack": "^0.6.0",
+    "nyc": "^8.1.0",
     "react-addons-test-utils": "^15.3.0",
     "react-hot-loader": "^1.3.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
     "webpack-bundle-size-analyzer": "^2.0.2",
     "webpack-dashboard": "0.0.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-node-externals": "^1.3.3"
   }
 }

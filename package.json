@@ -9,6 +9,7 @@
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
     "mocha-webpack": "mocha-webpack --help",
+    "test": "npm run test:cli",
     "test:cli": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha \"test/cli/**/*.test.js\"",
     "test:app": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha-webpack --include \"test/app/before-all.js\" --webpack-config webpack.test.config.js \"test/app/**/*.test.js\"",
     "build:test": "node ./tools/build_test_server.js",
@@ -51,6 +52,7 @@
   },
   "nyc": {
     "include": [
+      "index.js",
       "src/**/*.js",
       "tools/*.js"
     ],

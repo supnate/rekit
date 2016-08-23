@@ -2,7 +2,8 @@
   'globals': {
     'describe': true,
     'it': true,
-    'before': true
+    'before': true,
+    'after': true
   },
   'rules': {
     'no-unused-expressions': 0,

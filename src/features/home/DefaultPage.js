@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Hello } from './';
 import * as actions from './actions';
 
-class DefaultPage extends Component {
+export class DefaultPage extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
@@ -47,9 +47,9 @@ class DefaultPage extends Component {
         <p>To quickly see how Redux works in the project, here is the demo of a simple counter:</p>
         <div className="demo-count">
           <label>{this.props.home.count}</label>
-          <button onClick={this.handlePlusOne}>+</button>
-          <button onClick={this.handleMinusOne} disabled={this.props.home.count === 0}>-</button>
-          <button onClick={this.handleReset}>Reset</button>
+          <button className="btn-plus-one" onClick={this.handlePlusOne}>+</button>
+          <button className="btn-minus-one" onClick={this.handleMinusOne} disabled={this.props.home.count === 0}>-</button>
+          <button className="btn-reset-counter" onClick={this.handleReset}>Reset</button>
         </div>
         <p>Enjoy!</p>
       </div>

@@ -1,12 +1,12 @@
 import { expect } from 'chai';
-import reducer from 'features/home/reducer'; // eslint-disable-line
+import reducer from 'features/home/reducer';
 import {
   COUNTER_PLUS_ONE,
   COUNTER_MINUS_ONE,
   RESET_COUNTER,
-} from 'features/home/constants'; // eslint-disable-line
+} from 'features/home/constants';
 
-describe('home reducer', () => {
+describe('home/reducer', () => {
   it('should have initial state', () => {
     const state = reducer(
       undefined,

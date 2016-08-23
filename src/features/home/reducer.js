@@ -1,7 +1,7 @@
 import {
-  RESET_COUNTER,
-  COUNTER_MINUS_ONE,
   COUNTER_PLUS_ONE,
+  COUNTER_MINUS_ONE,
+  RESET_COUNTER,
 } from './constants';
 
 const initialState = {
@@ -11,10 +11,10 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
 
-    case RESET_COUNTER:
+    case COUNTER_PLUS_ONE:
       return {
         ...state,
-        count: 0,
+        count: state.count + 1,
       };
 
     case COUNTER_MINUS_ONE:
@@ -23,10 +23,10 @@ export default function reducer(state = initialState, action) {
         count: state.count - 1,
       };
 
-    case COUNTER_PLUS_ONE:
+    case RESET_COUNTER:
       return {
         ...state,
-        count: state.count + 1,
+        count: 0,
       };
 
     default:

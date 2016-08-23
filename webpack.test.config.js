@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-// const distConfig = require('./webpack.dist.config');
 
 module.exports = {
   target: 'node', // in order to ignore built-in modules like path, fs, etc.

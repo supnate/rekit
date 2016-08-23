@@ -5,6 +5,11 @@
     'document': true,
     'window': true
   },
+  'settings': {
+    'import/resolver': {
+      'babel-module': {}
+    }
+  },
   'rules': {
     'guard-for-in': 0,
     'max-len': 0,

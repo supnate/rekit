@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './actions';
 
-class TestPage1 extends Component {
+export class TestPage1 extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,

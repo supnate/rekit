@@ -1,7 +1,7 @@
 import SimpleNav from './SimpleNav';
-import Page404 from './Page404';
+import PageNotFound from './PageNotFound';
 
 export {
   SimpleNav,
-  Page404,
+  PageNotFound,
 };

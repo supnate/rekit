@@ -26,6 +26,9 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       ENV: '"dev"',
+      'process.env': {
+        NODE_ENV: JSON.stringify('dev'),
+      }
     }),
     new DashboardPlugin(dashboard.setData)
   ],

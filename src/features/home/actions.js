@@ -1,12 +1,12 @@
 import {
-  RESET_COUNTER,
-  COUNTER_MINUS_ONE,
   COUNTER_PLUS_ONE,
+  COUNTER_MINUS_ONE,
+  RESET_COUNTER,
 } from './constants';
 
-export function resetCount() {
+export function counterPlusOne() {
   return {
-    type: RESET_COUNTER,
+    type: COUNTER_PLUS_ONE,
   };
 }
 
@@ -16,8 +16,8 @@ export function counterMinusOne() {
   };
 }
 
-export function counterPlusOne() {
+export function resetCount() {
   return {
-    type: COUNTER_PLUS_ONE,
+    type: RESET_COUNTER,
   };
 }

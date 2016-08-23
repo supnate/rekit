@@ -4,9 +4,9 @@ npm-debug.log
 target
 node
 src/_tmp
-src/features/test
 static
 dist
 coverage
+.nyc_output
 .tmp
 .DS_Store

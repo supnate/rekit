@@ -8,8 +8,9 @@
   "scripts": {
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
-    "test": "node ./test.js",
-    "test:app": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha-webpack --webpack-config webpack.test.config.js \"test/**/*.test.js\"",
+    "mocha-webpack": "mocha-webpack --help",
+    "test:cli": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha \"test/cli/**/*.test.js\"",
+    "test:app": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha-webpack --include \"test/app/before-all.js\" --webpack-config webpack.test.config.js \"test/app/**/*.test.js\"",
     "build:test": "node ./tools/build_test_server.js",
     "add:feature": "node ./tools/add_feature.js",
     "add:action": "node ./tools/add_action.js",
@@ -51,9 +52,13 @@
   "nyc": {
     "include": [
       "src/**/*.js",
-      "test.js"
+      "tools/*.js"
     ],
-    "exclude": ["_tmp", ".tmp"],
+    "exclude": [
+      "tools/**/feature_template",
+      "_tmp",
+      ".tmp"
+    ],
     "sourceMap": false,
     "instrument": true
   },

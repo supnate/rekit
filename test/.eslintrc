@@ -1,7 +1,8 @@
 {
   'globals': {
     'describe': true,
-    'it': true
+    'it': true,
+    'before': true
   },
   'rules': {
     'no-unused-expressions': 0,

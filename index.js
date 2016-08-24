@@ -136,4 +136,7 @@ Promise.all(promises).then(() => {
   console.log('  1. run "npm install" to install dependencies.');
   console.log('  2. run "npm start" to start the dev server.');
   console.log('Enjoy!');
-}).catch(err => console.log(err.stack || err));
+}).catch(
+  /* istanbul ignore next */
+  err => console.log(err.stack || err)
+);

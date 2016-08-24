@@ -67,6 +67,7 @@
       "lcov",
       "text"
     ],
+    "cache": true,
     "sourceMap": false,
     "instrument": true
   },

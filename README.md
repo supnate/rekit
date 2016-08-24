@@ -5,7 +5,7 @@ Rekit
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
 [![Dependency Status](https://david-dm.org/supnate/rekit.svg?style=flat-square)](https://david-dm.org/supnate/rekit)
 [![Coverage Status](https://img.shields.io/codecov/c/github/supnate/rekit/master.svg)](https://codecov.io/github/supnate/rekit)
-[![Demo](https://img.shields.io/badge/demo-link-brightgreen.svg)](https://supnate.github.io/rekit-example)
+[![Demo](https://img.shields.io/badge/demo-link-blue.svg)](https://supnate.github.io/rekit-example)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 Rekit is a toolkit for creating and managing React + Redux + React-route projects. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.

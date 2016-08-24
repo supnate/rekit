@@ -4,18 +4,29 @@ import { expect } from 'chai';
 import { SimpleNav } from 'src/components';
 
 describe('components/SimpleNav', () => {
-  it('renders node with correct class name', () => {
+  it('renders node with correct dom structure', () => {
     const routes = [{
       childRoutes: [
-        { path: 'abc', name: 'ABC' },
+        { path: '/root' },
+        { path: 'relative-path', name: 'Link Name' },
+        {
+          path: 'sub-links',
+          childRoutes: [
+            { path: 'sub-link' },
+          ],
+        },
+        { path: '*' },
       ],
     }];
-    const renderedComponent = shallow(
+    const comp = shallow(
       <SimpleNav routes={routes} />
     );
 
     expect(
-      renderedComponent.find('.component-simple-nav').node
+      comp.find('.component-simple-nav').node
     ).to.exist;
+    expect(
+      comp.find('li').length
+    ).to.equal(6);
   });
 });

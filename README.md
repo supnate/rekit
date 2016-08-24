@@ -4,6 +4,7 @@ Rekit
 [![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit)
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
 [![Dependency Status](https://david-dm.org/supnate/rekit.svg?style=flat-square)](https://david-dm.org/supnate/rekit)
+[![Coverage Status](https://img.shields.io/codecov/c/github/supnate/rekit/master.svg)](https://codecov.io/github/supnate/rekit)
 [![Demo](https://img.shields.io/badge/demo-link-brightgreen.svg)](https://supnate.github.io/rekit-example)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 

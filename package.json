@@ -89,7 +89,8 @@
     "reselect": "^2.5.3",
     "shelljs": "^0.7.3",
     "style-loader": "^0.13.1",
-    "superagent": "^2.1.0"
+    "superagent": "^2.1.0",
+    "trash": "^3.4.1"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",

@@ -5,9 +5,9 @@
 const path = require('path');
 const shell = require('shelljs');
 const helpers = require('./helpers');
-
 const webpack = require('webpack');
 const config = require('../webpack.dist.config');
+
 config.warnings = true;
 
 // Clean folder

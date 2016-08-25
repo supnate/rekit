@@ -8,10 +8,9 @@
   "scripts": {
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
-    "mocha-webpack": "mocha-webpack --help",
     "codecov": "codecov",
     "test": "npm run test:cli && node test/cache_nyc_output.js && npm run test:app && node test/cp_back_nyc_output.js && nyc report",
-    "test:cli": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/cli\" mocha \"test/cli/**/*.test.js\"",
+    "test:cli": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/cli\" mocha \"test/cli/**/rekit.test.js\"",
     "test:app": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/app\" mocha-webpack --include \"test/app/before-all.js\" --webpack-config webpack.test.config.js \"test/app/**/*.test.js\"",
     "test:generate-app": "",
     "build:test": "node ./tools/build_test_server.js",
@@ -60,7 +59,6 @@
     ],
     "exclude": [
       "tools/**/feature_template",
-      "_tmp",
       ".tmp"
     ],
     "reporter": [
@@ -75,7 +73,6 @@
   "buildTestServerPort": 6077,
   "dependencies": {
     "babel-core": "^6.13.2",
-    "chai": "^3.5.0",
     "lodash": "^4.14.2",
     "memobind": "^0.5.0",
     "react": "^15.3.0",
@@ -103,6 +100,7 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.11.6",
+    "chai": "^3.5.0",
     "codecov": "^1.0.1",
     "cross-env": "^2.0.0",
     "css-loader": "^0.23.1",

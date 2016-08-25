@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const devConfig = require('../webpack.dev.config');
 const srcPath = path.join(__dirname, '../src');
-const tmpPath = path.join(srcPath, './_tmp');
+const tmpPath = path.join(srcPath, './.tmp');
 const manifestPath = path.join(tmpPath, 'vendors-manifest.json');
 
 const PORT = require('../package.json').webpackDevServerPort;

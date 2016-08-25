@@ -16,6 +16,9 @@ const pkgJson = {
   scripts: {
     start: 'node ./tools/server.js',
     build: 'node ./tools/build.js',
+    test: 'npm run test:cli && node test/cache_nyc_output.js && npm run test:app && node test/cp_back_nyc_output.js && nyc report',
+    'test:cli': 'cross-env NODE_ENV=test nyc --report-dir="coverage/cli" mocha "test/cli/**/*.test.js"',
+    'test:app': 'cross-env NODE_ENV=test nyc --report-dir="coverage/app" mocha-webpack --include "test/app/before-all.js" --webpack-config webpack.test.config.js "test/app/**/*.test.js"',
     'build:test': 'node ./tools/build_test_server.js',
     'add:feature': 'node ./tools/add_feature.js',
     'add:action': 'node ./tools/add_action.js',
@@ -54,7 +57,9 @@ shell.mkdir(prjPath);
 console.log('Copying files...');
 shell.cp('-R', path.join(__dirname, './src'), prjPath);
 shell.cp('-R', path.join(__dirname, './tools'), prjPath);
+shell.cp('-R', path.join(__dirname, './test'), prjPath);
 
+shell.rm(path.join(prjPath, 'test/cli/rekit.test.js'));
 shell.rm('-rf', path.join(prjPath, 'src/_tmp')); // in case _tmp folder is copied.
 
 [
@@ -63,6 +68,7 @@ shell.rm('-rf', path.join(prjPath, 'src/_tmp')); // in case _tmp folder is copie
   'webpack.dev.config.js',
   'webpack.dist.config.js',
   'webpack.dll.config.js',
+  'webpack.test.config.js',
 ].forEach(file => {
   shell.cp(path.join(__dirname, file), prjPath);
 });
@@ -71,7 +77,7 @@ shell.mv(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
 
 const prjConfig = {
   dependencies: [
-    'enzyme',
+    'babel-core',
     'lodash',
     'memobind',
     'react',
@@ -83,36 +89,54 @@ const prjConfig = {
     'redux-logger',
     'redux-thunk',
     'reselect',
+    'shelljs',
     'style-loader',
+    'superagent',
+    'trash',
   ],
   devDependencies: [
-    'babel-core',
     'babel-eslint',
     'babel-loader',
+    'babel-plugin-istanbul',
     'babel-plugin-lodash',
+    'babel-plugin-module-resolver',
     'babel-polyfill',
-    'babel-preset-es2015',
-    'babel-preset-react',
+    'babel-preset-es2015"',
+    'babel-preset-react"',
     'babel-preset-stage-0',
-    'babel-register',
+    'babel-register"',
+    'chai',
+    'codecov',
+    'cross-env',
     'css-loader',
+    'enzyme',
     'eslint',
     'eslint-config-airbnb',
+    'eslint-import-resolver-babel-module',
     'eslint-plugin-import',
     'eslint-plugin-jsx-a11y',
     'eslint-plugin-react',
     'estraverse',
     'estraverse-fb',
     'file-loader',
+    'istanbul-lib-coverage',
+    'istanbul-lib-report',
+    'istanbul-reports',
+    'jsdom',
     'less',
     'less-loader',
     'lodash-webpack-plugin',
+    'mocha',
+    'mocha-webpack',
+    'nyc',
+    'react-addons-test-utils',
     'react-hot-loader',
-    'shelljs',
+    'sinon',
     'url-loader',
     'webpack',
-    'webpack-dashboard',
+    'webpack-dashboar',
     'webpack-dev-server',
+    'webpack-node-external',
   ],
 };
 

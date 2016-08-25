@@ -1,5 +1,5 @@
 /*
-  Copies .nyc_output files to coverage folder.
+  Copies .nyc_output files back to root .nyc_output folder.
 */
 const path = require('path');
 const shell = require('shelljs');

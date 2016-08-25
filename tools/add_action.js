@@ -37,6 +37,8 @@ if (!shell.test('-e', targetPath)) {
   shell.ShellString('').to(targetPath);
 }
 lines = helpers.getLines(targetPath);
+
+// istanbul ignore else
 if (lines.length && !lines[lines.length - 1]) lines.pop();
 lines.push(`export const ${actionType} = '${actionType}';`);
 lines.push('');
@@ -49,9 +51,10 @@ if (!shell.test('-e', targetPath)) {
   shell.ShellString('').to(targetPath);
 }
 lines = helpers.getLines(targetPath);
+
+// if it's empty
 if (!lines.map(line => _.trim(line)).join('')) {
-  // if it's empty
-  if (lines.length && !lines[lines.length - 1]) lines.pop();
+  lines.length = 0;
   lines.push('import {');
   lines.push('} from \'./constants\';');
   lines.push('');
@@ -70,9 +73,10 @@ if (!shell.test('-e', targetPath)) {
   shell.ShellString('').to(targetPath);
 }
 lines = helpers.getLines(targetPath);
+
+// if it's empty
 if (!lines.map(line => _.trim(line)).join('')) {
-  // if it's empty
-  if (lines.length && !lines[lines.length - 1]) lines.pop();
+  lines.length = 0;
   lines = lines.concat(helpers.getLines(path.join(__dirname, './feature_template/reducer.js')));
   lines.push('');
 }

@@ -28,7 +28,7 @@ module.exports = {
   removeAstBlockNode(lines, node) {
     const loc = node.loc;
     let start = loc.start.line - 1;
-    let len = loc.end.line - loc.start.line + 1;
+    let len = (loc.end.line - loc.start.line) + 1;
     if (!lines[start - 1]) {
       // remove the empty line before the function
       start -= 1;
@@ -41,6 +41,7 @@ module.exports = {
     const code = lines.join('\n');
     const ast = babel.transform(code, babelOptions).ast.program;
     const funcElement = _.find(ast.body, { type: 'FunctionDeclaration', id: { name: funcName } });
+    // istanbul ignore else
     if (funcElement) {
       this.removeAstBlockNode(lines, funcElement);
     }
@@ -52,6 +53,7 @@ module.exports = {
     const funcElement = _.find(_.toArray(ast.body), { type: 'FunctionDeclaration', id: { name: 'reducer' } });
     const switchElement = _.find(funcElement.body.body, { type: 'SwitchStatement' });
     const caseElement = _.find(switchElement.cases, { test: { name: caseName } });
+    // istanbul ignore else
     if (caseElement) {
       this.removeAstBlockNode(lines, caseElement);
     }

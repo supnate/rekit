@@ -29,6 +29,10 @@ if (featureName) {
   targetDir = `${__dirname}/../src/features/${featureName}`;
 }
 
+if (shell.test('-e', path.join(targetDir, `${componentName}.*`))) {
+  throw new Error(`Component has been existed: ${componentName}`);
+}
+
 const context = {
   COMPONENT_NAME: componentName,
   KEBAB_FEATURE_NAME: _.kebabCase(featureName || 'components'),
@@ -49,32 +53,20 @@ let targetPath;
 console.log('Create component class');
 targetPath = `${targetDir}/${componentName}.js`;
 tpl = helpers.readTemplate('Component.js');
-if (!shell.test('-e', targetPath)) {
-  toSave(targetPath, helpers.processTemplate(tpl, context));
-}
+toSave(targetPath, helpers.processTemplate(tpl, context));
 
 /* ==== Generate component less ==== */
 console.log('Create component less');
 targetPath = `${targetDir}/${componentName}.less`;
 tpl = helpers.readTemplate('Component.less');
-if (!shell.test('-e', targetPath)) {
-  toSave(targetPath, helpers.processTemplate(tpl, context));
-}
+toSave(targetPath, helpers.processTemplate(tpl, context));
 
 /* ==== Add to index.js ===== */
+console.log('Add entry to index.js');
 targetPath = path.join(targetDir, 'index.js');
 lines = helpers.getLines(targetPath);
-i = helpers.lineIndex(lines, 'export {');
-if (i > 0 && !lines[i - 1]) {
-  i -= 1;
-}
-if (i === -1) {
-  i = 0;
-}
-lines.splice(i, 0, `import ${componentName} from './${componentName}';`);
-if (i === 0) {
-  lines.splice(1, 0, '');
-}
+i = helpers.lastLineIndex(lines, /^import /);
+lines.splice(i + 1, 0, `import ${componentName} from './${componentName}';`);
 i = helpers.lineIndex(lines, /^\};$/);
 lines.splice(i, 0, `  ${componentName},`);
 toSave(targetPath, lines);

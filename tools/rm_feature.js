@@ -8,6 +8,7 @@
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
+const trash = require('trash');
 const helpers = require('./helpers');
 
 const args = process.argv;
@@ -30,13 +31,8 @@ const toSave = helpers.getToSave(filesToSave);
 const targetDir = `${__dirname}/../src/features/${context.KEBAB_FEATURE_NAME}`;
 
 if (shell.test('-e', targetDir)) {
-  if (shell.ls(targetDir).length > 20) {
-    console.log('Feature not changed: files under the feature are more than 15. Please delete it manually.');
-    process.exit();
-  }
-
-  // Remove all files
-  shell.rm('-rf', targetDir);
+  // deleting a feature is dangerous, move it to trash.
+  trash([targetDir]);
 } else {
   console.log('feature folder does not exist, try to remove common entries now...');
 }

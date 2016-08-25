@@ -73,12 +73,10 @@ toSave(targetPath, lines);
 console.log('Register route');
 targetPath = path.join(__dirname, '../src/common/routeConfig.js');
 lines = helpers.getLines(targetPath);
-i = helpers.lastLineIndex(lines, '/route\';');
-if (i === -1) {
-  i = helpers.lineIndex(lines, /^import /);
-}
+i = helpers.lastLineIndex(lines, /^import /);
 lines.splice(i + 1, 0, `import ${context.CAMEL_FEATURE_NAME}Route from '../features/${context.KEBAB_FEATURE_NAME}/route';`);
 i = helpers.lineIndex(lines, 'path: \'*\'');
+// istanbul ignore if
 if (i === -1) {
   i = helpers.lastLineIndex(lines, /^ {2}\]/);
 }

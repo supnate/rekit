@@ -19,6 +19,14 @@ function exec(cmd) {
   expect(shell.exec(cmd, { silent: true }).code).to.equal(0);
 }
 
+function pureExec(cmd) {
+  return shell.exec(cmd, { silent: true });
+}
+
+function expectError(cmd) {
+  expect(pureExec(cmd).code).to.equal(1);
+}
+
 function expectFile(file) {
   expect(shell.test('-e', file)).to.be.true;
 }
@@ -65,7 +73,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     exec('npm run rm:feature test');
   });
 
-  it('Test Add Feature', () => {
+  it('add test feature', () => {
     /* ===== Test Add Feature ===== */
     exec('npm run add:feature test');
     expectFiles([
@@ -92,7 +100,90 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Add Normal Action', () => {
+  it('throws exception when feature name exists', () => {
+    expectError('npm run add:feature test');
+  });
+
+  /*
+    exceptions are handled correctly
+  */
+  [
+    'npm run add:feature',
+    'npm run add:page',
+    'npm run add:component',
+    'npm run add:action',
+    'npm run add:async-action',
+    'npm run rm:feature',
+    'npm run rm:page',
+    'npm run rm:component',
+    'npm run rm:action',
+    'npm run rm:async-action',
+  ].forEach(cmd => {
+    it(`throws exception when no args for "${cmd}"`, () => {
+      expectError(cmd);
+    });
+  });
+
+  /*
+    even works well constatns.js, actions.js or reducer.js don't exist
+  */
+  it('adding action works if constatns.js, actions.js or reducer.js don\'t exist', () => {
+    exec('npm run rm:page test/default-page');
+    exec('npm run rm:action test/test-test-action');
+    shell.rm(mapFeatureFile('constants.js'));
+    shell.rm(mapFeatureFile('actions.js'));
+    shell.rm(mapFeatureFile('reducer.js'));
+
+    exec('npm run add:action test/my-action');
+    expectLines(mapFeatureFile('constants.js'), [
+      'export const MY_ACTION = \'MY_ACTION\';',
+    ]);
+    expectLines(mapFeatureFile('actions.js'), [
+      '  MY_ACTION,',
+      'export function myAction() {',
+    ]);
+    expectLines(mapFeatureFile('reducer.js'), [
+      '  MY_ACTION,',
+      '    case MY_ACTION:',
+    ]);
+  });
+
+  it('adding async action works if constatns.js, actions.js or reducer.js don\'t exist', () => {
+    exec('npm run rm:action test/my-action');
+    shell.rm(mapFeatureFile('constants.js'));
+    shell.rm(mapFeatureFile('actions.js'));
+    shell.rm(mapFeatureFile('reducer.js'));
+
+    exec('npm run add:async-action test/my-async-action');
+    expectLines(mapFeatureFile('constants.js'), [
+      'export const MY_ASYNC_ACTION_BEGIN = \'MY_ASYNC_ACTION_BEGIN\';',
+      'export const MY_ASYNC_ACTION_SUCCESS = \'MY_ASYNC_ACTION_SUCCESS\';',
+      'export const MY_ASYNC_ACTION_FAILURE = \'MY_ASYNC_ACTION_FAILURE\';',
+      'export const MY_ASYNC_ACTION_DISMISS_ERROR = \'MY_ASYNC_ACTION_DISMISS_ERROR\';',
+    ]);
+    expectLines(mapFeatureFile('actions.js'), [
+      '  MY_ASYNC_ACTION_BEGIN,',
+      '  MY_ASYNC_ACTION_SUCCESS,',
+      '  MY_ASYNC_ACTION_FAILURE,',
+      '  MY_ASYNC_ACTION_DISMISS_ERROR,',
+      'export function myAsyncAction() {',
+      'export function dismissMyAsyncActionError() {',
+    ]);
+    expectLines(mapFeatureFile('reducer.js'), [
+      '  MY_ASYNC_ACTION_BEGIN,',
+      '  MY_ASYNC_ACTION_SUCCESS,',
+      '  MY_ASYNC_ACTION_FAILURE,',
+      '  MY_ASYNC_ACTION_DISMISS_ERROR,',
+      '  myAsyncActionError: null,',
+      '  myAsyncActionPending: false,',
+      '    case MY_ASYNC_ACTION_BEGIN:',
+      '    case MY_ASYNC_ACTION_SUCCESS:',
+      '    case MY_ASYNC_ACTION_FAILURE:',
+      '    case MY_ASYNC_ACTION_DISMISS_ERROR:',
+    ]);
+  });
+
+  it('add normal action', () => {
     /* ===== Test Add Normal Action ===== */
     exec('npm run add:action test/test-action');
     expectLines(mapFeatureFile('constants.js'), [
@@ -108,7 +199,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Add Normal Action With Custom Action Type', () => {
+  it('add normal action with custom action type', () => {
     /* ===== Test Add Normal Action With Custom Action Type ===== */
     exec('npm run add:action test/test-action-2 my-action-type');
     expectLines(mapFeatureFile('constants.js'), [
@@ -124,7 +215,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Add Async Action', () => {
+  it('add async action', () => {
     /* ===== Test Add Async Action =====*/
     exec('npm run add:async-action test/async-action');
     expectLines(mapFeatureFile('constants.js'), [
@@ -155,7 +246,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Add Page', () => {
+  it('add page', () => {
     /* ===== Test Add Page =====*/
     exec('npm run add:page test/test-page');
     expectFiles([
@@ -175,27 +266,31 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Add Page With Url Path', () => {
+  it('throws exception when page name exists', () => {
+    expectError('npm run add:page test/test-page');
+  });
+
+  it('add page with url path', () => {
     /* ===== Test Add Page With Url Path =====*/
-    exec('npm run add:page test/test-page test-path');
+    exec('npm run add:page test/test-page-2 test-path');
     expectFiles([
-      'TestPage.js',
-      'TestPage.less',
+      'TestPage2.js',
+      'TestPage2.less',
     ].map(mapFeatureFile));
     expectLines(mapFeatureFile('style.less'), [
-      '@import \'./TestPage.less\';'
+      '@import \'./TestPage2.less\';'
     ]);
     expectLines(mapFeatureFile('index.js'), [
-      'import TestPage from \'./TestPage\';',
-      '  TestPage,',
+      'import TestPage2 from \'./TestPage2\';',
+      '  TestPage2,',
     ]);
     expectLines(mapFeatureFile('route.js'), [
-      '    { path: \'test-path\', component: TestPage },',
-      '  TestPage,',
+      '    { path: \'test-path\', component: TestPage2 },',
+      '  TestPage2,',
     ]);
   });
 
-  it('Test Add Feature Component', () => {
+  it('add feature component', () => {
     /* ===== Test Add Feature Component =====*/
     exec('npm run add:component test/test-component');
     expectFiles([
@@ -211,7 +306,11 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Add Common Component', () => {
+  it('throws exception when component name exists', () => {
+    expectError('npm run add:component test/test-component');
+  });
+
+  it('add common component', () => {
     /* ===== Test Add Common Component =====*/
     exec('npm run add:component common-component');
     expectFiles([
@@ -227,7 +326,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Normal Action', () => {
+  it('remove normal action', () => {
     /* ===== Test Remove Normal Action =====*/
     exec('npm run rm:action test/test-action');
     expectNoLines(mapFeatureFile('constants.js'), [
@@ -243,15 +342,15 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Normal Action With Custom Action Type', () => {
+  it('remove normal action with custom action type', () => {
     /* ===== Test Remove Normal Action With Custom Action Type =====*/
-    exec('npm run rm:action test/test-action my-action-type');
+    exec('npm run rm:action test/test-action-2 my-action-type');
     expectNoLines(mapFeatureFile('constants.js'), [
       'export const MY_ACTION_TYPE = \'MY_ACTION_TYPE\';',
     ]);
     expectNoLines(mapFeatureFile('actions.js'), [
       '  MY_ACTION_TYPE,',
-      'export function testAction() {',
+      'export function testAction2() {',
     ]);
     expectNoLines(mapFeatureFile('reducer.js'), [
       '  MY_ACTION_TYPE,',
@@ -259,7 +358,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Async Action', () => {
+  it('remove async action', () => {
     /* ===== Test Remove Async Action =====*/
     exec('npm run rm:async-action test/async-action');
     expectNoLines(mapFeatureFile('constants.js'), [
@@ -290,7 +389,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Page', () => {
+  it('remove page', () => {
     /* ===== Test Remove Page =====*/
     exec('npm run rm:page test/test-page');
     expectNoFiles([
@@ -310,7 +409,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Page With Url Path', () => {
+  it('remove page with url path', () => {
     /* ===== Test Remove Page With Url Path =====*/
     exec('npm run rm:page test/test-page');
     expectNoFiles([
@@ -330,7 +429,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Feature Component', () => {
+  it('remove feature component', () => {
     /* ===== Test Remove Feature Component =====*/
     exec('npm run rm:component test/test-component');
     expectNoFiles([
@@ -346,7 +445,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Common Component', () => {
+  it('remove common component', () => {
     /* ===== Test Remove Common Component =====*/
     exec('npm run rm:component common-component');
     expectNoFiles([
@@ -362,7 +461,7 @@ describe('Command line tools tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('Test Remove Feature', () => {
+  it('remove feature', () => {
     /* ===== Test Remove Feature =====*/
     exec('npm run rm:feature test');
     expectNoFile(mapFile('test'));
@@ -377,5 +476,9 @@ describe('Command line tools tests', function() { // eslint-disable-line
     expectNoLines(mapFile('styles/index.less'), [
       '@import \'../features/test/style.less\';',
     ]);
+  });
+
+  it('no error when removing a feature does not exist.', () => {
+    exec('npm run rm:feature feature-does-not-exist-test');
   });
 });

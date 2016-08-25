@@ -10,6 +10,7 @@ const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
 const helpers = require('./helpers');
+
 const args = process.argv;
 const arr = (args[2] || '').split('/');
 const featureName = _.kebabCase(arr[0]);
@@ -23,6 +24,9 @@ if (!featureName || !pageName) {
 pageName = _.upperFirst(_.camelCase(pageName));
 
 const targetDir = `${__dirname}/../src/features/${featureName}`;
+if (shell.test('-e', path.join(targetDir, `${pageName}.*`))) {
+  throw new Error(`Page has been existed: ${pageName}`);
+}
 
 const context = {
   FEATURE_NAME: featureName,
@@ -44,17 +48,13 @@ let targetPath;
 console.log('Create page class');
 targetPath = `${targetDir}/${pageName}.js`;
 tpl = helpers.readTemplate('Page.js');
-if (!shell.test('-e', targetPath)) {
-  toSave(targetPath, helpers.processTemplate(tpl, context));
-}
+toSave(targetPath, helpers.processTemplate(tpl, context));
 
 /* ==== Generate page less ==== */
 console.log('Create page less');
 targetPath = `${targetDir}/${pageName}.less`;
 tpl = helpers.readTemplate('Page.less');
-if (!shell.test('-e', targetPath)) {
-  toSave(targetPath, helpers.processTemplate(tpl, context));
-}
+toSave(targetPath, helpers.processTemplate(tpl, context));
 
 /* ==== Add to style.less ==== */
 console.log('Add entry to style.less');
@@ -68,14 +68,8 @@ toSave(targetPath, lines);
 console.log('Add entry to index.js');
 targetPath = path.join(targetDir, 'index.js');
 lines = helpers.getLines(targetPath);
-i = helpers.lineIndex(lines, 'export {');
-if (i > 0 && !lines[i - 1]) {
-  i -= 1;
-}
-lines.splice(i, 0, `import ${pageName} from './${pageName}';`);
-if (i === 0) {
-  lines.splice(1, 0, '');
-}
+i = helpers.lastLineIndex(lines, /^import /);
+lines.splice(i + 1, 0, `import ${pageName} from './${pageName}';`);
 i = helpers.lineIndex(lines, /^\};$/);
 lines.splice(i, 0, `  ${pageName},`);
 toSave(targetPath, lines);
@@ -87,6 +81,7 @@ lines = helpers.getLines(targetPath);
 i = helpers.lineIndex(lines, '} from \'./index\';');
 lines.splice(i, 0, `  ${context.PAGE_NAME},`);
 i = helpers.lineIndex(lines, 'path: \'*\'');
+// istanbul ignore else
 if (i === -1) {
   i = helpers.lastLineIndex(lines, /^ {2}\]/);
 }

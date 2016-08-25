@@ -14,7 +14,6 @@ if (!actionName) {
   throw new Error('Please specify the action name.');
 }
 
-
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
@@ -27,9 +26,7 @@ let lines;
 console.log('Updating constants.js');
 targetPath = path.join(targetDir, 'constants.js');
 lines = helpers.getLines(targetPath);
-if (lines.length && !lines[lines.length - 1]) lines.pop();
 helpers.removeLines(lines, `export const ${actionType} = '${actionType}';`);
-lines.push('');
 toSave(targetPath, lines);
 
 /* Update actions.js */

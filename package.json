@@ -10,9 +10,9 @@
     "build": "node ./tools/build.js",
     "codecov": "codecov",
     "test": "npm run test:cli && node test/cache_nyc_output.js && npm run test:app && node test/cp_back_nyc_output.js && nyc report",
-    "test:cli": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/cli\" mocha \"test/cli/**/rekit.test.js\"",
+    "test:rekit": "mocha \"test/cli/rekit.js\"",
+    "test:cli": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/cli\" mocha \"test/cli/**/*.test.js\"",
     "test:app": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/app\" mocha-webpack --include \"test/app/before-all.js\" --webpack-config webpack.test.config.js \"test/app/**/*.test.js\"",
-    "test:generate-app": "",
     "build:test": "node ./tools/build_test_server.js",
     "add:feature": "node ./tools/add_feature.js",
     "add:action": "node ./tools/add_action.js",
@@ -63,7 +63,7 @@
     ],
     "reporter": [
       "lcov",
-      "text"
+      "text-summary"
     ],
     "cache": true,
     "sourceMap": false,

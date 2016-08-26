@@ -66,7 +66,7 @@ function expectNoLines(file, lines) {
   lines.forEach(line => expectNoLine(file, line));
 }
 
-describe('Command line tools tests', function() { // eslint-disable-line
+describe('command line tools tests', function() { // eslint-disable-line
   this.timeout(20000);
   before(() => {
     // To reset test env

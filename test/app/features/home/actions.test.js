@@ -11,7 +11,7 @@ import {
   RESET_COUNTER,
 } from 'features/home/constants';
 
-describe('home/actions', () => {
+describe('features/home/actions', () => {
   it('counterPlusOne', () => {
     const expectedAction = {
       type: COUNTER_PLUS_ONE,

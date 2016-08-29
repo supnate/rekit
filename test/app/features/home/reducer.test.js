@@ -6,7 +6,7 @@ import {
   RESET_COUNTER,
 } from 'features/home/constants';
 
-describe('home/reducer', () => {
+describe('features/home/reducer', () => {
   it('should have initial state', () => {
     const state = reducer(
       undefined,

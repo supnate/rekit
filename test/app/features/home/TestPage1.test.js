@@ -12,7 +12,7 @@ const pageProps = {
 
 const store = createStore(state => state, pageProps);
 
-describe('home/TestPage1', () => {
+describe('features/home/TestPage1', () => {
   it('redux connect works', () => {
     const wrapper = render(
       <Provider store={store}>
@@ -25,7 +25,7 @@ describe('home/TestPage1', () => {
     ).to.equal(1);
   });
 
-  it('renders node with correct class name', () => {
+  it('renders node with correct dom structure', () => {
     const renderedComponent = shallow(
       <TestPage1 {...pageProps} />
     );

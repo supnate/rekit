@@ -3,6 +3,7 @@
   Usage:
   node add_test.js -[a|c|p|s] feature-name/target-name
 */
+'use strict';
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
@@ -10,7 +11,7 @@ const helpers = require('./helpers');
 
 const testPath = path.join(__dirname, '../test/app');
 
-let testType = (process.argv[2] || '').replace('-', '').toLowerCase();
+const testType = (process.argv[2] || '').replace('-', '').toLowerCase();
 const arr = (process.argv[3] || '').split('/');
 let featureName = _.kebabCase(arr[0]);
 let targetName = arr[1];
@@ -25,6 +26,15 @@ if (!targetName) {
 }
 
 const context = {
+  KEBAB_FEATURE_NAME: _.kebabCase(featureName),
+  CAMEL_FEATURE_NAME: _.camelCase(featureName),
+  COMPONENT_NAME: helpers.pascalCase(targetName),
+  PAGE_NAME: helpers.pascalCase(targetName),
+  KEBAB_PAGE_NAME: _.kebabCase(targetName),
+  KEBAB_COMPONENT_NAME: _.kebabCase(targetName),
+  ACTION_NAME: _.camelCase(targetName),
+  FOLDER_PATH: featureName ? `features/${_.kebabCase(featureName)}` : 'components',
+  CLASS_PREFIX: featureName ? _.kebabCase(featureName) : 'component',
 };
 
 

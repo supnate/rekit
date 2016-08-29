@@ -3,7 +3,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { render, shallow } from 'enzyme';
 import { expect } from 'chai';
-import ConnectedTestPage2, { TestPage2 } from 'features/home/TestPage2';
+import ConnectedTestPage3, { TestPage3 } from 'features/home/TestPage3';
 
 const pageProps = {
   home: {},
@@ -12,26 +12,26 @@ const pageProps = {
 
 const store = createStore(state => state, pageProps);
 
-describe('features/home/TestPage2', () => {
+describe('features/home/TestPage3', () => {
   it('redux connect works', () => {
     const wrapper = render(
       <Provider store={store}>
-        <ConnectedTestPage2 />
+        <ConnectedTestPage3 />
       </Provider>
     );
 
     expect(
-      wrapper.find('.home-test-page-2').length
+      wrapper.find('.home-test-page-3').length
     ).to.equal(1);
   });
 
   it('renders node with correct dom structure', () => {
     const renderedComponent = shallow(
-      <TestPage2 {...pageProps} />
+      <TestPage3 {...pageProps} />
     );
 
     expect(
-      renderedComponent.find('.home-test-page-2').node
+      renderedComponent.find('.home-test-page-3').node
     ).to.exist;
   });
 });

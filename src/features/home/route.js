@@ -3,6 +3,7 @@ import {
   TestPage1,
   TestPage2,
   MyPage,
+  TestPage3,
 } from './index';
 
 export default {
@@ -13,5 +14,6 @@ export default {
     { path: 'test-page-1', component: TestPage1 },
     { path: 'test-page-2', component: TestPage2 },
     { path: 'my-page', component: MyPage },
+    { path: 'test-page-3', component: TestPage3 },
   ],
 };

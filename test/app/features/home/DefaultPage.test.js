@@ -17,7 +17,7 @@ const pageProps = {
 
 const store = createStore(state => state, pageProps);
 
-describe('home/DefaultPage', () => {
+describe('features/home/DefaultPage', () => {
   it('redux connect works', () => {
     const wrapper = render(
       <Provider store={store}>

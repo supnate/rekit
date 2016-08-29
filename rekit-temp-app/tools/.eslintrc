@@ -1,0 +1,9 @@
+{
+  'rules': {
+    'strict': 0
+  },
+  'globals': {
+    'document': true,
+    'window': true
+  }
+}

@@ -13,11 +13,8 @@ const babelOptions = {
   ]
 };
 module.exports = {
-  pascalCase(name) {
-    return _.upperFirst(_.camelCase(name));
-  },
   readTemplate(name) {
-    return shell.cat(path.join(__dirname, 'templates', name)).replace(/\r/g, '');
+    return shell.cat(path.join(__dirname, 'feature_template', name)).replace(/\r/g, '');
   },
 
   getLines(filePath) {

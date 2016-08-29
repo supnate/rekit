@@ -22,6 +22,7 @@ const pkgJson = {
 };
 
 delete pkgJson.scripts.codecov;
+delete pkgJson.scripts['test:rekit'];
 
 console.log('Welcome to rekit, now creating your project...');
 

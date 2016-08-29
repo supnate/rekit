@@ -89,7 +89,7 @@ lines = helpers.getLines(targetPath);
 if (!lines.map(line => _.trim(line)).join('')) {
   // if it's empty
   lines.length = 0;
-  lines = lines.concat(helpers.getLines(path.join(__dirname, './templates/reducer.js')));
+  lines = lines.concat(helpers.getLines(path.join(__dirname, './feature_template/reducer.js')));
 }
 i = helpers.lineIndex(lines, '} from \'./constants\';');
 lines.splice(i, 0,

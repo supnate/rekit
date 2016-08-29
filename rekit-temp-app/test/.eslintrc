@@ -1,0 +1,12 @@
+{
+  'globals': {
+    'describe': true,
+    'it': true,
+    'before': true,
+    'after': true
+  },
+  'rules': {
+    'no-unused-expressions': 0,
+    'import/no-extraneous-dependencies': 0
+  }
+}

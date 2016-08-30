@@ -37,6 +37,7 @@ let targetPath;
 console.log('Update actions.test.js');
 targetPath = path.join(testPath, `features/${featureName}/actions.test.js`);
 if (!shell.test('-e', targetPath)) {
+  helpers.ensurePathDir(targetPath);
   const text = helpers.processTemplate(helpers.readTemplate('actions_test.js'), context);
   shell.ShellString(text).to(targetPath);
 }
@@ -46,13 +47,19 @@ lines.splice(i, 0, `  ${context.ACTION_NAME},`);
 i = helpers.lineIndex(lines, `} from 'features/${context.KEBAB_FEATURE_NAME}/constants';`);
 lines.splice(i, 0, `  ${context.ACTION_TYPE},`);
 i = helpers.lastLineIndex(lines, /^\}\);/);
-lines.splice(i, 0, helpers.processTemplate(helpers.readTemplate('action_it_test.js'), context));
+const it = helpers.processTemplate(helpers.readTemplate('action_it_test.js'), context);
+lines.splice(i, 0, it);
+i = helpers.lineIndex(lines, /^describe\(/);
+if (lines[i + 1] === it) {
+  lines[i + 1] = it.replace(/^\n/, ''); // remove the first empty line
+}
 toSave(targetPath, lines);
 
 // Update reducer.test.js
 console.log('Update reducer.test.js');
 targetPath = path.join(testPath, `features/${featureName}/reducer.test.js`);
 if (!shell.test('-e', targetPath)) {
+  helpers.ensurePathDir(targetPath);
   const text = helpers.processTemplate(helpers.readTemplate('reducer_test.js'), context);
   shell.ShellString(text).to(targetPath);
 }

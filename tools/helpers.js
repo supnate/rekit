@@ -67,6 +67,22 @@ module.exports = {
     }
   },
 
+  removeItTest(lines, actionType) {
+    const code = lines.join('\n');
+    const ast = babel.transform(code, babelOptions).ast.program;
+    // console.log('ast: ', JSON.stringify(ast));
+
+    const describeExpression = _.find(_.toArray(ast.body), { type: 'ExpressionStatement', expression: { callee: { name: 'describe' } } });
+    _.toArray(describeExpression.expression.arguments[1].body.body)
+      .filter(_.matches({ type: 'ExpressionStatement', expression: { callee: { name: 'it' } } }))
+      .filter(it => _.includes(JSON.stringify(it), actionType))
+      .reverse()
+      .forEach(it => this.removeAstBlockNode(lines, it));
+
+    // console.log('its: ', JSON.stringify(its));
+    // const funcElement = _.find(_.toArray(ast.body), { type: 'FunctionDeclaration', id: { name: 'reducer' } });
+  },
+
   lineIndex(lines, str, fromIndex) {
     if (typeof str === 'string') {
       return _.findIndex(lines, l => l.indexOf(str) >= 0, fromIndex || 0);

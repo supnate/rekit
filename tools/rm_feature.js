@@ -66,3 +66,6 @@ toSave(targetPath, lines);
 // Save files
 helpers.saveFiles(filesToSave);
 console.log('Remove feature success: ', context.KEBAB_FEATURE_NAME);
+
+// Removing test folder
+shell.rm('-rf', path.join(__dirname, '../test/app/features', _.kebabCase(featureName)));

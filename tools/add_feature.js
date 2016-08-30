@@ -96,5 +96,5 @@ helpers.saveFiles(filesToSave);
 console.log('Add feature done: ', featureName);
 
 /* ==== Add sample page and test action ===== */
-shell.exec(`node ${__dirname}/add_action.js ${context.KEBAB_FEATURE_NAME}/${context.KEBAB_FEATURE_NAME}-test-action`);
-shell.exec(`node ${__dirname}/add_page.js ${context.KEBAB_FEATURE_NAME}/default-page`);
+shell.exec(`${process.execPath} ${__dirname}/add_action.js ${context.KEBAB_FEATURE_NAME}/${context.KEBAB_FEATURE_NAME}-test-action`);
+shell.exec(`${process.execPath} ${__dirname}/add_page.js ${context.KEBAB_FEATURE_NAME}/default-page`);

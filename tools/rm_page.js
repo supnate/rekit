@@ -58,3 +58,5 @@ toSave(targetPath, lines);
 // Save files
 helpers.saveFiles(filesToSave);
 console.log('Remove page success: ', pageName);
+
+shell.exec(`${process.execPath} ${path.join(__dirname, 'rm_test.js')} -p ${featureName}/${pageName}`);

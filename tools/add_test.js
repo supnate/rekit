@@ -26,7 +26,7 @@ if (!targetName) {
 }
 
 const context = {
-  KEBAB_FEATURE_NAME: _.kebabCase(featureName),
+  KEBAB_FEATURE_NAME: _.kebabCase(featureName || 'components'),
   CAMEL_FEATURE_NAME: _.camelCase(featureName),
   COMPONENT_NAME: helpers.pascalCase(targetName),
   PAGE_NAME: helpers.pascalCase(targetName),
@@ -47,16 +47,22 @@ switch (testType) {
     targetPath = path.join(testPath, featureName ? `features/${featureName}/${targetName}.test.js`
       : `components/${targetName}.test.js`);
     template = helpers.readTemplate(testType === 'p' ? 'page_test.js' : 'component_test.js');
-    shell.ShellString(helpers.processTemplate(template, context)).to(targetPath);
+    helpers.ensurePathDir(targetPath);
+    if (!shell.test('-e', targetPath)) {
+      shell.ShellString(helpers.processTemplate(template, context)).to(targetPath);
+    }
     break;
   }
-  case 'a':
+  case 'a': {
     targetName = _.camelCase(targetName);
     targetPath = path.join(testPath, `features/${featureName}/actions.test.js`);
+    
     break;
+  }
   case 'aa':
     break;
   default:
     throw new Error('Unknown target type: ', testType);
 }
 
+console.log('Add test success: ', process.argv[3]);

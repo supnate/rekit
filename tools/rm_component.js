@@ -57,3 +57,6 @@ toSave(targetPath, lines);
 // Save files
 helpers.saveFiles(filesToSave);
 console.log('Remove component success: ', componentName);
+
+const args = featureName ? `${featureName}/${componentName}` : componentName;
+shell.exec(`${process.execPath} ${path.join(__dirname, 'rm_test.js')} -c ${args}`);

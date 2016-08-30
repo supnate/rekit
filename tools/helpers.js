@@ -13,6 +13,11 @@ const babelOptions = {
   ]
 };
 module.exports = {
+  ensurePathDir(fullPath) {
+    if (!shell.test('-e', path.dirname(fullPath))) {
+      shell.mkdir('-p', path.dirname(fullPath));
+    }
+  },
   pascalCase(name) {
     return _.upperFirst(_.camelCase(name));
   },

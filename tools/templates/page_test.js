@@ -12,7 +12,7 @@ const pageProps = {
 
 const store = createStore(state => state, pageProps);
 
-describe('features/${KEBAB_FEATURE_NAME}/${PAGE_NAME}', () => {
+describe('${KEBAB_FEATURE_NAME}/${PAGE_NAME}', () => {
   it('redux connect works', () => {
     const wrapper = render(
       <Provider store={store}>

@@ -24,7 +24,6 @@ if (!targetName) {
 if (!targetName) {
   throw new Error('Please specify the target name');
 }
-
 let targetPath;
 switch (testType) {
   case 'c':
@@ -45,3 +44,4 @@ switch (testType) {
     throw new Error('Unknown target type: ', testType);
 }
 
+console.log('Remove test success: ', process.argv[3]);

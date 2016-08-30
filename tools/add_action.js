@@ -94,3 +94,5 @@ toSave(targetPath, lines);
 // save files
 helpers.saveFiles(filesToSave);
 console.log('Add action success: ', actionName);
+
+shell.exec(`${process.execPath} ${path.join(__dirname, 'add_action_test.js')} ${featureName}/${actionName}`);

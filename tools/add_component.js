@@ -81,3 +81,6 @@ toSave(targetPath, lines);
 
 helpers.saveFiles(filesToSave);
 console.log('Add component success: ', componentName);
+
+const args = featureName ? `${featureName}/${componentName}` : componentName;
+shell.exec(`${process.execPath} ${path.join(__dirname, 'add_test.js')} -c ${args}`);

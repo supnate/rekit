@@ -7,10 +7,10 @@ const babel = require('babel-core');
 
 const babelOptions = {
   presets: [
-    'es2015',
-    'react',
-    'babel-preset-stage-0'
-  ]
+    require.resolve('babel-preset-es2015'),
+    require.resolve('babel-preset-react'),
+    require.resolve('babel-preset-stage-0'),
+  ],
 };
 module.exports = {
   ensurePathDir(fullPath) {

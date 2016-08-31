@@ -49,4 +49,5 @@ toSave(targetPath, lines);
 // save files
 helpers.saveFiles(filesToSave);
 console.log('Remove action success: ', actionName);
+
 shell.exec(`"${process.execPath}" ${path.join(__dirname, 'rm_action_test.js')} ${featureName}/${actionName}`);

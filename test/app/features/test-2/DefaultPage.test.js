@@ -3,35 +3,35 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { render, shallow } from 'enzyme';
 import { expect } from 'chai';
-import ConnectedTestPage2, { TestPage2 } from 'features/home/TestPage2';
+import ConnectedDefaultPage, { DefaultPage } from 'features/test-2/DefaultPage';
 
 const pageProps = {
-  home: {},
+  test2: {},
   actions: {},
 };
 
 const store = createStore(state => state, pageProps);
 
-describe('features/home/TestPage2', () => {
+describe('test-2/DefaultPage', () => {
   it('redux connect works', () => {
     const wrapper = render(
       <Provider store={store}>
-        <ConnectedTestPage2 />
+        <ConnectedDefaultPage />
       </Provider>
     );
 
     expect(
-      wrapper.find('.home-test-page-2').length
+      wrapper.find('.test-2-default-page').length
     ).to.equal(1);
   });
 
   it('renders node with correct dom structure', () => {
     const renderedComponent = shallow(
-      <TestPage2 {...pageProps} />
+      <DefaultPage {...pageProps} />
     );
 
     expect(
-      renderedComponent.find('.home-test-page-2').node
+      renderedComponent.find('.test-2-default-page').node
     ).to.exist;
   });
 });

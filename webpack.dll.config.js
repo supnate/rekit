@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     vendors: [
       'webpack-dev-server/client',
+      'babel-polyfill',
       'lodash',
       'react',
       'react-dom',

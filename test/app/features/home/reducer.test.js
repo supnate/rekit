@@ -4,6 +4,10 @@ import {
   COUNTER_PLUS_ONE,
   COUNTER_MINUS_ONE,
   RESET_COUNTER,
+  FETCH_REDDIT_REACTJS_LIST_BEGIN,
+  FETCH_REDDIT_REACTJS_LIST_SUCCESS,
+  FETCH_REDDIT_REACTJS_LIST_FAILURE,
+  FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
 } from 'features/home/constants';
 
 describe('features/home/reducer', () => {
@@ -46,5 +50,47 @@ describe('features/home/reducer', () => {
       { type: RESET_COUNTER }
     );
     expect(state.count).to.equal(0);
+  });
+
+  it(`should handle ${FETCH_REDDIT_REACTJS_LIST_BEGIN}`, () => {
+    const prevState = { fetchRedditReactjsListPending: true };
+    const state = reducer(
+      prevState,
+      { type: FETCH_REDDIT_REACTJS_LIST_BEGIN }
+    );
+    expect(state).to.not.equal(prevState);
+    expect(state.fetchRedditReactjsListPending).to.be.true;
+  });
+
+  it(`should handle ${FETCH_REDDIT_REACTJS_LIST_SUCCESS}`, () => {
+    const prevState = { fetchRedditReactjsListPending: true };
+    const state = reducer(
+      prevState,
+      { type: FETCH_REDDIT_REACTJS_LIST_SUCCESS, data: { data: { children: [] } } }
+    );
+    expect(state).to.not.equal(prevState);
+    expect(state.fetchRedditReactjsListPending).to.be.false;
+    expect(state.redditReactjsList).to.exist;
+  });
+
+  it(`should handle ${FETCH_REDDIT_REACTJS_LIST_FAILURE}`, () => {
+    const prevState = { fetchRedditReactjsListPending: true };
+    const state = reducer(
+      prevState,
+      { type: FETCH_REDDIT_REACTJS_LIST_FAILURE, data: { error: new Error('some error') } }
+    );
+    expect(state).to.not.equal(prevState);
+    expect(state.fetchRedditReactjsListPending).to.be.false;
+    expect(state.fetchRedditReactjsListError).to.exist;
+  });
+
+  it(`should handle ${FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR}`, () => {
+    const prevState = { fetchRedditReactjsListError: new Error('some error') };
+    const state = reducer(
+      prevState,
+      { type: FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR, data: {} }
+    );
+    expect(state).to.not.equal(prevState);
+    expect(state.fetchRedditReactjsListError).to.be.null;
   });
 });

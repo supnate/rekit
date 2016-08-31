@@ -67,6 +67,12 @@ module.exports = {
     }
   },
 
+  isStringMatch(str, pattern) {
+    if (typeof pattern === 'string') {
+      return _.includes(str, pattern);
+    }
+    return pattern.test(str);
+  },
   removeItTest(lines, actionType) {
     const code = lines.join('\n');
     const ast = babel.transform(code, babelOptions).ast.program;
@@ -75,12 +81,9 @@ module.exports = {
     const describeExpression = _.find(_.toArray(ast.body), { type: 'ExpressionStatement', expression: { callee: { name: 'describe' } } });
     _.toArray(describeExpression.expression.arguments[1].body.body)
       .filter(_.matches({ type: 'ExpressionStatement', expression: { callee: { name: 'it' } } }))
-      .filter(it => _.includes(JSON.stringify(it), actionType))
+      .filter(it => this.isStringMatch(JSON.stringify(it), actionType))
       .reverse()
       .forEach(it => this.removeAstBlockNode(lines, it));
-
-    // console.log('its: ', JSON.stringify(its));
-    // const funcElement = _.find(_.toArray(ast.body), { type: 'FunctionDeclaration', id: { name: 'reducer' } });
   },
 
   lineIndex(lines, str, fromIndex) {

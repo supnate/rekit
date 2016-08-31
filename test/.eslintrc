@@ -3,7 +3,9 @@
     'describe': true,
     'it': true,
     'before': true,
-    'after': true
+    'beforeAll': true,
+    'after': true,
+    'afterAll': true,
   },
   'rules': {
     'no-unused-expressions': 0,

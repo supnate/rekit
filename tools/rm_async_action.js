@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const _ = require('lodash');
+const shell = require('shelljs');
 const helpers = require('./helpers');
 
 const arr = (process.argv[2] || '').split('/');
@@ -67,3 +68,5 @@ toSave(targetPath, lines);
 // save files
 helpers.saveFiles(filesToSave);
 console.log('Remove async action success: ', actionName);
+
+shell.exec(`"${process.execPath}" ${path.join(__dirname, 'rm_async_action_test.js')} ${featureName}/${actionName}`);

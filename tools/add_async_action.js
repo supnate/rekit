@@ -113,3 +113,5 @@ toSave(targetPath, lines);
 // Save files
 helpers.saveFiles(filesToSave);
 console.log('Add async action success: ', actionName);
+
+shell.exec(`"${process.execPath}" ${path.join(__dirname, 'add_async_action_test.js')} ${featureName}/${actionName}`);

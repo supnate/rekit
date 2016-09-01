@@ -21,7 +21,7 @@ export function ${CAMEL_ACTION_NAME}(args) {
           });
           reject();
         }
-      }, 500);
+      }, 50);
     });
 
     return promise;

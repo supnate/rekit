@@ -166,7 +166,7 @@ describe('command line tools tests', function() { // eslint-disable-line
       '  MY_ASYNC_ACTION_SUCCESS,',
       '  MY_ASYNC_ACTION_FAILURE,',
       '  MY_ASYNC_ACTION_DISMISS_ERROR,',
-      'export function myAsyncAction() {',
+      'export function myAsyncAction(args) {',
       'export function dismissMyAsyncActionError() {',
     ]);
     expectLines(mapFeatureFile('reducer.js'), [
@@ -229,7 +229,7 @@ describe('command line tools tests', function() { // eslint-disable-line
       '  ASYNC_ACTION_SUCCESS,',
       '  ASYNC_ACTION_FAILURE,',
       '  ASYNC_ACTION_DISMISS_ERROR,',
-      'export function asyncAction() {',
+      'export function asyncAction(args) {',
       'export function dismissAsyncActionError() {',
     ]);
     expectLines(mapFeatureFile('reducer.js'), [

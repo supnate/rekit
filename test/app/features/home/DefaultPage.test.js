@@ -78,7 +78,7 @@ describe('features/home/DefaultPage', () => {
       actions: {
         counterPlusOne: sinon.spy(),
         counterMinusOne: sinon.spy(),
-        resetCount: sinon.spy(),
+        resetCounter: sinon.spy(),
         fetchRedditReactjsList: sinon.spy(),
       },
     };
@@ -91,7 +91,7 @@ describe('features/home/DefaultPage', () => {
     renderedComponent.find('.btn-fetch-reddit').simulate('click');
     expect(pageProps.actions.counterPlusOne).to.have.property('callCount', 1);
     expect(pageProps.actions.counterMinusOne).to.have.property('callCount', 1);
-    expect(pageProps.actions.resetCount).to.have.property('callCount', 1);
+    expect(pageProps.actions.resetCounter).to.have.property('callCount', 1);
     expect(pageProps.actions.fetchRedditReactjsList).to.have.property('callCount', 1);
   });
 });

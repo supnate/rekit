@@ -1,40 +1,49 @@
+import fetch from 'isomorphic-fetch';
 import {
-  COUNTER_PLUS_ONE,
-  COUNTER_MINUS_ONE,
-  RESET_COUNTER,
   FETCH_REDDIT_REACTJS_LIST_BEGIN,
   FETCH_REDDIT_REACTJS_LIST_SUCCESS,
   FETCH_REDDIT_REACTJS_LIST_FAILURE,
   FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
 } from './constants';
 
-const initialState = {
-  count: 0,
-  redditReactjsList: [],
-  fetchRedditReactjsListError: null,
-  fetchRedditReactjsListPending: false,
-};
+/* ===== FetchRedditReactjsList ===== */
+export function fetchRedditReactjsList() {
+  return dispatch => {
+    dispatch({
+      type: FETCH_REDDIT_REACTJS_LIST_BEGIN,
+    });
+    return fetch('http://www.reddit.com/r/reactjs.json')
+      .then(response => {
+        if (response.status !== 200) {
+          throw new Error('server error');
+        }
+        return response.json();
+      })
+      .then(json => {
+        dispatch({
+          type: FETCH_REDDIT_REACTJS_LIST_SUCCESS,
+          data: json,
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: FETCH_REDDIT_REACTJS_LIST_FAILURE,
+          data: {
+            error: err,
+          },
+        });
+      });
+  };
+}
 
-export default function reducer(state = initialState, action) {
+export function dismissFetchRedditReactjsListError() {
+  return {
+    type: FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
+  };
+}
+
+export function reducer(state = {}, action) {
   switch (action.type) {
-    case COUNTER_PLUS_ONE:
-      return {
-        ...state,
-        count: state.count + 1,
-      };
-
-    case COUNTER_MINUS_ONE:
-      return {
-        ...state,
-        count: state.count - 1,
-      };
-
-    case RESET_COUNTER:
-      return {
-        ...state,
-        count: 0,
-      };
-
     /* ===== FetchRedditReactjsList ===== */
     case FETCH_REDDIT_REACTJS_LIST_BEGIN:
       return {

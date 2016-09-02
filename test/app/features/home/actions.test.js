@@ -26,7 +26,7 @@ const mockStore = configureMockStore(middlewares);
 
 describe('home/actions', () => {
   afterEach(() => {
-    nock.cleanAll()
+    nock.cleanAll();
   });
 
   it('counterPlusOne', () => {

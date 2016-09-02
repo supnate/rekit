@@ -6,6 +6,7 @@
     'beforeAll': true,
     'after': true,
     'afterAll': true,
+    'afterEach': true
   },
   'rules': {
     'no-unused-expressions': 0,

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Hello, RedditList } from './';
-import * as actions from './actions';
+import * as actions from './redux/actions';
 
 export class DefaultPage extends Component {
   static propTypes = {
@@ -27,7 +27,7 @@ export class DefaultPage extends Component {
   }
 
   handleReset() {
-    this.props.actions.resetCount();
+    this.props.actions.resetCounter();
   }
 
   handleFetchReddit() {

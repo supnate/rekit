@@ -6,15 +6,16 @@ const helpers = require('./helpers');
 
 const arr = (process.argv[2] || '').split('/');
 const featureName = _.kebabCase(arr[0]);
-const actionName = _.upperFirst(_.camelCase(arr[1]));
-const upperSnakeActionName = _.snakeCase(arr[1]).toUpperCase();
-
+const actionName = _.camelCase(arr[1]);
+const upperSnakeActionName = _.snakeCase(actionName).toUpperCase();
+const camelActionName = _.camelCase(actionName);
+const pascalActionName = helpers.pascalCase(actionName);
 if (!actionName) {
   throw new Error('Please specify the action name.');
 }
 
 const context = {
-  ACTION_NAME: actionName,
+  PASCAL_ACTION_NAME: pascalActionName,
   CAMEL_ACTION_NAME: _.camelCase(actionName),
   UPPER_SNAKE_ACTION_NAME: upperSnakeActionName,
 
@@ -27,87 +28,56 @@ const context = {
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = path.join(__dirname, `../src/features/${featureName}`);
-
+const targetDir = path.join(__dirname, `../src/features/${featureName}/redux`);
+const actionFile = path.join(targetDir, `${camelActionName}.js`);
+if (shell.test('-e', actionFile)) {
+  throw new Error(`Action '${camelActionName}'has been existed.`);
+}
 let targetPath;
 let lines;
 let i;
-let tpl;
 
 /* Update constants.js */
 console.log('Updating constants.js');
 targetPath = path.join(targetDir, 'constants.js');
-if (!shell.test('-e', targetPath)) {
-  shell.ShellString('').to(targetPath);
-}
+helpers.ensureFile(targetPath);
 lines = helpers.getLines(targetPath);
-// istanbul ignore else
-if (lines.length && !lines[lines.length - 1]) lines.pop();
-
-lines.push(`export const ${context.BEGIN_ACTION_TYPE} = '${context.BEGIN_ACTION_TYPE}';`);
-lines.push(`export const ${context.SUCCESS_ACTION_TYPE} = '${context.SUCCESS_ACTION_TYPE}';`);
-lines.push(`export const ${context.FAILURE_ACTION_TYPE} = '${context.FAILURE_ACTION_TYPE}';`);
-lines.push(`export const ${context.DISMISS_ERROR_ACTION_TYPE} = '${context.DISMISS_ERROR_ACTION_TYPE}';`);
-lines.push('');
+helpers.addConstant(lines, context.BEGIN_ACTION_TYPE);
+helpers.addConstant(lines, context.SUCCESS_ACTION_TYPE);
+helpers.addConstant(lines, context.FAILURE_ACTION_TYPE);
+helpers.addConstant(lines, context.DISMISS_ERROR_ACTION_TYPE);
 toSave(targetPath, lines);
 
-/* Update actions.js */
+/* Create action file */
+console.log('Creating action file');
+targetPath = path.join(targetDir, `${camelActionName}.js`);
+const res = helpers.handleTemplate('async_action.js', context);
+toSave(targetPath, res);
+
+/* Updating actions.js */
 console.log('Updating actions.js');
 targetPath = path.join(targetDir, 'actions.js');
-if (!shell.test('-e', targetPath)) {
-  shell.ShellString('').to(targetPath);
-}
 lines = helpers.getLines(targetPath);
-if (!lines.map(line => _.trim(line)).join('')) {
-  // if it's empty
-  lines.length = 0;
-  lines.push('import {');
-  lines.push('} from \'./constants\';');
-  lines.push('');
-}
-i = helpers.lineIndex(lines, '} from \'./constants\';');
-lines.splice(i, 0,
-  `  ${context.BEGIN_ACTION_TYPE},`,
-  `  ${context.SUCCESS_ACTION_TYPE},`,
-  `  ${context.FAILURE_ACTION_TYPE},`,
-  `  ${context.DISMISS_ERROR_ACTION_TYPE},`
-);
-
-tpl = helpers.readTemplate('async_action.js');
-tpl = helpers.processTemplate(tpl, context);
-lines.push(tpl);
-lines.push('');
+helpers.appendImportLine(lines, `import { ${camelActionName}, dismiss${pascalActionName}Error } from './${camelActionName}';`);
+helpers.addNamedExport(lines, camelActionName);
+helpers.addNamedExport(lines, `dismiss${pascalActionName}Error`);
 toSave(targetPath, lines);
 
-/* Update reducer.js */
+/* Updating reducer.js */
 console.log('Updating reducer.js');
 targetPath = path.join(targetDir, 'reducer.js');
-if (!shell.test('-e', targetPath)) {
-  shell.ShellString('').to(targetPath);
-}
 lines = helpers.getLines(targetPath);
-if (!lines.map(line => _.trim(line)).join('')) {
-  // if it's empty
-  lines.length = 0;
-  lines = lines.concat(helpers.getLines(path.join(__dirname, './templates/reducer.js')));
-}
-i = helpers.lineIndex(lines, '} from \'./constants\';');
-lines.splice(i, 0,
-  `  ${context.BEGIN_ACTION_TYPE},`,
-  `  ${context.SUCCESS_ACTION_TYPE},`,
-  `  ${context.FAILURE_ACTION_TYPE},`,
-  `  ${context.DISMISS_ERROR_ACTION_TYPE},`
-);
+helpers.appendImportLine(lines, `import { reducer as ${camelActionName} } from './${camelActionName}';`);
+i = helpers.lineIndex(lines, /^\];/);
+lines.splice(i, 0, `  ${camelActionName},`);
+toSave(targetPath, lines);
 
-i = helpers.lineIndex(lines, 'const initialState = {');
-i = helpers.lineIndex(lines, '};', i);
-lines.splice(i, 0, `  ${context.CAMEL_ACTION_NAME}Pending: false,`);
-lines.splice(i, 0, `  ${context.CAMEL_ACTION_NAME}Error: null,`);
-
-i = helpers.lineIndex(lines, '    default:');
-tpl = helpers.readTemplate('async_reducer.js');
-tpl = helpers.processTemplate(tpl, context);
-lines.splice(i, 0, tpl);
+/* Update initialState.js */
+console.log('Updating initialState.js');
+targetPath = path.join(targetDir, 'initialState.js');
+lines = helpers.getLines(targetPath);
+i = helpers.lineIndex(lines, /^\};/);
+lines.splice(i, 0, `  ${context.CAMEL_ACTION_NAME}Pending: false,`, `  ${context.CAMEL_ACTION_NAME}Error: null,`);
 toSave(targetPath, lines);
 
 // Save files

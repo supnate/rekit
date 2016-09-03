@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actions from './actions';
+import * as actions from './redux/actions';
 
 export class TestPage1 extends Component {
   static propTypes = {

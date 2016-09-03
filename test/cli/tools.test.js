@@ -77,10 +77,11 @@ describe('command line tools tests', function() { // eslint-disable-line
     /* ===== Test Add Feature ===== */
     exec('npm run add:feature test');
     expectFiles([
-      'actions.js',
-      'constants.js',
+      'redux/actions.js',
+      'redux/constants.js',
+      'redux/reducer.js',
+      'redux/initialState.js',
       'index.js',
-      'reducer.js',
       'route.js',
       'DefaultPage.js',
       'DefaultPage.less',
@@ -88,7 +89,7 @@ describe('command line tools tests', function() { // eslint-disable-line
       'style.less',
     ].map(mapFeatureFile));
     expectLines(mapFile('common/rootReducer.js'), [
-      'import testReducer from \'../features/test/reducer\';',
+      'import testReducer from \'../features/test/redux/reducer\';',
       '  test: testReducer,',
     ]);
     expectLines(mapFile('common/routeConfig.js'), [
@@ -127,123 +128,126 @@ describe('command line tools tests', function() { // eslint-disable-line
   /*
     even works well constatns.js, actions.js or reducer.js don't exist
   */
-  it('adding action works if constatns.js, actions.js or reducer.js don\'t exist', () => {
-    exec('npm run rm:page test/default-page');
-    exec('npm run rm:action test/test-test-action');
-    shell.rm(mapFeatureFile('constants.js'));
-    shell.rm(mapFeatureFile('actions.js'));
-    shell.rm(mapFeatureFile('reducer.js'));
+  // it('adding action works if constatns.js, actions.js or reducer.js don\'t exist', () => {
+  //   exec('npm run rm:page test/default-page');
+  //   exec('npm run rm:action test/test-test-action');
+  //   shell.rm(mapFeatureFile('constants.js'));
+  //   shell.rm(mapFeatureFile('actions.js'));
+  //   shell.rm(mapFeatureFile('reducer.js'));
 
-    exec('npm run add:action test/my-action');
-    expectLines(mapFeatureFile('constants.js'), [
-      'export const MY_ACTION = \'MY_ACTION\';',
-    ]);
-    expectLines(mapFeatureFile('actions.js'), [
-      '  MY_ACTION,',
-      'export function myAction() {',
-    ]);
-    expectLines(mapFeatureFile('reducer.js'), [
-      '  MY_ACTION,',
-      '    case MY_ACTION:',
-    ]);
-  });
+  //   exec('npm run add:action test/my-action');
+  //   expectLines(mapFeatureFile('constants.js'), [
+  //     'export const MY_ACTION = \'MY_ACTION\';',
+  //   ]);
+  //   expectLines(mapFeatureFile('actions.js'), [
+  //     '  MY_ACTION,',
+  //     'export function myAction() {',
+  //   ]);
+  //   expectLines(mapFeatureFile('reducer.js'), [
+  //     '  MY_ACTION,',
+  //     '    case MY_ACTION:',
+  //   ]);
+  // });
 
-  it('adding async action works if constatns.js, actions.js or reducer.js don\'t exist', () => {
-    exec('npm run rm:action test/my-action');
-    shell.rm(mapFeatureFile('constants.js'));
-    shell.rm(mapFeatureFile('actions.js'));
-    shell.rm(mapFeatureFile('reducer.js'));
+  // it('adding async action works if constatns.js, actions.js or reducer.js don\'t exist', () => {
+  //   exec('npm run rm:action test/my-action');
+  //   shell.rm(mapFeatureFile('constants.js'));
+  //   shell.rm(mapFeatureFile('actions.js'));
+  //   shell.rm(mapFeatureFile('reducer.js'));
 
-    exec('npm run add:async-action test/my-async-action');
-    expectLines(mapFeatureFile('constants.js'), [
-      'export const MY_ASYNC_ACTION_BEGIN = \'MY_ASYNC_ACTION_BEGIN\';',
-      'export const MY_ASYNC_ACTION_SUCCESS = \'MY_ASYNC_ACTION_SUCCESS\';',
-      'export const MY_ASYNC_ACTION_FAILURE = \'MY_ASYNC_ACTION_FAILURE\';',
-      'export const MY_ASYNC_ACTION_DISMISS_ERROR = \'MY_ASYNC_ACTION_DISMISS_ERROR\';',
-    ]);
-    expectLines(mapFeatureFile('actions.js'), [
-      '  MY_ASYNC_ACTION_BEGIN,',
-      '  MY_ASYNC_ACTION_SUCCESS,',
-      '  MY_ASYNC_ACTION_FAILURE,',
-      '  MY_ASYNC_ACTION_DISMISS_ERROR,',
-      'export function myAsyncAction(args) {',
-      'export function dismissMyAsyncActionError() {',
-    ]);
-    expectLines(mapFeatureFile('reducer.js'), [
-      '  MY_ASYNC_ACTION_BEGIN,',
-      '  MY_ASYNC_ACTION_SUCCESS,',
-      '  MY_ASYNC_ACTION_FAILURE,',
-      '  MY_ASYNC_ACTION_DISMISS_ERROR,',
-      '  myAsyncActionError: null,',
-      '  myAsyncActionPending: false,',
-      '    case MY_ASYNC_ACTION_BEGIN:',
-      '    case MY_ASYNC_ACTION_SUCCESS:',
-      '    case MY_ASYNC_ACTION_FAILURE:',
-      '    case MY_ASYNC_ACTION_DISMISS_ERROR:',
-    ]);
-  });
+  //   exec('npm run add:async-action test/my-async-action');
+  //   expectLines(mapFeatureFile('constants.js'), [
+  //     'export const MY_ASYNC_ACTION_BEGIN = \'MY_ASYNC_ACTION_BEGIN\';',
+  //     'export const MY_ASYNC_ACTION_SUCCESS = \'MY_ASYNC_ACTION_SUCCESS\';',
+  //     'export const MY_ASYNC_ACTION_FAILURE = \'MY_ASYNC_ACTION_FAILURE\';',
+  //     'export const MY_ASYNC_ACTION_DISMISS_ERROR = \'MY_ASYNC_ACTION_DISMISS_ERROR\';',
+  //   ]);
+  //   expectLines(mapFeatureFile('actions.js'), [
+  //     '  MY_ASYNC_ACTION_BEGIN,',
+  //     '  MY_ASYNC_ACTION_SUCCESS,',
+  //     '  MY_ASYNC_ACTION_FAILURE,',
+  //     '  MY_ASYNC_ACTION_DISMISS_ERROR,',
+  //     'export function myAsyncAction(args) {',
+  //     'export function dismissMyAsyncActionError() {',
+  //   ]);
+  //   expectLines(mapFeatureFile('reducer.js'), [
+  //     '  MY_ASYNC_ACTION_BEGIN,',
+  //     '  MY_ASYNC_ACTION_SUCCESS,',
+  //     '  MY_ASYNC_ACTION_FAILURE,',
+  //     '  MY_ASYNC_ACTION_DISMISS_ERROR,',
+  //     '  myAsyncActionError: null,',
+  //     '  myAsyncActionPending: false,',
+  //     '    case MY_ASYNC_ACTION_BEGIN:',
+  //     '    case MY_ASYNC_ACTION_SUCCESS:',
+  //     '    case MY_ASYNC_ACTION_FAILURE:',
+  //     '    case MY_ASYNC_ACTION_DISMISS_ERROR:',
+  //   ]);
+  // });
 
   it('add normal action', () => {
     /* ===== Test Add Normal Action ===== */
     exec('npm run add:action test/test-action');
-    expectLines(mapFeatureFile('constants.js'), [
+    expectLines(mapFeatureFile('redux/constants.js'), [
       'export const TEST_ACTION = \'TEST_ACTION\';',
     ]);
-    expectLines(mapFeatureFile('actions.js'), [
-      '  TEST_ACTION,',
-      'export function testAction() {',
-    ]);
-    expectLines(mapFeatureFile('reducer.js'), [
-      '  TEST_ACTION,',
-      '    case TEST_ACTION:',
-    ]);
+    expectFile(mapFeatureFile('redux/testAction.js'));
+    // expectLines(mapFeatureFile('redux/actions.js'), [
+    //   '  TEST_ACTION,',
+    //   'export function testAction() {',
+    // ]);
+    // expectLines(mapFeatureFile('reducer.js'), [
+    //   '  TEST_ACTION,',
+    //   '    case TEST_ACTION:',
+    // ]);
   });
 
   it('add normal action with custom action type', () => {
     /* ===== Test Add Normal Action With Custom Action Type ===== */
     exec('npm run add:action test/test-action-2 my-action-type');
-    expectLines(mapFeatureFile('constants.js'), [
+    expectLines(mapFeatureFile('redux/constants.js'), [
       'export const MY_ACTION_TYPE = \'MY_ACTION_TYPE\';',
     ]);
-    expectLines(mapFeatureFile('actions.js'), [
-      '  MY_ACTION_TYPE,',
-      'export function testAction2() {',
-    ]);
-    expectLines(mapFeatureFile('reducer.js'), [
-      '  MY_ACTION_TYPE,',
-      '    case MY_ACTION_TYPE:',
-    ]);
+    expectFile(mapFeatureFile('redux/testAction2.js'));
+    // expectLines(mapFeatureFile('actions.js'), [
+    //   '  MY_ACTION_TYPE,',
+    //   'export function testAction2() {',
+    // ]);
+    // expectLines(mapFeatureFile('reducer.js'), [
+    //   '  MY_ACTION_TYPE,',
+    //   '    case MY_ACTION_TYPE:',
+    // ]);
   });
 
   it('add async action', () => {
     /* ===== Test Add Async Action =====*/
     exec('npm run add:async-action test/async-action');
-    expectLines(mapFeatureFile('constants.js'), [
+    expectLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',
       'export const ASYNC_ACTION_FAILURE = \'ASYNC_ACTION_FAILURE\';',
       'export const ASYNC_ACTION_DISMISS_ERROR = \'ASYNC_ACTION_DISMISS_ERROR\';',
     ]);
-    expectLines(mapFeatureFile('actions.js'), [
-      '  ASYNC_ACTION_BEGIN,',
-      '  ASYNC_ACTION_SUCCESS,',
-      '  ASYNC_ACTION_FAILURE,',
-      '  ASYNC_ACTION_DISMISS_ERROR,',
-      'export function asyncAction(args) {',
-      'export function dismissAsyncActionError() {',
-    ]);
-    expectLines(mapFeatureFile('reducer.js'), [
-      '  ASYNC_ACTION_BEGIN,',
-      '  ASYNC_ACTION_SUCCESS,',
-      '  ASYNC_ACTION_FAILURE,',
-      '  ASYNC_ACTION_DISMISS_ERROR,',
-      '  asyncActionError: null,',
-      '  asyncActionPending: false,',
-      '    case ASYNC_ACTION_BEGIN:',
-      '    case ASYNC_ACTION_SUCCESS:',
-      '    case ASYNC_ACTION_FAILURE:',
-      '    case ASYNC_ACTION_DISMISS_ERROR:',
-    ]);
+    expectFile(mapFeatureFile('redux/asyncAction.js'));
+    // expectLines(mapFeatureFile('actions.js'), [
+    //   '  ASYNC_ACTION_BEGIN,',
+    //   '  ASYNC_ACTION_SUCCESS,',
+    //   '  ASYNC_ACTION_FAILURE,',
+    //   '  ASYNC_ACTION_DISMISS_ERROR,',
+    //   'export function asyncAction(args) {',
+    //   'export function dismissAsyncActionError() {',
+    // ]);
+    // expectLines(mapFeatureFile('reducer.js'), [
+    //   '  ASYNC_ACTION_BEGIN,',
+    //   '  ASYNC_ACTION_SUCCESS,',
+    //   '  ASYNC_ACTION_FAILURE,',
+    //   '  ASYNC_ACTION_DISMISS_ERROR,',
+    //   '  asyncActionError: null,',
+    //   '  asyncActionPending: false,',
+    //   '    case ASYNC_ACTION_BEGIN:',
+    //   '    case ASYNC_ACTION_SUCCESS:',
+    //   '    case ASYNC_ACTION_FAILURE:',
+    //   '    case ASYNC_ACTION_DISMISS_ERROR:',
+    // ]);
   });
 
   it('add page', () => {
@@ -329,64 +333,69 @@ describe('command line tools tests', function() { // eslint-disable-line
   it('remove normal action', () => {
     /* ===== Test Remove Normal Action =====*/
     exec('npm run rm:action test/test-action');
-    expectNoLines(mapFeatureFile('constants.js'), [
+    expectNoLines(mapFeatureFile('redux/constants.js'), [
       'export const TEST_ACTION = \'TEST_ACTION\';',
     ]);
-    expectNoLines(mapFeatureFile('actions.js'), [
-      '  TEST_ACTION,',
-      'export function testAction() {',
-    ]);
-    expectNoLines(mapFeatureFile('reducer.js'), [
-      '  TEST_ACTION,',
-      '    case TEST_ACTION:',
-    ]);
+    expectNoFile(mapFeatureFile('redux/testAction.js'));
+    // expectNoLines(mapFeatureFile('actions.js'), [
+    //   '  TEST_ACTION,',
+    //   'export function testAction() {',
+    // ]);
+    // expectNoLines(mapFeatureFile('reducer.js'), [
+    //   '  TEST_ACTION,',
+    //   '    case TEST_ACTION:',
+    // ]);
   });
 
   it('remove normal action with custom action type', () => {
     /* ===== Test Remove Normal Action With Custom Action Type =====*/
     exec('npm run rm:action test/test-action-2 my-action-type');
-    expectNoLines(mapFeatureFile('constants.js'), [
+    expectNoLines(mapFeatureFile('redux/constants.js'), [
       'export const MY_ACTION_TYPE = \'MY_ACTION_TYPE\';',
     ]);
-    expectNoLines(mapFeatureFile('actions.js'), [
-      '  MY_ACTION_TYPE,',
-      'export function testAction2() {',
-    ]);
-    expectNoLines(mapFeatureFile('reducer.js'), [
-      '  MY_ACTION_TYPE,',
-      '    case MY_ACTION_TYPE:',
-    ]);
+    expectNoFile(mapFeatureFile('redux/testAction2.js'));
+
+    // expectNoLines(mapFeatureFile('actions.js'), [
+    //   '  MY_ACTION_TYPE,',
+    //   'export function testAction2() {',
+    // ]);
+    // expectNoLines(mapFeatureFile('reducer.js'), [
+    //   '  MY_ACTION_TYPE,',
+    //   '    case MY_ACTION_TYPE:',
+    // ]);
   });
 
   it('remove async action', () => {
     /* ===== Test Remove Async Action =====*/
     exec('npm run rm:async-action test/async-action');
-    expectNoLines(mapFeatureFile('constants.js'), [
+    expectNoLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',
       'export const ASYNC_ACTION_FAILURE = \'ASYNC_ACTION_FAILURE\';',
       'export const ASYNC_ACTION_DISMISS_ERROR = \'ASYNC_ACTION_DISMISS_ERROR\';',
     ]);
-    expectNoLines(mapFeatureFile('actions.js'), [
-      '  ASYNC_ACTION_BEGIN,',
-      '  ASYNC_ACTION_SUCCESS,',
-      '  ASYNC_ACTION_FAILURE,',
-      '  ASYNC_ACTION_DISMISS_ERROR,',
-      'export function asyncAction() {',
-      'export function dismissAsyncActionError() {',
-    ]);
-    expectNoLines(mapFeatureFile('reducer.js'), [
-      '  ASYNC_ACTION_BEGIN,',
-      '  ASYNC_ACTION_SUCCESS,',
-      '  ASYNC_ACTION_FAILURE,',
-      '  ASYNC_ACTION_DISMISS_ERROR,',
-      '  asyncActionError: null,',
-      '  asyncActionPending: false,',
-      '    case ASYNC_ACTION_BEGIN:',
-      '    case ASYNC_ACTION_SUCCESS:',
-      '    case ASYNC_ACTION_FAILURE:',
-      '    case ASYNC_ACTION_DISMISS_ERROR:',
-    ]);
+    expectNoFile(mapFeatureFile('redux/asyncAction.js'));
+
+    // expectNoLines(mapFeatureFile('actions.js'), [
+    //   '  ASYNC_ACTION_BEGIN,',
+    //   '  ASYNC_ACTION_SUCCESS,',
+    //   '  ASYNC_ACTION_FAILURE,',
+    //   '  ASYNC_ACTION_DISMISS_ERROR,',
+    //   'export function asyncAction() {',
+    //   'export function dismissAsyncActionError() {',
+    // ]);
+    // expectNoLines(mapFeatureFile('reducer.js'), [
+    //   '  ASYNC_ACTION_BEGIN,',
+    //   '  ASYNC_ACTION_SUCCESS,',
+    //   '  ASYNC_ACTION_FAILURE,',
+    //   '  ASYNC_ACTION_DISMISS_ERROR,',
+    //   '  asyncActionError: null,',
+    //   '  asyncActionPending: false,',
+    //   '    case ASYNC_ACTION_BEGIN:',
+    //   '    case ASYNC_ACTION_SUCCESS:',
+    //   '    case ASYNC_ACTION_FAILURE:',
+    //   '    case ASYNC_ACTION_DISMISS_ERROR:',
+    // ]);
   });
 
   it('remove page', () => {

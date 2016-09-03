@@ -23,72 +23,44 @@ const context = {
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = path.join(__dirname, `../src/features/${featureName}`);
+const targetDir = path.join(__dirname, `../src/features/${featureName}/redux`);
+const actionFile = path.join(targetDir, `${camelActionName}.js`);
+if (shell.test('-e', actionFile)) {
+  throw new Error(`Action '${camelActionName}'has been existed.`);
+}
 
 let targetPath;
 let lines;
-let i;
-let tpl;
 
 /* Update constants.js */
 console.log('Updating constants.js');
 targetPath = path.join(targetDir, 'constants.js');
-if (!shell.test('-e', targetPath)) {
-  shell.ShellString('').to(targetPath);
-}
+helpers.ensureFile(targetPath);
 lines = helpers.getLines(targetPath);
-
-// istanbul ignore else
-if (lines.length && !lines[lines.length - 1]) lines.pop();
-lines.push(`export const ${actionType} = '${actionType}';`);
-lines.push('');
+helpers.addConstant(lines, actionType);
 toSave(targetPath, lines);
 
-/* Update actions.js */
+/* Create action file */
+console.log('Creating action file');
+targetPath = path.join(targetDir, `${camelActionName}.js`);
+const res = helpers.handleTemplate('action.js', context);
+toSave(targetPath, res);
+
+/* Updating actions.js */
 console.log('Updating actions.js');
 targetPath = path.join(targetDir, 'actions.js');
-if (!shell.test('-e', targetPath)) {
-  shell.ShellString('').to(targetPath);
-}
 lines = helpers.getLines(targetPath);
-
-// if it's empty
-if (!lines.map(line => _.trim(line)).join('')) {
-  lines.length = 0;
-  lines.push('import {');
-  lines.push('} from \'./constants\';');
-  lines.push('');
-}
-i = helpers.lineIndex(lines, '} from \'./constants\';');
-lines.splice(i, 0, `  ${actionType},`);
-tpl = helpers.readTemplate('actions.js');
-tpl = helpers.processTemplate(tpl, context);
-lines.push(tpl);
+helpers.appendImportLine(lines, `import { ${camelActionName} } from './${camelActionName}';`);
+helpers.addNamedExport(lines, camelActionName);
 toSave(targetPath, lines);
 
-/* Update reducer.js */
+/* Updating reducer.js */
 console.log('Updating reducer.js');
 targetPath = path.join(targetDir, 'reducer.js');
-if (!shell.test('-e', targetPath)) {
-  shell.ShellString('').to(targetPath);
-}
 lines = helpers.getLines(targetPath);
-
-// if it's empty
-if (!lines.map(line => _.trim(line)).join('')) {
-  lines.length = 0;
-  lines = lines.concat(helpers.getLines(path.join(__dirname, './templates/reducer.js')));
-  lines.push('');
-}
-i = helpers.lineIndex(lines, '} from \'./constants\';');
-lines.splice(i, 0, `  ${actionType},`);
-tpl = `    case ${actionType}:
-      return {
-        ...state,
-      };
-`;
-i = helpers.lineIndex(lines, '    default:');
-lines.splice(i, 0, tpl);
+helpers.appendImportLine(lines, `import { reducer as ${camelActionName} } from './${camelActionName}';`);
+const i = helpers.lineIndex(lines, /^\];/);
+lines.splice(i, 0, `  ${camelActionName},`);
 toSave(targetPath, lines);
 
 // save files

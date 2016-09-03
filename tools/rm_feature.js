@@ -30,13 +30,6 @@ const toSave = helpers.getToSave(filesToSave);
 
 const targetDir = `${__dirname}/../src/features/${context.KEBAB_FEATURE_NAME}`;
 
-if (shell.test('-e', targetDir)) {
-  // deleting a feature is dangerous, move it to trash.
-  trash([targetDir]);
-} else {
-  console.log('feature folder does not exist, try to remove common entries now...');
-}
-
 let lines;
 let targetPath;
 
@@ -44,7 +37,7 @@ let targetPath;
 console.log('Remove from root reducer.');
 targetPath = path.join(__dirname, '../src/common/rootReducer.js');
 lines = helpers.getLines(targetPath);
-helpers.removeLines(lines, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/reducer';`);
+helpers.removeLines(lines, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/redux/reducer';`);
 helpers.removeLines(lines, `  ${context.CAMEL_FEATURE_NAME}: ${context.CAMEL_FEATURE_NAME}Reducer,`);
 toSave(targetPath, lines);
 
@@ -66,6 +59,12 @@ toSave(targetPath, lines);
 // Save files
 helpers.saveFiles(filesToSave);
 console.log('Remove feature success: ', context.KEBAB_FEATURE_NAME);
+
+// Remove feature folder
+if (shell.test('-e', targetDir)) {
+  // deleting a feature is dangerous, move it to trash.
+  trash([targetDir]);
+}
 
 // Removing test folder
 shell.rm('-rf', path.join(__dirname, '../test/app/features', _.kebabCase(featureName)));

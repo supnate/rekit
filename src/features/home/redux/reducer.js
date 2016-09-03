@@ -1,5 +1,3 @@
-// AUTO MAINTAINED FILE: DO NOT CHANGE
-
 import initialState from './initialState';
 import { reducer as counterPlusOne } from './counterPlusOne';
 import { reducer as counterMinusOne } from './counterMinusOne';
@@ -14,5 +12,12 @@ const reducers = [
 ];
 
 export default function reducer(state = initialState, action) {
-  return Object.values(reducers).reduce((s, r) => r(s, action), state);
+  let newState;
+  switch (action.type) {
+    // Put global reducers here
+    default:
+      newState = state;
+      break;
+  }
+  return Object.values(reducers).reduce((s, r) => r(s, action), newState);
 }

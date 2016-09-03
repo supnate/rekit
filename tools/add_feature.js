@@ -35,25 +35,29 @@ if (shell.test('-e', targetDir)) {
 [
   'index.js',
   'route.js',
+  'selectors.js',
   'style.less',
+  'redux/actions.js',
+  'redux/reducer.js',
+  'redux/constants.js',
+  'redux/initialState.js',
 ].forEach(fileName => {
   console.log('processing file: ', fileName);
   const filePath = `${targetDir}/${fileName}`;
-  const tpl = helpers.readTemplate(fileName);
-  toSave(filePath, helpers.processTemplate(tpl, context));
+  const res = helpers.handleTemplate(fileName, context);
+  toSave(filePath, res);
 });
 
-// empty files
-[
-  'actions.js',
-  'constants.js',
-  'reducer.js',
-  'selectors.js'
-].forEach(fileName => {
-  console.log('creating file: ', fileName);
-  const filePath = path.join(targetDir, fileName);
-  toSave(filePath, '');
-});
+// // redux files
+// [
+//   'actions.js',
+//   'constants.js',
+//   'reducer.js',
+// ].forEach(fileName => {
+//   console.log('creating file: ', fileName);
+//   const filePath = path.join(targetDir, fileName);
+//   toSave(filePath, '');
+// });
 
 let lines;
 let i;
@@ -64,7 +68,7 @@ console.log('Add to root reducer.');
 targetPath = path.join(__dirname, '../src/common/rootReducer.js');
 lines = helpers.getLines(targetPath);
 i = helpers.lastLineIndex(lines, /^import /);
-lines.splice(i + 1, 0, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/reducer';`);
+lines.splice(i + 1, 0, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/redux/reducer';`);
 i = helpers.lastLineIndex(lines, /^\}\);$/);
 lines.splice(i, 0, `  ${context.CAMEL_FEATURE_NAME}: ${context.CAMEL_FEATURE_NAME}Reducer,`);
 toSave(targetPath, lines);
@@ -92,6 +96,8 @@ lines.splice(i + 1, 0, `@import '../features/${context.KEBAB_FEATURE_NAME}/style
 toSave(targetPath, lines);
 
 shell.mkdir(targetDir);
+shell.mkdir(path.join(targetDir, 'redux'));
+
 helpers.saveFiles(filesToSave);
 console.log('Add feature done: ', featureName);
 

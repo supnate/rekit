@@ -18,7 +18,7 @@ if (!actionName) {
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = path.join(__dirname, `../src/features/${featureName}`);
+const targetDir = path.join(__dirname, `../src/features/${featureName}/redux`);
 
 let targetPath;
 let lines;
@@ -27,23 +27,28 @@ let lines;
 console.log('Updating constants.js');
 targetPath = path.join(targetDir, 'constants.js');
 lines = helpers.getLines(targetPath);
-helpers.removeLines(lines, `export const ${actionType} = '${actionType}';`);
+helpers.removeConstant(lines, actionType);
 toSave(targetPath, lines);
+
+/* Remove action file */
+console.log('Removing action file');
+targetPath = path.join(targetDir, `${camelActionName}.js`);
+shell.rm(targetPath);
 
 /* Update actions.js */
 console.log('Updating actions.js');
 targetPath = path.join(targetDir, 'actions.js');
 lines = helpers.getLines(targetPath);
-helpers.removeLines(lines, `  ${actionType},`);
-helpers.removeExportFunction(lines, camelActionName);
+helpers.removeImportLine(lines, `./${camelActionName}`);
+helpers.removeNamedExport(lines, camelActionName);
 toSave(targetPath, lines);
 
-/* Update reducer.js */
+/* Updating reducer.js */
 console.log('Updating reducer.js');
 targetPath = path.join(targetDir, 'reducer.js');
 lines = helpers.getLines(targetPath);
-helpers.removeLines(lines, `  ${actionType},`);
-helpers.removeSwitchCase(lines, actionType);
+helpers.removeImportLine(lines, `./${camelActionName}`);
+helpers.removeNamedExport(lines, camelActionName);
 toSave(targetPath, lines);
 
 // save files

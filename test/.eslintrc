@@ -3,9 +3,7 @@
     'describe': true,
     'it': true,
     'before': true,
-    'beforeAll': true,
     'after': true,
-    'afterAll': true,
     'afterEach': true
   },
   'rules': {

@@ -1,5 +1,6 @@
 Rekit
 ======
+> NOTE: Rekit is under big refactory, below doc is only valid for the version `0.2.1` intalled from npm but invalid for the repo.
 
 [![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit)
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)

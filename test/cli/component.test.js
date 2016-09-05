@@ -1,39 +1,40 @@
 'use strict';
+const expect = require('chai').expect;
 const helpers = require('./helpers');
 
 const mapFile = helpers.mapFile;
 const mapFeatureFile = helpers.mapFeatureFile;
-const exec = helpers.exec;
+const execTool = helpers.execTool;
+const pureExecTool = helpers.pureExecTool;
 const expectError = helpers.expectError;
 const expectFiles = helpers.expectFiles;
 const expectNoFiles = helpers.expectNoFiles;
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
 
-
 describe('cli: component tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    exec('npm run rm:feature test');
-    exec('npm run add:feature test');
+    execTool('rm_feature.js test');
+    execTool('add_feature.js test');
   });
 
   after(() => {
-    exec('npm run rm:feature test');
+    execTool('rm_feature.js test');
   });
 
   [
-    'npm run add:component',
-    'npm run rm:component',
-  ].forEach(cmd => {
-    it(`throws exception when no args for "${cmd}"`, () => {
-      expectError(cmd);
+    'add_component.js',
+    'rm_component.js',
+  ].forEach(script => {
+    it(`throws exception when no args for "${script}"`, () => {
+      expect(pureExecTool(script).code).to.equal(1);
     });
   });
 
   it('add feature component', () => {
-    exec('npm run add:component test/test-component');
+    execTool('add_component.js test/test-component');
     expectFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -48,11 +49,11 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('throws exception when component name exists', () => {
-    expectError('npm run add:component test/test-component');
+    expect(pureExecTool('add_component.js test/test-component').code).to.equal(1);
   });
 
   it('add common component', () => {
-    exec('npm run add:component common-component');
+    execTool('add_component.js common-component');
     expectFiles([
       'components/CommonComponent.js',
       'components/CommonComponent.less',
@@ -67,7 +68,7 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('remove feature component', () => {
-    exec('npm run rm:component test/test-component');
+    execTool('rm_component.js test/test-component');
     expectNoFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -82,7 +83,7 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('remove common component', () => {
-    exec('npm run rm:component common-component');
+    execTool('rm_component.js common-component');
     expectNoFiles([
       'components/CommonComponent.js',
       'components/CommonComponent.less',

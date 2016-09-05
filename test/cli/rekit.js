@@ -1,11 +1,11 @@
-// This script is used to test the global rekit command creates project with all correct configs.
+// This script is only used to test the global rekit command creates project with all correct configs.
 
 const path = require('path');
 const shell = require('shelljs');
 const expect = require('chai').expect;
 
 const prjPath = path.join(__dirname, '../../');
-const TEMP_APP_NAME = 'rekit-temp-app';
+const TEMP_APP_NAME = 'rekit_temp_app';
 const tempAppFolder = path.join(prjPath, TEMP_APP_NAME);
 
 function exec(cmd, options) {

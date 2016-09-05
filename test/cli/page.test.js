@@ -1,8 +1,10 @@
 'use strict';
+const expect = require('chai').expect;
 const helpers = require('./helpers');
 
 const mapFeatureFile = helpers.mapFeatureFile;
-const exec = helpers.exec;
+const execTool = helpers.execTool;
+const pureExecTool = helpers.pureExecTool;
 const expectError = helpers.expectError;
 const expectFiles = helpers.expectFiles;
 const expectNoFiles = helpers.expectNoFiles;
@@ -14,25 +16,25 @@ describe('cli: page tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    exec('npm run rm:feature test');
-    exec('npm run add:feature test');
+    execTool('rm_feature.js test');
+    execTool('add_feature.js test');
   });
 
   after(() => {
-    exec('npm run rm:feature test');
+    execTool('rm_feature.js test');
   });
 
   [
-    'npm run add:page',
-    'npm run rm:page',
-  ].forEach(cmd => {
-    it(`throws exception when no args for "${cmd}"`, () => {
-      expectError(cmd);
+    'add_page.js',
+    'rm_page.js',
+  ].forEach(script => {
+    it(`throws exception when no args for "${script}"`, () => {
+      expect(pureExecTool(script).code).to.equal(1);
     });
   });
 
   it('add page', () => {
-    exec('npm run add:page test/test-page');
+    execTool('add_page.js test/test-page');
     expectFiles([
       'TestPage.js',
       'TestPage.less',
@@ -51,11 +53,11 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('throws exception when page name exists', () => {
-    expectError('npm run add:page test/test-page');
+    expect(pureExecTool('add_page.js test/test-page').code).to.equal(1);
   });
 
   it('add page with url path', () => {
-    exec('npm run add:page test/test-page-2 test-path');
+    execTool('add_page.js test/test-page-2 test-path');
     expectFiles([
       'TestPage2.js',
       'TestPage2.less',
@@ -74,7 +76,7 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('remove page', () => {
-    exec('npm run rm:page test/test-page');
+    execTool('rm_page.js test/test-page');
     expectNoFiles([
       'TestPage.js',
       'TestPage.less',
@@ -93,7 +95,7 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('remove page with url path', () => {
-    exec('npm run rm:page test/test-page');
+    execTool('rm_page.js test/test-page');
     expectNoFiles([
       'TestPage.js',
       'TestPage.less',

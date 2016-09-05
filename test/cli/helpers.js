@@ -14,13 +14,20 @@ function mapFeatureFile(file) {
   return path.join(__dirname, '../../src/features/test', file);
 }
 
-function exec(cmd) {
-  // console.log('Test: ', cmd);
-  expect(shell.exec(cmd, { silent: true }).code).to.equal(0);
-}
-
 function pureExec(cmd) {
   return shell.exec(cmd, { silent: true });
+}
+
+function exec(cmd) {
+  expect(pureExec(cmd).code).to.equal(0);
+}
+
+function pureExecTool(script) {
+  return shell.exec(`${process.execPath} ${path.join(__dirname, '../../tools', script)}`, { silent: true });
+}
+
+function execTool(script) {
+  expect(pureExecTool(script).code).to.equal(0);
 }
 
 function expectError(cmd) {
@@ -70,6 +77,8 @@ module.exports = {
   mapFile,
   mapFeatureFile,
   exec,
+  execTool,
+  pureExecTool,
   pureExec,
   expectError,
   expectFile,

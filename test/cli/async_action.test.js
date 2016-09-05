@@ -1,8 +1,10 @@
 'use strict';
+const expect = require('chai').expect;
 const helpers = require('./helpers');
 
 const mapFeatureFile = helpers.mapFeatureFile;
-const exec = helpers.exec;
+const execTool = helpers.execTool;
+const pureExecTool = helpers.pureExecTool;
 const expectError = helpers.expectError;
 const expectFile = helpers.expectFile;
 const expectNoFile = helpers.expectNoFile;
@@ -13,25 +15,25 @@ describe('cli: async action tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    exec('npm run rm:feature test');
-    exec('npm run add:feature test');
+    execTool('rm_feature.js test');
+    execTool('add_feature.js test');
   });
 
   after(() => {
-    exec('npm run rm:feature test');
+    execTool('rm_feature.js test');
   });
 
   [
-    'npm run add:async-action',
-    'npm run rm:async-action',
-  ].forEach(cmd => {
-    it(`throws exception when no args for "${cmd}"`, () => {
-      expectError(cmd);
+    'add_async_action.js',
+    'rm_async_action.js',
+  ].forEach(script => {
+    it(`throws exception when no args for "${script}"`, () => {
+      expect(pureExecTool(script).code).to.equal(1);
     });
   });
 
   it('add async action', () => {
-    exec('npm run add:async-action test/async-action');
+    execTool('add_async_action.js test/async-action');
     expectLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',
@@ -47,7 +49,7 @@ describe('cli: async action tests', function() { // eslint-disable-line
   });
 
   it('remove async action', () => {
-    exec('npm run rm:async-action test/async-action');
+    execTool('rm_async_action.js test/async-action');
     expectNoLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',

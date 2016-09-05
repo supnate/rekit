@@ -1,25 +1,30 @@
 'use strict';
+const expect = require('chai').expect;
 const helpers = require('./helpers');
 
 const mapFile = helpers.mapFile;
 const mapFeatureFile = helpers.mapFeatureFile;
-const exec = helpers.exec;
+const execTool = helpers.execTool;
+const pureExecTool = helpers.pureExecTool;
 const expectFiles = helpers.expectFiles;
 const expectNoFile = helpers.expectNoFile;
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
-
 
 describe('cli: feature test', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
     // To reset test env
-    exec('npm run rm:feature test');
+    execTool('rm_feature.js test');
+  });
+
+  it('throws exception when no args for "add_feature.js"', () => {
+    expect(pureExecTool('add_feature.js').code).to.equal(1);
   });
 
   it('add test feature', () => {
-    exec('npm run add:feature test');
+    execTool('add_feature.js test');
     expectFiles([
       'redux/actions.js',
       'redux/constants.js',
@@ -46,7 +51,7 @@ describe('cli: feature test', function() { // eslint-disable-line
   });
 
   it('remove feature', () => {
-    exec('npm run rm:feature test');
+    execTool('rm_feature.js test');
     expectNoFile(mapFile('test'));
     expectNoLines(mapFile('common/rootReducer.js'), [
       'testReducer',
@@ -60,6 +65,6 @@ describe('cli: feature test', function() { // eslint-disable-line
   });
 
   it('no error when removing a feature does not exist.', () => {
-    exec('npm run rm:feature feature-does-not-exist-test');
+    execTool('rm_feature.js feature-does-not-exist-test');
   });
 });

@@ -18,10 +18,12 @@ describe('home/redux/counterPlusOne', () => {
   });
 
   it(`reducer should handle ${COUNTER_PLUS_ONE}`, () => {
+    const prevState = { count: 0 };
     const state = reducer(
-      { count: 0 },
+      prevState,
       { type: COUNTER_PLUS_ONE }
     );
+    expect(state).to.not.equal(prevState); // should be immutable
     expect(state.count).to.equal(1);
   });
 });

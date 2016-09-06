@@ -22,7 +22,7 @@ if (!componentName) {
   throw new Error('Please specify the component name');
 }
 
-componentName = _.upperFirst(_.camelCase(componentName));
+componentName = helpers.pascalCase(componentName);
 
 let targetDir = `${__dirname}/../src/components`;
 if (featureName) {
@@ -82,5 +82,4 @@ toSave(targetPath, lines);
 helpers.saveFiles(filesToSave);
 console.log('Add component success: ', componentName);
 
-const args = featureName ? `${featureName}/${componentName}` : componentName;
-shell.exec(`"${process.execPath}" ${path.join(__dirname, 'add_test.js')} -c ${args}`);
+shell.exec(`"${process.execPath}" ${path.join(__dirname, 'add_component_test.js')} ${process.argv[2]}`);

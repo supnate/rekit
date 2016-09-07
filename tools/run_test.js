@@ -1,4 +1,15 @@
-/* Run specific tests */
+/*
+  Summary:
+    Run specific tests
+  Usage examples:
+   - node run_test.js // run all tests
+   - node run_test.js app // run app tests
+   - node run_test.js app/features/home // run tests for home feature
+   - node run_test.js app/features/home/redux/reducer.test.js // run reducer test
+   - node run_test.js cli // run cli tests
+   - node run_test.js cli/action.test.js // run action cli tests
+*/
+
 'use strict';
 const path = require('path');
 const shell = require('shelljs');
@@ -17,7 +28,7 @@ if (args) {
     testFile = path.join(testFile, '**/*.test.js');
   }
 }
-console.log('Running test: ', testFile || '', '...');
+console.log('Running test: ', (testFile || 'all').replace(prjRoot, ''), '...');
 
 const env = Object.create(process.env);
 env.NODE_ENV = 'test';
@@ -50,7 +61,7 @@ function runAppTest() {
   return new Promise(resolve => {
     cmd.on('exit', () => {
       if (needReport) {
-        console.log('Coverage report: ', path.join(prjRoot, 'coverage/app/lcov-report/index.html'));
+        console.log('App coverage report: ', path.join(prjRoot, 'coverage/app/lcov-report/index.html'));
       }
       resolve();
     });
@@ -74,7 +85,7 @@ function runCliTest() {
   return new Promise(resolve => {
     cmd.on('exit', () => {
       if (needReport) {
-        console.log('Coverage report: ', path.join(prjRoot, 'coverage/cli/lcov-report/index.html'));
+        console.log('Cli coverage report: ', path.join(prjRoot, 'coverage/cli/lcov-report/index.html'));
       }
       resolve();
     });
@@ -90,10 +101,10 @@ function runAllTest() {
   runAppTest().then(() => {
     shell.cp('-R', path.join(prjRoot, '.nyc_output/*'), cacheFolder);
     runCliTest().then(() => {
-      shell.cp('-R', cacheFolder, path.join(prjRoot, '.nyc_output'));
+      shell.cp('-R', `${cacheFolder}/*`, path.join(prjRoot, '.nyc_output'));
       const cmd = spawn(process.execPath, [nyc, 'report'], opts);
       cmd.on('exit', () => {
-        console.log('Coverage report: ', path.join(prjRoot, 'coverage/lcov-report/index.html'));
+        console.log('Overall coverage report: ', path.join(prjRoot, 'coverage/lcov-report/index.html'));
       });
       shell.rm('-rf', cacheFolder);
     });

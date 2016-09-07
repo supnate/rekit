@@ -42,7 +42,7 @@ export function dismissFetchRedditReactjsListError() {
   };
 }
 
-export function reducer(state = {}, action) {
+export function reducer(state, action) {
   switch (action.type) {
     /* ===== FetchRedditReactjsList ===== */
     case FETCH_REDDIT_REACTJS_LIST_BEGIN:

@@ -9,22 +9,22 @@
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
     "codecov": "codecov",
-    "test": "npm run test:cli && node test/cache_nyc_output.js && npm run test:app && node test/cp_back_nyc_output.js && nyc report",
+    "test": "node ./tools/run_test.js",
+    "test:app": "node ./tools/run_test.js app",
+    "test:cli": "node ./tools/run_test.js cli",
     "test:rekit": "mocha \"test/cli/rekit.js\"",
-    "test:cli2": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/cli\" mocha \"test/cli/**/*.test.js\"",
-    "test:cli": "mocha \"test/cli/feature.test.js\"",
-    "test:app": "cross-env NODE_ENV=test nyc --report-dir=\"coverage/app\" mocha-webpack --include \"test/app/before-all.js\" --webpack-config webpack.test.config.js \"test/app/**/*.test.js\"",
+    "test:npm": "node ./test/cli/npm.js",
     "build:test": "node ./tools/build_test_server.js",
-    "add:feature": "node ./tools/add_feature.js",
-    "add:action": "node ./tools/add_action.js",
-    "add:async-action": "node ./tools/add_async_action.js",
-    "add:page": "node ./tools/add_page.js",
-    "add:component": "node ./tools/add_component.js",
-    "rm:feature": "node ./tools/rm_feature.js",
-    "rm:action": "node ./tools/rm_action.js",
-    "rm:async-action": "node ./tools/rm_async_action.js",
-    "rm:page": "node ./tools/rm_page.js",
-    "rm:component": "node ./tools/rm_component.js"
+    "add:feature": "node ./tools/cli/add_feature.js",
+    "add:action": "node ./tools/cli/add_action.js",
+    "add:async-action": "node ./tools/cli/add_async_action.js",
+    "add:page": "node ./tools/cli/add_page.js",
+    "add:component": "node ./tools/cli/add_component.js",
+    "rm:feature": "node ./tools/cli/rm_feature.js",
+    "rm:action": "node ./tools/cli/rm_action.js",
+    "rm:async-action": "node ./tools/cli/rm_async_action.js",
+    "rm:page": "node ./tools/cli/rm_page.js",
+    "rm:component": "node ./tools/cli/rm_component.js"
   },
   "babel": {
     "presets": [
@@ -56,7 +56,7 @@
     "include": [
       "index.js",
       "src/**/*.js",
-      "tools/*.js"
+      "tools/cli/*.js"
     ],
     "exclude": [
       "tools/**/feature_template",

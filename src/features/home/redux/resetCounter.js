@@ -8,7 +8,7 @@ export function resetCounter() {
   };
 }
 
-export function reducer(state = {}, action) {
+export function reducer(state, action) {
   switch (action.type) {
     case RESET_COUNTER:
       return {

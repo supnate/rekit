@@ -7,6 +7,7 @@ module.exports = {
   context: path.join(__dirname, 'src'),
   entry: {
     main: [
+      'babel-polyfill',
       './styles/index.less',
       './index'
     ],

@@ -26,7 +26,7 @@ const context = {
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = `${__dirname}/../src/features/${context.KEBAB_FEATURE_NAME}`;
+const targetDir = path.join(helpers.getProjectRoot(), `src/features/${context.KEBAB_FEATURE_NAME}`);
 if (shell.test('-e', targetDir)) {
   throw new Error(`feature name existed: ${context.KEBAB_FEATURE_NAME}`);
 }
@@ -65,7 +65,7 @@ let targetPath;
 
 /* ===== Add reducer to rootReducer.js ===== */
 console.log('Add to root reducer.');
-targetPath = path.join(__dirname, '../src/common/rootReducer.js');
+targetPath = path.join(helpers.getProjectRoot(), 'src/common/rootReducer.js');
 lines = helpers.getLines(targetPath);
 i = helpers.lastLineIndex(lines, /^import /);
 lines.splice(i + 1, 0, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/redux/reducer';`);
@@ -75,7 +75,7 @@ toSave(targetPath, lines);
 
 /* ===== Add route to routeConfig.js ===== */
 console.log('Register route');
-targetPath = path.join(__dirname, '../src/common/routeConfig.js');
+targetPath = path.join(helpers.getProjectRoot(), 'src/common/routeConfig.js');
 lines = helpers.getLines(targetPath);
 i = helpers.lastLineIndex(lines, /^import /);
 lines.splice(i + 1, 0, `import ${context.CAMEL_FEATURE_NAME}Route from '../features/${context.KEBAB_FEATURE_NAME}/route';`);
@@ -89,7 +89,7 @@ toSave(targetPath, lines);
 
 /* ===== Add entry to styles/index.less ===== */
 console.log('Add entry to styles/index.less');
-targetPath = path.join(__dirname, '../src/styles/index.less');
+targetPath = path.join(helpers.getProjectRoot(), 'src/styles/index.less');
 lines = helpers.getLines(targetPath);
 i = helpers.lastLineIndex(lines, /^@import/);
 lines.splice(i + 1, 0, `@import '../features/${context.KEBAB_FEATURE_NAME}/style.less';`);
@@ -100,6 +100,9 @@ shell.mkdir(path.join(targetDir, 'redux'));
 
 helpers.saveFiles(filesToSave);
 console.log('Add feature done: ', featureName);
+
+// Add feature reducer test
+shell.exec(`"${process.execPath}" ${__dirname}/add_reducer_test.js ${context.KEBAB_FEATURE_NAME}`);
 
 /* ==== Add sample page and test action ===== */
 shell.exec(`"${process.execPath}" ${__dirname}/add_action.js ${context.KEBAB_FEATURE_NAME}/${context.KEBAB_FEATURE_NAME}-test-action`);

@@ -27,7 +27,7 @@ const context = {
   ACTION_TYPE: actionType,
 };
 
-const targetDir = path.join(__dirname, `../test/app/features/${featureName}/redux`);
+const targetDir = path.join(helpers.getProjectRoot(), `test/app/features/${featureName}/redux`);
 helpers.ensureDir(targetDir);
 const targetPath = path.join(targetDir, `${context.CAMEL_ACTION_NAME}.test.js`);
 if (shell.test('-e', targetPath)) {

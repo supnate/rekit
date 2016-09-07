@@ -24,9 +24,9 @@ if (!componentName) {
 
 componentName = helpers.pascalCase(componentName);
 
-let targetDir = `${__dirname}/../src/components`;
+let targetDir = path.join(helpers.getProjectRoot(), 'src/components');
 if (featureName) {
-  targetDir = `${__dirname}/../src/features/${featureName}`;
+  targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
 }
 
 if (shell.test('-e', path.join(targetDir, `${componentName}.*`))) {

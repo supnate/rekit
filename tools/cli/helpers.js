@@ -13,6 +13,10 @@ const babelOptions = {
   ],
 };
 module.exports = {
+  getProjectRoot() {
+    return path.join(__dirname, '../../');
+  },
+
   ensurePathDir(fullPath) {
     if (!shell.test('-e', path.dirname(fullPath))) {
       shell.mkdir('-p', path.dirname(fullPath));
@@ -68,10 +72,6 @@ module.exports = {
     this.removeLines(lines, new RegExp(`import \{ .+ \} from '${modulePath}';`));
   },
 
-  addNamedImport(lines, modulePath) {
-
-  },
-
   removeNamedImport(lines, name) {
     this.removeLines(lines, `  ${name},`);
   },
@@ -82,6 +82,7 @@ module.exports = {
   },
 
   removeNamedExport(lines, name) {
+    console.log('removing named export: ', name);
     this.removeLines(lines, `  ${name},`);
   },
 

@@ -31,7 +31,7 @@ const context = {
   DISMISS_ERROR_ACTION_TYPE: `${upperSnakeActionName}_DISMISS_ERROR`,
 };
 
-const targetDir = path.join(__dirname, `../test/app/features/${featureName}/redux`);
+const targetDir = path.join(helpers.getProjectRoot(), `test/app/features/${featureName}/redux`);
 helpers.ensureDir(targetDir);
 const targetPath = path.join(targetDir, `${context.CAMEL_ACTION_NAME}.test.js`);
 

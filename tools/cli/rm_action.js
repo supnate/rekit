@@ -1,7 +1,7 @@
 'use strict';
 const path = require('path');
-const shell = require('shelljs');
 const _ = require('lodash');
+const shell = require('shelljs');
 const helpers = require('./helpers');
 
 const args = process.argv;
@@ -15,19 +15,10 @@ if (!actionName) {
   throw new Error('Please specify the action name.');
 }
 
-const context = {
-  CAMEL_ACTION_NAME: camelActionName,
-  ACTION_TYPE: actionType,
-};
-
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = path.join(__dirname, `../src/features/${featureName}/redux`);
-const actionFile = path.join(targetDir, `${camelActionName}.js`);
-if (shell.test('-e', actionFile)) {
-  throw new Error(`Action '${camelActionName}'has been existed.`);
-}
+const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}/redux`);
 
 let targetPath;
 let lines;
@@ -35,36 +26,36 @@ let lines;
 /* Update constants.js */
 console.log('Updating constants.js');
 targetPath = path.join(targetDir, 'constants.js');
-helpers.ensureFile(targetPath);
 lines = helpers.getLines(targetPath);
-helpers.addConstant(lines, actionType);
+helpers.removeConstant(lines, actionType);
 toSave(targetPath, lines);
 
-/* Create action file */
-console.log('Creating action file');
+/* Remove action file */
+console.log('Removing action file');
 targetPath = path.join(targetDir, `${camelActionName}.js`);
-const res = helpers.handleTemplate('action.js', context);
-toSave(targetPath, res);
+shell.rm(targetPath);
 
-/* Updating actions.js */
+/* Update actions.js */
 console.log('Updating actions.js');
 targetPath = path.join(targetDir, 'actions.js');
 lines = helpers.getLines(targetPath);
-helpers.appendImportLine(lines, `import { ${camelActionName} } from './${camelActionName}';`);
-helpers.addNamedExport(lines, camelActionName);
+helpers.removeImportLine(lines, `./${camelActionName}`);
+helpers.removeNamedExport(lines, camelActionName);
 toSave(targetPath, lines);
 
 /* Updating reducer.js */
 console.log('Updating reducer.js');
 targetPath = path.join(targetDir, 'reducer.js');
 lines = helpers.getLines(targetPath);
-helpers.appendImportLine(lines, `import { reducer as ${camelActionName} } from './${camelActionName}';`);
-const i = helpers.lineIndex(lines, /^\];/);
-lines.splice(i, 0, `  ${camelActionName},`);
+helpers.removeImportLine(lines, `./${camelActionName}`);
+helpers.removeNamedExport(lines, camelActionName);
 toSave(targetPath, lines);
+
+// Remove test file
+console.log('Removing test file');
+const testFile = path.join(__dirname, `../test/app/features/${featureName}/redux/${camelActionName}.test.js`);
+shell.rm(testFile);
 
 // save files
 helpers.saveFiles(filesToSave);
-console.log('Add action success: ', actionName);
-
-shell.exec(`"${process.execPath}" ${path.join(__dirname, 'add_action_test.js')} ${featureName}/${actionName}`);
+console.log('Remove action success: ', actionName);

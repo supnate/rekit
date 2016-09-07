@@ -28,14 +28,14 @@ const context = {
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = `${__dirname}/../src/features/${context.KEBAB_FEATURE_NAME}`;
+const targetDir = path.join(helpers.getProjectRoot(), `src/features/${context.KEBAB_FEATURE_NAME}`);
 
 let lines;
 let targetPath;
 
 /* ===== Remove reducer from rootReducer.js ===== */
 console.log('Remove from root reducer.');
-targetPath = path.join(__dirname, '../src/common/rootReducer.js');
+targetPath = path.join(helpers.getProjectRoot(), 'src/common/rootReducer.js');
 lines = helpers.getLines(targetPath);
 helpers.removeLines(lines, `import ${context.CAMEL_FEATURE_NAME}Reducer from '../features/${context.KEBAB_FEATURE_NAME}/redux/reducer';`);
 helpers.removeLines(lines, `  ${context.CAMEL_FEATURE_NAME}: ${context.CAMEL_FEATURE_NAME}Reducer,`);
@@ -43,7 +43,7 @@ toSave(targetPath, lines);
 
 /* ===== Remove route from routeConfig.js ===== */
 console.log('Un-register route');
-targetPath = path.join(__dirname, '../src/common/routeConfig.js');
+targetPath = path.join(helpers.getProjectRoot(), 'src/common/routeConfig.js');
 lines = helpers.getLines(targetPath);
 helpers.removeLines(lines, `import ${context.CAMEL_FEATURE_NAME}Route from '../features/${context.KEBAB_FEATURE_NAME}/route';`);
 helpers.removeLines(lines, `    ${context.CAMEL_FEATURE_NAME}Route,`);
@@ -51,7 +51,7 @@ toSave(targetPath, lines);
 
 /* ===== Remove entry from styles/index.less ===== */
 console.log('Remove entry from styles/index.less');
-targetPath = path.join(__dirname, '../src/styles/index.less');
+targetPath = path.join(helpers.getProjectRoot(), 'src/styles/index.less');
 lines = helpers.getLines(targetPath);
 helpers.removeLines(lines, `@import '../features/${context.KEBAB_FEATURE_NAME}/style.less';`);
 toSave(targetPath, lines);
@@ -67,4 +67,4 @@ if (shell.test('-e', targetDir)) {
 }
 
 // Removing test folder
-shell.rm('-rf', path.join(__dirname, '../test/app/features', _.kebabCase(featureName)));
+shell.rm('-rf', path.join(helpers.getProjectRoot(), 'test/app/features', _.kebabCase(featureName)));

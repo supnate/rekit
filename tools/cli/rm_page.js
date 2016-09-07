@@ -19,11 +19,11 @@ if (!featureName || !pageName) {
   throw new Error('Please set the feature name and page name');
 }
 
-pageName = _.upperFirst(_.camelCase(pageName));
+pageName = helpers.pascalCase(pageName);
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = `${__dirname}/../src/features/${featureName}`;
+const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
 
 let lines;
 let targetPath;
@@ -55,8 +55,11 @@ helpers.removeLines(lines, `  ${pageName},`);
 helpers.removeLines(lines, `component: ${pageName} }`);
 toSave(targetPath, lines);
 
+// Remove test file
+console.log('Removing test file');
+const testFile = path.join(__dirname, `../test/app/features/${featureName}/${pageName}.test.js`);
+shell.rm(testFile);
+
 // Save files
 helpers.saveFiles(filesToSave);
 console.log('Remove page success: ', pageName);
-
-shell.exec(`${process.execPath} ${path.join(__dirname, 'rm_test.js')} ${featureName}/${pageName}`);

@@ -28,7 +28,7 @@ const context = {
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-const targetDir = path.join(__dirname, `../src/features/${featureName}/redux`);
+const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}/redux`);
 const actionFile = path.join(targetDir, `${camelActionName}.js`);
 if (shell.test('-e', actionFile)) {
   throw new Error(`Action '${camelActionName}'has been existed.`);

@@ -22,14 +22,14 @@ if (!componentName) {
 if (!componentName) {
   throw new Error('Please set the component name');
 }
-componentName = _.upperFirst(_.camelCase(componentName));
+componentName = helpers.pascalCase(componentName);
 
 const filesToSave = [];
 const toSave = helpers.getToSave(filesToSave);
 
-let targetDir = `${__dirname}/../src/components`;
+let targetDir = path.join(helpers.getProjectRoot(), 'src/components');
 if (featureName) {
-  targetDir = `${__dirname}/../src/features/${featureName}`;
+  targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
 }
 
 let lines;
@@ -54,9 +54,16 @@ lines = helpers.getLines(targetPath);
 helpers.removeLines(lines, `@import './${componentName}.less';`);
 toSave(targetPath, lines);
 
+
+// remove test file
+console.log('Removing test file');
+const testFile = path.join(
+  helpers.getProjectRoot(),
+  'test/app',
+  featureName ? `features/${featureName}/${componentName}.test.js` : `components/${componentName}.test.js`
+);
+shell.rm(testFile);
+
 // Save files
 helpers.saveFiles(filesToSave);
 console.log('Remove component success: ', componentName);
-
-const args = featureName ? `${featureName}/${componentName}` : componentName;
-shell.exec(`${process.execPath} ${path.join(__dirname, 'rm_test.js')} ${args}`);

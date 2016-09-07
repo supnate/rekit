@@ -23,7 +23,7 @@ function exec(cmd) {
 }
 
 function pureExecTool(script) {
-  return shell.exec(`${process.execPath} ${path.join(__dirname, '../../tools', script)}`, { silent: true });
+  return shell.exec(`${process.execPath} ${path.join(__dirname, '../../tools/cli', script)}`, { silent: true });
 }
 
 function execTool(script) {

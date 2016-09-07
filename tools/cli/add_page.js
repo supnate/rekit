@@ -23,7 +23,7 @@ if (!featureName || !pageName) {
 
 pageName = _.upperFirst(_.camelCase(pageName));
 
-const targetDir = `${__dirname}/../src/features/${featureName}`;
+const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
 if (shell.test('-e', path.join(targetDir, `${pageName}.*`))) {
   throw new Error(`Page has been existed: ${pageName}`);
 }
@@ -91,4 +91,4 @@ toSave(targetPath, lines);
 helpers.saveFiles(filesToSave);
 console.log('Add page success: ', pageName);
 
-shell.exec(`"${process.execPath}" ${path.join(__dirname, 'add_test.js')} ${featureName}/${pageName}`);
+shell.exec(`"${process.execPath}" ${path.join(__dirname, 'add_page_test.js')} ${featureName}/${pageName}`);

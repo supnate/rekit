@@ -9,7 +9,7 @@ const _ = require('lodash');
 const shell = require('shelljs');
 const helpers = require('./helpers');
 
-const testPath = path.join(__dirname, '../test/app');
+const testPath = path.join(helpers.getProjectRoot(), 'test/app');
 
 const arr = (process.argv[2] || '').split('/');
 const featureName = _.kebabCase(arr[0]);

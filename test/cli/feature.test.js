@@ -1,22 +1,27 @@
 'use strict';
 const expect = require('chai').expect;
+const _ = require('lodash');
 const helpers = require('./helpers');
 
 const mapFile = helpers.mapFile;
 const mapFeatureFile = helpers.mapFeatureFile;
+const mapFeatureTestFile = helpers.mapFeatureTestFile;
 const execTool = helpers.execTool;
 const pureExecTool = helpers.pureExecTool;
 const expectFiles = helpers.expectFiles;
 const expectNoFile = helpers.expectNoFile;
+const expectNoFiles = helpers.expectNoFiles;
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
+const TEST_FEATURE_NAME = helpers.TEST_FEATURE_NAME;
+const CAMEL_TEST_FEATURE_NAME = _.camelCase(TEST_FEATURE_NAME);
 
 describe('cli: feature test', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
     // To reset test env
-    execTool('rm_feature.js test');
+    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
   });
 
   it('throws exception when no args for "add_feature.js"', () => {
@@ -24,7 +29,7 @@ describe('cli: feature test', function() { // eslint-disable-line
   });
 
   it('add test feature', () => {
-    execTool('add_feature.js test');
+    execTool(`add_feature.js ${TEST_FEATURE_NAME}`);
     expectFiles([
       'redux/actions.js',
       'redux/constants.js',
@@ -38,30 +43,36 @@ describe('cli: feature test', function() { // eslint-disable-line
       'style.less',
     ].map(mapFeatureFile));
     expectLines(mapFile('common/rootReducer.js'), [
-      'import testReducer from \'../features/test/redux/reducer\';',
-      '  test: testReducer,',
+      `import testFeatureNameReducer from \'../features/${TEST_FEATURE_NAME}/redux/reducer\';`,
+      '  testFeatureName: testFeatureNameReducer,',
     ]);
     expectLines(mapFile('common/routeConfig.js'), [
-      'import testRoute from \'../features/test/route\';',
-      '    testRoute,',
+      `import ${_.camelCase(TEST_FEATURE_NAME)}Route from \'../features/${TEST_FEATURE_NAME}/route\';`,
+      '    testFeatureNameRoute,',
     ]);
     expectLines(mapFile('styles/index.less'), [
-      '@import \'../features/test/style.less\';',
+      `@import \'../features/${TEST_FEATURE_NAME}/style.less\';`,
     ]);
+    expectFiles([
+      'redux/reducer.test.js',
+    ].map(mapFeatureTestFile));
   });
 
   it('remove feature', () => {
     execTool('rm_feature.js test');
     expectNoFile(mapFile('test'));
     expectNoLines(mapFile('common/rootReducer.js'), [
-      'testReducer',
+      'testFeatureNameReducer',
     ]);
     expectNoLines(mapFile('common/routeConfig.js'), [
       'testRoute',
     ]);
     expectNoLines(mapFile('styles/index.less'), [
-      '@import \'../features/test/style.less\';',
+      `@import \'../features/${TEST_FEATURE_NAME}/style.less\';`,
     ]);
+    expectNoFiles([
+      'redux/reducer.test.js',
+    ].map(mapFeatureTestFile));
   });
 
   it('no error when removing a feature does not exist.', () => {

@@ -5,23 +5,23 @@ const helpers = require('./helpers');
 const mapFeatureFile = helpers.mapFeatureFile;
 const execTool = helpers.execTool;
 const pureExecTool = helpers.pureExecTool;
-const expectError = helpers.expectError;
 const expectFiles = helpers.expectFiles;
 const expectNoFiles = helpers.expectNoFiles;
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
-
+const mapFeatureTestFile = helpers.mapFeatureTestFile;
+const TEST_FEATURE_NAME = helpers.TEST_FEATURE_NAME;
 
 describe('cli: page tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    execTool('rm_feature.js test');
-    execTool('add_feature.js test');
+    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
+    execTool(`add_feature.js ${TEST_FEATURE_NAME}`);
   });
 
   after(() => {
-    execTool('rm_feature.js test');
+    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
   });
 
   [
@@ -34,7 +34,7 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('add page', () => {
-    execTool('add_page.js test/test-page');
+    execTool(`add_page.js ${TEST_FEATURE_NAME}/test-page`);
     expectFiles([
       'TestPage.js',
       'TestPage.less',
@@ -53,11 +53,11 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('throws exception when page name exists', () => {
-    expect(pureExecTool('add_page.js test/test-page').code).to.equal(1);
+    expect(pureExecTool(`add_page.js ${TEST_FEATURE_NAME}/test-page`).code).to.equal(1);
   });
 
   it('add page with url path', () => {
-    execTool('add_page.js test/test-page-2 test-path');
+    execTool(`add_page.js ${TEST_FEATURE_NAME}/test-page-2 test-path`);
     expectFiles([
       'TestPage2.js',
       'TestPage2.less',
@@ -76,7 +76,7 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('remove page', () => {
-    execTool('rm_page.js test/test-page');
+    execTool(`rm_page.js ${TEST_FEATURE_NAME}/test-page`);
     expectNoFiles([
       'TestPage.js',
       'TestPage.less',
@@ -92,24 +92,30 @@ describe('cli: page tests', function() { // eslint-disable-line
       '    { path: \'test-page\', component: TestPage },',
       '  TestPage,',
     ]);
+    expectNoFiles([
+      'TestPage.test.js',
+    ].map(mapFeatureTestFile));
   });
 
   it('remove page with url path', () => {
-    execTool('rm_page.js test/test-page');
+    execTool(`rm_page.js ${TEST_FEATURE_NAME}/test-page-2`);
     expectNoFiles([
-      'TestPage.js',
-      'TestPage.less',
+      'TestPage2.js',
+      'TestPage2.less',
     ].map(mapFeatureFile));
     expectNoLines(mapFeatureFile('style.less'), [
-      '@import \'./TestPage.less\';'
+      '@import \'./TestPage2.less\';'
     ]);
     expectNoLines(mapFeatureFile('index.js'), [
-      'import TestPage from \'./TestPage\';',
-      '  TestPage,',
+      'import TestPage2 from \'./TestPage2\';',
+      '  TestPage2,',
     ]);
     expectNoLines(mapFeatureFile('route.js'), [
-      '    { path: \'test-path\', component: TestPage },',
-      '  TestPage,',
+      '    { path: \'test-path\', component: TestPage2 },',
+      '  TestPage2,',
     ]);
+    expectNoFiles([
+      'TestPage2.test.js',
+    ].map(mapFeatureTestFile));
   });
 });

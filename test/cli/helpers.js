@@ -6,12 +6,22 @@ const expect = require('chai').expect;
 const shell = require('shelljs');
 const _ = require('lodash');
 
+const TEST_FEATURE_NAME = 'rekit-test-feature';
+
 function mapFile(file) {
   return path.join(__dirname, '../../src', file);
 }
 
 function mapFeatureFile(file) {
-  return path.join(__dirname, '../../src/features/test', file);
+  return path.join(__dirname, '../../src/features', TEST_FEATURE_NAME, file);
+}
+
+function mapTestFile(file) {
+  return path.join(__dirname, '../../test', file);
+}
+
+function mapFeatureTestFile(file) {
+  return path.join(__dirname, '../../test/app/features', TEST_FEATURE_NAME, file);
 }
 
 function pureExec(cmd) {
@@ -76,6 +86,8 @@ function expectNoLines(file, lines) {
 module.exports = {
   mapFile,
   mapFeatureFile,
+  mapTestFile,
+  mapFeatureTestFile,
   exec,
   execTool,
   pureExecTool,
@@ -90,4 +102,5 @@ module.exports = {
   expectNoLine,
   expectLines,
   expectNoLines,
+  TEST_FEATURE_NAME,
 };

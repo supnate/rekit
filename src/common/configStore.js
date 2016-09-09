@@ -22,15 +22,5 @@ export default function configureStore(initialState) {
     applyMiddleware(...middlewares),
     devToolsExtension
   ));
-
-  // TODO: reducers hot module replacement
-  // if (module.hot) {
-  //   // Enable Webpack hot module replacement for reducers
-  //   module.hot.accept('../reducers', () => {
-  //     const nextReducer = require('../reducers');
-  //     store.replaceReducer(nextReducer);
-  //   });
-  // }
-
   return store;
 }

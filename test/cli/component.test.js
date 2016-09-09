@@ -4,6 +4,8 @@ const helpers = require('./helpers');
 
 const mapFile = helpers.mapFile;
 const mapFeatureFile = helpers.mapFeatureFile;
+const mapTestFile = helpers.mapTestFile;
+const mapFeatureTestFile = helpers.mapFeatureTestFile;
 const execTool = helpers.execTool;
 const pureExecTool = helpers.pureExecTool;
 const expectError = helpers.expectError;
@@ -11,17 +13,18 @@ const expectFiles = helpers.expectFiles;
 const expectNoFiles = helpers.expectNoFiles;
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
+const TEST_FEATURE_NAME = helpers.TEST_FEATURE_NAME;
 
 describe('cli: component tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    execTool('rm_feature.js test');
-    execTool('add_feature.js test');
+    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
+    execTool(`add_feature.js ${TEST_FEATURE_NAME}`);
   });
 
   after(() => {
-    execTool('rm_feature.js test');
+    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
   });
 
   [
@@ -34,7 +37,7 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('add feature component', () => {
-    execTool('add_component.js test/test-component');
+    execTool(`add_component.js ${TEST_FEATURE_NAME}/test-component`);
     expectFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -46,10 +49,13 @@ describe('cli: component tests', function() { // eslint-disable-line
       'import TestComponent from \'./TestComponent\';',
       '  TestComponent,',
     ]);
+    expectFiles([
+      'TestComponent.test.js',
+    ].map(mapFeatureTestFile));
   });
 
   it('throws exception when component name exists', () => {
-    expect(pureExecTool('add_component.js test/test-component').code).to.equal(1);
+    expect(pureExecTool(`add_component.js ${TEST_FEATURE_NAME}/test-component`).code).to.equal(1);
   });
 
   it('add common component', () => {
@@ -65,10 +71,13 @@ describe('cli: component tests', function() { // eslint-disable-line
       'import CommonComponent from \'./CommonComponent\';',
       '  CommonComponent,',
     ]);
+    expectFiles([
+      'app/components/CommonComponent.test.js',
+    ].map(mapTestFile));
   });
 
   it('remove feature component', () => {
-    execTool('rm_component.js test/test-component');
+    execTool(`rm_component.js ${TEST_FEATURE_NAME}/test-component`);
     expectNoFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -80,6 +89,9 @@ describe('cli: component tests', function() { // eslint-disable-line
       'import TestComponent from \'./TestComponent\';',
       '  TestComponent,',
     ]);
+    expectNoFiles([
+      'TestComponent.test.js',
+    ].map(mapFeatureTestFile));
   });
 
   it('remove common component', () => {
@@ -95,5 +107,8 @@ describe('cli: component tests', function() { // eslint-disable-line
       'import CommonComponent from \'./CommonComponent\';',
       '  CommonComponent,',
     ]);
+    expectNoFiles([
+      'app/components/CommonComponent.test.js',
+    ].map(mapTestFile));
   });
 });

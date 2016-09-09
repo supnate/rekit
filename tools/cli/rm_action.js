@@ -53,7 +53,7 @@ toSave(targetPath, lines);
 
 // Remove test file
 console.log('Removing test file');
-const testFile = path.join(__dirname, `../test/app/features/${featureName}/redux/${camelActionName}.test.js`);
+const testFile = path.join(helpers.getProjectRoot(), `test/app/features/${featureName}/redux/${camelActionName}.test.js`);
 shell.rm(testFile);
 
 // save files

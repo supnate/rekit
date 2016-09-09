@@ -6,8 +6,8 @@ import {
 export default {
   path: '',
   name: 'home',
-  siteIndexRoute: { component: DefaultPage },
   childRoutes: [
+    { path: 'default-page', component: DefaultPage, isIndex: true },
     { path: 'test-page-1', component: TestPage1 },
   ],
 };

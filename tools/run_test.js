@@ -28,7 +28,7 @@ if (args) {
     testFile = path.join(testFile, '**/*.test.js');
   }
 }
-console.log('Running test: ', (testFile || 'all').replace(prjRoot, ''), '...');
+console.log(`Running test${(!testFile || /\*/.test(testFile)) ? 's' : ''}: `, (testFile || 'all').replace(prjRoot, ''), '...');
 
 const env = Object.create(process.env);
 env.NODE_ENV = 'test';

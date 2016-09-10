@@ -39,7 +39,6 @@ shell.cp('-R', path.join(__dirname, './tools'), prjPath);
 shell.cp('-R', path.join(__dirname, './test'), prjPath);
 
 shell.rm(path.join(prjPath, 'test/cli/rekit.js'));
-shell.rm(path.join(prjPath, 'test/cli/rekit.test.js'));
 shell.rm('-rf', path.join(prjPath, 'src/.tmp')); // in case _tmp folder is copied.
 
 [

@@ -1,7 +1,7 @@
 const path = require('path');
-const exec = require('child_process').exec;
 const shell = require('shelljs');
 const _ = require('lodash');
+const fetch = require('isomorphic-fetch');
 const rekitPkgJson = require('./package.json');
 
 const prjName = process.argv[2];
@@ -59,18 +59,19 @@ const prjConfig = {
   devDependencies: _.keys(rekitPkgJson.devDependencies),
 };
 
-const pkgVersions = {};
-
 console.log('Getting dependencies versions...');
-const promises = [].concat(prjConfig.dependencies, prjConfig.devDependencies).map(dep => new Promise((resolve) => {
-  exec(`npm show ${dep} version`, (err, stdout) => {
-    const version = stdout.replace(/[\r\n]/g, '');
-    pkgVersions[dep] = `^${version}`;
-    resolve();
-  });
-}));
+function status(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return Promise.resolve(response);
+  }
+  return Promise.reject(new Error(response.statusText));
+}
 
-Promise.all(promises).then(() => {
+function json(response) {
+  return response.json();
+}
+
+function done(pkgVersions) {
   pkgJson.dependencies = _.pick(pkgVersions, prjConfig.dependencies);
   pkgJson.devDependencies = _.pick(pkgVersions, prjConfig.devDependencies);
   shell.ShellString(JSON.stringify(pkgJson, null, '  ')).to(path.join(prjPath, 'package.json'));
@@ -79,7 +80,13 @@ Promise.all(promises).then(() => {
   console.log('  1. run "npm install" to install dependencies.');
   console.log('  2. run "npm start" to start the dev server.');
   console.log('Enjoy!');
-}).catch(
-  /* istanbul ignore next */
-  err => console.log(err.stack || err)
-);
+}
+
+fetch('http://raw.githubusercontent.com/supnate/rekit/deps/deps.1.x.json')
+  .then(status)
+  .then(json)
+  .then(done)
+  .catch(error => {
+    console.log('Request failed', error);
+    process.exit(1);
+  });

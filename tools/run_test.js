@@ -13,12 +13,9 @@
 'use strict';
 const path = require('path');
 const shell = require('shelljs');
-const spawn = require('child_process').spawn;
+const npmRun = require('npm-run');
 
 const prjRoot = path.join(__dirname, '../');
-const mocha = path.join(prjRoot, 'node_modules/.bin/mocha');
-const nyc = path.join(prjRoot, 'node_modules/.bin/nyc');
-const mochaWebpack = path.join(prjRoot, 'node_modules/.bin/mocha-webpack');
 
 const args = process.argv[2];
 let testFile = null;
@@ -42,7 +39,7 @@ const needReport = !args || args === 'app' || args === 'cli';
 
 function runAppTest() {
   const params = [
-    mochaWebpack,
+    'mocha-webpack',
     '--include',
     'test/app/before-all.js',
     '--webpack-config',
@@ -52,44 +49,27 @@ function runAppTest() {
 
   if (needReport) {
     params.splice(0, 0,
-      nyc,
+      'nyc',
       '--report-dir=coverage/app'
     );
   }
-
-  const cmd = spawn(process.execPath, params, opts);
-  return new Promise(resolve => {
-    cmd.on('exit', () => {
-      if (needReport) {
-        console.log('App coverage report: ', path.join(prjRoot, 'coverage/app/lcov-report/index.html'));
-      }
-      resolve();
-    });
-  });
+  npmRun.execSync(params.join(' '), opts);
 }
 
 function runCliTest() {
+  console.log('running cli test');
   const params = [
-    mocha,
+    'mocha',
     testFile || path.join(prjRoot, 'test/cli/**/*.test.js'),
   ];
 
   if (needReport) {
     params.splice(0, 0,
-      nyc,
+      'nyc',
       '--report-dir=coverage/cli'
     );
   }
-
-  const cmd = spawn(process.execPath, params, opts);
-  return new Promise(resolve => {
-    cmd.on('exit', () => {
-      if (needReport) {
-        console.log('Cli coverage report: ', path.join(prjRoot, 'coverage/cli/lcov-report/index.html'));
-      }
-      resolve();
-    });
-  });
+  npmRun.execSync(params.join(' '), opts);
 }
 
 function runAllTest() {
@@ -98,17 +78,13 @@ function runAllTest() {
     shell.rm('-rf', cacheFolder);
   }
   shell.mkdir(cacheFolder);
-  runAppTest().then(() => {
-    shell.cp('-R', path.join(prjRoot, '.nyc_output/*'), cacheFolder);
-    runCliTest().then(() => {
-      shell.cp('-R', `${cacheFolder}/*`, path.join(prjRoot, '.nyc_output'));
-      const cmd = spawn(process.execPath, [nyc, 'report'], opts);
-      cmd.on('exit', () => {
-        console.log('Overall coverage report: ', path.join(prjRoot, 'coverage/lcov-report/index.html'));
-      });
-      shell.rm('-rf', cacheFolder);
-    });
-  });
+  runAppTest();
+  shell.cp('-R', path.join(prjRoot, '.nyc_output/*'), cacheFolder);
+  runCliTest();
+  shell.cp('-R', `${cacheFolder}/*`, path.join(prjRoot, '.nyc_output'));
+  npmRun.execSync('nyc report', opts);
+  console.log('Overall coverage report: ', path.join(prjRoot, 'coverage/lcov-report/index.html'));
+  shell.rm('-rf', cacheFolder);
 }
 
 if (/^app/.test(args)) {
@@ -118,5 +94,6 @@ if (/^app/.test(args)) {
 } else if (!args) {
   runAllTest();
 } else {
-  throw new Error(`Can not find tests for ${args}`);
+  console.error('Test files should be under test/app or test/cli.');
+  process.exit(1);
 }

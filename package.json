@@ -125,6 +125,7 @@
     "mocha": "^3.0.2",
     "mocha-webpack": "^0.6.0",
     "nock": "^8.0.0",
+    "npm-run": "^4.1.0",
     "nyc": "^8.1.0",
     "react-addons-test-utils": "^15.3.0",
     "react-hot-loader": "^3.0.0-beta.3",

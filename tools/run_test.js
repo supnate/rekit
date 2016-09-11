@@ -44,7 +44,7 @@ function runAppTest() {
     'test/app/before-all.js',
     '--webpack-config',
     'webpack.test.config.js',
-    testFile || path.join(prjRoot, 'test/app/**/*.test.js'),
+    `"${testFile || path.join(prjRoot, 'test/app/**/*.test.js')}"`,
   ];
 
   if (needReport) {

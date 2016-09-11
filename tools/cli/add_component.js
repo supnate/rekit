@@ -82,4 +82,4 @@ toSave(targetPath, lines);
 helpers.saveFiles(filesToSave);
 console.log('Add component success: ', componentName);
 
-shell.exec(`"${process.execPath}" ${path.join(__dirname, 'add_component_test.js')} ${process.argv[2]}`);
+shell.exec(`"${process.execPath}" "${path.join(__dirname, 'add_component_test.js')}" ${process.argv[2]}`);

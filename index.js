@@ -21,8 +21,11 @@ const pkgJson = {
   buildTestServerPort: 6077,
 };
 
+pkgJson.scripts.test = 'node ./tools/run_test.js app';
+
 delete pkgJson.scripts.codecov;
 delete pkgJson.scripts['test:rekit'];
+delete pkgJson.scripts['test:npm'];
 
 console.log('Welcome to rekit, now creating your project...');
 
@@ -39,6 +42,7 @@ shell.cp('-R', path.join(__dirname, './tools'), prjPath);
 shell.cp('-R', path.join(__dirname, './test'), prjPath);
 
 shell.rm(path.join(prjPath, 'test/cli/rekit.js'));
+shell.rm(path.join(prjPath, 'test/cli/npm.js'));
 shell.rm('-rf', path.join(prjPath, 'src/.tmp')); // in case _tmp folder is copied.
 
 [

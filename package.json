@@ -1,7 +1,7 @@
 {
   "name": "rekit",
-  "version": "0.2.11",
-  "description": "Toolkit and boilerplate for creating React + Redux + React-router applications.",
+  "version": "1.0.0",
+  "description": "Toolkit for creating scalable web applications with React, Redux and React-router.",
   "bin": {
     "rekit": "./bin/cli.js"
   },
@@ -9,11 +9,10 @@
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
     "codecov": "codecov",
-    "report": "nyc report",
     "test": "node ./tools/run_test.js",
     "test:app": "node ./tools/run_test.js app",
     "test:cli": "node ./tools/run_test.js cli",
-    "test:rekit": "mocha \"test/cli/rekit.js\"",
+    "test:rekit": "node ./test/cli/rekit.js",
     "test:npm": "node ./test/cli/npm.js",
     "build:test": "node ./tools/build_test_server.js",
     "add:feature": "node ./tools/cli/add_feature.js",

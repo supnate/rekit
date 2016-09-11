@@ -25,7 +25,7 @@ describe('${KEBAB_FEATURE_NAME}/${PAGE_NAME}', () => {
     ).to.equal(1);
   });
 
-  it('renders node with class name: ${KEBAB_FEATURE_NAME}-${KEBAB_PAGE_NAME}', () => {
+  it('renders node with correct class name', () => {
     const renderedComponent = shallow(
       <${PAGE_NAME} {...pageProps} />
     );

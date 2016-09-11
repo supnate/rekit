@@ -18,12 +18,12 @@ describe('cli: async action tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
-    execTool(`add_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
+    execTool('add_feature.js', TEST_FEATURE_NAME);
   });
 
   after(() => {
-    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
   });
 
   [
@@ -36,7 +36,7 @@ describe('cli: async action tests', function() { // eslint-disable-line
   });
 
   it('add async action', () => {
-    execTool(`add_async_action.js ${TEST_FEATURE_NAME}/async-action`);
+    execTool('add_async_action.js', `${TEST_FEATURE_NAME}/async-action`);
     expectLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',
@@ -55,7 +55,7 @@ describe('cli: async action tests', function() { // eslint-disable-line
   });
 
   it('remove async action', () => {
-    execTool(`rm_async_action.js ${TEST_FEATURE_NAME}/async-action`);
+    execTool('rm_async_action.js', `${TEST_FEATURE_NAME}/async-action`);
     expectNoLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',

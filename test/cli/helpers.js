@@ -32,12 +32,12 @@ function exec(cmd) {
   expect(pureExec(cmd).code).to.equal(0);
 }
 
-function pureExecTool(script) {
-  return shell.exec(`${process.execPath} ${path.join(__dirname, '../../tools/cli', script)}`, { silent: true });
+function pureExecTool(script, args) {
+  return shell.exec(`"${process.execPath}" "${path.join(__dirname, '../../tools/cli', script)}" ${args || ''}`, { silent: true });
 }
 
-function execTool(script) {
-  expect(pureExecTool(script).code).to.equal(0);
+function execTool(script, args) {
+  expect(pureExecTool(script, args).code).to.equal(0);
 }
 
 function expectError(cmd) {

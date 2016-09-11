@@ -21,7 +21,7 @@ describe('cli: feature test', function() { // eslint-disable-line
 
   before(() => {
     // To reset test env
-    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
   });
 
   it('throws exception when no args for "add_feature.js"', () => {
@@ -29,7 +29,7 @@ describe('cli: feature test', function() { // eslint-disable-line
   });
 
   it('add test feature', () => {
-    execTool(`add_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('add_feature.js', TEST_FEATURE_NAME);
     expectFiles([
       'redux/actions.js',
       'redux/constants.js',
@@ -43,12 +43,12 @@ describe('cli: feature test', function() { // eslint-disable-line
       'style.less',
     ].map(mapFeatureFile));
     expectLines(mapFile('common/rootReducer.js'), [
-      `import testFeatureNameReducer from \'../features/${TEST_FEATURE_NAME}/redux/reducer\';`,
-      '  testFeatureName: testFeatureNameReducer,',
+      `import ${CAMEL_TEST_FEATURE_NAME}Reducer from \'../features/${TEST_FEATURE_NAME}/redux/reducer\';`,
+      `  ${CAMEL_TEST_FEATURE_NAME}: ${CAMEL_TEST_FEATURE_NAME}Reducer,`,
     ]);
     expectLines(mapFile('common/routeConfig.js'), [
-      `import ${_.camelCase(TEST_FEATURE_NAME)}Route from \'../features/${TEST_FEATURE_NAME}/route\';`,
-      '    testFeatureNameRoute,',
+      `import ${CAMEL_TEST_FEATURE_NAME}Route from \'../features/${TEST_FEATURE_NAME}/route\';`,
+      `    ${CAMEL_TEST_FEATURE_NAME}Route,`,
     ]);
     expectLines(mapFile('styles/index.less'), [
       `@import \'../features/${TEST_FEATURE_NAME}/style.less\';`,
@@ -59,13 +59,13 @@ describe('cli: feature test', function() { // eslint-disable-line
   });
 
   it('remove feature', () => {
-    execTool('rm_feature.js test');
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
     expectNoFile(mapFile('test'));
     expectNoLines(mapFile('common/rootReducer.js'), [
-      'testFeatureNameReducer',
+      CAMEL_TEST_FEATURE_NAME,
     ]);
     expectNoLines(mapFile('common/routeConfig.js'), [
-      'testRoute',
+      `${CAMEL_TEST_FEATURE_NAME}Route`,
     ]);
     expectNoLines(mapFile('styles/index.less'), [
       `@import \'../features/${TEST_FEATURE_NAME}/style.less\';`,
@@ -76,6 +76,6 @@ describe('cli: feature test', function() { // eslint-disable-line
   });
 
   it('no error when removing a feature does not exist.', () => {
-    execTool('rm_feature.js feature-does-not-exist-test');
+    execTool('rm_feature.js', 'feature-does-not-exist-test');
   });
 });

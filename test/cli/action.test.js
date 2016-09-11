@@ -18,12 +18,12 @@ describe('cli: action tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
-    execTool(`add_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
+    execTool('add_feature.js', TEST_FEATURE_NAME);
   });
 
   after(() => {
-    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
   });
 
   [
@@ -36,7 +36,7 @@ describe('cli: action tests', function() { // eslint-disable-line
   });
 
   it('add normal action', () => {
-    execTool(`add_action.js ${TEST_FEATURE_NAME}/test-action`);
+    execTool('add_action.js', `${TEST_FEATURE_NAME}/test-action`);
     expectLines(mapFeatureFile('redux/constants.js'), [
       'export const TEST_ACTION = \'TEST_ACTION\';',
     ]);
@@ -51,7 +51,7 @@ describe('cli: action tests', function() { // eslint-disable-line
   });
 
   it('add normal action with custom action type', () => {
-    execTool(`add_action.js ${TEST_FEATURE_NAME}/test-action-2 my-action-type`);
+    execTool('add_action.js', `${TEST_FEATURE_NAME}/test-action-2 my-action-type`);
     expectLines(mapFeatureFile('redux/constants.js'), [
       'export const MY_ACTION_TYPE = \'MY_ACTION_TYPE\';',
     ]);
@@ -66,7 +66,7 @@ describe('cli: action tests', function() { // eslint-disable-line
   });
 
   it('remove normal action', () => {
-    execTool(`rm_action.js ${TEST_FEATURE_NAME}/test-action`);
+    execTool('rm_action.js', `${TEST_FEATURE_NAME}/test-action`);
     expectNoLines(mapFeatureFile('redux/constants.js'), [
       'TEST_ACTION',
     ]);
@@ -80,7 +80,7 @@ describe('cli: action tests', function() { // eslint-disable-line
   });
 
   it('remove normal action with custom action type', () => {
-    execTool(`rm_action.js ${TEST_FEATURE_NAME}/test-action-2 my-action-type`);
+    execTool('rm_action.js', `${TEST_FEATURE_NAME}/test-action-2 my-action-type`);
     expectNoLines(mapFeatureFile('redux/constants.js'), [
       'MY_ACTION_TYPE',
     ]);

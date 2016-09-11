@@ -82,7 +82,7 @@ function done(pkgVersions) {
   console.log('Enjoy!');
 }
 
-fetch('http://raw.githubusercontent.com/supnate/rekit/deps/deps.1.x.json')
+fetch('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.1.x.json')
   .then(status)
   .then(json)
   .then(done)

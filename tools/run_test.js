@@ -57,7 +57,6 @@ function runAppTest() {
 }
 
 function runCliTest() {
-  console.log('running cli test');
   const params = [
     'mocha',
     testFile || path.join(prjRoot, 'test/cli/**/*.test.js'),
@@ -73,7 +72,11 @@ function runCliTest() {
 }
 
 function runAllTest() {
-  const cacheFolder = path.join(prjRoot, 'coverage/.nyc_output');
+  const coverageFolder = path.join(prjRoot, 'coverage');
+  if (!shell.test('-e', coverageFolder)) {
+    shell.mkdir(coverageFolder);
+  }
+  const cacheFolder = path.join(coverageFolder, '.nyc_output');
   if (shell.test('-e', cacheFolder)) {
     shell.rm('-rf', cacheFolder);
   }

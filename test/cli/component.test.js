@@ -19,12 +19,12 @@ describe('cli: component tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
-    execTool(`add_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
+    execTool('add_feature.js', TEST_FEATURE_NAME);
   });
 
   after(() => {
-    execTool(`rm_feature.js ${TEST_FEATURE_NAME}`);
+    execTool('rm_feature.js', TEST_FEATURE_NAME);
   });
 
   [
@@ -37,7 +37,7 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('add feature component', () => {
-    execTool(`add_component.js ${TEST_FEATURE_NAME}/test-component`);
+    execTool('add_component.js', `${TEST_FEATURE_NAME}/test-component`);
     expectFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -55,11 +55,11 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('throws exception when component name exists', () => {
-    expect(pureExecTool(`add_component.js ${TEST_FEATURE_NAME}/test-component`).code).to.equal(1);
+    expect(pureExecTool('add_component.js', `${TEST_FEATURE_NAME}/test-component`).code).to.equal(1);
   });
 
   it('add common component', () => {
-    execTool('add_component.js common-component');
+    execTool('add_component.js', 'common-component');
     expectFiles([
       'components/CommonComponent.js',
       'components/CommonComponent.less',
@@ -77,7 +77,7 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('remove feature component', () => {
-    execTool(`rm_component.js ${TEST_FEATURE_NAME}/test-component`);
+    execTool('rm_component.js', `${TEST_FEATURE_NAME}/test-component`);
     expectNoFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -95,7 +95,7 @@ describe('cli: component tests', function() { // eslint-disable-line
   });
 
   it('remove common component', () => {
-    execTool('rm_component.js common-component');
+    execTool('rm_component.js', 'common-component');
     expectNoFiles([
       'components/CommonComponent.js',
       'components/CommonComponent.less',

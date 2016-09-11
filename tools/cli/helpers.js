@@ -3,15 +3,7 @@
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
-const babel = require('babel-core');
 
-const babelOptions = {
-  presets: [
-    require.resolve('babel-preset-es2015'),
-    require.resolve('babel-preset-react'),
-    require.resolve('babel-preset-stage-0'),
-  ],
-};
 module.exports = {
   getProjectRoot() {
     return path.join(__dirname, '../../');
@@ -96,40 +88,6 @@ module.exports = {
     this.removeLines(lines, `export const ${name} = '${name}';`);
   },
 
-  removeAstBlockNode(lines, node) {
-    const loc = node.loc;
-    let start = loc.start.line - 1;
-    let len = (loc.end.line - loc.start.line) + 1;
-    if (!lines[start - 1]) {
-      // remove the empty line before the function
-      start -= 1;
-      len += 1;
-    }
-    lines.splice(start, len);
-  },
-
-  removeExportFunction(lines, funcName) {
-    const code = lines.join('\n');
-    const ast = babel.transform(code, babelOptions).ast.program;
-    const funcElement = _.find(ast.body, { type: 'FunctionDeclaration', id: { name: funcName } });
-    // istanbul ignore else
-    if (funcElement) {
-      this.removeAstBlockNode(lines, funcElement);
-    }
-  },
-
-  removeSwitchCase(lines, caseName) {
-    const code = lines.join('\n');
-    const ast = babel.transform(code, babelOptions).ast.program;
-    const funcElement = _.find(_.toArray(ast.body), { type: 'FunctionDeclaration', id: { name: 'reducer' } });
-    const switchElement = _.find(funcElement.body.body, { type: 'SwitchStatement' });
-    const caseElement = _.find(switchElement.cases, { test: { name: caseName } });
-    // istanbul ignore else
-    if (caseElement) {
-      this.removeAstBlockNode(lines, caseElement);
-    }
-  },
-
   isStringMatch(str, pattern) {
     if (typeof pattern === 'string') {
       return _.includes(str, pattern);
@@ -137,18 +95,6 @@ module.exports = {
       return pattern(str);
     }
     return pattern.test(str);
-  },
-  removeItTest(lines, actionType) {
-    const code = lines.join('\n');
-    const ast = babel.transform(code, babelOptions).ast.program;
-    // console.log('ast: ', JSON.stringify(ast));
-
-    const describeExpression = _.find(_.toArray(ast.body), { type: 'ExpressionStatement', expression: { callee: { name: 'describe' } } });
-    _.toArray(describeExpression.expression.arguments[1].body.body)
-      .filter(_.matches({ type: 'ExpressionStatement', expression: { callee: { name: 'it' } } }))
-      .filter(it => this.isStringMatch(JSON.stringify(it), actionType))
-      .reverse()
-      .forEach(it => this.removeAstBlockNode(lines, it));
   },
 
   lineIndex(lines, str, fromIndex) {

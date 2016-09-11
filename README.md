@@ -1,5 +1,4 @@
 #![Async action code.](/images/logo_text.png?raw=true)
-======
 > NOTE: Rekit is under refactory, below doc is only valid for the version `0.2.11` intalled from npm.
 
 Rekit is a toolkit for developing React + Redux + React-router applications. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.

@@ -1,6 +1,8 @@
-Rekit
+#![Async action code.](/images/logo_text.png?raw=true)
 ======
 > NOTE: Rekit is under refactory, below doc is only valid for the version `0.2.11` intalled from npm.
+
+Rekit is a toolkit for developing React + Redux + React-router applications. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.
 
 [![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit)
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
@@ -8,8 +10,6 @@ Rekit
 [![Coverage Status](https://img.shields.io/codecov/c/github/supnate/rekit/master.svg)](https://codecov.io/github/supnate/rekit)
 [![Demo](https://img.shields.io/badge/demo-link-blue.svg)](https://supnate.github.io/rekit-example)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-
-Rekit is a toolkit for developing React + Redux + React-router applications. Besides creating empty projects with configurations ready, it also provides scripts to generate code for frequently used elements such as components, actions, reducers etc. And it provides the ability to delete them.
 
 The Rekit project boilerplate is designed to be extensible and production-ready, so all technical artifacts are grouped by features. There is a folder for each feature and all feature related actions, reducers, components and pages are put under the folder. Such folder structure supports large and complicated projects.
 

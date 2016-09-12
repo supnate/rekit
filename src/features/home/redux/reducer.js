@@ -19,5 +19,5 @@ export default function reducer(state = initialState, action) {
       newState = state;
       break;
   }
-  return Object.values(reducers).reduce((s, r) => r(s, action), newState);
+  return reducers.reduce((s, r) => r(s, action), newState);
 }

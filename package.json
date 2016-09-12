@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Toolkit for creating scalable web applications with React, Redux and React-router.",
   "bin": {
-    "rekit": "./bin/cli.js"
+    "rekit": "./bin/rekit.js"
   },
   "scripts": {
     "start": "node ./tools/server.js",

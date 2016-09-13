@@ -1,0 +1,12 @@
+build
+node_modules
+npm-debug.log
+target
+node
+src/_tmp
+static
+dist
+coverage
+.nyc_output
+.tmp
+.DS_Store

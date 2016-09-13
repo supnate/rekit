@@ -1,0 +1,13 @@
+build
+node_modules
+npm-debug.log
+target
+node
+src/_tmp
+static
+dist
+coverage
+rekit_temp_app
+.nyc_output
+.tmp
+.DS_Store

@@ -49,6 +49,8 @@ delete pkgJson.scripts['test:rekit'];
 delete pkgJson.scripts['test:npm'];
 delete pkgJson.scripts['docs:prepare'];
 delete pkgJson.scripts['docs:watch'];
+delete pkgJson.scripts['docs:build'];
+delete pkgJson.scripts['docs:publish'];
 
 const prjPath = path.join(process.cwd(), prjName);
 if (shell.test('-e', prjPath)) {

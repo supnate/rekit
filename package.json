@@ -1,7 +1,7 @@
 {
   "name": "rekit",
   "version": "1.0.0",
-  "description": "Toolkit for creating scalable web apps with React, Redux and React-router.",
+  "description": "Toolkit for building scalable web apps with React, Redux and React-router.",
   "bin": {
     "rekit": "./bin/rekit.js"
   },
@@ -26,7 +26,9 @@
     "rm:page": "node ./tools/cli/rm_page.js",
     "rm:component": "node ./tools/cli/rm_component.js",
     "docs:prepare": "gitbook install",
-    "docs:watch": "npm run docs:prepare && gitbook serve"
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:build": "gitbook build",
+    "docs:publish": "npm run docs:prepare && rm -rf _book && gitbook build"
   },
   "babel": {
     "presets": [

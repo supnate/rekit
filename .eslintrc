@@ -17,7 +17,10 @@
     'no-console': 0,
     'global-require': 0,
     'new-cap': 0,
+    'class-methods-use-this': 0,
     'react/jsx-filename-extension': 0,
+    'react/prefer-stateless-function',
+    'react/forbid-prop-types',
     'jsx-a11y/label-has-for': 0,
     'import/prefer-default-export': 0
   }

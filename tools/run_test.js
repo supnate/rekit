@@ -19,7 +19,11 @@ const prjRoot = path.join(__dirname, '../');
 
 let args = process.argv[2];
 let testFile = null;
-if (args) {
+if (!args) {
+  args = 'app';
+}
+
+if (args !== 'all') {
   testFile = path.join(prjRoot, 'test', args);
   if (shell.test('-d', testFile)) {
     testFile = path.join(testFile, '**/*.test.js');
@@ -35,7 +39,7 @@ const opts = {
   env,
 };
 
-const needReport = !args || args === 'app' || args === 'cli';
+const needReport = args === 'all' || args === 'app' || args === 'cli';
 
 function runAppTest() {
   const params = [
@@ -94,7 +98,7 @@ if (/^app/.test(args)) {
   runAppTest();
 } else if (/^cli/.test(args)) {
   runCliTest();
-} else if (!args) {
+} else if (/^all/.test(args)) {
   runAllTest();
 } else {
   console.error('Test files should be under test/app or test/cli.');

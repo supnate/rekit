@@ -15,7 +15,8 @@ A Rekit generated application is to be scalable, testable and maintainable by us
 
 With Rekit sublime text plugin, it's super easy to create features, components, actions, tests, etc by side bar menus. And you can test or build your applications without leaving the editor. Besides the plugin, all the features are also available as npm scripts, they could be used within a terminal.
 
-Here is a quick look:
+Here is a quick tour:
+[<img src="/images/youtube.png" width="228" alt="Rekit Demo"/>](https://youtu.be/9lqWoQjy-JY "Rekit Demo")
 
 ## Installation
 ```

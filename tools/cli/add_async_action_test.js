@@ -15,7 +15,8 @@ const actionName = _.camelCase(arr[1]);
 const upperSnakeActionName = _.snakeCase(actionName).toUpperCase();
 
 if (!actionName) {
-  throw new Error('Please specify the action name');
+  console.log('Error: Please specify the action name');
+  process.exit(1);
 }
 
 const filesToSave = [];
@@ -36,7 +37,7 @@ helpers.ensureDir(targetDir);
 const targetPath = path.join(targetDir, `${context.CAMEL_ACTION_NAME}.test.js`);
 
 if (shell.test('-e', targetPath)) {
-  throw new Error(`Test file has existed: ${targetPath}`);
+  console.log(`Test file has existed: ${targetPath}`);
 }
 const res = helpers.handleTemplate('async_action_test.js', context);
 toSave(targetPath, res);

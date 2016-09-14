@@ -16,7 +16,8 @@ const featureName = _.kebabCase(arr[0]);
 const pageName = arr[1];
 
 if (!pageName) {
-  throw new Error('Please specify the page name');
+  console.log('Error: Please specify the page name');
+  process.exit(1);
 }
 
 const context = {

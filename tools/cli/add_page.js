@@ -18,14 +18,16 @@ let pageName = arr[1];
 const urlPath = args[3] || _.kebabCase(pageName);
 
 if (!featureName || !pageName) {
-  throw new Error('Please set the feature name and page name');
+  console.log('Error: Please set the feature name and page name');
+  process.exit(1);
 }
 
 pageName = _.upperFirst(_.camelCase(pageName));
 
 const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
 if (shell.test('-e', path.join(targetDir, `${pageName}.*`))) {
-  throw new Error(`Page has been existed: ${pageName}`);
+  console.log(`Error: Page has been existed: ${pageName}`);
+  process.exit(1);
 }
 
 const context = {

@@ -30,7 +30,7 @@ describe('cli: async action tests', function() { // eslint-disable-line
     'add_async_action.js',
     'rm_async_action.js',
   ].forEach(script => {
-    it(`throws exception when no args for "${script}"`, () => {
+    it(`exit 1 when no args for "${script}"`, () => {
       expect(pureExecTool(script).code).to.equal(1);
     });
   });

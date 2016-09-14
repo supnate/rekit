@@ -28,7 +28,7 @@ describe('cli: page tests', function() { // eslint-disable-line
     'add_page.js',
     'rm_page.js',
   ].forEach(script => {
-    it(`throws exception when no args for "${script}"`, () => {
+    it(`exit 1 when no args for "${script}"`, () => {
       expect(pureExecTool(script).code).to.equal(1);
     });
   });
@@ -52,7 +52,7 @@ describe('cli: page tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('throws exception when page name exists', () => {
+  it('exit 1 when page name exists', () => {
     expect(pureExecTool('add_page.js', `${TEST_FEATURE_NAME}/test-page`).code).to.equal(1);
   });
 

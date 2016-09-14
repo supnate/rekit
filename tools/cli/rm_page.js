@@ -16,7 +16,8 @@ const featureName = _.kebabCase(arr[0]);
 let pageName = arr[1];
 
 if (!featureName || !pageName) {
-  throw new Error('Please set the feature name and page name');
+  console.log('Error: Please set the feature name and page name');
+  process.exit(1);
 }
 
 pageName = helpers.pascalCase(pageName);

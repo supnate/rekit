@@ -20,7 +20,8 @@ if (!componentName) {
 }
 
 if (!componentName) {
-  throw new Error('Please set the component name');
+  console.log('Error: Please set the component name');
+  process.exit(1);
 }
 componentName = helpers.pascalCase(componentName);
 

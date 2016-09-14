@@ -1,0 +1,139 @@
+Searching 36 files for "process.exit(1)"
+
+/Users/nate/workspace2/rekit/tools/cli/add_action.js:
+   14  if (!actionName) {
+   15    console.log('Error: Please specify the action name.');
+   16:   process.exit(1);
+   17  }
+   18  
+   ..
+   29  if (shell.test('-e', actionFile)) {
+   30    console.log(`Error: Action '${camelActionName}'has been existed.`);
+   31:   process.exit(1);
+   32  }
+   33  
+
+/Users/nate/workspace2/rekit/tools/cli/add_action_test.js:
+   17  if (!actionName) {
+   18    console.log('Please specify the action name');
+   19:   process.exit(1);
+   20:   process.exit(1);
+   21  }
+   22  
+
+/Users/nate/workspace2/rekit/tools/cli/add_async_action.js:
+   13  if (!actionName) {
+   14    console.log('Please specify the action name.');
+   15:   process.exit(1);
+   16  }
+   17  
+   ..
+   34  if (shell.test('-e', actionFile)) {
+   35    console.log(`Action '${camelActionName}'has been existed.`);
+   36:   process.exit(1);
+   37  }
+   38  let targetPath;
+
+/Users/nate/workspace2/rekit/tools/cli/add_async_action_test.js:
+   17  if (!actionName) {
+   18    console.log('Please specify the action name');
+   19:   process.exit(1);
+   20  }
+   21  
+
+/Users/nate/workspace2/rekit/tools/cli/add_component.js:
+   21  if (!componentName) {
+   22    console.log('Please specify the component name');
+   23:   process.exit(1);
+   24  }
+   25  
+   ..
+   33  if (shell.test('-e', path.join(targetDir, `${componentName}.*`))) {
+   34    console.log(`Component has been existed: ${componentName}`);
+   35:   process.exit(1);
+   36  }
+   37  
+
+/Users/nate/workspace2/rekit/tools/cli/add_component_test.js:
+   23  if (!componentName) {
+   24    console.log('Please specify the component name');
+   25:   process.exit(1);
+   26  }
+   27  
+
+/Users/nate/workspace2/rekit/tools/cli/add_feature.js:
+   15  if (!featureName) {
+   16    console.log('Please set the feature name');
+   17:   process.exit(1);
+   18  }
+   19  
+   ..
+   31  if (shell.test('-e', targetDir)) {
+   32    console.log(`feature name existed: ${context.KEBAB_FEATURE_NAME}`);
+   33:   process.exit(1);
+   34  }
+   35  
+
+/Users/nate/workspace2/rekit/tools/cli/add_page.js:
+   20  if (!featureName || !pageName) {
+   21    console.log('Please set the feature name and page name');
+   22:   process.exit(1);
+   23  }
+   24  
+   ..
+   28  if (shell.test('-e', path.join(targetDir, `${pageName}.*`))) {
+   29    console.log(`Page has been existed: ${pageName}`);
+   30:   process.exit(1);
+   31  }
+   32  
+
+/Users/nate/workspace2/rekit/tools/cli/add_page_test.js:
+   18  if (!pageName) {
+   19    console.log('Please specify the page name');
+   20:   process.exit(1);
+   21  }
+   22  
+
+/Users/nate/workspace2/rekit/tools/cli/add_reducer_test.js:
+   13  if (!featureName) {
+   14    console.log('Please specify the feature name');
+   15:   process.exit(1);
+   16  }
+   17  
+
+/Users/nate/workspace2/rekit/tools/cli/rm_action.js:
+   14  if (!actionName) {
+   15    console.log('Please specify the action name.');
+   16:   process.exit(1);
+   17  }
+   18  
+
+/Users/nate/workspace2/rekit/tools/cli/rm_async_action.js:
+   14  if (!actionName) {
+   15    console.log('Please specify the action name.');
+   16:   process.exit(1);
+   17  }
+   18  
+
+/Users/nate/workspace2/rekit/tools/cli/rm_component.js:
+   22  if (!componentName) {
+   23    console.log('Please set the component name');
+   24:   process.exit(1);
+   25  }
+   26  componentName = helpers.pascalCase(componentName);
+
+/Users/nate/workspace2/rekit/tools/cli/rm_feature.js:
+   17  if (!featureName) {
+   18    console.log('Please set the feature name');
+   19:   process.exit(1);
+   20  }
+   21  
+
+/Users/nate/workspace2/rekit/tools/cli/rm_page.js:
+   18  if (!featureName || !pageName) {
+   19    console.log('Please set the feature name and page name');
+   20:   process.exit(1);
+   21  }
+   22  
+
+21 matches across 15 files

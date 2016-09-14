@@ -11,7 +11,8 @@ const helpers = require('./helpers');
 
 const featureName = _.kebabCase(process.argv[2] || '');
 if (!featureName) {
-  throw new Error('Please specify the feature name');
+  console.log('Error: Please specify the feature name');
+  process.exit(1);
 }
 
 const testPath = path.join(helpers.getProjectRoot(), 'test/app');

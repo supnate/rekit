@@ -13,7 +13,8 @@ const args = process.argv;
 const featureName = _.kebabCase(args[2]);
 
 if (!featureName) {
-  throw new Error('Please set the feature name');
+  console.log('Error: Please set the feature name');
+  process.exit(1);
 }
 
 const context = {
@@ -28,7 +29,8 @@ const toSave = helpers.getToSave(filesToSave);
 
 const targetDir = path.join(helpers.getProjectRoot(), `src/features/${context.KEBAB_FEATURE_NAME}`);
 if (shell.test('-e', targetDir)) {
-  throw new Error(`feature name existed: ${context.KEBAB_FEATURE_NAME}`);
+  console.log(`Error: feature name existed: ${context.KEBAB_FEATURE_NAME}`);
+  process.exit(1);
 }
 
 // templated files

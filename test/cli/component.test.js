@@ -31,7 +31,7 @@ describe('cli: component tests', function() { // eslint-disable-line
     'add_component.js',
     'rm_component.js',
   ].forEach(script => {
-    it(`throws exception when no args for "${script}"`, () => {
+    it(`exit 1 when no args for "${script}"`, () => {
       expect(pureExecTool(script).code).to.equal(1);
     });
   });
@@ -54,7 +54,7 @@ describe('cli: component tests', function() { // eslint-disable-line
     ].map(mapFeatureTestFile));
   });
 
-  it('throws exception when component name exists', () => {
+  it('exit 1 when component name exists', () => {
     expect(pureExecTool('add_component.js', `${TEST_FEATURE_NAME}/test-component`).code).to.equal(1);
   });
 

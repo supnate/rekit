@@ -11,7 +11,8 @@ const upperSnakeActionName = _.snakeCase(actionName).toUpperCase();
 const camelActionName = _.camelCase(actionName);
 const pascalActionName = helpers.pascalCase(actionName);
 if (!actionName) {
-  throw new Error('Please specify the action name.');
+  console.log('Error: Please specify the action name.');
+  process.exit(1);
 }
 
 const context = {
@@ -31,7 +32,8 @@ const toSave = helpers.getToSave(filesToSave);
 const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}/redux`);
 const actionFile = path.join(targetDir, `${camelActionName}.js`);
 if (shell.test('-e', actionFile)) {
-  throw new Error(`Action '${camelActionName}'has been existed.`);
+  console.log(`Error: Action '${camelActionName}'has been existed.`);
+  process.exit(1);
 }
 let targetPath;
 let lines;

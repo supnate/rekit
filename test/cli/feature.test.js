@@ -24,7 +24,7 @@ describe('cli: feature test', function() { // eslint-disable-line
     execTool('rm_feature.js', TEST_FEATURE_NAME);
   });
 
-  it('throws exception when no args for "add_feature.js"', () => {
+  it('exit 1 when no args for "add_feature.js"', () => {
     expect(pureExecTool('add_feature.js').code).to.equal(1);
   });
 

@@ -19,7 +19,8 @@ if (!componentName) {
 }
 
 if (!componentName) {
-  throw new Error('Please specify the component name');
+  console.log('Error: Please specify the component name');
+  process.exit(1);
 }
 
 componentName = helpers.pascalCase(componentName);
@@ -30,7 +31,8 @@ if (featureName) {
 }
 
 if (shell.test('-e', path.join(targetDir, `${componentName}.*`))) {
-  throw new Error(`Component has been existed: ${componentName}`);
+  console.log(`Error: Component has been existed: ${componentName}`);
+  process.exit(1);
 }
 
 const context = {

@@ -15,7 +15,8 @@ const args = process.argv;
 const featureName = _.kebabCase(args[2]);
 
 if (!featureName) {
-  throw new Error('Please set the feature name');
+  console.log('Error: Please set the feature name');
+  process.exit(1);
 }
 
 const context = {

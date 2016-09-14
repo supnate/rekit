@@ -12,7 +12,8 @@ const upperSnakeActionName = _.snakeCase(actionName).toUpperCase();
 const pascalActionName = helpers.pascalCase(actionName);
 
 if (!actionName) {
-  throw new Error('Please specify the action name.');
+  console.log('Error: Please specify the action name.');
+  process.exit(1);
 }
 
 const BEGIN_ACTION_TYPE = `${upperSnakeActionName}_BEGIN`;

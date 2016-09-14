@@ -5,6 +5,12 @@
   "bin": {
     "rekit": "./bin/rekit.js"
   },
+  "keywords": [
+    "rekit",
+    "react",
+    "redux",
+    "react-router"
+  ],
   "scripts": {
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",

@@ -13,18 +13,6 @@ const pageProps = {
 const store = createStore(state => state, pageProps);
 
 describe('features/home/TestPage1', () => {
-  it('redux connect works', () => {
-    const wrapper = render(
-      <Provider store={store}>
-        <ConnectedTestPage1 />
-      </Provider>
-    );
-
-    expect(
-      wrapper.find('.home-test-page-1').length
-    ).to.equal(1);
-  });
-
   it('renders node with correct dom structure', () => {
     const renderedComponent = shallow(
       <TestPage1 {...pageProps} />

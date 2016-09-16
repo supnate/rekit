@@ -6,7 +6,7 @@ import {
 } from './constants';
 
 export function ${CAMEL_ACTION_NAME}(args) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: ${BEGIN_ACTION_TYPE},
     });

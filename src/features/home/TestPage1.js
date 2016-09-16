@@ -18,12 +18,14 @@ export class TestPage1 extends Component {
   }
 }
 
+/* istanbul ignore next */
 function mapStateToProps(state) {
   return {
     home: state.home,
   };
 }
 
+/* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ ...actions }, dispatch)

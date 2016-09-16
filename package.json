@@ -14,8 +14,7 @@
   "scripts": {
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
-    "codecov": "codecov",
-    "test": "node ./tools/run_test.js all",
+    "test": "node ./tools/run_test.js",
     "test:app": "node ./tools/run_test.js app",
     "test:cli": "node ./tools/run_test.js cli",
     "test:rekit": "node ./test/cli/rekit.js",

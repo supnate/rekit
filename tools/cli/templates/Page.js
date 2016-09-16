@@ -18,12 +18,14 @@ export class ${PAGE_NAME} extends Component {
   }
 }
 
+/* istanbul ignore next */
 function mapStateToProps(state) {
   return {
     ${CAMEL_FEATURE_NAME}: state.${CAMEL_FEATURE_NAME},
   };
 }
 
+/* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ ...actions }, dispatch)

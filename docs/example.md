@@ -3,7 +3,7 @@
 There is a simple forum application built with Rekit for your reference. It connects to a real backend server powered by [Leancloud.cn](https://leancloud.cn)(a parse like saas).
 It provides basic forum features: `topics` and `comments`.
 
-[<img src="/images/youtube.png" width="400" alt="Rekit Demo"/>](https://youtu.be/9lqWoQjy-JY "Rekit Example")
+[<img src="/images/example.png" width="600" alt="Rekit Demo"/>](https://youtu.be/9lqWoQjy-JY "Rekit Example")
 
 You can see the online example at: https://supnate.github.io/rekit-example
 

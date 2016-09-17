@@ -1,3 +1,40 @@
 ## Testing
 
-To doc...
+Testing a React + Redux application is difficult, you need to know many libs/tools regarding React testing and learn their usage. But Rekit will setup everything for you. You just need to write test code in the auto generated test files, running test with the Sublime plugin and reading the coverage report in a browser.
+
+However here is the process of how React testing works. You can know how Rekit setups the testing process.
+
+1. [Istanbul](https://github.com/gotwarlost/istanbul) instruments the source code for test coverage report. Istanbul itself doesn't support JSX, but there's a babel plugin [babel-plugin-istanbul](https://github.com/istanbuljs/babel-plugin-istanbul) then it works.
+2. Webpack builds all testing files with [mocha-webpack](https://github.com/zinserjan/mocha-webpack) which auto finds test files to test.
+3. [Mocha](https://github.com/mochajs/mocha) runs the built version of testing files.
+4. [nyc](https://github.com/istanbuljs/nyc) generates the test coverage report.
+
+All app testing files are saved in the folder `test/app`. And the folder structure is the same with the source code folder structure in `src` folder.
+
+#### Command line tools testing
+All command line tools also have unit test cases saved in `test/cli` folder. Not only in the rekit project, but also they are copied to the created app so that you can customize the tools with test cases.
+
+Because these tool scripts are written with pure NodeJs, the testing is simpler:
+1. Istanbul instruments the source code.
+2. Mocha runs the test cases.
+3. nyc generates the test coverage report.
+
+#### run_test.js
+As you may have noticed, test cases also need to be built with webpack, then Mocha could run the test cases. So running a single test case file also needs the build. So `run_test.js` is created to simplify this process. You can run any test case file just by the `run_test.js` tool. It's also exported as `npm test`. All arguments to it is just passed to the `run_test.js` script. The usage is as below:
+```
+npm test  // run all tests under the `test/app` folder
+npm test app/features/home // run tests under the `home` feature
+npm test app/**/list.test.js // run all tests named list.test.js under app folder
+npm test cli // run tests for all command line tools
+npm test all // run tests for both app and cli
+```
+
+#### See the coverage report
+If tests are are run by `app`, `cli` or `all` then test coverage report will be involved. Different coverage report could be see at:
+
+1. `all`: coverage/lcov-report/index.html
+2. `app`: coverage/app/lcov-report/index.html
+3. `cli`: coverage/cli/lcov-report/index.html
+
+
+

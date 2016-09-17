@@ -34,7 +34,13 @@ This will install a global command `rekit` to the system. Run the command to cre
 ```
 rekit [-h] [-v] app-name
 ```
-This will create a new app named `app-name` for you. After creating the application, go to the app folder run `npm install` to install dependencies. Then run `npm start` to start the dev server. Open http://localhost:6076 you will see a [welcome page](/docs/welcome-page.md) including some simple samples. 
+This will create a new app named `app-name` for you. After creating the application, you need to install dependencies and start the dev server:
+```
+cd app-name
+npm install
+npm start
+```
+Then access [http://localhost:6076](http://localhost:6076) you will see a [welcome page](/docs/welcome-page.md) including some simple samples. 
 
 The default port for webpack dev server is 6076, and it's 6077 for the build version. Change them in package.json if needed:
 ```

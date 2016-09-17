@@ -1,5 +1,5 @@
 ## One Action One File
-This may be the most opinionate part of the Rekit approach. That is: one action per file, and put the corresponding reducer into the same file.
+This may be the most opinionate part of the Rekit approach. That is: one action one file, and put the corresponding reducer into the same file.
 
 This idea comes from the pain of regular Redux development: it almost always needs to write the reducer just after creating a new action.
 

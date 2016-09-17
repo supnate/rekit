@@ -1,9 +1,9 @@
 ## Example
 
-There is a simple forum application built with Rekit for your reference. It connects to a real backend server powered by [Leancloud.cn](https://leancloud.cn)(a parse like saas).
+There is a simple forum application built with Rekit for your reference. It connects to a real backend server powered by [Leancloud.cn](https://leancloud.cn)( a [Parse](https://www.parse.com) like Saas service).
 It provides basic forum features: `topics` and `comments`.
 
-[<img src="/images/example.png" width="600" alt="Rekit Demo"/>](https://youtu.be/9lqWoQjy-JY "Rekit Example")
+<img src="/images/example.png" width="600" alt="Rekit Example"/>
 
 You can see the online example at: https://supnate.github.io/rekit-example
 
@@ -28,11 +28,12 @@ The simple forum app demostrates most of capabilities of Rekit such as:
 ...
 
 #### Roadmap
-Next features are planed to be added to the example at priority::
+Next features are planed to be added to the example at priority:
 
 1. Topic list pagination.
 2. Show comment count in topic list.
 3. User authentication.
+
 ...
 
 And welcome to [submit feature requests](https://github.com/supnate/rekit-example/issues)

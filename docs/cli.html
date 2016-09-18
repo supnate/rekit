@@ -440,6 +440,8 @@
 <li>Import MyPage.less in <code>src/features/my-feature/style.less</code>.
 </li>
 <li>Define routing in <code>src/features/my-feature/route.js</code> with url path.
+</li>
+<li>Add a unit test file <code>test/app/features/my-feature/MyPage.test.js</code>.
 </li></ul>
 <h3 id="removing-a-page">Removing a page</h3><p>Usage:</p><pre><code>npm run rm:page feature-name/page-name</code></pre>
 <p>Args:</p><ul><li><code>feature-name</code>: the feature name the page belongs to.
@@ -456,6 +458,8 @@
 <li>Remove MyPage.less import in <code>src/features/my-feature/style.less</code>.
 </li>
 <li>Remove routing config in <code>src/features/my-feature/route.js</code>.
+</li>
+<li>Remove the unit test file <code>test/app/features/my-feature/MyPage.test.js</code>.
 </li></ul>
 <h3 id="adding-a-component-for-a-feature">Adding a component for a feature</h3><p>Usage:</p><pre><code>npm run add:component feature-name/component-name</code></pre>
 <p>Args:</p><ul><li><code>feature-name</code>: the feature name the component belongs to.
@@ -470,6 +474,8 @@
 <li>Export the component in <code>src/features/my-feature/index.js</code>.
 </li>
 <li>Import MyComponent.less in <code>src/features/my-feature/style.less</code>.
+</li>
+<li>Add a unit test file <code>test/app/features/my-feature/MyComponent.test.js</code>.
 </li></ul>
 <h3 id="removing-a-component-from-a-feature">Removing a component from a feature</h3><p>Usage:</p><pre><code>npm run rm:component feature-name/component-name</code></pre>
 <p>Args:</p><ul><li><code>feature-name</code>: the feature name the component belongs to.
@@ -484,6 +490,8 @@
 <li>Remove the export of component from <code>src/features/my-feature/index.js</code>.
 </li>
 <li>Remove the import MyComponent.less from <code>src/features/my-feature/style.less</code>.
+</li>
+<li>Remove the unit test file <code>test/app/features/my-feature/MyComponent.test.js</code>.
 </li></ul>
 <h3 id="adding-a-common-component">Adding a common component</h3><p>Usage:</p><pre><code>npm run add:component component-name</code></pre>
 <p>Args:</p><ul><li><code>component-name</code>: the component name.
@@ -496,6 +504,8 @@
 <li>Export the component in <code>src/components/index.js</code>.
 </li>
 <li>Import MyComponent.less in <code>src/components/style.less</code>.
+</li>
+<li>Add a unit test file <code>test/app/components/MyComponent.test.js</code>.
 </li></ul>
 <h3 id="removing-a-common-component">Removing a common component</h3><p>Usage:</p><pre><code>npm run rm:component component-name</code></pre>
 <p>Args:</p><ul><li><code>component-name</code>: the component name.
@@ -508,6 +518,8 @@
 <li>Remove the export of component from <code>src/components/index.js</code>.
 </li>
 <li>Remove the import MyComponent.less from <code>src/components/style.less</code>.
+</li>
+<li>Remove the unit test file <code>test/app/comonents/MyComponent.test.js</code>.
 </li></ul>
 <h3 id="adding-an-action">Adding an action</h3><p>Usage:</p><pre><code>npm run add:action feature-name/action-name [action-type]</code></pre>
 <p>Args:</p><ul><li><code>feature-name</code>: the feature name the action belongs to.
@@ -516,15 +528,19 @@
 </li>
 <li><code>action-type</code>: optional. The action type name. It&apos;s usually not needed. Defaults to <code>ACTION_NAME</code>.
 </li></ul>
-<p>Example:</p><pre><code>npm run add:action feature-name/my-action</code></pre>
-<p>Result:</p><ul><li>Add action type <code>MY_ACTION</code> to <code>src/features/my-feature/constants.js</code>.
+<p>Example:</p><pre><code>npm run add:action my-feature/my-action</code></pre>
+<p>Result:</p><ul><li>Add a action file `src/features/my-feature/redux/myAction.js
 </li>
-<li>Define the action method <code>myAction()</code> in <code>src/features/my-feature/actions.js</code>.
+<li>Add action type <code>MY_ACTION</code> to <code>src/features/my-feature/constants.js</code>.
 </li>
-<li>Define the switch case <code>case MY_ACTION:</code> in <code>src/features/my-feature/reducer.js</code>.
+<li>Import and export the action method <code>myAction</code> in <code>src/features/my-feature/redux/actions.js</code>.
+</li>
+<li>Import the reducer in <code>src/features/my-feature/redux/reducer.js</code>.
+</li>
+<li>Add a test file <code>src/features/my-feature/redux/myAction.test.js</code>.
 </li></ul>
 <h3 id="removing-an-action">Removing an action</h3><p>Usage:</p><pre><code>npm run rm:action feature-name/action-name</code></pre>
-<p>Usage:</p><pre><code>npm run add:action feature-name/action-name [action-type]</code></pre>
+<p>Usage:</p><pre><code>npm run add:action my-feature/action-name [action-type]</code></pre>
 <p>Args:</p><ul><li><code>feature-name</code>: the feature name the action belongs to.
 </li>
 <li><code>action-name</code>: the action name. It&apos;s also used as the action method name.
@@ -532,18 +548,22 @@
 <li><code>action-type</code>: optional. The action type name. It&apos;s usually not needed. Defaults to <code>ACTION_NAME</code>.
 </li></ul>
 <p>Example:</p><pre><code>npm run rm:action feature-name/my-action</code></pre>
-<p>Result:</p><ul><li>Remove action type <code>MY_ACTION</code> from <code>src/features/my-feature/constants.js</code>.
+<p>Result:</p><ul><li>Remove the action file `src/features/my-feature/redux/myAction.js
 </li>
-<li>Remove the action method <code>myAction()</code> from <code>src/features/my-feature/actions.js</code>.
+<li>Remove action type <code>MY_ACTION</code> from <code>src/features/my-feature/constants.js</code>.
 </li>
-<li>Remove the switch case <code>case MY_ACTION:</code> from <code>src/features/my-feature/reducer.js</code>.
+<li>Remove the import/export <code>myAction</code> from <code>src/features/my-feature/redux/actions.js</code>.
+</li>
+<li>Remove the import from <code>src/features/my-feature/redux/reducer.js</code>.
+</li>
+<li>Remove the test file <code>src/features/my-feature/redux/myAction.test.js</code>.
 </li></ul>
 <h3 id="adding-an-async-action">Adding an async action</h3><p>Usage:</p><pre><code>npm run add:async-action feature-name/async-action-name</code></pre>
 <p>Args:</p><ul><li><code>feature-name</code>: the feature name the action belongs to.
 </li>
 <li><code>action-name</code>: the action name. It&apos;s also used as the action method name.
 </li></ul>
-<p>Example:</p><pre><code>npm run add:async-action feature-name/fetch-topic-list</code></pre>
+<p>Example:</p><pre><code>npm run add:async-action my-feature/fetch-topic-list</code></pre>
 <p>Result:</p><ul><li>Add action type <code>FETCH_TOPIC_LIST_BEGIN</code> to <code>src/features/my-feature/constants.js</code>.
 </li>
 <li>Add action type <code>FETCH_TOPIC_LIST_PENDING</code> to <code>src/features/my-feature/constants.js</code>.
@@ -552,43 +572,31 @@
 </li>
 <li>Add action type <code>FETCH_TOPIC_LIST_FAILURE</code> to <code>src/features/my-feature/constants.js</code>.
 </li>
-<li>Define the action method <code>fetchTopicList()</code> in <code>src/features/my-feature/actions.js</code>.
+<li>Add a action file `src/features/my-feature/redux/fetchTopicList.js
 </li>
-<li>Define the action method <code>dismissFetchTopicListError()</code> in <code>src/features/my-feature/actions.js</code>.
+<li>Import and export <code>fetchTopicList</code>, <code>dismissFetchTopicListError</code> from <code>src/features/my-feature/redux/actions.js</code>.
 </li>
-<li>Define the switch case <code>case FETCH_TOPIC_LIST_BEGIN:</code> in <code>src/features/my-feature/reducer.js</code>.
-</li>
-<li>Define the switch case <code>case FETCH_TOPIC_LIST_PENDING:</code> in <code>src/features/my-feature/reducer.js</code>.
-</li>
-<li>Define the switch case <code>case FETCH_TOPIC_LIST_SUCCESS:</code> in <code>src/features/my-feature/reducer.js</code>.
-</li>
-<li>Define the switch case <code>case FETCH_TOPIC_LIST_FAILURE:</code> in <code>src/features/my-feature/reducer.js</code>.
+<li>Add a test file <code>src/features/my-feature/redux/fetchTopicList.test.js</code>.
 </li></ul>
 <h3 id="removing-an-async-action">Removing an async action</h3><p>Usage:</p><pre><code>npm run rm:async-action feature-name/async-action-name</code></pre>
 <p>Args:</p><ul><li><code>feature-name</code>: the feature name the action belongs to.
 </li>
 <li><code>action-name</code>: the action name. It&apos;s also used as the action method name.
 </li></ul>
-<p>Example:</p><pre><code>npm run rm:action feature-name/fetch-topic-list</code></pre>
-<p>Result:</p><ul><li>Remove action type <code>FETCH_TOPIC_LIST_BEGIN</code> from <code>src/features/my-feature/constants.js</code>.
+<p>Example:</p><pre><code>npm run rm:action my-feature/fetch-topic-list</code></pre>
+<p>Result:</p><ul><li>Remove action type <code>FETCH_TOPIC_LIST_BEGIN</code> to <code>src/features/my-feature/constants.js</code>.
 </li>
-<li>Remove action type <code>FETCH_TOPIC_LIST_PENDING</code> from <code>src/features/my-feature/constants.js</code>.
+<li>Remove action type <code>FETCH_TOPIC_LIST_PENDING</code> to <code>src/features/my-feature/constants.js</code>.
 </li>
-<li>Remove action type <code>FETCH_TOPIC_LIST_SUCCESS</code> from <code>src/features/my-feature/constants.js</code>.
+<li>Remove action type <code>FETCH_TOPIC_LIST_SUCCESS</code> to <code>src/features/my-feature/constants.js</code>.
 </li>
-<li>Remove action type <code>FETCH_TOPIC_LIST_FAILURE</code> from <code>src/features/my-feature/constants.js</code>.
+<li>Remove action type <code>FETCH_TOPIC_LIST_FAILURE</code> to <code>src/features/my-feature/constants.js</code>.
 </li>
-<li>Remove the action method <code>fetchTopicList()</code> from <code>src/features/my-feature/actions.js</code>.
+<li>Remove the action file `src/features/my-feature/redux/fetchTopicList.js
 </li>
-<li>Remove the action method <code>dismissFetchTopicListError()</code> from <code>src/features/my-feature/actions.js</code>.
+<li>Remove the import/export <code>fetchTopicList</code>, <code>dismissFetchTopicListError</code> from <code>src/features/my-feature/redux/actions.js</code>.
 </li>
-<li>Remove the switch case <code>case FETCH_TOPIC_LIST_BEGIN:</code> from <code>src/features/my-feature/reducer.js</code>.
-</li>
-<li>Remove the switch case <code>case FETCH_TOPIC_LIST_PENDING:</code> from <code>src/features/my-feature/reducer.js</code>.
-</li>
-<li>Remove the switch case <code>case FETCH_TOPIC_LIST_SUCCESS:</code> from <code>src/features/my-feature/reducer.js</code>.
-</li>
-<li>Remove the switch case <code>case FETCH_TOPIC_LIST_FAILURE:</code> from <code>src/features/my-feature/reducer.js</code>.
+<li>Remove the test file <code>src/features/my-feature/redux/fetchTopicList.test.js</code>.
 </li></ul>
 
                                 
@@ -633,7 +641,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Command Line Tools","level":"1.5","depth":1,"next":{"title":"Sublime Plugin","level":"1.6","depth":1,"path":"docs/sublime-plugin.md","ref":"docs/sublime-plugin.md","articles":[]},"previous":{"title":"Welcome Page","level":"1.4","depth":1,"path":"docs/welcome-page.md","ref":"docs/welcome-page.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":true},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/cli.md","mtime":"2016-09-14T12:07:32.000Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-09-17T19:06:02.817Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Command Line Tools","level":"1.5","depth":1,"next":{"title":"Sublime Plugin","level":"1.6","depth":1,"path":"docs/sublime-plugin.md","ref":"docs/sublime-plugin.md","articles":[]},"previous":{"title":"Welcome Page","level":"1.4","depth":1,"path":"docs/welcome-page.md","ref":"docs/welcome-page.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":true},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/cli.md","mtime":"2016-09-18T12:25:17.000Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-09-18T12:25:59.891Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

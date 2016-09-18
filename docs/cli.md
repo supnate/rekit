@@ -137,6 +137,7 @@ Result:
 * Export the page component in `src/features/my-feature/index.js`.
 * Import MyPage.less in `src/features/my-feature/style.less`.
 * Define routing in `src/features/my-feature/route.js` with url path.
+* Add a unit test file `test/app/features/my-feature/MyPage.test.js`.
 
 ### Removing a page
 Usage:
@@ -158,6 +159,7 @@ Result:
 * Remove the page component export in `src/features/my-feature/index.js`.
 * Remove MyPage.less import in `src/features/my-feature/style.less`.
 * Remove routing config in `src/features/my-feature/route.js`.
+* Remove the unit test file `test/app/features/my-feature/MyPage.test.js`.
 
 ### Adding a component for a feature
 Usage:
@@ -179,6 +181,7 @@ Result:
 * Add the component style file: `src/features/my-feature/MyComponent.less`.
 * Export the component in `src/features/my-feature/index.js`.
 * Import MyComponent.less in `src/features/my-feature/style.less`.
+* Add a unit test file `test/app/features/my-feature/MyComponent.test.js`.
 
 ### Removing a component from a feature
 Usage:
@@ -200,6 +203,7 @@ Result:
 * Remove the component style file: `src/features/my-feature/MyComponent.less`.
 * Remove the export of component from `src/features/my-feature/index.js`.
 * Remove the import MyComponent.less from `src/features/my-feature/style.less`.
+* Remove the unit test file `test/app/features/my-feature/MyComponent.test.js`.
 
 ### Adding a common component
 Usage:
@@ -220,6 +224,7 @@ Result:
 * Add the component style file: `src/components/MyComponent.less`.
 * Export the component in `src/components/index.js`.
 * Import MyComponent.less in `src/components/style.less`.
+* Add a unit test file `test/app/components/MyComponent.test.js`.
 
 ### Removing a common component
 Usage:
@@ -240,6 +245,7 @@ Result:
 * Remove the component style file: `src/components/MyComponent.less`.
 * Remove the export of component from `src/components/index.js`.
 * Remove the import MyComponent.less from `src/components/style.less`.
+* Remove the unit test file `test/app/comonents/MyComponent.test.js`.
 
 ### Adding an action
 Usage:
@@ -253,13 +259,15 @@ Args:
 
 Example:
 ```
-npm run add:action feature-name/my-action
+npm run add:action my-feature/my-action
 ```
 
 Result:
+* Add a action file `src/features/my-feature/redux/myAction.js
 * Add action type `MY_ACTION` to `src/features/my-feature/constants.js`.
-* Define the action method `myAction()` in `src/features/my-feature/actions.js`.
-* Define the switch case `case MY_ACTION:` in `src/features/my-feature/reducer.js`.
+* Import and export the action method `myAction` in `src/features/my-feature/redux/actions.js`.
+* Import the reducer in `src/features/my-feature/redux/reducer.js`.
+* Add a test file `src/features/my-feature/redux/myAction.test.js`.
 
 ### Removing an action
 Usage:
@@ -269,7 +277,7 @@ npm run rm:action feature-name/action-name
 
 Usage:
 ```
-npm run add:action feature-name/action-name [action-type]
+npm run add:action my-feature/action-name [action-type]
 ```
 Args:
 * `feature-name`: the feature name the action belongs to.
@@ -282,9 +290,11 @@ npm run rm:action feature-name/my-action
 ```
 
 Result:
+* Remove the action file `src/features/my-feature/redux/myAction.js
 * Remove action type `MY_ACTION` from `src/features/my-feature/constants.js`.
-* Remove the action method `myAction()` from `src/features/my-feature/actions.js`.
-* Remove the switch case `case MY_ACTION:` from `src/features/my-feature/reducer.js`.
+* Remove the import/export `myAction` from `src/features/my-feature/redux/actions.js`.
+* Remove the import from `src/features/my-feature/redux/reducer.js`.
+* Remove the test file `src/features/my-feature/redux/myAction.test.js`.
 
 ### Adding an async action
 Usage:
@@ -298,7 +308,7 @@ Args:
 
 Example:
 ```
-npm run add:async-action feature-name/fetch-topic-list
+npm run add:async-action my-feature/fetch-topic-list
 ```
 
 Result:
@@ -306,12 +316,10 @@ Result:
 * Add action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/constants.js`.
 * Add action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/constants.js`.
 * Add action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/constants.js`.
-* Define the action method `fetchTopicList()` in `src/features/my-feature/actions.js`.
-* Define the action method `dismissFetchTopicListError()` in `src/features/my-feature/actions.js`.
-* Define the switch case `case FETCH_TOPIC_LIST_BEGIN:` in `src/features/my-feature/reducer.js`.
-* Define the switch case `case FETCH_TOPIC_LIST_PENDING:` in `src/features/my-feature/reducer.js`.
-* Define the switch case `case FETCH_TOPIC_LIST_SUCCESS:` in `src/features/my-feature/reducer.js`.
-* Define the switch case `case FETCH_TOPIC_LIST_FAILURE:` in `src/features/my-feature/reducer.js`.
+* Add a action file `src/features/my-feature/redux/fetchTopicList.js
+* Import and export `fetchTopicList`, `dismissFetchTopicListError` from `src/features/my-feature/redux/actions.js`.
+* Add a test file `src/features/my-feature/redux/fetchTopicList.test.js`.
+
 
 ### Removing an async action
 Usage:
@@ -325,17 +333,14 @@ Args:
 
 Example:
 ```
-npm run rm:action feature-name/fetch-topic-list
+npm run rm:action my-feature/fetch-topic-list
 ```
 
 Result:
-* Remove action type `FETCH_TOPIC_LIST_BEGIN` from `src/features/my-feature/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_PENDING` from `src/features/my-feature/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_SUCCESS` from `src/features/my-feature/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_FAILURE` from `src/features/my-feature/constants.js`.
-* Remove the action method `fetchTopicList()` from `src/features/my-feature/actions.js`.
-* Remove the action method `dismissFetchTopicListError()` from `src/features/my-feature/actions.js`.
-* Remove the switch case `case FETCH_TOPIC_LIST_BEGIN:` from `src/features/my-feature/reducer.js`.
-* Remove the switch case `case FETCH_TOPIC_LIST_PENDING:` from `src/features/my-feature/reducer.js`.
-* Remove the switch case `case FETCH_TOPIC_LIST_SUCCESS:` from `src/features/my-feature/reducer.js`.
-* Remove the switch case `case FETCH_TOPIC_LIST_FAILURE:` from `src/features/my-feature/reducer.js`.
+* Remove action type `FETCH_TOPIC_LIST_BEGIN` to `src/features/my-feature/constants.js`.
+* Remove action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/constants.js`.
+* Remove action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/constants.js`.
+* Remove action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/constants.js`.
+* Remove the action file `src/features/my-feature/redux/fetchTopicList.js
+* Remove the import/export `fetchTopicList`, `dismissFetchTopicListError` from `src/features/my-feature/redux/actions.js`.
+* Remove the test file `src/features/my-feature/redux/fetchTopicList.test.js`.

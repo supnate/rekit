@@ -28,13 +28,13 @@ For Chinese, visit the demo on Youku:
 ```
 npm install -g rekit
 ```
-This will install a global command `rekit` to the system. Run the command to create a new project. Rekit is developed and tested on npm 3+ and node 4+, so this is the precondition for using Rekit.
+This will install a global command `rekit` to the system. Run the command to create a new project. Rekit is developed and tested on npm 3+ and node 4+, so this is the pre-condition for using Rekit.
 
 ## Usage
 ```
 rekit [-h] [-v] app-name
 ```
-This will create a new app named `app-name` for you. After creating the application, you need to install dependencies and start the dev server:
+This will create a new app named `app-name` in the folder `app-name` under the current directory. After creating the application, you need to install dependencies and start the dev server:
 ```
 cd app-name
 npm install
@@ -53,7 +53,7 @@ The default port for webpack dev server is 6076, and it's 6077 for the build ver
 ```
 
 ## Sublimetext Plugin
-Sublime text plugin provides side bar menus for a Rekit application by which you can easily do common tasks like creating components, running tests etc, see more introduction from: https://github.com/supnate/rekit-sublime
+Sublime text plugin provides sidebar menus for a Rekit application by which you can easily do common tasks like creating components, running tests etc, see more introduction from: https://github.com/supnate/rekit-sublime
 
 ## See the Real World Example
 There is a simple forum application, connected to a real backend server, created by Rekit for reference. See more introduction from: [http://github.com/supnate/rekit-example](http://github.com/supnate/rekit-example)
@@ -63,7 +63,7 @@ Building web apps is hard today because there are too many technologies to learn
 
 While building a React + Redux + React-router application, there are many trival but important tasks to do besides the appication logic. These tasks construct a good application architecture but are not related with your application funcionalities.
 
-For example: a forum appliction needs a list page to display topics. Typically you need to finish below tasks before you start writing the topic list logic:
+For example: a forum application needs a list page to display topics. Typically you need to finish below tasks before you start writing the topic list logic:
 
 1. Create a React component class named `TopicList`.
 2. Define a routing path for the `TopicList` component in React-router config.

@@ -11,6 +11,42 @@ However here is the process of how React testing works. You can know how Rekit s
 
 All app testing files are saved in the folder `test/app`. And the folder structure is the same with the source code folder structure in `src` folder.
 
+#### How Rekit generates testing files
+When creating a new page, component or action, Rekit auto creates test cases for them. Even you don't add any code to to the generated test cases, they help you avoid simple errors. Such as:
+
+1. It ensures a component is always rendered successfully by checking the existance of the root DOM node with correct css class.
+2. It ensures reducer is immutable by checking equality of the previous and new states.
+
+For example, when creating a new page, it generates below test case:
+```javascript
+it('renders node with correct class name', () => {
+  const pageProps = {
+    home: {},
+    actions: {},
+  };
+  const renderedComponent = shallow(
+    <TestPage1 {...pageProps} />
+  );
+
+  expect(
+    renderedComponent.find('.home-test-page-1').node
+  ).to.exist;
+});
+```
+
+When creating an action, it generates below reducer test case:
+```javascript
+it('reducer should handle MY_ACTION', () => {
+  const prevState = {};
+  const state = reducer(
+    prevState,
+    { type: MY_ACTION }
+  );
+  expect(state).to.not.equal(prevState); // should be immutable
+  expect(state).to.deep.equal(prevState); // TODO: replace this line with real case.
+});
+```
+
 #### Command line tools testing
 All command line tools also have unit test cases saved in `test/cli` folder. Not only in the rekit project, but also they are copied to the created app so that you can customize the tools with test cases.
 

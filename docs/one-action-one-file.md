@@ -69,12 +69,12 @@ export default function reducer(state = initialState, action) {
 ```
 By using Rekit to create actions, you don't need to manually maintain this file because the Rekit will auto update it to add or remove the reducer import.
 
-#### Benifits
+#### Benefits
 This approach has multiple advantages:
 
-1. Easy to develop: no need to jump between files when creating acitons.
-2. Easy to maintain: action files are now small and easy to find by file name.
+1. Easy to develop: no need to jump between files when creating actions.
+2. Easy to maintain: action files are now small and easy to be found by file name.
 3. Easy to test: one test file corresponds to one action which also includes both action and reducer test.
-4. Easy to write tools: no need to parse code when creating a tool to generate Redux related code. A file template is enough.
-5. Easy to analyze: cross-topic actions could be easily found by static analysis
+4. Easy to write tools: no need to parse code when creating a tool to generate Redux boilerplate code. A file template is enough.
+5. Easy to analyse: cross-topic actions could be easily found by static analysis
   

@@ -1,5 +1,7 @@
 # Command Line Tools
-The most important part of Rekit is the command line tools copied to your project. They help you to complete common tasks like testing, creating/removing features, actions, pages, components etc.
+Besides the Sublime plugin, you can use command line tools to complete common tasks like testing, creating/removing features, actions, pages, components etc.
+
+Below is the list of all npm scripts provided by Rekit:
 
 <table>
     <thead>
@@ -89,7 +91,7 @@ npm run add:feature product
 ```
 Result:
 * Create a folder named `product` under the `src/features/` folder.
-* Create files of `actions.js`, `constants.js`, `actions.js`, `reducer.js`, `index.js`, `selectors.js` and `style.less` in the feature folder.
+* Create files of `actions.js`, `constants.js`, `reducer.js` in the redux folder and `index.js`, `selectors.js` and `style.less` in the feature folder.
 * Import and combine the feature reducer in `src/common/rootReducer.js`
 * Import and define the feature routeConfig in `src/common/routeConfig.js`
 * Import the feature style.less in `src/styles/index.less`
@@ -264,7 +266,7 @@ npm run add:action my-feature/my-action
 
 Result:
 * Add a action file `src/features/my-feature/redux/myAction.js
-* Add action type `MY_ACTION` to `src/features/my-feature/constants.js`.
+* Add action type `MY_ACTION` to `src/features/my-feature/redux/constants.js`.
 * Import and export the action method `myAction` in `src/features/my-feature/redux/actions.js`.
 * Import the reducer in `src/features/my-feature/redux/reducer.js`.
 * Add a test file `src/features/my-feature/redux/myAction.test.js`.
@@ -291,7 +293,7 @@ npm run rm:action feature-name/my-action
 
 Result:
 * Remove the action file `src/features/my-feature/redux/myAction.js
-* Remove action type `MY_ACTION` from `src/features/my-feature/constants.js`.
+* Remove action type `MY_ACTION` from `src/features/my-feature/redux/constants.js`.
 * Remove the import/export `myAction` from `src/features/my-feature/redux/actions.js`.
 * Remove the import from `src/features/my-feature/redux/reducer.js`.
 * Remove the test file `src/features/my-feature/redux/myAction.test.js`.
@@ -312,10 +314,10 @@ npm run add:async-action my-feature/fetch-topic-list
 ```
 
 Result:
-* Add action type `FETCH_TOPIC_LIST_BEGIN` to `src/features/my-feature/constants.js`.
-* Add action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/constants.js`.
-* Add action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/constants.js`.
-* Add action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/constants.js`.
+* Add action type `FETCH_TOPIC_LIST_BEGIN` to `src/features/my-feature/redux/constants.js`.
+* Add action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/redux/constants.js`.
+* Add action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/redux/constants.js`.
+* Add action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/redux/constants.js`.
 * Add a action file `src/features/my-feature/redux/fetchTopicList.js
 * Import and export `fetchTopicList`, `dismissFetchTopicListError` from `src/features/my-feature/redux/actions.js`.
 * Add a test file `src/features/my-feature/redux/fetchTopicList.test.js`.
@@ -337,10 +339,10 @@ npm run rm:action my-feature/fetch-topic-list
 ```
 
 Result:
-* Remove action type `FETCH_TOPIC_LIST_BEGIN` to `src/features/my-feature/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/constants.js`.
+* Remove action type `FETCH_TOPIC_LIST_BEGIN` to `src/features/my-feature/redux/constants.js`.
+* Remove action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/redux/constants.js`.
+* Remove action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/redux/constants.js`.
+* Remove action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/redux/constants.js`.
 * Remove the action file `src/features/my-feature/redux/fetchTopicList.js
 * Remove the import/export `fetchTopicList`, `dismissFetchTopicListError` from `src/features/my-feature/redux/actions.js`.
 * Remove the test file `src/features/my-feature/redux/fetchTopicList.test.js`.

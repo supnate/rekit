@@ -2,7 +2,7 @@
 
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router.
 
-It helps you focus on application logic instead of dealing with massive libraries, patterns, configurations etc.
+It helps you focus on business logic instead of dealing with massive libraries, patterns, configurations etc.
 
 [![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit)
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)

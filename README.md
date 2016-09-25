@@ -22,10 +22,7 @@ And here is a quick demo:
 
 [<img src="/images/youtube.png" width="400" alt="Rekit Demo"/>](https://youtu.be/9lqWoQjy-JY "Rekit Demo")
 
-For Chinese, visit the demo on Youku:
-
-[<img src="/images/youku.png" width="400" alt="Rekit Demo"/>](http://v.youku.com/v_show/id_XMTcyNTQxNzgwNA==.html "Rekit Demo")
-
+For Chinese, visit the demo on [Youku(优酷)）](http://v.youku.com/v_show/id_XMTcyNTQxNzgwNA==.html):
 
 
 ## Installation

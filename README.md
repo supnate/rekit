@@ -11,9 +11,9 @@ It helps you focus on business logic instead of dealing with massive libraries, 
 [![Demo](https://img.shields.io/badge/demo-link-blue.svg)](https://supnate.github.io/rekit-example)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-A Rekit generated application is to be scalable, testable and maintainable by using feature-oriented folder structure, one action per file pattern. This ensures application logics are well decoupled.
+A Rekit generated application is designed to be scalable, testable and maintainable by using feature-oriented folder structure, one action per file pattern. This ensures application logics are well decoupled.
 
-With Rekit sublime text plugin, it's super easy to create features, components, actions, tests, etc by side bar menus. And you can test or build your applications without leaving the editor. Besides the plugin, all the features are also available as npm scripts, they could be used within a terminal.
+With Rekit [Sublime text plugin](https://github.com/supnate/rekit-sublime), it's super easy to create features, components, actions, tests, etc by side bar menus. And you can test or build your applications without leaving the editor. Besides the plugin, all the features are also available as npm scripts, they could be used within a terminal.
 
 Here is a tutorial about how to use Rekit on Medium:
 [Using Rekit to quickly create a React app](https://medium.com/@nate_wang/using-rekit-to-quickly-create-a-react-app-108bcc07e7f)
@@ -22,7 +22,7 @@ And here is a quick demo:
 
 [<img src="/images/youtube.png" width="400" alt="Rekit Demo"/>](https://youtu.be/9lqWoQjy-JY "Rekit Demo")
 
-For Chinese, visit the demo on [Youku(优酷)）](http://v.youku.com/v_show/id_XMTcyNTQxNzgwNA==.html):
+For Chinese, visit the demo on [Youku(优酷)](http://v.youku.com/v_show/id_XMTcyNTQxNzgwNA==.html):
 
 
 ## Installation

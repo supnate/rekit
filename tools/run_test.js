@@ -89,7 +89,7 @@ function runAllTest() {
   shell.cp('-R', path.join(prjRoot, '.nyc_output/*'), cacheFolder);
   runCliTest();
   shell.cp('-R', `${cacheFolder}/*`, path.join(prjRoot, '.nyc_output'));
-  npmRun.execSync('nyc report', opts);
+  npmRun.execSync('nyc report --reporter=text-summary --reporter=lcov', opts);
   console.log('Overall coverage report: ', path.join(prjRoot, 'coverage/lcov-report/index.html'));
   shell.rm('-rf', cacheFolder);
 }

@@ -4,7 +4,7 @@
 const path = require('path');
 const shell = require('shelljs');
 const _ = require('lodash');
-const fetch = require('isomorphic-fetch');
+const request = require('request');
 const ArgumentParser = require('argparse').ArgumentParser;
 const rekitPkgJson = require('../package.json');
 
@@ -34,6 +34,7 @@ delete rekitPkgJson.devDependencies['gitbook-cli'];
 const pkgJson = {
   name: prjName,
   version: '0.0.1',
+  private: true,
   description: 'My awesome project.',
   scripts: rekitPkgJson.scripts,
   babel: rekitPkgJson.babel,
@@ -87,17 +88,9 @@ const prjConfig = {
   devDependencies: _.keys(rekitPkgJson.devDependencies),
 };
 
-console.log('Getting dependencies versions...');
-function status(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return Promise.resolve(response);
-  }
-  return Promise.reject(new Error(response.statusText));
-}
+delete prjConfig.dependencies['request'];
 
-function json(response) {
-  return response.json();
-}
+console.log('Getting dependencies versions...');
 
 function done(pkgVersions) {
   pkgJson.dependencies = _.pick(pkgVersions, prjConfig.dependencies);
@@ -110,12 +103,13 @@ function done(pkgVersions) {
   console.log('Enjoy!');
 }
 
-fetch('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.1.x.json')
-  .then(status)
-  .then(json)
-  .then(done)
-  .catch(error => {
-    console.log('Request failed', error);
+request('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.1.x.json', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+    done(JSON.parse(body));
+  } else {
+    console.log('Network failure. Please check and retry.');
+    console.log(error || body);
     shell.rm('-rf', prjPath);
     process.exit(1);
-  });
+  }
+})

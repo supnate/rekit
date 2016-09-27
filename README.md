@@ -22,14 +22,14 @@ And here is a quick demo:
 
 [<img src="/images/youtube.png" width="400" alt="Rekit Demo"/>](https://youtu.be/9lqWoQjy-JY "Rekit Demo")
 
-For Chinese, visit the demo on [Youku(优酷)](http://v.youku.com/v_show/id_XMTcyNTQxNzgwNA==.html):
+For Chinese, please visit the demo on [Youku(优酷)](http://v.youku.com/v_show/id_XMTcyNTQxNzgwNA==.html):
 
 
 ## Installation
 ```
 npm install -g rekit
 ```
-This will install a global command `rekit` to the system. Run the command to create a new project. Rekit is developed and tested on npm 3+ and node 4+, so this is the pre-condition for using Rekit.
+This will install a global command `rekit` to the system. Run the command to create a new project. Rekit is developed and tested on npm 3+ and node 4+, so this is the prerequisite for using Rekit.
 
 ## Usage
 ```
@@ -60,7 +60,7 @@ Sublime text plugin provides sidebar menus for a Rekit application by which you 
 There is a simple forum application, connected to a real backend server, created by Rekit for reference. See more introduction from: [http://github.com/supnate/rekit-example](http://github.com/supnate/rekit-example)
 
 ## Motivation
-Building web apps is hard today because there are too many technologies to learn. But it's also charming today, because there are so many great libraries helping to build complicated things in elegant ways. After enjoying creating a pretty large application mainly with React, Redux and React-router, I decided to summarize it and make the approach re-usable, so I created Rekit. Actually it is mainly based on the toolset I created for the project.
+Building web applications is hard today because there are too many technologies to learn. But it's also charming today, because there are so many great libraries helping to build complicated things in elegant ways. After enjoying creating a pretty large application mainly with React, Redux and React-router, I decided to summarize it and make the approach re-usable, so I created Rekit. Actually it is mainly based on the toolset I created for the project.
 
 While building a React + Redux + React-router application, there are many trival but important tasks to do besides the appication logic. These tasks construct a good application architecture but are not related with your application funcionalities.
 

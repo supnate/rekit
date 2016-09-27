@@ -6,33 +6,28 @@ import {
   FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
 } from './constants';
 
-/* ===== FetchRedditReactjsList ===== */
 export function fetchRedditReactjsList() {
   return dispatch => {
     dispatch({
       type: FETCH_REDDIT_REACTJS_LIST_BEGIN,
     });
-    return fetch('http://www.reddit.com/r/reactjs.json')
-      .then(response => {
-        if (response.status !== 200) {
-          throw new Error('server error');
-        }
-        return response.json();
-      })
-      .then(json => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await fetch('http://www.reddit.com/r/reactjs.json');
+        const json = await res.json();
         dispatch({
           type: FETCH_REDDIT_REACTJS_LIST_SUCCESS,
           data: json,
         });
-      })
-      .catch(err => {
+      } catch (err) {
         dispatch({
           type: FETCH_REDDIT_REACTJS_LIST_FAILURE,
           data: {
             error: err,
           },
         });
-      });
+      }
+    });
   };
 }
 
@@ -44,7 +39,6 @@ export function dismissFetchRedditReactjsListError() {
 
 export function reducer(state, action) {
   switch (action.type) {
-    /* ===== FetchRedditReactjsList ===== */
     case FETCH_REDDIT_REACTJS_LIST_BEGIN:
       return {
         ...state,

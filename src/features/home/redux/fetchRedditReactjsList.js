@@ -14,20 +14,25 @@ export function fetchRedditReactjsList() {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await fetch('http://www.reddit.com/r/reactjs.json');
-        const json = await res.json();
-        dispatch({
-          type: FETCH_REDDIT_REACTJS_LIST_SUCCESS,
-          data: json,
-        });
+        if (res.ok) {
+          const json = await res.json();
+          dispatch({
+            type: FETCH_REDDIT_REACTJS_LIST_SUCCESS,
+            data: json,
+          });
+          resolve(json);
+        } else {
+          throw new Error(res.body || res.status);
+        }
+        
       } catch (err) {
         dispatch({
           type: FETCH_REDDIT_REACTJS_LIST_FAILURE,
-          data: {
-            error: err,
-          },
+          data: {},
         });
+        reject(err);
       }
-    });
+    }).catch(err => console.log(err));
   };
 }
 

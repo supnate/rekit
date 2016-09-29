@@ -97,6 +97,7 @@
     "redux": "^3.6.0",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
+    "request": "^2.75.0",
     "reselect": "^2.5.3",
     "shelljs": "^0.7.4",
     "style-loader": "^0.13.1",

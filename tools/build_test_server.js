@@ -20,5 +20,5 @@ new WebpackDevServer(webpack(config), {
   if (err) {
     console.log(err);
   }
-  console.log(`Build test server listening at localhost:${PORT}`);
+  console.log(`Build test server listening at http://localhost:${PORT}`);
 });

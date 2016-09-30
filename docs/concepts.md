@@ -27,4 +27,4 @@ When developing a web application, we often need to request data from server sid
 It's just [Redux reducer](http://redux.js.org/docs/basics/Reducers.html).
 
 ### Container
-The top level container of the application, it usually defines the top level UI layout and it's the container of pages. They are put in `src/containers` folder. Very few containers are needed.
+The top level container of the application, it usually defines the top level UI layout and it's the container of pages. They are in `src/containers` folder. Very few containers are needed.

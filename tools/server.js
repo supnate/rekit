@@ -34,7 +34,7 @@ function startDevServer() {
     if (err) {
       console.log(err);
     }
-    console.log(`Listening at localhost:${PORT}`);
+    console.log(`Listening at http://localhost:${PORT}`);
   });
 }
 

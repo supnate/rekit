@@ -2,10 +2,10 @@
 
 Webpack is also considered one of the most difficult parts for building a React application. Luckily again Rekit setups everything for you. There are 4 webpack config files corresponding to different usage:
 
-`webpack.dev.config.js`: the dev time config.
-`webpack.dll.config.js`: the config used by webpack-dll-plugin
-`webpack.dist.config.js`: the config for dist version.
-`webpack.test.config.js`: the config for test build.
+* `webpack.dev.config.js`: the dev time config.
+* `webpack.dll.config.js`: the config used by webpack-dll-plugin
+* `webpack.dist.config.js`: the config for dist version.
+* `webpack.test.config.js`: the config for test build.
 
 #### Boost the build performance by using webpack-dll-plugin
 When a React application grows large, the build time in dev time takes long time. The `webpack-dll-plugin` could resolve the problem. There's little doc about it but there's a great article introducing it: http://engineering.invisionapp.com/post/optimizing-webpack/ . Rekit takes use the approach mentioned in the article.

@@ -12,7 +12,7 @@ export function ${CAMEL_ACTION_NAME}(args) {
     });
     const promise = new Promise((resolve, reject) => {
       window.setTimeout(() => {
-        if (!args.error) { // NOTE: args.error is only used for demo purpose
+        if (args && !args.error) { // NOTE: args.error is only used for demo purpose
           dispatch({
             type: ${SUCCESS_ACTION_TYPE},
             data: {},

@@ -19,10 +19,10 @@
     'new-cap': 0,
     'class-methods-use-this': 0,
     'react/jsx-filename-extension': 0,
-    'react/prefer-stateless-function',
-    'react/forbid-prop-types',
+    'react/prefer-stateless-function': 0,
+    'react/forbid-prop-types': 0,
     'jsx-a11y/label-has-for': 0,
     'import/prefer-default-export': 0,
-    'import/imports-first'
+    'import/imports-first': 0
   }
 }

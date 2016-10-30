@@ -143,7 +143,6 @@
     "sinon": "^1.17.5",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
-    "webpack-dashboard": "0.1.8",
     "webpack-dev-server": "^1.15.1",
     "webpack-node-externals": "^1.3.3"
   }

@@ -27,7 +27,7 @@ function startDevServer() {
     contentBase: devConfig.devServer.contentBase,
     hot: true,
     noInfo: false,
-    quiet: true,
+    quiet: false,
     https: false,
     historyApiFallback: true,
   }).listen(PORT, (err) => {

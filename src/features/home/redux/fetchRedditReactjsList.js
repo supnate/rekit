@@ -22,9 +22,8 @@ export function fetchRedditReactjsList() {
           });
           resolve(json);
         } else {
-          throw new Error(res.body || res.status);
+          throw new Error(res);
         }
-        
       } catch (err) {
         dispatch({
           type: FETCH_REDDIT_REACTJS_LIST_FAILURE,
@@ -32,7 +31,7 @@ export function fetchRedditReactjsList() {
         });
         reject(err);
       }
-    }).catch(err => console.log(err));
+    }).catch(() => {});
   };
 }
 

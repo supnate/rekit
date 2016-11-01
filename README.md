@@ -24,10 +24,6 @@ And here is a quick demo:
 
 For Chinese, please visit the demo on [Youku(优酷)](http://v.youku.com/v_show/id_XMTcyNTQxNzgwNA==.html):
 
-If you use [WeChat(微信)](http://www.wechat.com/en/), you can join the Rekit Discussion chat group by scanning below QRCode.
-
-<img src="/images/wechat_qr_code.jpg" width="200" alt="WeChat Group"/>
-
 ## Installation
 ```
 npm install -g rekit

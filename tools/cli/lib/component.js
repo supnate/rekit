@@ -4,23 +4,23 @@ const shell = require('shelljs');
 const _ = require('lodash');
 const helpers = require('./helpers');
 const inout = require('./inout');
+
+const entry = require('./entry');
 const style = require('./style');
-
-const srcDir = path.join(helpers.getProjectRoot(), 'src');
-
 
 module.exports = {
   add(feature, name, args) {
     // args:
     //  { content: string, template: string, templatePath: string, context: object }
-    let targetPath;
-    let tpl;
-    const casedName = helpers.casedName(feature, name);
-    const context = Object.assign({}, casedName, {});
-    targetPath = `${srcDir}/features/${casedName.COMPONENT_PASCAL_CASE}.js`;
-    tpl = helpers.readTemplate('Component.js');
-    inout.save(targetPath, helpers.processTemplate(tpl, context));
 
+    // create component from template
+    helpers.createFromTemplate(feature, name, 'Component.js');
+
+    // add to index.js
+    entry.add(feature, name);
+
+    // create style file
+    style.add(feature, name);
   },
 
   remove(feature, name) {
@@ -33,7 +33,7 @@ module.exports = {
     // 3. Update the path in style.less
     // 4. Search all reference in the project features project.
 
-    const content = shell.cat(helpers.mapName(_.kebabCase(source.feature), helpers.pascalCase(source.name) + '.js'));
+    const content = shell.cat(helpers.mapName(source.feature, source.name) + '.js');
     this.remove(source.feature, source.name);
     this.add(dest.feature, dest.name, { content });
     style.move(source, dest);

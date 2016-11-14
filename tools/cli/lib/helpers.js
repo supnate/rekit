@@ -3,10 +3,13 @@
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
+const inout = require('./inout');
+
+const nameCases = {};
 
 module.exports = {
   getProjectRoot() {
-    return path.join(__dirname, '../../');
+    return path.join(__dirname, '../../../');
   },
 
   ensurePathDir(fullPath) {
@@ -32,6 +35,13 @@ module.exports = {
     return _.upperFirst(_.camelCase(name));
   },
 
+  createFromTemplate(feature, name, tpl) {
+    const cases = this.nameCases(name);
+    const context = Object.assign({}, cases, {});
+    const targetPath = this.mapName(feature, name) + '.js';
+    inout.save(targetPath, this.handleTemplate(tpl, context));
+  },
+
   readTemplate(name) {
     return shell.cat(path.join(__dirname, 'templates', name)).replace(/\r/g, '');
   },
@@ -55,7 +65,7 @@ module.exports = {
     _.remove(lines, line => this.isStringMatch(line, str));
   },
 
-  appendImportLine(lines, importLine) {
+  addImportLine(lines, importLine) {
     const i = this.lastLineIndex(lines, /^import /);
     lines.splice(i + 1, 0, importLine);
   },
@@ -115,21 +125,21 @@ module.exports = {
     return _.findLastIndex(lines, l => str.test(l));
   },
 
-  getToSave(filesToSave) {
-    return function toSave(filePath, fileContent) {
-      filesToSave.push({
-        path: filePath,
-        content: _.isArray(fileContent) ? fileContent.join('\n') : fileContent,
-      });
-    };
-  },
+  // getToSave(filesToSave) {
+  //   return function toSave(filePath, fileContent) {
+  //     filesToSave.push({
+  //       path: filePath,
+  //       content: _.isArray(fileContent) ? fileContent.join('\n') : fileContent,
+  //     });
+  //   };
+  // },
 
-  saveFiles(files) {
-    console.log('Save files');
-    files.forEach(file => {
-      shell.ShellString(file.content).to(file.path);
-    });
-  },
+  // saveFiles(files) {
+  //   console.log('Save files');
+  //   files.forEach((file) => {
+  //     shell.ShellString(file.content).to(file.path);
+  //   });
+  // },
 
   splitName(name, obj) {
     // map "feature/name" to obj {feature: xx, name: yy}
@@ -143,12 +153,22 @@ module.exports = {
     return path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature), this.pascalCase(name));
   },
 
-  casedName(feature, component, page) {
-    if (!this.cases) this.cases = {};
-    if (!this.cases[name]) {
-      this.cases[name] = {};
+  mapFile(feature, fileName) {
+    return path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature), fileName);
+  },
+
+  nameCases(name) {
+    if (!nameCases[name]) {
+      nameCases[name] = {
+        PASCAL: this.pascalCase(name),
+        KEBAB: _.kebabCase(name),
+        CAMEL: _.camelCase(name),
+        SNAKE: _.snakeCase(name),
+        UPPER: _.upperCase(name),
+        LOWER: _.lowerCase(name),
+      };
     }
 
-    return this.cases[name];
+    return nameCases[name];
   }
 };

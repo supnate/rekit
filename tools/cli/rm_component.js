@@ -2,7 +2,7 @@
 // Summary:
 //  Remove a component
 // Usage:
-//  node remove_component.js feature-name componentName
+//  node remove_component.js feature-name/componentName
 
 const path = require('path');
 const _ = require('lodash');

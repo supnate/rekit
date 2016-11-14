@@ -130,4 +130,16 @@ module.exports = {
       shell.ShellString(file.content).to(file.path);
     });
   },
+
+  splitName(name, obj) {
+    // map "feature/name" to obj {feature: xx, name: yy}
+    const arr = name.split('/');
+    obj.feature = arr[0];
+    obj.name = arr[1];
+  },
+
+  mapName(feature, name) {
+    // Map a component, page name.
+    return path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature), this.pascalCase(name));
+  },
 };

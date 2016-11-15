@@ -1,5 +1,1 @@
-import DefaultPage from './DefaultPage';
-
-export {
-  DefaultPage,
-};
+export DefaultPage from './DefaultPage';

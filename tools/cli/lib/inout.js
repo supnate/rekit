@@ -1,4 +1,5 @@
 // const _ = require('lodash');
+const path = require('path');
 const shell = require('shelljs');
 
 let toSave = {};
@@ -40,12 +41,19 @@ module.exports = {
 
   flush() {
     // Delete files, then write files
-    for (const filePath of toDel) {
+    const prjRoot = path.join(__dirname, '../../../');
+    for (const filePath of Object.keys(toDel)) {
+      console.log('Deleting: ', filePath.replace(prjRoot, ''));
       shell.rm(filePath);
     }
 
-    for (const filePath of toSave) {
-      shell.ShellString(this.getLines(filePath.join('\n'))).to(filePath);
+    for (const filePath of Object.keys(toSave)) {
+      if (shell.test('-e', filePath)) {
+        console.log('Updating: ', filePath.replace(prjRoot, ''));
+      } else {
+        console.log('Creating: ', filePath.replace(prjRoot, ''));
+      }
+      shell.ShellString(this.getLines(filePath).join('\n')).to(filePath);
     }
   }
 };

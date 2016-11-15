@@ -4,8 +4,11 @@ const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
 const inout = require('./inout');
+const colors = require('colors/safe');
 
 const nameCases = {};
+
+_.pascalCase = _.flow(_.camelCase, _.upperFirst);
 
 module.exports = {
   getProjectRoot() {
@@ -31,9 +34,7 @@ module.exports = {
     }
   },
 
-  pascalCase(name) {
-    return _.upperFirst(_.camelCase(name));
-  },
+  pascalCase: _.flow(_.camelCase, _.upperFirst),
 
   createFromTemplate(feature, name, tpl) {
     const cases = this.nameCases(name);
@@ -43,7 +44,7 @@ module.exports = {
   },
 
   readTemplate(name) {
-    return shell.cat(path.join(__dirname, 'templates', name)).replace(/\r/g, '');
+    return shell.cat(path.join(__dirname, '../templates', name)).replace(/\r/g, '');
   },
 
   processTemplate(tpl, data) {
@@ -71,11 +72,7 @@ module.exports = {
   },
 
   removeImportLine(lines, modulePath) {
-    this.removeLines(lines, new RegExp(`import \{ .+ \} from '${modulePath}';`));
-  },
-
-  removeNamedImport(lines, name) {
-    this.removeLines(lines, `  ${name},`);
+    this.removeLines(lines, new RegExp(`import .+ from '${modulePath}';`));
   },
 
   addNamedExport(lines, name) {
@@ -84,7 +81,7 @@ module.exports = {
   },
 
   removeNamedExport(lines, name) {
-    console.log('removing named export: ', name);
+    console.log('Removing named export: ', name);
     this.removeLines(lines, `  ${name},`);
   },
 
@@ -149,26 +146,38 @@ module.exports = {
   },
 
   mapName(feature, name) {
-    // Map a component, page name.
-    return path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature), this.pascalCase(name));
+    // Map a component, page name to the file.
+    return this.mapFile(feature, _.pascalCase(name));
   },
 
   mapFile(feature, fileName) {
     return path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature), fileName);
   },
 
+  getTestFile(feature, name) {
+    // Map a component, page name to the test file.
+    return this.mapTestFile(feature, _.pascalCase(name) + '.test.js');
+  },
+
+  mapTestFile(feature, fileName) {
+    return path.join(this.getProjectRoot(), 'test/app/features', _.kebabCase(feature), fileName);
+  },
+
   nameCases(name) {
     if (!nameCases[name]) {
       nameCases[name] = {
-        PASCAL: this.pascalCase(name),
+        PASCAL: _.pascalCase(name),
         KEBAB: _.kebabCase(name),
         CAMEL: _.camelCase(name),
         SNAKE: _.snakeCase(name),
-        UPPER: _.upperCase(name),
-        LOWER: _.lowerCase(name),
       };
     }
 
     return nameCases[name];
+  },
+
+  fatalError(msg) {
+    console.log(colors.red('Error: ' + msg));
+    process.exit(1);
   }
 };

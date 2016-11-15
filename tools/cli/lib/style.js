@@ -1,4 +1,4 @@
-
+const shell = require('shelljs');
 const helpers = require('./helpers');
 const inout = require('./inout');
 const template = require('./template');
@@ -32,7 +32,9 @@ module.exports = {
     inout.save(targetPath, lines);
   },
 
-  move(source, target) {
-
+  move(source, dest) {
+    const content = shell.cat(helpers.mapName(source.feature, source.name) + '.less');
+    this.remove(source.feature, source.name);
+    this.add(dest.feature, dest.name, { content });
   },
 };

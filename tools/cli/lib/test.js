@@ -1,4 +1,4 @@
-
+const shell = require('shelljs');
 const helpers = require('./helpers');
 const inout = require('./inout');
 const template = require('./template');
@@ -18,7 +18,9 @@ module.exports = {
     inout.del(helpers.getTestFile(feature, name));
   },
 
-  mv(source, dest) {
-
+  move(source, dest) {
+    const content = shell.cat(helpers.getTestFile(source.feature, source.name));
+    this.remove(source.feature, source.name);
+    this.add(dest.feature, dest.name, { content });
   },
 };

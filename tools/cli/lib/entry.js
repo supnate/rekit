@@ -1,3 +1,4 @@
+'use strict';
 
 // Summary
 //  Add/remove entry from index.js for page and component.

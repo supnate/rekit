@@ -1,4 +1,5 @@
 'use strict';
+
 const expect = require('chai').expect;
 const helpers = require('./helpers');
 
@@ -43,8 +44,7 @@ describe('cli: page tests', function() { // eslint-disable-line
       '@import \'./TestPage.less\';'
     ]);
     expectLines(mapFeatureFile('index.js'), [
-      'import TestPage from \'./TestPage\';',
-      '  TestPage,',
+      'export TestPage from \'./TestPage\';',
     ]);
     expectLines(mapFeatureFile('route.js'), [
       '    { path: \'test-page\', component: TestPage },',
@@ -66,8 +66,7 @@ describe('cli: page tests', function() { // eslint-disable-line
       '@import \'./TestPage2.less\';'
     ]);
     expectLines(mapFeatureFile('index.js'), [
-      'import TestPage2 from \'./TestPage2\';',
-      '  TestPage2,',
+      'export TestPage2 from \'./TestPage2\';',
     ]);
     expectLines(mapFeatureFile('route.js'), [
       '    { path: \'test-path\', component: TestPage2 },',

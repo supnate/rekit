@@ -1,26 +1,26 @@
+'use strict';
+
 const shell = require('shelljs');
 const helpers = require('./helpers');
 const inout = require('./inout');
 const template = require('./template');
 
 module.exports = {
-  add(feature, name, args) {
+  add(feature, component, args) {
     args = args || {};
-    template.create(helpers.getTestFile(feature, name), {
-      content: args.content,
-      template: args.template || helpers.readTemplate('Component.test.js'),
-      context: Object.assign({ feature, component: name }, args.context || {}),
-      templateOptions: args.templateOptions || {},
-    });
+    template.create(helpers.getTestFile(feature, component), Object.assign({}, args, {
+      templateFile: args.templateFile || 'Component.test.js',
+      context: Object.assign({ feature, component }, args.context || {}),
+    }));
   },
 
-  remove(feature, name) {
-    inout.del(helpers.getTestFile(feature, name));
+  remove(feature, component) {
+    inout.del(helpers.getTestFile(feature, component));
   },
 
   move(source, dest) {
-    const content = shell.cat(helpers.getTestFile(source.feature, source.name));
-    this.remove(source.feature, source.name);
-    this.add(dest.feature, dest.name, { content });
+    const content = shell.cat(helpers.getTestFile(source.feature, source.component));
+    this.remove(source.feature, source.component);
+    this.add(dest.feature, dest.component, { content });
   },
 };

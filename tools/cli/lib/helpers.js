@@ -3,7 +3,6 @@
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
-const inout = require('./inout');
 const colors = require('colors/safe');
 
 const nameCases = {};
@@ -36,15 +35,12 @@ module.exports = {
 
   pascalCase: _.flow(_.camelCase, _.upperFirst),
 
-  createFromTemplate(feature, name, tpl) {
-    const cases = this.nameCases(name);
-    const context = Object.assign({}, cases, {});
-    const targetPath = this.mapName(feature, name) + '.js';
-    inout.save(targetPath, this.handleTemplate(tpl, context));
-  },
-
-  readTemplate(name) {
-    return shell.cat(path.join(__dirname, '../templates', name)).replace(/\r/g, '');
+  readTemplate(file) {
+    const tpl = path.join(__dirname, '../templates', file);
+    if (!shell.test('-e', tpl)) {
+      this.fatalError('Template file does\'t exist: ', tpl);
+    }
+    return shell.cat(tpl).replace(/\r/g, '');
   },
 
   processTemplate(tpl, data) {
@@ -150,6 +146,11 @@ module.exports = {
     return this.mapFile(feature, _.pascalCase(name));
   },
 
+  mapComponent(feature, name) {
+    // Map a component, page name to the file.
+    return this.mapFile(feature, _.pascalCase(name));
+  },
+
   mapFile(feature, fileName) {
     return path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature), fileName);
   },
@@ -176,8 +177,50 @@ module.exports = {
     return nameCases[name];
   },
 
+  assertNotEmpty(str, name) {
+    if (!str) {
+      this.fatalError(name + ' should not be empty.');
+    }
+  },
+
+  assertFeatureExist(feature) {
+    if (!shell.test('-e', path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature)))) {
+      this.fatalError('Feature doesn\'t exist: ' + feature);
+    }
+  },
+
+  assertFeatureNotExist(feature) {
+    if (shell.test('-e', path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature)))) {
+      this.fatalError('Feature doesn\'t exist: ' + feature);
+    }
+  },
+
+  assertComponentExist(feature, name) {
+    if (!shell.test('-e', this.mapName(feature, name) + '.js')) {
+      this.fatalError('Component doesn\'t exist: ' + feature);
+    }
+  },
+
+  assertComponentNotExist(feature, name) {
+    if (shell.test('-e', this.mapName(feature, name) + '.js')) {
+      this.fatalError('Component already exists: ' + feature);
+    }
+  },
+
+  assertFileExist(file) {
+    if (!shell.test('-e', file)) {
+      this.fatalError('File doesn\'t exist: ' + file);
+    }
+  },
+
+  assertFileNotExist(file) {
+    if (shell.test('-e', file)) {
+      this.fatalError('File already exists: ' + file);
+    }
+  },
+
   fatalError(msg) {
     console.log(colors.red('Error: ' + msg));
-    process.exit(1);
-  }
+    throw new Error('Error: ' + msg);
+  },
 };

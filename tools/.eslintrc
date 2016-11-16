@@ -3,7 +3,8 @@
     'strict': 0,
     'prefer-template': 0,
     'one-var': 0,
-    'no-param-reassign': 0
+    'no-param-reassign': 0,
+    'one-var-declaration-per-line': 0
   },
   'globals': {
     'document': true,

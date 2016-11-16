@@ -2,16 +2,12 @@ import App from '../containers/App';
 
 import { PageNotFound } from '../components';
 import homeRoute from '../features/home/route';
-import test2Route from '../features/test-2/route';
-import test3Route from '../features/test-3/route';
 
 const routes = [{
   path: '/',
   component: App,
   childRoutes: [
     homeRoute,
-    test2Route,
-    test3Route,
     { path: '*', name: 'Page not found', component: PageNotFound },
   ],
 }];

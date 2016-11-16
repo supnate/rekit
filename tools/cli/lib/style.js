@@ -1,40 +1,40 @@
+'use strict';
+
 const shell = require('shelljs');
 const helpers = require('./helpers');
 const inout = require('./inout');
 const template = require('./template');
 
 module.exports = {
-  add(feature, name, args) {
-    // create style from template
+  add(feature, component, args) {
+    // Create style file for a component
     args = args || {};
-    template.create(helpers.mapName(feature, name) + '.less', {
-      content: args.content,
-      template: args.template || helpers.readTemplate('Component2.less'),
-      context: Object.assign({ feature, component: name, depth: 2 }, args.context || {}),
-      templateOptions: args.templateOptions || {},
-      force: args.force,
-    });
+    template.create(helpers.mapName(feature, component) + '.less', Object.assign({}, args, {
+      templateFile: args.templateFile || 'Component.less',
+      context: Object.assign({ feature, component, depth: 2 }, args.context || {}),
+    }));
 
     // add to style.less
     const targetPath = helpers.mapFile(feature, 'style.less');
     const lines = inout.getLines(targetPath);
     const i = helpers.lastLineIndex(lines, '@import ');
-    lines.splice(i + 1, 0, `@import './${helpers.pascalCase(name)}.less';`);
+    lines.splice(i + 1, 0, `@import './${helpers.pascalCase(component)}.less';`);
     inout.save(targetPath, lines);
   },
 
-  remove(feature, name) {
-    inout.del(helpers.mapName(feature, name) + '.less');
+  remove(feature, component) {
+    // Remove style file of a component
+    inout.del(helpers.mapName(feature, component) + '.less');
 
     const targetPath = helpers.mapFile(feature, 'style.less');
     const lines = inout.getLines(targetPath);
-    helpers.removeLines(lines, `@import './${helpers.pascalCase(name)}.less';`);
+    helpers.removeLines(lines, `@import './${helpers.pascalCase(component)}.less';`);
     inout.save(targetPath, lines);
   },
 
   move(source, dest) {
-    const content = shell.cat(helpers.mapName(source.feature, source.name) + '.less');
-    this.remove(source.feature, source.name);
-    this.add(dest.feature, dest.name, { content });
+    const content = shell.cat(helpers.mapName(source.feature, source.component) + '.less');
+    this.remove(source.feature, source.component);
+    this.add(dest.feature, dest.component, { content });
   },
 };

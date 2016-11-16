@@ -1,1 +1,0 @@
-export const TEST_3_TEST_ACTION = 'TEST_3_TEST_ACTION';

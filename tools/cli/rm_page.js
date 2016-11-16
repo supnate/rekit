@@ -1,66 +1,98 @@
 'use strict';
-// Summary:
-//  Add a page
-// Usage:
-//  node remove_page.js featureName pageName
-// Example:
-//  node remove_page.js employee ListView
 
-const path = require('path');
-const _ = require('lodash');
-const shell = require('shelljs');
-const helpers = require('./helpers');
+const program = require('commander');
+const inout = require('./lib/inout');
+const component = require('./lib/component');
+const route = require('./lib/route');
+const style = require('./lib/style');
+const test = require('./lib/test');
+const colors = require('colors/safe');
 
-const arr = (process.argv[2] || '').split('/');
-const featureName = _.kebabCase(arr[0]);
-let pageName = arr[1];
+let feature;
+let name;
 
-if (!featureName || !pageName) {
-  console.log('Error: Please set the feature name and page name');
-  process.exit(1);
-}
+program
+  .arguments('<page>')
+  .action((arg1) => {
+    const arr = arg1.split('/');
+    feature = arr[0];
+    name = arr[1];
+  })
+  .parse(process.argv);
 
-pageName = helpers.pascalCase(pageName);
-const filesToSave = [];
-const toSave = helpers.getToSave(filesToSave);
+component.remove(feature, name);
+route.remove(feature, name);
+style.remove(feature, name);
+test.remove(feature, name);
 
-const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
+inout.flush();
 
-let lines;
-let targetPath;
+console.log(colors.green(`✨  Remove page success:  ${feature}/${name}`));
 
-// Remove files
-shell.rm(`${targetDir}/${pageName}.js`);
-shell.rm(`${targetDir}/${pageName}.less`);
 
-/* ==== Remove from style.less ==== */
-console.log('Remove entry from style.less');
-targetPath = path.join(targetDir, 'style.less');
-lines = helpers.getLines(targetPath);
-_.pull(lines, `@import './${pageName}.less';`);
-toSave(targetPath, lines);
+// 'use strict';
+// // Summary:
+// //  Add a page
+// // Usage:
+// //  node remove_page.js featureName pageName
+// // Example:
+// //  node remove_page.js employee ListView
 
-/* ==== Remove entry from index.js ==== */
-console.log('Remove entry from index.js');
-targetPath = path.join(targetDir, 'index.js');
-lines = helpers.getLines(targetPath);
-helpers.removeLines(lines, `import ${pageName} from './${pageName}';`);
-helpers.removeLines(lines, `  ${pageName},`);
-toSave(targetPath, lines);
+// const path = require('path');
+// const _ = require('lodash');
+// const shell = require('shelljs');
+// const helpers = require('./helpers');
 
-/* ==== Remove from route.js ==== */
-console.log('Remove from route.js');
-targetPath = path.join(targetDir, 'route.js');
-lines = helpers.getLines(targetPath);
-helpers.removeLines(lines, `  ${pageName},`);
-helpers.removeLines(lines, `component: ${pageName} }`);
-toSave(targetPath, lines);
+// const arr = (process.argv[2] || '').split('/');
+// const featureName = _.kebabCase(arr[0]);
+// let pageName = arr[1];
 
-// Remove test file
-console.log('Removing test file');
-const testFile = path.join(helpers.getProjectRoot(), `test/app/features/${featureName}/${pageName}.test.js`);
-shell.rm(testFile);
+// if (!featureName || !pageName) {
+//   console.log('Error: Please set the feature name and page name');
+//   process.exit(1);
+// }
 
-// Save files
-helpers.saveFiles(filesToSave);
-console.log('Remove page success: ', pageName);
+// pageName = helpers.pascalCase(pageName);
+// const filesToSave = [];
+// const toSave = helpers.getToSave(filesToSave);
+
+// const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
+
+// let lines;
+// let targetPath;
+
+// // Remove files
+// shell.rm(`${targetDir}/${pageName}.js`);
+// shell.rm(`${targetDir}/${pageName}.less`);
+
+// /* ==== Remove from style.less ==== */
+// console.log('Remove entry from style.less');
+// targetPath = path.join(targetDir, 'style.less');
+// lines = helpers.getLines(targetPath);
+// _.pull(lines, `@import './${pageName}.less';`);
+// toSave(targetPath, lines);
+
+// /* ==== Remove entry from index.js ==== */
+// console.log('Remove entry from index.js');
+// targetPath = path.join(targetDir, 'index.js');
+// lines = helpers.getLines(targetPath);
+// helpers.removeLines(lines, `import ${pageName} from './${pageName}';`);
+// helpers.removeLines(lines, `  ${pageName},`);
+// toSave(targetPath, lines);
+
+// /* ==== Remove from route.js ==== */
+// console.log('Remove from route.js');
+// targetPath = path.join(targetDir, 'route.js');
+// lines = helpers.getLines(targetPath);
+// helpers.removeLines(lines, `  ${pageName},`);
+// helpers.removeLines(lines, `component: ${pageName} }`);
+// toSave(targetPath, lines);
+
+// // Remove test file
+// console.log('Removing test file');
+// const testFile = path.join(helpers.getProjectRoot(), `test/app/features/${featureName}/${pageName}.test.js`);
+// shell.rm(testFile);
+
+// // Save files
+// helpers.saveFiles(filesToSave);
+// console.log('Remove page success: ', pageName);

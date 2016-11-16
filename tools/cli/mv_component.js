@@ -1,3 +1,5 @@
+'use strict';
+
 // Summary:
 //  Move/rename a component
 // Usage:

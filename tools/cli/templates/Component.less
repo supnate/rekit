@@ -1,5 +1,5 @@
-@import '${CSS_MIXINS_PATH}';
+@import '${_.repeat('../', depth) + 'styles/mixins.less'}';
 
-.${CSS_PREFIX}-${KEBAB_COMPONENT_NAME} {
+.${_.kebabCase(feature || 'component')}-${_.kebabCase(component)} {
 
 }

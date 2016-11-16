@@ -1,3 +1,4 @@
+'use strict';
 
 const shell = require('shelljs');
 const helpers = require('./helpers');
@@ -6,26 +7,28 @@ const template = require('./template');
 const entry = require('./entry');
 
 module.exports = {
-  add(feature, name, args) {
-    // args:
-    //  { content: string, template: string, templatePath: string, context: object }
+  add(feature, component, args) {
+    helpers.assertNotEmpty(feature, 'feature');
+    helpers.assertNotEmpty(component, 'component name');
+    helpers.assertFeatureExist(feature);
 
     // create component from template
     args = args || {};
-    template.create(helpers.mapName(feature, name) + '.js', {
-      content: args.content,
-      template: args.template || helpers.readTemplate('Component2.js'),
-      context: Object.assign({ feature, component: name, depth: 2 }, args.context || {}),
-      templateOptions: args.templateOptions || {},
-    });
+    template.create(helpers.mapComponent(feature, component) + '.js', Object.assign({}, args, {
+      templateFile: args.templateFile || 'Component.js',
+      context: Object.assign({ feature, component }, args.context || {}),
+    }));
 
     // add to index.js
-    entry.add(feature, name);
+    entry.add(feature, component);
   },
 
-  remove(feature, name) {
-    inout.del(helpers.mapName(feature, name) + '.js');
-    entry.remove(feature, name);
+  remove(feature, component) {
+    helpers.assertNotEmpty(feature, 'feature');
+    helpers.assertNotEmpty(component, 'component name');
+
+    inout.del(helpers.mapComponent(feature, component) + '.js');
+    entry.remove(feature, component);
   },
 
   move(source, dest) {
@@ -33,8 +36,8 @@ module.exports = {
     // 2. Update the path in index.js
     // 3. Search all reference in the project features project.
 
-    const content = shell.cat(helpers.mapName(source.feature, source.name) + '.js');
-    this.remove(source.feature, source.name);
-    this.add(dest.feature, dest.name, { content });
+    const content = shell.cat(helpers.mapComponent(source.feature, source.component) + '.js');
+    this.remove(source.feature, source.component);
+    this.add(dest.feature, dest.component, { content });
   },
 };

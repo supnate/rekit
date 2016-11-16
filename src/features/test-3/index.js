@@ -1,1 +1,0 @@
-export DefaultPage from './DefaultPage';

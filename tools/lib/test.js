@@ -23,4 +23,20 @@ module.exports = {
     this.remove(source.feature, source.component);
     this.add(dest.feature, dest.component, { content });
   },
+
+  addAction(feature, name, args) {
+    args = args || {};
+    template.create(helpers.getTestFile(feature, component), Object.assign({}, args, {
+      templateFile: args.templateFile || 'Component.test.js',
+      context: Object.assign({ feature, component }, args.context || {}),
+    }));
+  },
+
+  removeAction(feature, name) {
+
+  },
+
+  moveAction(source, dest) {
+
+  },
 };

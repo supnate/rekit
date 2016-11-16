@@ -26,6 +26,7 @@ module.exports = {
   remove(feature, component) {
     helpers.assertNotEmpty(feature, 'feature');
     helpers.assertNotEmpty(component, 'component name');
+    helpers.assertFeatureExist(feature);
 
     inout.del(helpers.mapComponent(feature, component) + '.js');
     entry.remove(feature, component);

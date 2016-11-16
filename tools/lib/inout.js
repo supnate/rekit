@@ -1,8 +1,8 @@
 'use strict';
-// const _ = require('lodash');
-const path = require('path');
+
 const shell = require('shelljs');
 const colors = require('colors/safe');
+const helpers = require('./helpers');
 
 let toSave = {};
 let toDel = {};
@@ -41,19 +41,29 @@ module.exports = {
     fileLines = {};
   },
 
+  log(label, color, filePath) {
+    const p = filePath.replace(helpers.getProjectRoot(), '');
+    console.log(colors[color](label + p));
+  },
+
   flush() {
-    // Delete files, then write files
-    const prjRoot = path.join(__dirname, '../../../');
+    // Delete files first, then write files
+
     for (const filePath of Object.keys(toDel)) {
-      console.log(colors.grey('Deleting: ' + filePath.replace(prjRoot, '')));
-      shell.rm(filePath);
+      if (!shell.test('-e', filePath)) {
+        this.log('No file to delete: ', 'gray', filePath);
+      } else {
+        shell.rm(filePath);
+        this.log('Deleted: ', 'magenta', filePath);
+      }
     }
+
 
     for (const filePath of Object.keys(toSave)) {
       if (shell.test('-e', filePath)) {
-        console.log(colors.grey('Updating: ' + filePath.replace(prjRoot, '')));
+        this.log('Updated: ', 'yellow', filePath);
       } else {
-        console.log(colors.grey('Creating: ' + filePath.replace(prjRoot, '')));
+        this.log('Created: ', 'cyan', filePath);
       }
       shell.ShellString(this.getLines(filePath).join('\n')).to(filePath);
     }

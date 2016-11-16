@@ -7,11 +7,13 @@ const colors = require('colors/safe');
 
 const nameCases = {};
 
+// I just guess helpers is always loaded before lodash is used...
 _.pascalCase = _.flow(_.camelCase, _.upperFirst);
+_.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
 
 module.exports = {
   getProjectRoot() {
-    return path.join(__dirname, '../../../');
+    return path.join(__dirname, '../../');
   },
 
   ensurePathDir(fullPath) {
@@ -149,6 +151,10 @@ module.exports = {
   mapComponent(feature, name) {
     // Map a component, page name to the file.
     return this.mapFile(feature, _.pascalCase(name));
+  },
+
+  getReduxFile(feature, name) {
+    return this.mapFile(feature, 'redux/' + _.camelCase(name) + '.js');
   },
 
   mapFile(feature, fileName) {

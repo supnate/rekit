@@ -1,16 +1,16 @@
 import {
-  ${ACTION_TYPE},
+  ${_.upperSnakeCase(actionType)},
 } from './constants';
 
-export function ${CAMEL_ACTION_NAME}() {
+export function ${_.camelCase(action)}() {
   return {
-    type: ${ACTION_TYPE},
+    type: ${_.upperSnakeCase(actionType)},
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case ${ACTION_TYPE}:
+    case ${_.upperSnakeCase(actionType)}:
       return {
         ...state,
       };

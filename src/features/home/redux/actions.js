@@ -1,14 +1,6 @@
 // AUTO MAINTAINED FILE: DO NOT CHANGE
 
-import { counterPlusOne } from './counterPlusOne';
-import { counterMinusOne } from './counterMinusOne';
-import { resetCounter } from './resetCounter';
-import { fetchRedditReactjsList, dismissFetchRedditReactjsListError } from './fetchRedditReactjsList';
-
-export {
-  counterPlusOne,
-  counterMinusOne,
-  resetCounter,
-  fetchRedditReactjsList,
-  dismissFetchRedditReactjsListError,
-};
+export { counterPlusOne } from './counterPlusOne';
+export { counterMinusOne } from './counterMinusOne';
+export { resetCounter } from './resetCounter';
+export { fetchRedditReactjsList, dismissFetchRedditReactjsListError } from './fetchRedditReactjsList';

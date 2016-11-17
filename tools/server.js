@@ -12,6 +12,7 @@ const PORT = require('../package.json').webpackDevServerPort;
 function startDevServer() {
   devConfig.entry = {
     main: [
+      'react-hot-loader/patch',
       `webpack-dev-server/client?http://localhost:${PORT}`,
       'webpack/hot/only-dev-server',
       './styles/index.less',

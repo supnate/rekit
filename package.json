@@ -39,10 +39,10 @@
     "docs:publish": "npm run docs:prepare && rm -rf _book && gitbook build"
   },
   "babel": {
-    "presets": [
-      "es2015",
-      "react",
-      "babel-preset-stage-0"
+      "presets": [
+          "es2015",
+          "react",
+          "babel-preset-stage-0"
     ],
     "plugins": [
       "lodash",

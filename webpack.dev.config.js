@@ -32,7 +32,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules|build/,
-        loader: 'react-hot-loader!babel-loader?cacheDirectory=true'
+        loader: 'babel-loader?cacheDirectory=true'
       }, {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'

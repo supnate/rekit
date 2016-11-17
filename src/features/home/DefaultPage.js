@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Hello, RedditList } from './';
+import { Hello, RedditList } from './index';
 import * as actions from './redux/actions';
 
 export class DefaultPage extends Component {

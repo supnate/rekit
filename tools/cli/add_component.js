@@ -30,7 +30,7 @@ if (featureName) {
   targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
 }
 
-if (shell.test('-e', path.join(targetDir, `${componentName}.*`))) {
+if (shell.test('-e', path.join(targetDir, `${componentName}.js`))) {
   console.log(`Error: Component has been existed: ${componentName}`);
   process.exit(1);
 }

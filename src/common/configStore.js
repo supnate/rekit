@@ -22,7 +22,7 @@ export default function configureStore(initialState) {
     applyMiddleware(...middlewares),
     devToolsExtension
   ));
-
+  /* istanbul ignore if  */
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('./rootReducer', () => {

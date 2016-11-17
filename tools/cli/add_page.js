@@ -25,7 +25,7 @@ if (!featureName || !pageName) {
 pageName = _.upperFirst(_.camelCase(pageName));
 
 const targetDir = path.join(helpers.getProjectRoot(), `src/features/${featureName}`);
-if (shell.test('-e', path.join(targetDir, `${pageName}.*`))) {
+if (shell.test('-e', path.join(targetDir, `${pageName}.js`))) {
   console.log(`Error: Page has been existed: ${pageName}`);
   process.exit(1);
 }

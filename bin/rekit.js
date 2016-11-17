@@ -103,8 +103,8 @@ function done(pkgVersions) {
   console.log('Enjoy!');
 }
 
-request('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.1.x.json', function (error, response, body) {
-  if (!error && response.statusCode == 200) {
+request('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.1.1.x.json', function (error, response, body) {
+  if (!error && response.statusCode === 200) {
     done(JSON.parse(body));
   } else {
     console.log('Network failure. Please check and retry.');

@@ -21,6 +21,7 @@ render(
 );
 
 // Hot Module Replacement API
+/* istanbul ignore if  */
 if (module.hot) {
   module.hot.accept('./containers/Root', () => {
     const NextRoot = require('./containers/Root').default; // eslint-disable-line

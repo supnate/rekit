@@ -26,14 +26,14 @@ module.exports = {
 
   addAction(feature, name, args) {
     args = args || {};
-    template.create(helpers.getTestFile(feature, component), Object.assign({}, args, {
-      templateFile: args.templateFile || 'Component.test.js',
-      context: Object.assign({ feature, component }, args.context || {}),
+    template.create(helpers.getReduxTestFile(feature, name), Object.assign({}, args, {
+      templateFile: args.templateFile || 'action.test.js',
+      context: Object.assign({ feature, action: name, actionType: args.actionType || name }, args.context || {}),
     }));
   },
 
   removeAction(feature, name) {
-
+    inout.del(helpers.getReduxTestFile(feature, name));
   },
 
   moveAction(source, dest) {

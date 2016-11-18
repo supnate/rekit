@@ -1,26 +1,26 @@
 import {
-  ${BEGIN_ACTION_TYPE},
-  ${SUCCESS_ACTION_TYPE},
-  ${FAILURE_ACTION_TYPE},
-  ${DISMISS_ERROR_ACTION_TYPE},
+  AA_1_BEGIN,
+  AA_1_SUCCESS,
+  AA_1_FAILURE,
+  AA_1_DISMISS_ERROR,
 } from './constants';
 
-export function ${CAMEL_ACTION_NAME}(args) {
+export function aa1(args) {
   return (dispatch) => {
     dispatch({
-      type: ${BEGIN_ACTION_TYPE},
+      type: AA_1_BEGIN,
     });
     const promise = new Promise((resolve, reject) => {
       window.setTimeout(() => {
         if (args && !args.error) { // NOTE: args.error is only used for demo purpose
           dispatch({
-            type: ${SUCCESS_ACTION_TYPE},
+            type: AA_1_SUCCESS,
             data: {},
           });
           resolve();
         } else {
           dispatch({
-            type: ${FAILURE_ACTION_TYPE},
+            type: AA_1_FAILURE,
             data: {
               error: 'some error',
             },
@@ -34,39 +34,39 @@ export function ${CAMEL_ACTION_NAME}(args) {
   };
 }
 
-export function dismiss${_.pascalCase(action)}Error() {
+export function dismissAa1Error() {
   return {
-    type: ${DISMISS_ERROR_ACTION_TYPE},
+    type: AA_1_DISMISS_ERROR,
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case ${BEGIN_ACTION_TYPE}:
+    case AA_1_BEGIN:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Pending: true,
-        ${CAMEL_ACTION_NAME}Error: null,
+        aa1Pending: true,
+        aa1Error: null,
       };
 
-    case ${SUCCESS_ACTION_TYPE}:
+    case AA_1_SUCCESS:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Pending: false,
-        ${CAMEL_ACTION_NAME}Error: null,
+        aa1Pending: false,
+        aa1Error: null,
       };
 
-    case ${FAILURE_ACTION_TYPE}:
+    case AA_1_FAILURE:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Pending: false,
-        ${CAMEL_ACTION_NAME}Error: action.data.error,
+        aa1Pending: false,
+        aa1Error: action.data.error,
       };
 
-    case ${DISMISS_ERROR_ACTION_TYPE}:
+    case AA_1_DISMISS_ERROR:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Error: null,
+        aa1Error: null,
       };
 
     default:

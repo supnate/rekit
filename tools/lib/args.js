@@ -3,28 +3,39 @@
 // Summary:
 //  Parse args for Rekit command line tools.
 
-const program = require('commander');
+const ArgumentParser = require('argparse').ArgumentParser;
 
-function splitSlash(arg) {
-  const arr = arg.split('/');
-  return {
-    feature: arr[0],
-    name: arr[1],
-  };
-}
+const parser = new ArgumentParser({
+  addHelp: true,
+  description: 'Create component, page, action, or test for a Rekit project.'
+});
 
-module.exports = {
-  parse1() {
-    // Parse args for adding/removing components or pages.
-    program
-      .option('-c, --component <feature>/<name>', 'Add component.', splitSlash)
-      .option('-p, --page <feature>/<name>', 'Add page.', splitSlash)
-      .option('-a, --action <feature>/<name>', 'Add action.', splitSlash)
-      .option('-A, --async-action <feature>/<name>', 'Add async action.', splitSlash)
-      .option('-t, --test <feature>/<name>', 'Add test.', splitSlash)
-      .option('-u, --url-path <url-path>', 'Add url path for page.')
-      .option('-T, --action-type <action-type>', 'Action type for sync action.')
-      .parse(process.argv);
-    return program;
-  },
-};
+parser.addArgument('type', {
+  help: 'Type of element to create: one of [component, page, action, async-action, test]',
+  metavar: 'type',
+  choices: ['component', 'page', 'action', 'async-action', 'test'],
+});
+
+parser.addArgument('name', {
+  help: 'Name of the element.',
+});
+
+parser.addArgument(['-u', '--url-path'], {
+  help: 'Url path for page, defaults to kebab case of the page name, e.g., page-name.',
+  dest: 'urlPath',
+  metavar: 'urlPath',
+});
+
+parser.addArgument(['-t', '--action-type'], {
+  help: 'Action type for sync action, defaults to upper snake case of the action name, e.g., ACTION_NAME.',
+  dest: 'actionType',
+  metavar: 'actionType',
+});
+
+const res = parser.parseArgs();
+
+const arr = res.name.split('/');
+res.feature = arr[0];
+res.name = arr[1];
+
+module.exports = res;

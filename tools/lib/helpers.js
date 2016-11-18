@@ -157,6 +157,10 @@ module.exports = {
     return this.mapFile(feature, 'redux/' + _.camelCase(name) + '.js');
   },
 
+  getReduxTestFile(feature, name) {
+    return this.mapTestFile(feature, 'redux/' + _.camelCase(name) + '.test.js');
+  },
+
   mapFile(feature, fileName) {
     return path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature), fileName);
   },

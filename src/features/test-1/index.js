@@ -1,5 +1,4 @@
-export Tc from './Tc';
-export Tc2 from './Tc2';
+export TestPage1 from './TestPage1';
 
 export {
 };

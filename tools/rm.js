@@ -1,46 +1,51 @@
 /* eslint no-cond-assign: 0*/
 'use strict';
 // Summary:
-//   Add a Rekit element.
+//   Remove a Rekit element.
 //
-// Example:
-//   node rm.js -c, --component <feature>/<name>
-//   node rm.js -p, --page <feature>/<name> -u, --url-path [url-path]
-//   node rm.js -a, --action <feature>/<name> -t, --action-type [action-type]
-//   node rm.js -A, --async-action <feature>/<name>
 
-const lib = require('./lib');
+const args = require('./lib/args');
+const inout = require('./lib/inout');
+const component = require('./lib/component');
+const route = require('./lib/route');
+const style = require('./lib/style');
+const test = require('./lib/test');
+const action = require('./lib/action');
 
 console.time('✨  Done');
-const program = lib.args.parse1();
 
-let args;
-if (args = program.component) {
-  lib.component.remove(args.feature, args.name);
-  lib.style.remove(args.feature, args.name);
-  lib.test.remove(args.feature, args.name);
+const feature = args.feature;
+const name = args.name;
+
+switch (args.type) {
+  case 'component':
+    component.remove(feature, name);
+    style.remove(feature, name);
+    test.remove(feature, name);
+    break;
+
+  case 'page':
+    component.remove(feature, name);
+    route.remove(feature, name, args.urlPath);
+    style.remove(feature, name);
+    test.remove(feature, name);
+    break;
+
+  case 'action':
+    action.remove(feature, name, args.actionType);
+    test.removeAction(feature, name);
+    break;
+
+  case 'async-action':
+    action.removeAsync(feature, name);
+    // test.removeAction(feature, name);
+    break;
+
+  default:
+    break;
 }
 
-if (args = program.page) {
-  lib.component.remove(args.feature, args.name);
-  lib.route.remove(args.feature, args.name);
-  lib.style.remove(args.feature, args.name);
-  lib.test.remove(args.feature, args.name);
-}
+inout.flush();
 
-if (args = program.action) {
-  lib.action.remove(args.feature, args.name, args.actionType);
-}
-
-if (args = program.asyncAction) {
-
-}
-
-if (args = program.test) {
-
-}
-
-lib.inout.flush();
-console.log('');
 console.timeEnd('✨  Done');
 console.log('');

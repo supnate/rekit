@@ -1,45 +1,66 @@
 /* eslint no-cond-assign: 0*/
 'use strict';
-// Summary:
-//   Add a Rekit element.
-//
-// Example:
-//   node add.js -c, --component <feature>/<name>
-//   node add.js -p, --page <feature>/<name> -u, --url-path [url-path]
-//   node add.js -a, --action <feature>/<name> -T, --action-type [action-type]
-//   node add.js -A, --async-action <feature>/<name>
-//   node add.js -t, --test <feature>/<name>
+// usage: add [-h] [-v] [-u urlPath] [-t actionType] type name
 
-const lib = require('./lib');
+// Create component, page, action, or test for a Rekit project.
+
+// Positional arguments:
+//   type                  Type of element to create: one of [component, page,
+//                         action, async-action, test]
+//   name                  Name of the element.
+
+// Optional arguments:
+//   -h, --help            Show this help message and exit.
+//   -v, --version         Show program's version number and exit.
+//   -u urlPath, --url-path urlPath
+//                         Url path for page, defaults to kebab case of the page
+//                         name, e.g., page-name.
+//   -t actionType, --action-type actionType
+//                         Action type for sync action, defaults to upper snake
+//                         case of the action name, e.g., ACTION_NAME.
+
+const args = require('./lib/args');
+const inout = require('./lib/inout');
+const component = require('./lib/component');
+const route = require('./lib/route');
+const style = require('./lib/style');
+const test = require('./lib/test');
+const action = require('./lib/action');
 
 console.time('✨  Done');
-const program = lib.args.parse1();
-let args;
-if (args = program.component) {
-  lib.component.add(args.feature, args.name);
-  lib.style.add(args.feature, args.name);
-  lib.test.add(args.feature, args.name);
+
+const feature = args.feature;
+const name = args.name;
+
+switch (args.type) {
+  case 'component':
+    component.add(feature, name);
+    style.add(feature, name);
+    test.add(feature, name);
+    break;
+
+  case 'page':
+    component.add(feature, name, { templateFile: 'Page.js' });
+    route.add(feature, name, args.urlPath);
+    style.add(feature, name);
+    test.add(feature, name, { templateFile: 'Page.test.js' });
+    break;
+
+  case 'action':
+    action.add(feature, name, { actionType: args.actionType });
+    test.addAction(feature, name, { actionType: args.actionType });
+    break;
+
+  case 'async-action':
+    action.addAsync(feature, name);
+    // test.addAction(feature, name);
+    break;
+
+  default:
+    break;
 }
 
-if (args = program.page) {
-  lib.component.add(args.feature, args.name, { templateFile: 'Page.js' });
-  lib.route.add(args.feature, args.name, program.urlPath);
-  lib.style.add(args.feature, args.name);
-  lib.test.add(args.feature, args.name, { templateFile: 'Page.test.js' });
-}
+inout.flush();
 
-if (args = program.action) {
-  lib.action.add(args.feature, args.name, args.actionType);
-}
-
-if (args = program.asyncAction) {
-}
-
-if (args = program.test) {
-
-}
-
-lib.inout.flush();
-console.log('');
 console.timeEnd('✨  Done');
 console.log('');

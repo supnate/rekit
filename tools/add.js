@@ -20,7 +20,7 @@
 //                         case of the action name, e.g., ACTION_NAME.
 
 const args = require('./lib/args');
-const inout = require('./lib/inout');
+const vio = require('./lib/vio');
 const component = require('./lib/component');
 const route = require('./lib/route');
 const style = require('./lib/style');
@@ -53,14 +53,14 @@ switch (args.type) {
 
   case 'async-action':
     action.addAsync(feature, name);
-    // test.addAction(feature, name);
+    test.addAction(feature, name, { isAsync: true });
     break;
 
   default:
     break;
 }
 
-inout.flush();
+vio.flush();
 
 console.timeEnd('✨  Done');
 console.log('');

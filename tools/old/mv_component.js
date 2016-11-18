@@ -10,7 +10,7 @@ const _ = require('lodash');
 const shell = require('shelljs');
 const program = require('commander');
 const helpers = require('./lib/helpers');
-const inout = require('./lib/inout');
+const vio = require('./lib/vio');
 const component = require('./lib/component');
 const style = require('./lib/style');
 const test = require('./lib/test');
@@ -34,4 +34,4 @@ component.move(source, dest);
 style.move(source, dest);
 test.move(source, dest);
 
-inout.flush();
+vio.flush();

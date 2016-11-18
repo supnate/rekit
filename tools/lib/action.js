@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const helpers = require('./helpers');
-const inout = require('./inout');
+const vio = require('./vio');
 const template = require('./template');
 const constant = require('./constant');
 const entry = require('./entry');
@@ -35,7 +35,7 @@ module.exports = {
     helpers.assertFeatureExist(feature);
 
     actionType = actionType || name;
-    inout.del(helpers.getReduxFile(feature, name));
+    vio.del(helpers.getReduxFile(feature, name));
     constant.remove(feature, actionType);
     entry.removeFromActions(feature, name);
   },
@@ -68,6 +68,9 @@ module.exports = {
 
     entry.addToActions(feature, name);
     entry.addToActions(feature, `dismiss${_.pascalCase(name)}Error`, name);
+    entry.addToReducer(feature, name);
+    entry.addToInitialState(feature, `${_.camelCase(name)}Pending`, 'false');
+    entry.addToInitialState(feature, `${_.camelCase(name)}Error`, 'null');
   },
 
   removeAsync(feature, name) {
@@ -77,11 +80,15 @@ module.exports = {
 
     const upperSnakeActionName = _.upperSnakeCase(name);
 
-    inout.del(helpers.getReduxFile(feature, name));
+    vio.del(helpers.getReduxFile(feature, name));
     constant.remove(feature, `${upperSnakeActionName}_BEGIN`);
     constant.remove(feature, `${upperSnakeActionName}_SUCCESS`);
     constant.remove(feature, `${upperSnakeActionName}_FAILURE`);
     constant.remove(feature, `${upperSnakeActionName}_DISMISS_ERROR`);
-    entry.removeFromActions(feature, name);
+
+    entry.removeFromActions(feature, null, name);
+    entry.removeFromReducer(feature, name);
+    entry.removeFromInitialState(feature, `${_.camelCase(name)}Pending`, 'false');
+    entry.removeFromInitialState(feature, `${_.camelCase(name)}Error`, 'null');
   },
 };

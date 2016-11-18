@@ -2,7 +2,7 @@
 
 const shell = require('shelljs');
 const helpers = require('./helpers');
-const inout = require('./inout');
+const vio = require('./vio');
 const template = require('./template');
 
 module.exports = {
@@ -16,20 +16,20 @@ module.exports = {
 
     // add to style.less
     const targetPath = helpers.mapFile(feature, 'style.less');
-    const lines = inout.getLines(targetPath);
+    const lines = vio.getLines(targetPath);
     const i = helpers.lastLineIndex(lines, '@import ');
     lines.splice(i + 1, 0, `@import './${helpers.pascalCase(component)}.less';`);
-    inout.save(targetPath, lines);
+    vio.save(targetPath, lines);
   },
 
   remove(feature, component) {
     // Remove style file of a component
-    inout.del(helpers.mapName(feature, component) + '.less');
+    vio.del(helpers.mapName(feature, component) + '.less');
 
     const targetPath = helpers.mapFile(feature, 'style.less');
-    const lines = inout.getLines(targetPath);
+    const lines = vio.getLines(targetPath);
     helpers.removeLines(lines, `@import './${helpers.pascalCase(component)}.less';`);
-    inout.save(targetPath, lines);
+    vio.save(targetPath, lines);
   },
 
   move(source, dest) {

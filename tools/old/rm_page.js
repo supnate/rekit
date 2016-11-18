@@ -1,7 +1,7 @@
 'use strict';
 
 const program = require('commander');
-const inout = require('./lib/inout');
+const vio = require('./lib/vio');
 const component = require('./lib/component');
 const route = require('./lib/route');
 const style = require('./lib/style');
@@ -25,7 +25,7 @@ route.remove(feature, name);
 style.remove(feature, name);
 test.remove(feature, name);
 
-inout.flush();
+vio.flush();
 
 console.log(colors.green(`✨  Remove page success:  ${feature}/${name}`));
 

@@ -12,7 +12,7 @@ const feature = args.feature;
 const page = args.component;
 const urlPath = args.urlPath;
 // const program = require('commander');
-// const inout = require('./lib/inout');
+// const vio = require('./lib/vio');
 // const component = require('./lib/component');
 // const style = require('./lib/style');
 // const route = require('./lib/route');
@@ -38,6 +38,6 @@ lib.route.add(feature, page, urlPath);
 lib.style.add(feature, page);
 lib.test.add(feature, page, { templateFile: 'Page.test.js' });
 
-lib.inout.flush();
+lib.vio.flush();
 
 console.log(lib.colors.green(`✨  Add page success:  ${feature}/${page}`));

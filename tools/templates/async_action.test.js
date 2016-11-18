@@ -8,18 +8,18 @@ import {
   ${SUCCESS_ACTION_TYPE},
   ${FAILURE_ACTION_TYPE},
   ${DISMISS_ERROR_ACTION_TYPE},
-} from 'features/${KEBAB_FEATURE_NAME}/redux/constants';
+} from 'features/${_.kebabCase(feature)}/redux/constants';
 
 import {
   ${CAMEL_ACTION_NAME},
-  dismiss${PASCAL_ACTION_NAME}Error,
+  dismiss${_.pascalCase(action)}Error,
   reducer,
-} from 'features/${KEBAB_FEATURE_NAME}/redux/${CAMEL_ACTION_NAME}';
+} from 'features/${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('${KEBAB_FEATURE_NAME}/redux/${CAMEL_ACTION_NAME}', () => {
+describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
   afterEach(() => {
     nock.cleanAll();
   });
@@ -52,11 +52,11 @@ describe('${KEBAB_FEATURE_NAME}/redux/${CAMEL_ACTION_NAME}', () => {
       });
   });
 
-  it('action should handle dismiss${PASCAL_ACTION_NAME}Error', () => {
+  it('action should handle dismiss${_.pascalCase(action)}Error', () => {
     const expectedAction = {
       type: ${DISMISS_ERROR_ACTION_TYPE},
     };
-    expect(dismiss${PASCAL_ACTION_NAME}Error()).to.deep.equal(expectedAction);
+    expect(dismiss${_.pascalCase(action)}Error()).to.deep.equal(expectedAction);
   });
 
   it('reducer should handle ${BEGIN_ACTION_TYPE}', () => {

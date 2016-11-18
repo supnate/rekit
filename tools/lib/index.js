@@ -10,6 +10,6 @@ module.exports = {
   test: require('./test'),
   feature: require('./feature'),
   constant: require('./constant'),
-  inout: require('./inout'),
+  vio: require('./vio'),
   colors: require('colors/safe'),
 };

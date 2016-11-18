@@ -1,5 +1,7 @@
 'use strict';
 
+// Virtual IO, create, update and delete files in memory until flush to the disk.
+
 const shell = require('shelljs');
 const colors = require('colors/safe');
 const helpers = require('./helpers');
@@ -51,7 +53,7 @@ module.exports = {
 
     for (const filePath of Object.keys(toDel)) {
       if (!shell.test('-e', filePath)) {
-        this.log('No file to delete: ', 'gray', filePath);
+        this.log('Warning: no file to delete: ', 'yellow', filePath);
       } else {
         shell.rm(filePath);
         this.log('Deleted: ', 'magenta', filePath);
@@ -61,9 +63,9 @@ module.exports = {
 
     for (const filePath of Object.keys(toSave)) {
       if (shell.test('-e', filePath)) {
-        this.log('Updated: ', 'yellow', filePath);
+        this.log('Updated: ', 'cyan', filePath);
       } else {
-        this.log('Created: ', 'cyan', filePath);
+        this.log('Created: ', 'blue', filePath);
       }
       shell.ShellString(this.getLines(filePath).join('\n')).to(filePath);
     }

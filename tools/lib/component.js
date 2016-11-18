@@ -2,7 +2,7 @@
 
 const shell = require('shelljs');
 const helpers = require('./helpers');
-const inout = require('./inout');
+const vio = require('./vio');
 const template = require('./template');
 const entry = require('./entry');
 
@@ -28,7 +28,7 @@ module.exports = {
     helpers.assertNotEmpty(component, 'component name');
     helpers.assertFeatureExist(feature);
 
-    inout.del(helpers.mapComponent(feature, component) + '.js');
+    vio.del(helpers.mapComponent(feature, component) + '.js');
     entry.remove(feature, component);
   },
 

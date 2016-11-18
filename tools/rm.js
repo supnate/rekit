@@ -2,10 +2,9 @@
 'use strict';
 // Summary:
 //   Remove a Rekit element.
-//
 
 const args = require('./lib/args');
-const inout = require('./lib/inout');
+const vio = require('./lib/vio');
 const component = require('./lib/component');
 const route = require('./lib/route');
 const style = require('./lib/style');
@@ -38,14 +37,14 @@ switch (args.type) {
 
   case 'async-action':
     action.removeAsync(feature, name);
-    // test.removeAction(feature, name);
+    test.removeAction(feature, name);
     break;
 
   default:
     break;
 }
 
-inout.flush();
+vio.flush();
 
 console.timeEnd('✨  Done');
 console.log('');

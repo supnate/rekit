@@ -7,7 +7,7 @@ const colors = require('colors/safe');
 
 const nameCases = {};
 
-// I just guess helpers is always loaded before lodash is used...
+// NOTE: I just assume helpers is always loaded before lodash is used...
 _.pascalCase = _.flow(_.camelCase, _.upperFirst);
 _.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
 
@@ -34,8 +34,6 @@ module.exports = {
       else shell.ShellString('').to(filePath);
     }
   },
-
-  pascalCase: _.flow(_.camelCase, _.upperFirst),
 
   readTemplate(file) {
     const tpl = path.join(__dirname, '../templates', file);
@@ -79,8 +77,7 @@ module.exports = {
   },
 
   removeNamedExport(lines, name) {
-    console.log('Removing named export: ', name);
-    this.removeLines(lines, `  ${name},`);
+    this.removeLines(lines, `  ${name},`, this.lineIndex(lines, 'export'));
   },
 
   addConstant(lines, name) {
@@ -232,5 +229,9 @@ module.exports = {
   fatalError(msg) {
     console.log(colors.red('Error: ' + msg));
     throw new Error('Error: ' + msg);
+  },
+
+  warn(msg) {
+    console.log(colors.yellow('Warning: ' + msg));
   },
 };

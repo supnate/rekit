@@ -10,6 +10,6 @@ lib.component.add(feature, component);
 lib.style.add(feature, component);
 lib.test.add(feature, component);
 
-lib.inout.flush();
+lib.vio.flush();
 
 console.log(lib.colors.green(`✨  Add component success:  ${feature}/${component}`));

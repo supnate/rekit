@@ -2,11 +2,12 @@
 
 const shell = require('shelljs');
 const _ = require('lodash');
-const inout = require('./inout');
+const vio = require('./vio');
 const helpers = require('./helpers');
 
-// used in template
+// Make sure it works in template
 _.pascalCase = _.flow(_.camelCase, _.upperFirst);
+_.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
 
 module.exports = {
   create(targetPath, args) {
@@ -23,6 +24,6 @@ module.exports = {
     if (!args.force && shell.test('-e', targetPath)) {
       helpers.fatalError(`File already exists: ${targetPath}.`);
     }
-    inout.save(targetPath, content.split(/\r?\n/));
+    vio.save(targetPath, content.split(/\r?\n/));
   }
 };

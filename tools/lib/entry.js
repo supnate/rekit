@@ -3,12 +3,13 @@
 // Summary
 //  Modify entry files to add/remove entries for page, component, action, etc...
 
+const path = require('path');
 const _ = require('lodash');
 const vio = require('./vio');
 const helpers = require('./helpers');
 
 module.exports = {
-  add(feature, name) {
+  addToIndex(feature, name) {
     name = _.pascalCase(name);
     const targetPath = helpers.mapFile(feature, 'index.js');
     const lines = vio.getLines(targetPath);
@@ -17,11 +18,27 @@ module.exports = {
     vio.save(targetPath, lines);
   },
 
-  remove(feature, name) {
+  removeFromIndex(feature, name) {
     name = _.pascalCase(name);
     const targetPath = helpers.mapFile(feature, 'index.js');
     const lines = vio.getLines(targetPath);
     helpers.removeLines(lines, `export ${name} from './${name}';`);
+    vio.save(targetPath, lines);
+  },
+
+  addToStyle(feature, name) {
+    const targetPath = helpers.mapFile(feature, 'style.less');
+    const lines = vio.getLines(targetPath);
+    const i = helpers.lastLineIndex(lines, '@import ');
+    lines.splice(i + 1, 0, `@import './${_.pascalCase(name)}.less';`);
+    vio.save(targetPath, lines);
+  },
+
+  removeFromStyle(feature, name) {
+    const targetPath = helpers.mapFile(feature, 'style.less');
+    const lines = vio.getLines(targetPath);
+    const i = helpers.lastLineIndex(lines, '@import ');
+    lines.splice(i + 1, 0, `@import './${_.pascalCase(name)}.less';`);
     vio.save(targetPath, lines);
   },
 
@@ -110,6 +127,65 @@ module.exports = {
     const targetPath = helpers.getReduxFile(feature, 'initialState');
     const lines = vio.getLines(targetPath);
     helpers.removeLines(lines, `  ${name}: `);
+    vio.save(targetPath, lines);
+  },
+
+  addToRootReducer(feature) {
+    const targetPath = path.join(helpers.getProjectRoot(), 'src/common/rootReducer.js');
+    const lines = vio.getLines(targetPath);
+    helpers.addImportLine(lines, `import ${_.camelCase(feature)}Reducer from '../features/${_.kebabCase(feature)}/redux/reducer';`);
+    const i = helpers.lastLineIndex(lines, /^\}\);$/, helpers.lineIndex(lines, 'const rootReducer = combineReducers({'));
+    lines.splice(i, 0, `  ${_.camelCase(feature)}: ${_.camelCase(feature)}Reducer,`);
+
+    vio.save(targetPath, lines);
+  },
+
+  removeFromRootReducer(feature) {
+    // NOTE: currently only used by feature
+    const targetPath = path.join(helpers.getProjectRoot(), 'src/common/rootReducer.js');
+    const lines = vio.getLines(targetPath);
+    helpers.removeLines(lines, `'../features/${_.kebabCase(feature)}/redux/reducer';`);
+    helpers.removeLines(lines, `: ${_.camelCase(feature)}Reducer,`);
+
+    vio.save(targetPath, lines);
+  },
+
+  addToRouteConfig(feature) {
+    const targetPath = path.join(helpers.getProjectRoot(), 'src/common/routeConfig.js');
+    const lines = vio.getLines(targetPath);
+    helpers.addImportLine(lines, `import ${_.camelCase(feature)}Route from '../features/${_.kebabCase(feature)}/route';`);
+    let i = helpers.lineIndex(lines, 'path: \'*\'');
+    // istanbul ignore if
+    if (i === -1) {
+      i = helpers.lastLineIndex(lines, /^ {2}]/);
+    }
+    lines.splice(i, 0, `    ${_.camelCase(feature)}Route,`);
+
+    vio.save(targetPath, lines);
+  },
+
+  removeFromRouteConfig(feature) {
+    const targetPath = path.join(helpers.getProjectRoot(), 'src/common/routeConfig.js');
+    const lines = vio.getLines(targetPath);
+    helpers.removeLines(lines, `import ${_.camelCase(feature)}Route from '../features/${_.kebabCase(feature)}/route';`);
+    helpers.removeLines(lines, `    ${_.camelCase(feature)}Route,`);
+
+    vio.save(targetPath, lines);
+  },
+
+  addToRootStyle(feature) {
+    const targetPath = path.join(helpers.getProjectRoot(), 'src/styles/index.less');
+    const lines = vio.getLines(targetPath);
+    helpers.addImportLine(lines, `@import '../features/${_.kebabCase(feature)}/style.less';`);
+
+    vio.save(targetPath, lines);
+  },
+
+  removeFromRootStyle(feature) {
+    const targetPath = path.join(helpers.getProjectRoot(), 'src/styles/index.less');
+    const lines = vio.getLines(targetPath);
+    helpers.removeLines(lines, `features/${_.kebabCase(feature)}/style.less';`);
+
     vio.save(targetPath, lines);
   },
 };

@@ -2,7 +2,7 @@ import {
 } from './index';
 
 export default {
-  path: '${KEBAB_FEATURE_NAME}',
+  path: '${_.kebabCase(feature)}',
   childRoutes: [
   ],
 };

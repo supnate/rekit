@@ -9,6 +9,7 @@ const helpers = require('./helpers');
 let toSave = {};
 let toDel = {};
 let fileLines = {};
+let dirs = {};
 
 module.exports = {
   getLines(filePath) {
@@ -24,6 +25,10 @@ module.exports = {
 
   put(filePath, lines) {
     fileLines[filePath] = lines;
+  },
+
+  mkdir(dir) {
+    dirs[dir] = true;
   },
 
   save(filePath, lines) {
@@ -49,6 +54,12 @@ module.exports = {
   },
 
   flush() {
+    for (const dir of Object.keys(dirs)) {
+      if (!shell.test('-e', dir)) {
+        shell.mkdir('-p', dir);
+      }
+    }
+
     // Delete files first, then write files
 
     for (const filePath of Object.keys(toDel)) {

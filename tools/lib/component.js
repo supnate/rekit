@@ -20,7 +20,7 @@ module.exports = {
     }));
 
     // add to index.js
-    entry.add(feature, component);
+    entry.addToIndex(feature, component);
   },
 
   remove(feature, component) {
@@ -29,7 +29,7 @@ module.exports = {
     helpers.assertFeatureExist(feature);
 
     vio.del(helpers.mapComponent(feature, component) + '.js');
-    entry.remove(feature, component);
+    entry.removeFromIndex(feature, component);
   },
 
   move(source, dest) {

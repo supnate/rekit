@@ -2,9 +2,11 @@
 
 // Virtual IO, create, update and delete files in memory until flush to the disk.
 
+const path = require('path');
 const shell = require('shelljs');
 const colors = require('colors/safe');
-const helpers = require('./helpers');
+
+const prjRoot = path.join(__dirname, '../../');
 
 let toSave = {};
 let toDel = {};
@@ -19,8 +21,12 @@ module.exports = {
     return fileLines[filePath];
   },
 
-  exists(filePath) {
-    return !!fileLines[filePath];
+  fileExists(filePath) {
+    return !!toSave[filePath] && !toDel[filePath];
+  },
+
+  dirExists(dir) {
+    return !!dirs[dir] && !toDel[dir];
   },
 
   put(filePath, lines) {
@@ -50,7 +56,7 @@ module.exports = {
   },
 
   log(label, color, filePath) {
-    const p = filePath.replace(helpers.getProjectRoot(), '');
+    const p = filePath.replace(prjRoot, '');
     console.log(colors[color](label + p));
   },
 
@@ -75,7 +81,13 @@ module.exports = {
 
     for (const filePath of Object.keys(toSave)) {
       if (shell.test('-e', filePath)) {
-        this.log('Updated: ', 'cyan', filePath);
+        const lines = shell.cat(filePath).split(/\r?\n/);
+        if (lines.join('') === this.getLines(filePath).join('')) {
+          this.log('Warning: nothing is changed for: ', 'yellow', filePath);
+          continue;
+        } else {
+          this.log('Updated: ', 'cyan', filePath);
+        }
       } else {
         this.log('Created: ', 'blue', filePath);
       }

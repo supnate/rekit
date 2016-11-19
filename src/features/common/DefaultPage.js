@@ -3,16 +3,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 
-export class TestPage1 extends Component {
+export class DefaultPage extends Component {
   static propTypes = {
-    test1: PropTypes.object.isRequired,
+    common: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
-      <div className="test-1-test-page-1">
-        Page Content: test-1/TestPage1
+      <div className="common-default-page">
+        Page Content: common/DefaultPage
       </div>
     );
   }
@@ -21,7 +21,7 @@ export class TestPage1 extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    test1: state.test1,
+    common: state.common,
   };
 }
 
@@ -35,4 +35,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TestPage1);
+)(DefaultPage);

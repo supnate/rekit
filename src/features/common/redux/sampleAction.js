@@ -1,16 +1,16 @@
 import {
-  A_1,
+  SAMPLE_ACTION,
 } from './constants';
 
-export function a1() {
+export function sampleAction() {
   return {
-    type: A_1,
+    type: SAMPLE_ACTION,
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case A_1:
+    case SAMPLE_ACTION:
       return {
         ...state,
       };

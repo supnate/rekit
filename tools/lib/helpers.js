@@ -4,7 +4,7 @@ const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
 const colors = require('colors/safe');
-
+const vio = require('./vio');
 const nameCases = {};
 
 // NOTE: I just assume helpers is always loaded before lodash is used...
@@ -191,40 +191,43 @@ module.exports = {
   },
 
   assertFeatureExist(feature) {
-    if (!shell.test('-e', path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature)))) {
+    const p = path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature));
+    if (!shell.test('-e', p) && !vio.dirExists(p)) {
       this.fatalError('Feature doesn\'t exist: ' + feature);
     }
   },
 
   assertFeatureNotExist(feature) {
-    if (shell.test('-e', path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature)))) {
+    const p = path.join(this.getProjectRoot(), 'src/features', _.kebabCase(feature));
+    if (shell.test('-e', p) || vio.dirExists(p)) {
       this.fatalError('Feature doesn\'t exist: ' + feature);
     }
   },
 
-  assertComponentExist(feature, name) {
-    if (!shell.test('-e', this.mapName(feature, name) + '.js')) {
-      this.fatalError('Component doesn\'t exist: ' + feature);
-    }
-  },
+  // assertComponentExist(feature, name) {
+  //   const p = this.mapName(feature, name) + '.js';
+  //   if (shell.test('-e', p)) {
+  //     this.fatalError('Component doesn\'t exist: ' + feature);
+  //   }
+  // },
 
-  assertComponentNotExist(feature, name) {
-    if (shell.test('-e', this.mapName(feature, name) + '.js')) {
-      this.fatalError('Component already exists: ' + feature);
-    }
-  },
+  // assertComponentNotExist(feature, name) {
+  //   if (shell.test('-e', this.mapName(feature, name) + '.js')) {
+  //     this.fatalError('Component already exists: ' + feature);
+  //   }
+  // },
 
-  assertFileExist(file) {
-    if (!shell.test('-e', file)) {
-      this.fatalError('File doesn\'t exist: ' + file);
-    }
-  },
+  // assertFileExist(file) {
+  //   if (!shell.test('-e', file)) {
+  //     this.fatalError('File doesn\'t exist: ' + file);
+  //   }
+  // },
 
-  assertFileNotExist(file) {
-    if (shell.test('-e', file)) {
-      this.fatalError('File already exists: ' + file);
-    }
-  },
+  // assertFileNotExist(file) {
+  //   if (shell.test('-e', file)) {
+  //     this.fatalError('File already exists: ' + file);
+  //   }
+  // },
 
   fatalError(msg) {
     console.log(colors.red('Error: ' + msg));

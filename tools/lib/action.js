@@ -26,6 +26,7 @@ module.exports = {
     }));
 
     constant.add(feature, actionType);
+    entry.addToReducer(feature, name);
     entry.addToActions(feature, name);
   },
 
@@ -37,6 +38,7 @@ module.exports = {
     actionType = actionType || name;
     vio.del(helpers.getReduxFile(feature, name));
     constant.remove(feature, actionType);
+    entry.removeFromReducer(feature, name);
     entry.removeFromActions(feature, name);
   },
 

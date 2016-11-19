@@ -5,6 +5,7 @@ const path = require('path');
 const expect = require('chai').expect;
 const shell = require('shelljs');
 const _ = require('lodash');
+const vio = require('../../tools/lib/vio');
 
 const TEST_FEATURE_NAME = 'rekit-test-feature';
 
@@ -45,7 +46,7 @@ function expectError(cmd) {
 }
 
 function expectFile(file) {
-  expect(shell.test('-e', file)).to.be.true;
+  expect(vio.fileExists(file)).to.be.true;
 }
 
 function expectFiles(files) {
@@ -53,7 +54,7 @@ function expectFiles(files) {
 }
 
 function expectNoFile(file) {
-  expect(shell.test('-e', file)).to.be.false;
+  expect(vio.fileExists('-e', file)).to.be.false;
 }
 
 function expectNoFiles(files) {
@@ -61,8 +62,7 @@ function expectNoFiles(files) {
 }
 
 function getLines(file) {
-  if (_.isArray(file)) return file; // already lines
-  return shell.cat(file).split('\n');
+  return vio.getLines(file);
 }
 
 function expectLine(file, line) {

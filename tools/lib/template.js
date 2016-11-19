@@ -1,7 +1,7 @@
 'use strict';
 
-const shell = require('shelljs');
 const _ = require('lodash');
+const shell = require('shelljs');
 const vio = require('./vio');
 const helpers = require('./helpers');
 
@@ -21,9 +21,10 @@ module.exports = {
       const compiled = _.template(tpl, args.templateOptions || {});
       content = compiled(args.context || {});
     }
-    if (!args.force && shell.test('-e', targetPath)) {
+    if (!args.force && (vio.fileExists(targetPath) || shell.test('-e', targetPath))) {
       helpers.fatalError(`File already exists: ${targetPath}.`);
     }
-    vio.save(targetPath, content.split(/\r?\n/));
+    const lines = content.split(/\r?\n/);
+    vio.save(targetPath, lines);
   }
 };

@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import homeReducer from '../features/home/redux/reducer';
-import test1Reducer from '../features/test-1/redux/reducer';
+import commonReducer from '../features/common/redux/reducer';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
   home: homeReducer,
-  test1: test1Reducer,
+  common: commonReducer,
 });
 
 export default rootReducer;

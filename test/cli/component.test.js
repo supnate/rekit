@@ -1,6 +1,8 @@
 'use strict';
 const expect = require('chai').expect;
 const helpers = require('./helpers');
+const rekit = require('../../tools/lib/rekit');
+const vio = require('../../tools/lib/vio');
 
 const mapFile = helpers.mapFile;
 const mapFeatureFile = helpers.mapFeatureFile;
@@ -15,29 +17,36 @@ const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
 const TEST_FEATURE_NAME = helpers.TEST_FEATURE_NAME;
 
+
 describe('cli: component tests', function() { // eslint-disable-line
   this.timeout(20000);
+  // const logger = console.log;
 
+  // beforeEach(() => {
+  //   console.log = () => {};
+  // });
+  // afterEach(() => {
+  //   console.log = logger;
+  // });
   before(() => {
-    execTool('rm_feature.js', TEST_FEATURE_NAME);
-    execTool('add_feature.js', TEST_FEATURE_NAME);
+    vio.reset();
+    rekit.addFeature(TEST_FEATURE_NAME);
   });
 
   after(() => {
-    execTool('rm_feature.js', TEST_FEATURE_NAME);
+    vio.reset();
   });
 
-  [
-    'add_component.js',
-    'rm_component.js',
-  ].forEach(script => {
-    it(`exit 1 when no args for "${script}"`, () => {
-      expect(pureExecTool(script).code).to.equal(1);
-    });
+  it('throw error when no args to add component', () => {
+    expect(rekit.addComponent).to.throw(Error);
   });
 
-  it('add feature component', () => {
-    execTool('add_component.js', `${TEST_FEATURE_NAME}/test-component`);
+  it('throw error when no args to remove component', () => {
+    expect(rekit.removeComponent).to.throw(Error);
+  });
+
+  it('add component', () => {
+    rekit.addComponent(TEST_FEATURE_NAME, 'test-component');
     expectFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -53,30 +62,12 @@ describe('cli: component tests', function() { // eslint-disable-line
     ].map(mapFeatureTestFile));
   });
 
-  it('exit 1 when component name exists', () => {
-    expect(pureExecTool('add_component.js', `${TEST_FEATURE_NAME}/test-component`).code).to.equal(1);
+  it('throw error when component already exists', () => {
+    expect(rekit.addComponent.bind(rekit, TEST_FEATURE_NAME, 'test-component')).to.throw();
   });
 
-  // it('add common component', () => {
-  //   execTool('add_component.js', 'common-component');
-  //   expectFiles([
-  //     'components/CommonComponent.js',
-  //     'components/CommonComponent.less',
-  //   ].map(mapFile));
-  //   expectLines(mapFile('components/style.less'), [
-  //     '@import \'./CommonComponent.less\';'
-  //   ]);
-  //   expectLines(mapFile('components/index.js'), [
-  //     'import CommonComponent from \'./CommonComponent\';',
-  //     '  CommonComponent,',
-  //   ]);
-  //   expectFiles([
-  //     'app/components/CommonComponent.test.js',
-  //   ].map(mapTestFile));
-  // });
-
-  it('remove feature component', () => {
-    execTool('rm_component.js', `${TEST_FEATURE_NAME}/test-component`);
+  it('remove component', () => {
+    rekit.removeComponent(TEST_FEATURE_NAME, 'test-component');
     expectNoFiles([
       'TestComponent.js',
       'TestComponent.less',
@@ -92,22 +83,4 @@ describe('cli: component tests', function() { // eslint-disable-line
       'TestComponent.test.js',
     ].map(mapFeatureTestFile));
   });
-
-  // it('remove common component', () => {
-  //   execTool('rm_component.js', 'common-component');
-  //   expectNoFiles([
-  //     'components/CommonComponent.js',
-  //     'components/CommonComponent.less',
-  //   ].map(mapFile));
-  //   expectNoLines(mapFile('components/style.less'), [
-  //     '@import \'./CommonComponent.less\';'
-  //   ]);
-  //   expectNoLines(mapFile('components/index.js'), [
-  //     'import CommonComponent from \'./CommonComponent\';',
-  //     '  CommonComponent,',
-  //   ]);
-  //   expectNoFiles([
-  //     'app/components/CommonComponent.test.js',
-  //   ].map(mapTestFile));
-  // });
 });

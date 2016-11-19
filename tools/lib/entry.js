@@ -37,8 +37,7 @@ module.exports = {
   removeFromStyle(feature, name) {
     const targetPath = helpers.mapFile(feature, 'style.less');
     const lines = vio.getLines(targetPath);
-    const i = helpers.lastLineIndex(lines, '@import ');
-    lines.splice(i + 1, 0, `@import './${_.pascalCase(name)}.less';`);
+    helpers.removeLines(lines, `@import './${_.pascalCase(name)}.less';`);
     vio.save(targetPath, lines);
   },
 

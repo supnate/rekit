@@ -150,6 +150,36 @@ module.exports = {
     vio.save(targetPath, lines);
   },
 
+  addToRoute(feature, component, urlPath) {
+    helpers.assertNotEmpty(feature, 'feature');
+    helpers.assertNotEmpty(component, 'component name');
+    helpers.assertFeatureExist(feature);
+
+    urlPath = urlPath || _.kebabCase(component);
+    const targetPath = helpers.mapFile(feature, 'route.js');
+    const lines = vio.getLines(targetPath);
+    let i = helpers.lineIndex(lines, '} from \'./index\';');
+    lines.splice(i, 0, `  ${_.pascalCase(component)},`);
+    i = helpers.lineIndex(lines, 'path: \'*\'');
+    if (i === -1) {
+      i = helpers.lastLineIndex(lines, /^ {2}]/);
+    }
+    lines.splice(i, 0, `    { path: '${urlPath}', component: ${_.pascalCase(component)} },`);
+    vio.save(targetPath, lines);
+  },
+
+  removeFromRoute(feature, component) {
+    helpers.assertNotEmpty(feature, 'feature');
+    helpers.assertNotEmpty(component, 'component name');
+    helpers.assertFeatureExist(feature);
+
+    const targetPath = helpers.mapFile(feature, 'route.js');
+    const lines = vio.getLines(targetPath);
+    helpers.removeLines(lines, `  ${_.pascalCase(component)},`);
+    helpers.removeLines(lines, `component: ${_.pascalCase(component)} }`);
+    vio.save(targetPath, lines);
+  },
+
   addToRouteConfig(feature) {
     const targetPath = path.join(helpers.getProjectRoot(), 'src/common/routeConfig.js');
     const lines = vio.getLines(targetPath);

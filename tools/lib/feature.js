@@ -6,9 +6,6 @@ const shell = require('shelljs');
 const helpers = require('./helpers');
 const vio = require('./vio');
 const template = require('./template');
-const page = require('./page');
-const action = require('./action');
-const entry = require('./entry');
 
 module.exports = {
   add(name) {
@@ -20,6 +17,8 @@ module.exports = {
 
     vio.mkdir(targetDir);
     vio.mkdir(path.join(targetDir, 'redux'));
+    vio.mkdir(path.join(helpers.getProjectRoot(), 'test/app/features', _.kebabCase(name)));
+    vio.mkdir(path.join(helpers.getProjectRoot(), 'test/app/features', _.kebabCase(name), 'redux'));
 
     // Create files from template
     [
@@ -40,7 +39,8 @@ module.exports = {
   },
 
   remove(name) {
-
+    vio.del(path.join(helpers.getProjectRoot(), 'src/features', _.kebabCase(name)));
+    vio.del(path.join(helpers.getProjectRoot(), 'test/app/features', _.kebabCase(name)));
   },
 
   move(oldName, newName) {

@@ -14,12 +14,12 @@ module.exports = {
     const targetPath = helpers.mapFile(feature, 'route.js');
     const lines = vio.getLines(targetPath);
     let i = helpers.lineIndex(lines, '} from \'./index\';');
-    lines.splice(i, 0, `  ${helpers.pascalCase(component)},`);
+    lines.splice(i, 0, `  ${_.pascalCase(component)},`);
     i = helpers.lineIndex(lines, 'path: \'*\'');
     if (i === -1) {
       i = helpers.lastLineIndex(lines, /^ {2}]/);
     }
-    lines.splice(i, 0, `    { path: '${urlPath}', component: ${helpers.pascalCase(component)} },`);
+    lines.splice(i, 0, `    { path: '${urlPath}', component: ${_.pascalCase(component)} },`);
     vio.save(targetPath, lines);
   },
 
@@ -30,8 +30,8 @@ module.exports = {
 
     const targetPath = helpers.mapFile(feature, 'route.js');
     const lines = vio.getLines(targetPath);
-    helpers.removeLines(lines, `  ${helpers.pascalCase(component)},`);
-    helpers.removeLines(lines, `component: ${helpers.pascalCase(component)} }`);
+    helpers.removeLines(lines, `  ${_.pascalCase(component)},`);
+    helpers.removeLines(lines, `component: ${_.pascalCase(component)} }`);
     vio.save(targetPath, lines);
   },
 

@@ -46,6 +46,7 @@ module.exports = {
     toSave = {};
     toDel = {};
     fileLines = {};
+    dirs = {};
   },
 
   log(label, color, filePath) {
@@ -66,7 +67,7 @@ module.exports = {
       if (!shell.test('-e', filePath)) {
         this.log('Warning: no file to delete: ', 'yellow', filePath);
       } else {
-        shell.rm(filePath);
+        shell.rm('-rf', filePath);
         this.log('Deleted: ', 'magenta', filePath);
       }
     }

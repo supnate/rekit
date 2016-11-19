@@ -4,7 +4,6 @@
 //  CLI wrapper for managing Rekit elements.
 
 const component = require('./component');
-const route = require('./route');
 const style = require('./style');
 const test = require('./test');
 const action = require('./action');
@@ -26,14 +25,14 @@ module.exports = {
 
   addPage(feature, name, urlPath) {
     component.add(feature, name, { templateFile: 'Page.js' });
-    route.add(feature, name, urlPath);
+    entry.addToRoute(feature, name, urlPath);
     style.add(feature, name);
     test.add(feature, name, { templateFile: 'Page.test.js' });
   },
 
   removePage(feature, name, urlPath) {
     component.remove(feature, name);
-    route.remove(feature, name, urlPath);
+    entry.removeFromRoute(feature, name, urlPath);
     style.remove(feature, name);
     test.remove(feature, name);
   },

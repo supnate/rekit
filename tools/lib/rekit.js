@@ -62,6 +62,10 @@ module.exports = {
     entry.addToRootReducer(name);
     entry.addToRouteConfig(name);
     entry.addToRootStyle(name);
+
+    // Add default page and sample action
+    this.addPage.call(this, name, 'default-page');
+    this.addAction.call(this, name, 'sample-action');
   },
 
   removeFeature(name) {

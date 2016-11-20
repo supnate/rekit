@@ -1,11 +1,11 @@
 'use strict';
 const expect = require('chai').expect;
 const helpers = require('./helpers');
+const rekit = require('../../tools/lib/rekit');
+const vio = require('../../tools/lib/vio');
 
 const mapFeatureFile = helpers.mapFeatureFile;
 const mapFeatureTestFile = helpers.mapFeatureTestFile;
-const execTool = helpers.execTool;
-const pureExecTool = helpers.pureExecTool;
 const expectFile = helpers.expectFile;
 const expectFiles = helpers.expectFiles;
 const expectNoFile = helpers.expectNoFile;
@@ -18,25 +18,24 @@ describe('cli: async action tests', function() { // eslint-disable-line
   this.timeout(20000);
 
   before(() => {
-    execTool('rm_feature.js', TEST_FEATURE_NAME);
-    execTool('add_feature.js', TEST_FEATURE_NAME);
+    vio.reset();
+    rekit.addFeature(TEST_FEATURE_NAME);
   });
 
   after(() => {
-    execTool('rm_feature.js', TEST_FEATURE_NAME);
+    vio.reset();
   });
 
-  [
-    'add_async_action.js',
-    'rm_async_action.js',
-  ].forEach(script => {
-    it(`exit 1 when no args for "${script}"`, () => {
-      expect(pureExecTool(script).code).to.equal(1);
-    });
+  it('throw error when no args to add async action', () => {
+    expect(rekit.addAsyncAction).to.throw(Error);
+  });
+
+  it('throw error when no args to remove async action', () => {
+    expect(rekit.removeAction).to.throw(Error);
   });
 
   it('add async action', () => {
-    execTool('add_async_action.js', `${TEST_FEATURE_NAME}/async-action`);
+    rekit.addAsyncAction(TEST_FEATURE_NAME, 'async-action');
     expectLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',
@@ -44,9 +43,7 @@ describe('cli: async action tests', function() { // eslint-disable-line
       'export const ASYNC_ACTION_DISMISS_ERROR = \'ASYNC_ACTION_DISMISS_ERROR\';',
     ]);
     expectLines(mapFeatureFile('redux/actions.js'), [
-      'import { asyncAction, dismissAsyncActionError } from \'./asyncAction\';',
-      '  asyncAction,',
-      '  dismissAsyncActionError,',
+      'export { asyncAction, dismissAsyncActionError } from \'./asyncAction\';',
     ]);
     expectFile(mapFeatureFile('redux/asyncAction.js'));
     expectFiles([
@@ -55,7 +52,7 @@ describe('cli: async action tests', function() { // eslint-disable-line
   });
 
   it('remove async action', () => {
-    execTool('rm_async_action.js', `${TEST_FEATURE_NAME}/async-action`);
+    rekit.removeAsyncAction(TEST_FEATURE_NAME, 'async-action');
     expectNoLines(mapFeatureFile('redux/constants.js'), [
       'export const ASYNC_ACTION_BEGIN = \'ASYNC_ACTION_BEGIN\';',
       'export const ASYNC_ACTION_SUCCESS = \'ASYNC_ACTION_SUCCESS\';',

@@ -11,6 +11,7 @@
     }
   },
   'rules': {
+    'strict': 0,
     'guard-for-in': 0,
     'max-len': 0,
     'no-nested-ternary': 0,

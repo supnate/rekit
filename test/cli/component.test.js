@@ -1,33 +1,19 @@
 'use strict';
+
 const expect = require('chai').expect;
 const helpers = require('./helpers');
 const rekit = require('../../tools/lib/rekit');
 const vio = require('../../tools/lib/vio');
 
-const mapFile = helpers.mapFile;
 const mapFeatureFile = helpers.mapFeatureFile;
-const mapTestFile = helpers.mapTestFile;
 const mapFeatureTestFile = helpers.mapFeatureTestFile;
-const execTool = helpers.execTool;
-const pureExecTool = helpers.pureExecTool;
-const expectError = helpers.expectError;
 const expectFiles = helpers.expectFiles;
 const expectNoFiles = helpers.expectNoFiles;
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
 const TEST_FEATURE_NAME = helpers.TEST_FEATURE_NAME;
 
-
 describe('cli: component tests', function() { // eslint-disable-line
-  this.timeout(20000);
-  // const logger = console.log;
-
-  // beforeEach(() => {
-  //   console.log = () => {};
-  // });
-  // afterEach(() => {
-  //   console.log = logger;
-  // });
   before(() => {
     vio.reset();
     rekit.addFeature(TEST_FEATURE_NAME);

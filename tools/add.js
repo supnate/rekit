@@ -13,9 +13,6 @@ const name = args.name;
 switch (args.type) {
   case 'feature':
     rekit.addFeature(feature);
-    // Add sample page and sample action.
-    rekit.addPage(feature, 'default-page');
-    rekit.addAction(feature, 'sample-action');
     break;
 
   case 'component':

@@ -9,6 +9,9 @@ const vio = require('../../tools/lib/vio');
 
 const TEST_FEATURE_NAME = 'rekit-test-feature';
 
+// NOTE: don't output errors from apps to test.
+console.error = () => {};
+
 function mapFile(file) {
   return path.join(__dirname, '../../src', file);
 }

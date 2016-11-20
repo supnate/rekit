@@ -1,6 +1,5 @@
 'use strict';
 
-const shell = require('shelljs');
 const helpers = require('./helpers');
 const vio = require('./vio');
 const template = require('./template');
@@ -37,7 +36,7 @@ module.exports = {
     // 2. Update the path in index.js
     // 3. Search all reference in the project features project.
 
-    const content = shell.cat(helpers.mapComponent(source.feature, source.component) + '.js');
+    const content = vio.getLines(helpers.mapComponent(source.feature, source.component) + '.js').join('\n');
     this.remove(source.feature, source.component);
     this.add(dest.feature, dest.component, { content });
   },

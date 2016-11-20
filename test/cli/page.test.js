@@ -2,10 +2,10 @@
 
 const expect = require('chai').expect;
 const helpers = require('./helpers');
+const rekit = require('../../tools/lib/rekit');
+const vio = require('../../tools/lib/vio');
 
 const mapFeatureFile = helpers.mapFeatureFile;
-const execTool = helpers.execTool;
-const pureExecTool = helpers.pureExecTool;
 const expectFiles = helpers.expectFiles;
 const expectNoFiles = helpers.expectNoFiles;
 const expectLines = helpers.expectLines;
@@ -14,28 +14,25 @@ const mapFeatureTestFile = helpers.mapFeatureTestFile;
 const TEST_FEATURE_NAME = helpers.TEST_FEATURE_NAME;
 
 describe('cli: page tests', function() { // eslint-disable-line
-  this.timeout(20000);
-
   before(() => {
-    execTool('rm_feature.js', TEST_FEATURE_NAME);
-    execTool('add_feature.js', TEST_FEATURE_NAME);
+    vio.reset();
+    rekit.addFeature(TEST_FEATURE_NAME);
   });
 
   after(() => {
-    execTool('rm_feature.js', TEST_FEATURE_NAME);
+    vio.reset();
   });
 
-  [
-    'add_page.js',
-    'rm_page.js',
-  ].forEach(script => {
-    it(`exit 1 when no args for "${script}"`, () => {
-      expect(pureExecTool(script).code).to.equal(1);
-    });
+  it('throw error when no args to add page', () => {
+    expect(rekit.addPage).to.throw(Error);
+  });
+
+  it('throw error when no args to remove page', () => {
+    expect(rekit.removePage).to.throw(Error);
   });
 
   it('add page', () => {
-    execTool('add_page.js', `${TEST_FEATURE_NAME}/test-page`);
+    rekit.addPage(TEST_FEATURE_NAME, 'test-page');
     expectFiles([
       'TestPage.js',
       'TestPage.less',
@@ -52,12 +49,12 @@ describe('cli: page tests', function() { // eslint-disable-line
     ]);
   });
 
-  it('exit 1 when page name exists', () => {
-    expect(pureExecTool('add_page.js', `${TEST_FEATURE_NAME}/test-page`).code).to.equal(1);
+  it('throw error when component already exists', () => {
+    expect(rekit.addPage.bind(rekit, TEST_FEATURE_NAME, 'test-page')).to.throw();
   });
 
   it('add page with url path', () => {
-    execTool('add_page.js', `${TEST_FEATURE_NAME}/test-page-2 test-path`);
+    rekit.addPage(TEST_FEATURE_NAME, 'test-page-2', 'test-path');
     expectFiles([
       'TestPage2.js',
       'TestPage2.less',
@@ -75,7 +72,7 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('remove page', () => {
-    execTool('rm_page.js', `${TEST_FEATURE_NAME}/test-page`);
+    rekit.removePage(TEST_FEATURE_NAME, 'test-page');
     expectNoFiles([
       'TestPage.js',
       'TestPage.less',
@@ -97,7 +94,7 @@ describe('cli: page tests', function() { // eslint-disable-line
   });
 
   it('remove page with url path', () => {
-    execTool('rm_page.js', `${TEST_FEATURE_NAME}/test-page-2`);
+    rekit.removePage(TEST_FEATURE_NAME, 'test-page-2');
     expectNoFiles([
       'TestPage2.js',
       'TestPage2.less',

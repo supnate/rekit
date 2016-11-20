@@ -36,6 +36,12 @@ module.exports = {
         context: { feature: name }
       });
     });
+
+    // Create wrapper reducer for the feature
+    template.create(path.join(helpers.getProjectRoot(), `test/app/features/${_.kebabCase(name)}/redux/reducer.test.js`), {
+      templateFile: 'reducer.test.js',
+      context: { feature: name }
+    });
   },
 
   remove(name) {

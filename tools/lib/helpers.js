@@ -230,7 +230,7 @@ module.exports = {
   // },
 
   fatalError(msg) {
-    console.log(colors.red('Error: ' + msg));
+    console.error(colors.red('Error: ' + msg));
     throw new Error('Error: ' + msg);
   },
 

@@ -1,6 +1,7 @@
 build
 node_modules
 npm-debug.log
+yarn-error.log
 target
 node
 src/_tmp

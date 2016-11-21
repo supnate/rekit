@@ -68,7 +68,7 @@
     "include": [
       "index.js",
       "src/**/*.js",
-      "tools/cli/*.js"
+      "tools/lib/*.js"
     ],
     "exclude": [
       "tools/**/templates",

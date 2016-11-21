@@ -73,11 +73,12 @@ shell.rm('-rf', path.join(prjPath, 'src/.tmp')); // in case _tmp folder is copie
 [
   '.eslintrc',
   'gitignore.tpl',
+  'favicon.png',
   'webpack.dev.config.js',
   'webpack.dist.config.js',
   'webpack.dll.config.js',
   'webpack.test.config.js',
-].forEach(file => {
+].forEach((file) => {
   shell.cp(path.join(rekitRoot, file), prjPath);
 });
 
@@ -104,7 +105,7 @@ function done(pkgVersions) {
 }
 
 request('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.1.x.json', function (error, response, body) {
-  if (!error && response.statusCode == 200) {
+  if (!error && response.statusCode === 200) {
     done(JSON.parse(body));
   } else {
     console.log('Network failure. Please check and retry.');

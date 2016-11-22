@@ -5,7 +5,14 @@ const webpack = require('webpack');
 const express = require('express');
 const devMiddleware = require('webpack-dev-middleware');
 const hotMiddleware = require('webpack-hot-middleware');
-const config = require('./webpack.config');
+const pkgJson = require('../package.json');
+const config = require('../webpack-config')('dev');
+
+pkgJson.rekit = pkgJson.rekit || {
+  devPort: 6076,
+  buildPort: 6077,
+  css: 'less', // scss | less | css
+};
 
 const app = express();
 const compiler = webpack(config);
@@ -17,14 +24,14 @@ app.use(devMiddleware(compiler, {
 
 app.use(hotMiddleware(compiler));
 
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../src/index.html'));
 });
 
-app.listen(3000, function (err) {
+app.listen(pkgJson.rekit.devPort, (err) => {
   if (err) {
-    return console.error(err);
+    console.error(err);
   }
 
-  console.log('Listening at http://localhost:3000/');
+  console.log(`Listening at http://localhost:${pkgJson.rekit.devPort}/`);
 });

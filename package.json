@@ -38,6 +38,11 @@
     "docs:build": "gitbook build",
     "docs:publish": "npm run docs:prepare && rm -rf _book && gitbook build"
   },
+  "rekit": {
+    "version": "2.0.0",
+    "devPort": 6076,
+    "buildPort": 6077
+  },
   "babel": {
     "presets": [
       "es2015",

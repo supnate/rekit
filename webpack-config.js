@@ -1,22 +1,21 @@
 'use strict';
 //  Summary:
-//    Get webpack config for different using
+//    Get webpack config for different target
 
 const path = require('path');
 const _ = require('lodash');
 const webpack = require('webpack');
-const pkgJson = require('./package.json');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
-pkgJson.rekit = pkgJson.rekit || {
-  devPort: 6076,
-  buildPort: 6077,
-  css: 'less', // scss | less | css
-};
+const pkgJson = require('./package.json');
 
 module.exports = (type) => { // eslint-disable-line
   // type is one of [dev, dll, test, dist]
 
   const isDev = type === 'dev';
+  const isDist = type === 'dist';
+  const isDll = type === 'dll';
+  const isTest = type === 'test';
 
   return {
     devtool: {
@@ -29,31 +28,59 @@ module.exports = (type) => { // eslint-disable-line
     context: path.join(__dirname, 'src'),
 
     entry: {
-      dev: [
-        'react-hot-loader/patch',
-        `webpack-hot-middleware/client?http://0.0.0.0:${pkgJson.rekit.devPort}`,
-        './styles/index.less',
-        './index',
-      ],
-      dll: [],
-      test: [],
-      dist: [],
+      dev: {
+        main: [
+          'react-hot-loader/patch',
+          `webpack-hot-middleware/client?http://0.0.0.0:${pkgJson.rekit.devPort}`,
+          './styles/index.less',
+          './index',
+        ],
+      },
+      dll: {
+        // now dll is only used for dev.
+        'dev-vendors': [
+          'react-hot-loader',
+          'react-proxy',
+          'webpack-hot-middleware/client',
+          'babel-polyfill',
+          'lodash',
+          'react',
+          'react-dom',
+          'react-router',
+          'react-redux',
+          'react-router-redux',
+          'redux',
+          'redux-logger',
+          'redux-thunk',
+        ],
+      },
+      dist: {
+        main: [
+          'babel-polyfill',
+          './styles/index.less',
+          './index'
+        ],
+      },
     }[type],
 
     output: {
       filename: '[name].bundle.js',
 
-      // where to save your build result
+      // Where to save your build result
       path: path.join(__dirname, 'build/static'),
 
-      // exposed asset path
+      // Exposed asset path
       publicPath: '/static'
     },
 
     plugins: _.compact([
       isDev && new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
-      new webpack.DefinePlugin({
+      (isDev || isDist) && new webpack.NoErrorsPlugin(),
+      (isDll || isDist) && new LodashModuleReplacementPlugin(),
+      (isDll || isDist) && new webpack.optimize.DedupePlugin(),
+      (isDll || isDist) && new webpack.optimize.UglifyJsPlugin(),
+      (isDll || isDist) && new webpack.optimize.AggressiveMergingPlugin(),
+      (isDev || isDist) && new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(type),
         }

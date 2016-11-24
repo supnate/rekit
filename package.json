@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "Toolkit for building scalable web applications with React, Redux and React-router.",
   "bin": {
     "rekit": "./bin/rekit.js"
@@ -63,6 +63,10 @@
       ]
     ],
     "env": {
+      "dev": {
+        "plugins": [
+        ]
+      },
       "test": {
         "plugins": [
           "istanbul"
@@ -93,6 +97,7 @@
   "dependencies": {
     "argparse": "^1.0.7",
     "babel-core": "^6.14.0",
+    "babel-plugin-transform-react-jsx-source": "^6.9.0",
     "babel-polyfill": "^6.13.0",
     "colors": "^1.1.2",
     "express": "^4.14.0",

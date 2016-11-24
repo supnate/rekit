@@ -53,6 +53,9 @@ function startDevServer() {
   // Also support files from root folder, mainly for the dev-vendor bundle
   app.use(express.static(path.join(__dirname, '../')));
 
+  // History api fallback
+  app.use(fallback('index.html', { root: path.join(__dirname, '../src') }));
+
   // Other files should not happen, respond 404
   app.get('*', (req, res) => {
     console.log('Warning: unknown req: ', req.path);
@@ -104,7 +107,6 @@ function buildDevDll() {
     .update(nameVersions)
     .digest('hex');
   const dllName = `devVendors_${dllHash}`;
-  console.log('dll name: ', dllName);
 
   // If dll doesn't exist or version changed, then rebuild it
   if (
@@ -136,7 +138,7 @@ function buildDevDll() {
       });
     });
   }
-  console.log('vendors dll is up to date, no need to rebuild.');
+  console.log('The dev-vendors bundle is up to date, no need to rebuild.');
   return Promise.resolve();
 }
 

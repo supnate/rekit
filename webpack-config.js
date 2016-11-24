@@ -14,8 +14,6 @@ module.exports = (type) => { // eslint-disable-line
 
   const isDev = type === 'dev';
   const isDist = type === 'dist';
-  const isDll = type === 'dll';
-  const isTest = type === 'test';
 
   return {
     devtool: {
@@ -37,11 +35,10 @@ module.exports = (type) => { // eslint-disable-line
         ],
       },
       dll: {
-        // now dll is only used for dev.
+        // Here dll is only used for dev.
         'dev-vendors': [
           'react-hot-loader',
           'react-proxy',
-          'webpack-hot-middleware/client',
           'babel-polyfill',
           'lodash',
           'react',
@@ -64,6 +61,7 @@ module.exports = (type) => { // eslint-disable-line
     }[type],
 
     output: {
+      // Js bundle name, [name] will be replaced by which is in entry
       filename: '[name].bundle.js',
 
       // Where to save your build result
@@ -75,14 +73,14 @@ module.exports = (type) => { // eslint-disable-line
 
     plugins: _.compact([
       isDev && new webpack.HotModuleReplacementPlugin(),
-      (isDev || isDist) && new webpack.NoErrorsPlugin(),
-      (isDll || isDist) && new LodashModuleReplacementPlugin(),
-      (isDll || isDist) && new webpack.optimize.DedupePlugin(),
-      (isDll || isDist) && new webpack.optimize.UglifyJsPlugin(),
-      (isDll || isDist) && new webpack.optimize.AggressiveMergingPlugin(),
-      (isDev || isDist) && new webpack.DefinePlugin({
+      new webpack.NoErrorsPlugin(),
+      isDist && new LodashModuleReplacementPlugin(),
+      isDist && new webpack.optimize.DedupePlugin(),
+      isDist && new webpack.optimize.UglifyJsPlugin(),
+      isDist && new webpack.optimize.AggressiveMergingPlugin(),
+      new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify(type),
+          NODE_ENV: JSON.stringify(type === 'dist' ? 'production' : type),
         }
       })
     ]),

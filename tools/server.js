@@ -4,6 +4,7 @@ const path = require('path');
 const shell = require('shelljs');
 const crypto = require('crypto');
 const express = require('express');
+const fallback = require('express-history-api-fallback');
 const webpack = require('webpack');
 const devMiddleware = require('webpack-dev-middleware');
 const hotMiddleware = require('webpack-hot-middleware');
@@ -46,17 +47,22 @@ function startDevServer() {
 
   app.use(hotMiddleware(compiler));
 
+  // First, find files from src folder
+  app.use(express.static(path.join(__dirname, '../src')));
+
+  // Also support files from root folder, mainly for the dev-vendor bundle
+  app.use(express.static(path.join(__dirname, '../')));
+
+  // Other files should not happen, respond 404
   app.get('*', (req, res) => {
-    console.log('req: ', req.path);
-    // res.sendFile(express.static(req.path));
-    res.sendFile(path.join(__dirname, '../src/index.html'));
+    console.log('Warning: unknown req: ', req.path);
+    res.sendStatus(404);
   });
 
   app.listen(pkgJson.rekit.devPort, (err) => {
     if (err) {
       console.error(err);
     }
-
     console.log(`Listening at http://localhost:${pkgJson.rekit.devPort}/`);
   });
 }
@@ -64,6 +70,16 @@ function startDevServer() {
 // Start an express server for build result.
 function startBuildServer() {
   const app = express();
+  const root = path.join(__dirname, '../build');
+  app.use(express.static(root));
+  app.use(fallback('index.html', { root }));
+
+  // Other files should not happen, respond 404
+  app.get('*', (req, res) => {
+    console.log('Warning: unknown req: ', req.path);
+    res.sendStatus(404);
+  });
+
   app.listen(pkgJson.rekit.buildPort, (err) => {
     if (err) {
       console.error(err);

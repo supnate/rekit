@@ -67,8 +67,8 @@ module.exports = (type) => { // eslint-disable-line
       // Where to save your build result
       path: path.join(__dirname, 'build/static'),
 
-      // Exposed asset path
-      publicPath: '/static'
+      // Exposed asset path. NOTE: the end '/' is necessary
+      publicPath: '/static/'
     },
 
     plugins: _.compact([

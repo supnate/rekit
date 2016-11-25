@@ -10,8 +10,7 @@ import configStore from './common/configStore';
 const store = configStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-const root = document.createElement('div');
-document.body.appendChild(root);
+const root = document.getElementById('react-root');
 
 render(
   <AppContainer>

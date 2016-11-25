@@ -4,7 +4,8 @@ import {
 
 export default {
   path: 'common',
+  name: 'Common',
   childRoutes: [
-    { path: 'default-page', component: DefaultPage },
+    { path: 'default-page', name: 'Default page', component: DefaultPage },
   ],
 };

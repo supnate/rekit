@@ -64,8 +64,7 @@
     ],
     "env": {
       "dev": {
-        "plugins": [
-        ]
+        "plugins": []
       },
       "test": {
         "plugins": [
@@ -160,7 +159,6 @@
     "url-loader": "^0.5.7",
     "webpack": "2.1.0-beta.25",
     "webpack-dev-middleware": "^1.8.4",
-    "webpack-dev-server": "^1.15.1",
     "webpack-hot-middleware": "^2.13.2",
     "webpack-node-externals": "^1.3.3"
   }

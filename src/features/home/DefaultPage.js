@@ -41,10 +41,10 @@ export class DefaultPage extends Component {
         <img src={require('../../images/logo.png')} className="app-logo" alt="logo" />
         <Hello />
         <p>
-          This is the sample page of the project. Seeing this page means everything works well now!
+          This is a sample page of the project. Seeing this page means everything works well now!
         </p>
         <p>
-          This project is initialized with one feature named "home" and two test pages. To remove the test pages, run below commands:
+          The project is initialized with one feature named "home" and two test pages. To remove the test pages, run below commands:
         </p>
         <ul className="cmd">
           <li>npm run rm:page home/test-page-1</li>
@@ -62,7 +62,7 @@ export class DefaultPage extends Component {
           <button className="btn-reset-counter" onClick={this.handleReset}>Reset</button>
         </div>
 
-        <p className="section-title">To see how async flow works, here is an example of fetching reactjs topics from reddit.com/r/reactjs:</p>
+        <p className="section-title">To see how async flow works, here is an example of fetching reddit reactjs topics:</p>
         <div className="demo-reddit">
           <button className="btn-fetch-reddit" disabled={fetchRedditReactjsListPending} onClick={this.handleFetchReddit}>
             {fetchRedditReactjsListPending ? 'Fetching...' : 'Fetch reactjs topics'}

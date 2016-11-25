@@ -23,9 +23,9 @@ module.exports = {
     test.remove(feature, name);
   },
 
-  addPage(feature, name, urlPath) {
+  addPage(feature, name, urlPath, isIndex) {
     component.add(feature, name, { templateFile: 'Page.js' });
-    entry.addToRoute(feature, name, urlPath);
+    entry.addToRoute(feature, name, urlPath, isIndex);
     style.add(feature, name);
     test.add(feature, name, { templateFile: 'Page.test.js' });
   },
@@ -64,7 +64,7 @@ module.exports = {
     entry.addToRootStyle(name);
 
     // Add default page and sample action
-    this.addPage.call(this, name, 'default-page');
+    this.addPage.call(this, name, 'default-page', null, true);
     this.addAction.call(this, name, 'sample-action');
   },
 

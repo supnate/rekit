@@ -149,7 +149,7 @@ module.exports = {
     vio.save(targetPath, lines);
   },
 
-  addToRoute(feature, component, urlPath) {
+  addToRoute(feature, component, urlPath, isIndex) {
     helpers.assertNotEmpty(feature, 'feature');
     helpers.assertNotEmpty(component, 'component name');
     helpers.assertFeatureExist(feature);
@@ -163,7 +163,7 @@ module.exports = {
     if (i === -1) {
       i = helpers.lastLineIndex(lines, /^ {2}]/);
     }
-    lines.splice(i, 0, `    { path: '${urlPath}', component: ${_.pascalCase(component)} },`);
+    lines.splice(i, 0, `    { path: '${urlPath}', name: '${_.upperFirst(_.lowerCase(component))}', component: ${_.pascalCase(component)}${isIndex ? ', isIndex: true' : ''} },`);
     vio.save(targetPath, lines);
   },
 

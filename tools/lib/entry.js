@@ -175,7 +175,7 @@ module.exports = {
     const targetPath = helpers.mapFile(feature, 'route.js');
     const lines = vio.getLines(targetPath);
     helpers.removeLines(lines, `  ${_.pascalCase(component)},`);
-    helpers.removeLines(lines, `component: ${_.pascalCase(component)} }`);
+    helpers.removeLines(lines, `component: ${_.pascalCase(component)}`);
     vio.save(targetPath, lines);
   },
 

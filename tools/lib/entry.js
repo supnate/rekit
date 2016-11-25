@@ -205,7 +205,8 @@ module.exports = {
   addToRootStyle(feature) {
     const targetPath = path.join(helpers.getProjectRoot(), 'src/styles/index.less');
     const lines = vio.getLines(targetPath);
-    helpers.addImportLine(lines, `@import '../features/${_.kebabCase(feature)}/style.less';`);
+    const i = helpers.lastLineIndex(lines, '@import ');
+    lines.splice(i + 1, 0, `@import '../features/${_.kebabCase(feature)}/style.less';`);
 
     vio.save(targetPath, lines);
   },

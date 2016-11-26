@@ -10,7 +10,12 @@ import configStore from './common/configStore';
 const store = configStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-const root = document.getElementById('react-root');
+let root = document.getElementById('react-root');
+if (!root) {
+  root = document.createElement('div');
+  root.id = 'react-root';
+  document.body.appendChild(root);
+}
 
 render(
   <AppContainer>

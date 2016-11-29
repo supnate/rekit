@@ -3,8 +3,12 @@
 // Virtual IO, create, update and delete files in memory until flush to the disk.
 
 const path = require('path');
+const _ = require('lodash');
 const shell = require('shelljs');
 const colors = require('colors/safe');
+const babylon = require('babylon');
+const traverse = require('babel-traverse').default;
+const generate = require('babel-generator').default;
 
 const prjRoot = path.join(__dirname, '../../');
 
@@ -12,13 +16,48 @@ let toSave = {};
 let toDel = {};
 let fileLines = {};
 let dirs = {};
+let asts = {};
+let mvs = {}; // Files to move
 
 module.exports = {
   getLines(filePath) {
     if (!fileLines[filePath]) {
-      fileLines[filePath] = shell.cat(filePath).split(/\r?\n/);
+      // if the file is moved, find the real file path
+      const realFilePath = _.findKey(mvs, s => s === filePath) || filePath;
+      fileLines[filePath] = shell.cat(realFilePath).split(/\r?\n/);
     }
     return fileLines[filePath];
+  },
+
+  getAst(filePath) {
+    if (!asts[filePath]) {
+      const code = this.getLines(filePath).join('\n');
+      const ast = babylon.parse(code, {
+        // parse in strict mode and allow module declarations
+        sourceType: 'module',
+        plugins: [
+          'jsx',
+          'flow',
+          'doExpressions',
+          'objectRestSpread',
+          'decorators',
+          'classProperties',
+          'exportExtensions',
+          'asyncGenerators',
+          'functionBind',
+          'functionSent',
+          'dynamicImport',
+        ]
+      });
+      asts[filePath] = ast;
+    }
+    return asts[filePath];
+  },
+
+  saveAst(filePath, ast) {
+    asts[filePath] = ast;
+    // Update file lines when ast is changed
+    this.save(filePath, generate(ast).code.split(/\r?\n/));
   },
 
   fileExists(filePath) {
@@ -31,6 +70,7 @@ module.exports = {
 
   put(filePath, lines) {
     fileLines[filePath] = lines;
+    delete asts[filePath]; // ast needs to be updated
   },
 
   mkdir(dir) {
@@ -44,6 +84,26 @@ module.exports = {
     toSave[filePath] = true;
   },
 
+  mv(oldPath, newPath) {
+    if (toDel[oldPath] || !shell.test('-e', oldPath)) {
+      this.log('Error: no file to move: ', 'red', oldPath);
+      throw new Error('No file to move');
+    }
+
+    if (fileLines[oldPath]) {
+      fileLines[newPath] = fileLines[oldPath];
+      delete fileLines[oldPath];
+    }
+
+    if (asts[oldPath]) {
+      asts[newPath] = asts[oldPath];
+      delete asts[oldPath];
+    }
+    // if the file has already been moved
+    oldPath = _.findKey(mvs, s => s === oldPath) || oldPath;
+    mvs[oldPath] = newPath;
+  },
+
   del(filePath) {
     toDel[filePath] = true;
   },
@@ -53,11 +113,14 @@ module.exports = {
     toDel = {};
     fileLines = {};
     dirs = {};
+    asts = {};
+    mvs = {};
   },
 
-  log(label, color, filePath) {
+  log(label, color, filePath, toFilePath) {
     const p = filePath.replace(prjRoot, '');
-    console.log(colors[color](label + p));
+    const to = toFilePath ? toFilePath.replace(prjRoot, '') : '';
+    console.log(colors[color](label + p + (to ? (' to ' + to) : '')));
   },
 
   flush() {
@@ -67,14 +130,23 @@ module.exports = {
       }
     }
 
-    // Delete files first, then write files
-
+    // Delete files first
     for (const filePath of Object.keys(toDel)) {
       if (!shell.test('-e', filePath)) {
         this.log('Warning: no file to delete: ', 'yellow', filePath);
       } else {
         shell.rm('-rf', filePath);
         this.log('Deleted: ', 'magenta', filePath);
+      }
+    }
+
+    // Move files
+    for (const filePath of Object.keys(mvs)) {
+      if (!shell.test('-e', filePath)) {
+        this.log('Warning: no file to move: ', 'yellow', filePath);
+      } else {
+        shell.mv(filePath, mvs[filePath]);
+        this.log('Moved: ', 'green', filePath, mvs[filePath]);
       }
     }
 

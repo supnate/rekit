@@ -17,6 +17,10 @@ module.exports = {
     test.add(feature, name);
   },
 
+  moveComponent(source, dest) {
+    component.move(source, dest);
+  },
+
   removeComponent(feature, name) {
     component.remove(feature, name);
     style.remove(feature, name);

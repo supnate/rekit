@@ -1,15 +1,6 @@
-import DefaultPage from './DefaultPage';
-import Hello from './Hello';
-import RedditList from './RedditList';
-import TestPage1 from './TestPage1';
-import TestPage2 from './TestPage2';
-import TestPage from './TestPage';
-
-export {
-  DefaultPage,
-  Hello,
-  RedditList,
-  TestPage1,
-  TestPage2,
-  TestPage,
-};
+export DefaultPage from './DefaultPage';
+export Hello from './Hello';
+export RedditList from './RedditList';
+export TestPage1 from './TestPage1';
+export TestPage2 from './TestPage2';
+export TestPage from './TestPage';

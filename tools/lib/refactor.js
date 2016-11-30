@@ -83,7 +83,28 @@ function renameConstant(ast, oldName, newName) {
 }
 
 function renameCssClassName(ast, oldName, newName) {
+  // Summary:
+  //  Rename the css class name in a JSXAttribute
+  // Return:
+  //  All changes needed.
 
+  const changes = [];
+  // Find the definition node of the className attribute
+  // const reg = new RegExp(`(^| +)(${oldName})( +|$)`);
+  traverse(ast, {
+    StringLiteral(path) {
+      // Simple replace literal strings
+      const i = path.node.value.indexOf(oldName);
+      if (i >= 0) {
+        changes.push({
+          start: path.node.start + i + 1,
+          end: path.node.start + i + oldName.length + 1,
+          replacement: newName,
+        });
+      }
+    },
+  });
+  return changes;
 }
 
 function updateSourceCode(code, changes) {
@@ -100,5 +121,6 @@ function updateSourceCode(code, changes) {
 
 module.exports = {
   renameClassName,
+  renameCssClassName,
   updateSourceCode,
 };

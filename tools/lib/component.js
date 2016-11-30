@@ -37,7 +37,6 @@ module.exports = {
   move(source, dest) {
     // 1. Move File.js to the destination
     // 2. Rename module name
-    // 3. Update references in the features folder
     source.feature = _.kebabCase(source.feature);
     source.name = _.pascalCase(source.name);
     dest.feature = _.kebabCase(dest.feature);
@@ -47,9 +46,13 @@ module.exports = {
     const destPath = helpers.mapName(dest.feature, dest.name) + '.js';
     vio.mv(srcPath, destPath);
 
+    const oldCssClass = `${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
+    const newCssClass = `${_.kebabCase(dest.feature)}-${_.kebabCase(dest.name)}`;
+
     const ast = vio.getAst(destPath);
     const changes = [].concat(
-      refactor.renameClassName(ast, source.name, dest.name)
+      refactor.renameClassName(ast, source.name, dest.name),
+      refactor.renameCssClassName(ast, oldCssClass, newCssClass)
     );
     let code = vio.getContent(destPath);
     code = refactor.updateSourceCode(code, changes);

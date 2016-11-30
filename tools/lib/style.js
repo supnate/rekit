@@ -1,8 +1,10 @@
 'use strict';
 
+const _ = require('lodash');
 const shell = require('shelljs');
 const helpers = require('./helpers');
 const vio = require('./vio');
+// const refactor = require('./refactor');
 const template = require('./template');
 const entry = require('./entry');
 
@@ -25,8 +27,24 @@ module.exports = {
   },
 
   move(source, dest) {
-    const content = shell.cat(helpers.mapName(source.feature, source.component) + '.less');
-    this.remove(source.feature, source.component);
-    this.add(dest.feature, dest.component, { content });
+    // 1. Move File.less to the destination
+    // 2. Rename css class name
+    // 3. Update references in the style.less
+
+    source.feature = _.kebabCase(source.feature);
+    source.name = _.pascalCase(source.name);
+    dest.feature = _.kebabCase(dest.feature);
+    dest.name = _.pascalCase(dest.name);
+
+    const srcPath = helpers.mapName(source.feature, source.name) + '.less';
+    const destPath = helpers.mapName(dest.feature, dest.name) + '.less';
+    vio.mv(srcPath, destPath);
+
+    let lines = vio.getLines(destPath);
+    const oldCssClass = `${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
+    const newCssClass = `${_.kebabCase(dest.feature)}-${_.kebabCase(dest.name)}`;
+
+    lines = lines.map(line => line.replace(new RegExp(`\\.${oldCssClass}`), `.${newCssClass}`));
+    vio.save(destPath, lines);
   },
 };

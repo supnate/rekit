@@ -26,6 +26,20 @@ module.exports = {
     vio.save(targetPath, lines);
   },
 
+  renameInIndex(feature, oldName, newName) {
+    // Rename export xxx from './xxx'
+    oldName = _.pascalCase(oldName);
+    newName = _.pascalCase(newName);
+    const targetPath = helpers.mapFile(feature, 'index.js');
+    const lines = vio.getLines(targetPath);
+    const i = helpers.lineIndex(lines, new RegExp(`export +${oldName} +from '\\.\\/${oldName}'`));
+    if (i >= 0) {
+      lines[i] = `export ${newName} from './${newName}';`;
+    }
+
+    vio.save(targetPath, lines);
+  },
+
   addToStyle(feature, name) {
     const targetPath = helpers.mapFile(feature, 'style.less');
     const lines = vio.getLines(targetPath);
@@ -38,6 +52,16 @@ module.exports = {
     const targetPath = helpers.mapFile(feature, 'style.less');
     const lines = vio.getLines(targetPath);
     helpers.removeLines(lines, `@import './${_.pascalCase(name)}.less';`);
+    vio.save(targetPath, lines);
+  },
+
+  renameInStyle(feature, oldName, newName) {
+    const targetPath = helpers.mapFile(feature, 'style.less');
+    const lines = vio.getLines(targetPath);
+    const i = helpers.lineIndex(lines, new RegExp(`@import +'\\.\\/${oldName}\\.less'`));
+    if (i >= 0) {
+      lines[i] = `@import './${_.pascalCase(newName)}.less';`;
+    }
     vio.save(targetPath, lines);
   },
 
@@ -217,5 +241,15 @@ module.exports = {
     helpers.removeLines(lines, `features/${_.kebabCase(feature)}/style.less';`);
 
     vio.save(targetPath, lines);
+  },
+
+  renameComponentInRoute(feature, oldName, newName) {
+    // Rename import variable
+    helpers.assertNotEmpty(feature, 'feature');
+    helpers.assertNotEmpty(oldName, 'old name');
+    helpers.assertNotEmpty(newName, 'new name');
+    helpers.assertFeatureExist(feature);
+
+    // TODO
   },
 };

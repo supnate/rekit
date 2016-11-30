@@ -19,6 +19,17 @@ module.exports = {
 
   moveComponent(source, dest) {
     component.move(source, dest);
+    style.move(source, dest);
+    if (source.feature === dest.feature) {
+      entry.renameInIndex(source.feature, source.name, dest.name);
+      entry.renameInStyle(source.feature, source.name, dest.name);
+    } else {
+      entry.removeFromIndex(source.feature, source.name);
+      entry.addToIndex(dest.feature, dest.name);
+
+      entry.removeFromStyle(source.feature, source.name);
+      entry.addToStyle(dest.feature, dest.name);
+    }
   },
 
   removeComponent(feature, name) {

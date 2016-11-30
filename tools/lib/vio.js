@@ -30,7 +30,7 @@ module.exports = {
   },
 
   getContent(filePath) {
-    return getLines(filePath).join('\n');
+    return this.getLines(filePath).join('\n');
   },
 
   getAst(filePath) {

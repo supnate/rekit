@@ -29,6 +29,10 @@ module.exports = {
     return fileLines[filePath];
   },
 
+  getContent(filePath) {
+    return getLines(filePath).join('\n');
+  },
+
   getAst(filePath) {
     if (!asts[filePath]) {
       const code = this.getLines(filePath).join('\n');
@@ -79,6 +83,7 @@ module.exports = {
 
   save(filePath, lines) {
     if (lines) {
+      if (typeof lines === 'string') lines = lines.split(/\r?\n/);
       fileLines[filePath] = lines;
     }
     toSave[filePath] = true;

@@ -24,23 +24,29 @@ function getDefNode(name, scope) {
 function renameIdentifier(ast, oldName, newName, defNode) {
   // Summary:
   //  Rename identifiers with oldName in ast
-
+  const changes = [];
   function rename(path) {
     if (path.node.name === oldName && getDefNode(path.node.name, path.scope) === defNode) {
       path.node.name = newName;
+      changes.push({
+        start: path.node.start,
+        end: path.node.end,
+        replacement: newName,
+      });
     }
   }
   traverse(ast, {
     JSXIdentifier: rename,
     Identifier: rename,
   });
+  return changes;
 }
 
 function renameClassName(ast, oldName, newName) {
   // Summary:
   //  Rename the class name in a module
   // Return:
-  //  true for success, false for not found.
+  //  All changes needed.
 
   let defNode = null;
   // Find the definition node of the class
@@ -53,10 +59,9 @@ function renameClassName(ast, oldName, newName) {
   });
 
   if (defNode) {
-    renameIdentifier(ast, oldName, newName, defNode);
-    return true;
+    return renameIdentifier(ast, oldName, newName, defNode);
   }
-  return false;
+  return [];
 }
 
 function renameImportVariable(ast, oldName, newName) {
@@ -81,6 +86,19 @@ function renameCssClassName(ast, oldName, newName) {
 
 }
 
+function updateSourceCode(code, changes) {
+  // Summary:
+  //  This must be called before code is changed some places else rather than ast
+
+  changes.sort((c1, c2) => c2.start - c1.start);
+  const chars = code.split('');
+  changes.forEach((c) => {
+    chars.splice(c.start, c.end - c.start, c.replacement);
+  });
+  return chars.join('');
+}
+
 module.exports = {
   renameClassName,
+  updateSourceCode,
 };

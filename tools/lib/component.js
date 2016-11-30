@@ -48,9 +48,12 @@ module.exports = {
     vio.mv(srcPath, destPath);
 
     const ast = vio.getAst(destPath);
-    refactor.renameClassName(ast, source.name, dest.name);
-    vio.saveAst(destPath, ast);
-
+    const changes = [].concat(
+      refactor.renameClassName(ast, source.name, dest.name)
+    );
+    let code = vio.getContent(destPath);
+    code = refactor.updateSourceCode(code, changes);
+    vio.save(destPath, code);
 
     // 1. Move the File.js
     // 2. Update the path in index.js

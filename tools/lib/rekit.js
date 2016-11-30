@@ -52,6 +52,15 @@ module.exports = {
     test.remove(feature, name);
   },
 
+  movePage(source, dest) {
+    this.moveComponent(source, dest);
+    if (source.feature === dest.feature) {
+    } else {
+      entry.removeFromRoute(source.feature, source.name);
+      entry.addToRoute(dest.feature, dest.name, urlPath, isIndex);
+    }
+  },
+
   addAction(feature, name, actionType) {
     action.add(feature, name, { actionType });
     test.addAction(feature, name, { actionType });
@@ -79,8 +88,8 @@ module.exports = {
     entry.addToRootStyle(name);
 
     // Add default page and sample action
-    this.addPage.call(this, name, 'default-page', null, true);
-    this.addAction.call(this, name, 'sample-action');
+    this.addPage(name, 'default-page', null, true);
+    this.addAction(name, 'sample-action');
   },
 
   removeFeature(name) {

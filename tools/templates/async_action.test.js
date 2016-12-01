@@ -24,7 +24,7 @@ describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
     nock.cleanAll();
   });
 
-  it('action should handle ${CAMEL_ACTION_NAME} success', () => {
+  it('dispatches success action when ${CAMEL_ACTION_NAME} succeeds', () => {
     const store = mockStore({});
 
     const expectedActions = [
@@ -38,7 +38,7 @@ describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
       });
   });
 
-  it('action should handle ${CAMEL_ACTION_NAME} failure', () => {
+  it('dispatches failure action when ${CAMEL_ACTION_NAME} fails', () => {
     const store = mockStore({});
 
     const expectedActions = [
@@ -52,14 +52,14 @@ describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
       });
   });
 
-  it('action should handle dismiss${_.pascalCase(action)}Error', () => {
+  it('returns correct action by dismiss${_.pascalCase(action)}Error', () => {
     const expectedAction = {
       type: ${DISMISS_ERROR_ACTION_TYPE},
     };
     expect(dismiss${_.pascalCase(action)}Error()).to.deep.equal(expectedAction);
   });
 
-  it('reducer should handle ${BEGIN_ACTION_TYPE}', () => {
+  it('handles action type ${BEGIN_ACTION_TYPE} correctly', () => {
     const prevState = { ${CAMEL_ACTION_NAME}Pending: true };
     const state = reducer(
       prevState,
@@ -69,7 +69,7 @@ describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
     expect(state.${CAMEL_ACTION_NAME}Pending).to.be.true;
   });
 
-  it('reducer should handle ${SUCCESS_ACTION_TYPE}', () => {
+  it('handles action type ${SUCCESS_ACTION_TYPE} correctly', () => {
     const prevState = { ${CAMEL_ACTION_NAME}Pending: true };
     const state = reducer(
       prevState,
@@ -79,7 +79,7 @@ describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
     expect(state.${CAMEL_ACTION_NAME}Pending).to.be.false;
   });
 
-  it('reducer should handle ${FAILURE_ACTION_TYPE}', () => {
+  it('handles action type ${FAILURE_ACTION_TYPE} correctly', () => {
     const prevState = { ${CAMEL_ACTION_NAME}Pending: true };
     const state = reducer(
       prevState,
@@ -90,7 +90,7 @@ describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
     expect(state.${CAMEL_ACTION_NAME}Error).to.exist;
   });
 
-  it('reducer should handle ${DISMISS_ERROR_ACTION_TYPE}', () => {
+  it('handles action type ${DISMISS_ERROR_ACTION_TYPE} correctly', () => {
     const prevState = { ${CAMEL_ACTION_NAME}Error: new Error('some error') };
     const state = reducer(
       prevState,

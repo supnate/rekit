@@ -4,11 +4,7 @@
 //  Rename variables in a Rekit element
 
 const _ = require('lodash');
-const babylon = require('babylon');
 const traverse = require('babel-traverse').default;
-const generate = require('babel-generator').default;
-const shell = require('shelljs');
-// const vio = require('./vio');
 
 function getDefNode(name, scope) {
   // Summary:
@@ -106,6 +102,53 @@ function renameImportSpecifier(ast, oldName, newName) {
   return [];
 }
 
+function renameExportSpecifier(ast, oldName, newName) {
+  const changes = [];
+  traverse(ast, {
+    ExportDefaultSpecifier(path) {
+      if (path.node.exported.name === oldName) {
+        changes.push({
+          start: path.node.exported.start,
+          end: path.node.exported.end,
+          replacement: newName,
+        });
+      }
+    },
+    ExportSpecifier(path) {
+      if (path.node.local.name === oldName) {
+        changes.push({
+          start: path.node.local.start,
+          end: path.node.local.end,
+          replacement: newName,
+        });
+      }
+    }
+  });
+  return changes;
+}
+
+function renameObjectProperty(ast, oldName, newName) {
+  // Summary:
+  //  Rename the object property and only for non-computed identifier property
+  // Return:
+  //  All changes needed.
+
+  const changes = [];
+  traverse(ast, {
+    ObjectProperty(path) {
+      // Simple replace literal strings
+      if (path.node.key.type === 'Identifier' && path.node.key.name === oldName && !path.node.computed) {
+        changes.push({
+          start: path.node.key.start,
+          end: path.node.key.end,
+          replacement: newName,
+        });
+      }
+    },
+  });
+  return changes;
+}
+
 function renameStringLiteral(ast, oldName, newName) {
   // Summary:
   //  Rename the string literal in ast
@@ -177,6 +220,8 @@ module.exports = {
   renameClassName,
   renameFunctionName,
   renameImportSpecifier,
+  renameExportSpecifier,
+  renameObjectProperty,
   renameCssClassName,
   renameStringLiteral,
   updateSourceCode,

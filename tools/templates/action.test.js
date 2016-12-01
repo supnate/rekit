@@ -10,14 +10,14 @@ import {
 } from 'src/features/${_.kebabCase(feature)}/redux/${_.camelCase(action)}';
 
 describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
-  it('action: ${_.camelCase(action)}', () => {
+  it('returns correct action by ${_.camelCase(action)}', () => {
     const expectedAction = {
       type: ${_.upperSnakeCase(actionType)},
     };
     expect(${_.camelCase(action)}()).to.deep.equal(expectedAction);
   });
 
-  it('reducer should handle ${_.upperSnakeCase(actionType)}', () => {
+  it('handles action type ${_.upperSnakeCase(actionType)} correctly', () => {
     const prevState = {};
     const state = reducer(
       prevState,

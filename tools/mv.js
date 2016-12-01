@@ -54,6 +54,10 @@ switch (res.type) {
     rekit.moveAction(source, dest);
     break;
 
+  case 'async-action':
+    rekit.moveAsyncAction(source, dest);
+    break;
+
   default:
     break;
 }

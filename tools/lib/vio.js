@@ -5,6 +5,7 @@
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
+const jsdiff = require('diff');
 const colors = require('colors/safe');
 const babylon = require('babylon');
 const generate = require('babel-generator').default;
@@ -18,6 +19,15 @@ let dirs = {};
 let asts = {};
 let mvs = {}; // Files to move
 
+function printDiff(diff) {
+  diff.forEach((line) => {
+    if (line.added) {
+      console.log(colors.green('  +  ') + colors.gray(line.value.replace(/\n/g, '')));
+    } else if (line.removed) {
+      console.log(colors.red('  -  ') + colors.gray(line.value.replace(/\n/g, '')));
+    }
+  });
+}
 module.exports = {
   getLines(filePath) {
     if (!fileLines[filePath]) {
@@ -161,18 +171,20 @@ module.exports = {
 
     // Create/update files
     for (const filePath of Object.keys(toSave)) {
+      const newContent = this.getLines(filePath).join('\n');
       if (shell.test('-e', filePath)) {
-        const lines = shell.cat(filePath).split(/\r?\n/);
-        if (lines.join('') === this.getLines(filePath).join('')) {
+        const oldContent = shell.cat(filePath).split(/\r?\n/).join('\n');
+        if (oldContent === newContent) {
           this.log('Warning: nothing is changed for: ', 'yellow', filePath);
           continue;
         } else {
           this.log('Updated: ', 'cyan', filePath);
+          printDiff(jsdiff.diffLines(oldContent, newContent));
         }
       } else {
         this.log('Created: ', 'blue', filePath);
       }
-      shell.ShellString(this.getLines(filePath).join('\n')).to(filePath);
+      shell.ShellString(newContent).to(filePath);
     }
   }
 };

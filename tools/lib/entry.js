@@ -117,17 +117,18 @@ module.exports = {
   },
 
   renameInActions(feature, oldName, newName) {
-    // Rename export xxx from './xxx'
+    // Rename export { xxx, xxxx } from './xxx'
     oldName = _.camelCase(oldName);
     newName = _.camelCase(newName);
     const targetPath = helpers.getReduxFile(feature, 'actions');
-    const lines = vio.getLines(targetPath);
-    const i = helpers.lineIndex(lines, new RegExp(`export +\\{ *${oldName} *\\} +from '\\.\\/${oldName}'`));
-    if (i >= 0) {
-      lines[i] = `export { ${newName} } from './${newName}';`;
-    }
+    const ast = vio.getAst(targetPath);
+    const changes = [].concat(
+      refactor.renameExportSpecifier(ast, oldName, newName)
+    );
+    let code = vio.getContent(targetPath);
+    code = refactor.updateSourceCode(code, changes);
 
-    vio.save(targetPath, lines);
+    vio.save(targetPath, code);
   },
 
   addToReducer(feature, action) {
@@ -179,6 +180,19 @@ module.exports = {
     const lines = vio.getLines(targetPath);
     helpers.removeLines(lines, `  ${name}: `);
     vio.save(targetPath, lines);
+  },
+
+  renameInInitialState(feature, oldName, newName) {
+    // Summary:
+    //  Rename initial state property name.
+
+    const targetPath = helpers.getReduxFile(feature, 'initialState');
+    helpers.refactorCode(targetPath, _.partialRight(refactor.renameObjectProperty, oldName, newName));
+    // const ast = vio.getAst(targetPath);
+    // const changes = refactor.renameObjectProperty(ast, oldName, newName);
+    // let code = vio.getContent(targetPath);
+    // code = refactor.updateSourceCode(code, changes);
+    // vio.save(targetPath, code);
   },
 
   addToRootReducer(feature) {
@@ -255,14 +269,14 @@ module.exports = {
         const m1 = /path: *'([^']+)'/.exec(lines[0]);
         if (m1) {
           urlPath = m1[1];
-          if (urlPath === _.kebabCase(dest.name)) {
+          if (urlPath === _.kebabCase(source.name)) {
             urlPath = null;
           }
         }
         const m2 = /name: *'([^']+)'/.exec(lines[0]);
         if (m2) {
           name = m2[1];
-          if (name === _.upperFirst(_.lowerCase(dest.name))) {
+          if (name === _.upperFirst(_.lowerCase(source.name))) {
             name = null;
           }
         }

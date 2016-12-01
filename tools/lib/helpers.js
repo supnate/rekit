@@ -5,6 +5,8 @@ const _ = require('lodash');
 const shell = require('shelljs');
 const colors = require('colors/safe');
 const vio = require('./vio');
+const refactor = require('./refactor');
+
 const nameCases = {};
 
 // NOTE: I just assume helpers is always loaded before lodash is used...
@@ -90,6 +92,14 @@ module.exports = {
     this.removeLines(lines, `export const ${name} = '${name}';`);
   },
 
+  replaceStringLiteral(filePath, oldString, newString) {
+    const ast = vio.getAst(filePath);
+    const changes = refactor.renameStringLiteral(ast, oldString, newString);
+    let code = vio.getContent(filePath);
+    code = refactor.updateSourceCode(code, changes);
+    vio.save(filePath, code);
+  },
+
   isStringMatch(str, pattern) {
     if (typeof pattern === 'string') {
       return _.includes(str, pattern);
@@ -116,22 +126,6 @@ module.exports = {
     }
     return _.findLastIndex(lines, l => str.test(l));
   },
-
-  // getToSave(filesToSave) {
-  //   return function toSave(filePath, fileContent) {
-  //     filesToSave.push({
-  //       path: filePath,
-  //       content: _.isArray(fileContent) ? fileContent.join('\n') : fileContent,
-  //     });
-  //   };
-  // },
-
-  // saveFiles(files) {
-  //   console.log('Save files');
-  //   files.forEach((file) => {
-  //     shell.ShellString(file.content).to(file.path);
-  //   });
-  // },
 
   splitName(name, obj) {
     // map "feature/name" to obj {feature: xx, name: yy}
@@ -169,6 +163,14 @@ module.exports = {
 
   mapTestFile(feature, fileName) {
     return path.join(this.getProjectRoot(), 'test/app/features', _.kebabCase(feature), fileName);
+  },
+
+  refactorCode(filePath, getChanges) {
+    const ast = vio.getAst(filePath);
+    const changes = getChanges(ast); // refactor.renameObjectProperty(ast, oldName, newName);
+    let code = vio.getContent(filePath);
+    code = refactor.updateSourceCode(code, changes);
+    vio.save(filePath, code);
   },
 
   nameCases(name) {

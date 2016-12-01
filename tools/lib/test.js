@@ -1,7 +1,6 @@
 'use strict';
 
 const _ = require('lodash');
-const shell = require('shelljs');
 const helpers = require('./helpers');
 const vio = require('./vio');
 const refactor = require('./refactor');
@@ -117,14 +116,51 @@ module.exports = {
     const oldUpperSnakeName = _.upperSnakeCase(source.name);
     const newUpperSnakeName = _.upperSnakeCase(dest.name);
     if (isAsync) {
+      const oldIt1 = `dispatches success action when ${_.camelCase(source.name)} succeeds`;
+      const newIt1 = `dispatches success action when ${_.camelCase(dest.name)} succeeds`;
+
+      const oldIt2 = `dispatches failure action when ${_.camelCase(source.name)} fails`;
+      const newIt2 = `dispatches failure action when ${_.camelCase(dest.name)} fails`;
+
+      const oldIt3 = `returns correct action by dismiss${_.pascalCase(source.name)}Error`;
+      const newIt3 = `returns correct action by dismiss${_.pascalCase(dest.name)}Error`;
+
+      const oldIt4 = `handles action type ${oldUpperSnakeName}_BEGIN correctly`;
+      const newIt4 = `handles action type ${newUpperSnakeName}_BEGIN correctly`;
+
+      const oldIt5 = `handles action type ${oldUpperSnakeName}_SUCCESS correctly`;
+      const newIt5 = `handles action type ${newUpperSnakeName}_SUCCESS correctly`;
+
+      const oldIt6 = `handles action type ${oldUpperSnakeName}_FAILURE correctly`;
+      const newIt6 = `handles action type ${newUpperSnakeName}_FAILURE correctly`;
+
+      const oldIt7 = `handles action type ${oldUpperSnakeName}_DISMISS_ERROR correctly`;
+      const newIt7 = `handles action type ${newUpperSnakeName}_DISMISS_ERROR correctly`;
+
       changes = changes.concat(
+        refactor.renameImportSpecifier(ast, `dismiss${_.pascalCase(source.name)}Error`, `dismiss${_.pascalCase(dest.name)}Error`),
         refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_BEGIN`, `${newUpperSnakeName}_BEGIN`),
         refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_SUCCESS`, `${newUpperSnakeName}_SUCCESS`),
         refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_FAILURE`, `${newUpperSnakeName}_FAILURE`),
-        refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_DISMISS_ERROR`, `${newUpperSnakeName}_DISMISS_ERROR`)
+        refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_DISMISS_ERROR`, `${newUpperSnakeName}_DISMISS_ERROR`),
+        refactor.renameStringLiteral(ast, oldIt1, newIt1),
+        refactor.renameStringLiteral(ast, oldIt2, newIt2),
+        refactor.renameStringLiteral(ast, oldIt3, newIt3),
+        refactor.renameStringLiteral(ast, oldIt4, newIt4),
+        refactor.renameStringLiteral(ast, oldIt5, newIt5),
+        refactor.renameStringLiteral(ast, oldIt6, newIt6),
+        refactor.renameStringLiteral(ast, oldIt7, newIt7)
       );
     } else {
+      // Try to update it('xxx') for sync action, bound to the templates
+      const oldIt1 = `returns correct action by ${source.name}`;
+      const newIt1 = `returns correct action by ${dest.name}`;
+
+      const oldIt2 = `handles action type ${_.upperSnakeCase(source.name)} correctly`;
+      const newIt2 = `handles action type ${_.upperSnakeCase(dest.name)} correctly`;
       changes = changes.concat(
+        refactor.renameStringLiteral(ast, oldIt1, newIt1),
+        refactor.renameStringLiteral(ast, oldIt2, newIt2),
         refactor.renameImportSpecifier(ast, oldUpperSnakeName, newUpperSnakeName)
       );
     }

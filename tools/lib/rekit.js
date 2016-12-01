@@ -68,19 +68,10 @@ module.exports = {
     test.removeAction(feature, name);
   },
 
-  moveAction(source, dest) {
-    action.move(source, dest);
-    test.moveAction(source, dest);
-    if (source.feature === dest.feature) {
-      entry.renameInActions(source.feature, source.name, dest.name);
-      entry.renameInReducer(source.feature, source.name, dest.name);
-    } else {
-      entry.removeFromActions(source.feature, source.name);
-      entry.addToActions(dest.feature, dest.name);
-
-      entry.removeFromReducer(source.feature, source.name);
-      entry.addToReducer(dest.feature, dest.name);
-    }
+  moveAction(source, dest, isAsync) {
+    action.move(source, dest, isAsync);
+    test.moveAction(source, dest, isAsync);
+    
   },
 
   addAsyncAction(feature, name) {
@@ -94,7 +85,18 @@ module.exports = {
   },
 
   moveAsyncAction(source, dest) {
-    this.moveAction(source, dest, true);
+    action.moveAsync(source, dest);
+    test.moveAction(source, dest, true);
+    // if (source.feature === dest.feature) {
+    //   entry.renameInActions(source.feature, source.name, dest.name);
+    //   entry.renameInReducer(source.feature, source.name, dest.name);
+    // } else {
+    //   entry.removeFromActions(source.feature, source.name);
+    //   entry.addToActions(dest.feature, dest.name);
+
+    //   entry.removeFromReducer(source.feature, source.name);
+    //   entry.addToReducer(dest.feature, dest.name);
+    // }
   },
 
   addFeature(name) {

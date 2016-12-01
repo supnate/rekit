@@ -24,4 +24,18 @@ module.exports = {
 
     vio.save(targetPath, lines);
   },
+
+  rename(feature, oldName, newName) {
+    oldName = _.upperSnakeCase(oldName);
+    newName = _.upperSnakeCase(newName);
+
+    const targetPath = helpers.getReduxFile(feature, 'constants');
+    const lines = vio.getLines(targetPath);
+    const i = helpers.lineIndex(lines, `export const ${oldName} = '${oldName}';`);
+    if (i >= 0) {
+      lines[i] = `export const ${newName} = '${newName}';`;
+    }
+
+    vio.save(targetPath, lines);
+  },
 };

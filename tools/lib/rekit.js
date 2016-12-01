@@ -1,7 +1,7 @@
 'use strict';
 
 // Summary
-//  CLI wrapper for managing Rekit elements.
+//  API wrapper for managing Rekit elements.
 
 const component = require('./component');
 const style = require('./style');
@@ -17,8 +17,15 @@ module.exports = {
     test.add(feature, name);
   },
 
+  removeComponent(feature, name) {
+    component.remove(feature, name);
+    style.remove(feature, name);
+    test.remove(feature, name);
+  },
+
   moveComponent(source, dest) {
     component.move(source, dest);
+    test.move(source, dest);
     style.move(source, dest);
     if (source.feature === dest.feature) {
       entry.renameInIndex(source.feature, source.name, dest.name);
@@ -30,12 +37,6 @@ module.exports = {
       entry.removeFromStyle(source.feature, source.name);
       entry.addToStyle(dest.feature, dest.name);
     }
-  },
-
-  removeComponent(feature, name) {
-    component.remove(feature, name);
-    style.remove(feature, name);
-    test.remove(feature, name);
   },
 
   addPage(feature, name, urlPath, isIndex) {
@@ -54,11 +55,7 @@ module.exports = {
 
   movePage(source, dest) {
     this.moveComponent(source, dest);
-    if (source.feature === dest.feature) {
-    } else {
-      entry.removeFromRoute(source.feature, source.name);
-      entry.addToRoute(dest.feature, dest.name, urlPath, isIndex);
-    }
+    entry.moveRoute(source, dest);
   },
 
   addAction(feature, name, actionType) {
@@ -71,6 +68,21 @@ module.exports = {
     test.removeAction(feature, name);
   },
 
+  moveAction(source, dest) {
+    action.move(source, dest);
+    test.moveAction(source, dest);
+    if (source.feature === dest.feature) {
+      entry.renameInActions(source.feature, source.name, dest.name);
+      entry.renameInReducer(source.feature, source.name, dest.name);
+    } else {
+      entry.removeFromActions(source.feature, source.name);
+      entry.addToActions(dest.feature, dest.name);
+
+      entry.removeFromReducer(source.feature, source.name);
+      entry.addToReducer(dest.feature, dest.name);
+    }
+  },
+
   addAsyncAction(feature, name) {
     action.addAsync(feature, name);
     test.addAction(feature, name, { isAsync: true });
@@ -79,6 +91,10 @@ module.exports = {
   removeAsyncAction(feature, name) {
     action.removeAsync(feature, name);
     test.removeAction(feature, name);
+  },
+
+  moveAsyncAction(source, dest) {
+    this.moveAction(source, dest, true);
   },
 
   addFeature(name) {

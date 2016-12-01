@@ -8,13 +8,13 @@ import {
   ${SUCCESS_ACTION_TYPE},
   ${FAILURE_ACTION_TYPE},
   ${DISMISS_ERROR_ACTION_TYPE},
-} from 'features/${_.kebabCase(feature)}/redux/constants';
+} from 'src/features/${_.kebabCase(feature)}/redux/constants';
 
 import {
   ${CAMEL_ACTION_NAME},
   dismiss${_.pascalCase(action)}Error,
   reducer,
-} from 'features/${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}';
+} from 'src/features/${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

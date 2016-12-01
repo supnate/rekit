@@ -2,12 +2,12 @@ import { expect } from 'chai';
 
 import {
   SAMPLE_ACTION,
-} from 'features/common/redux/constants';
+} from 'src/features/common/redux/constants';
 
 import {
   sampleAction,
   reducer,
-} from 'features/common/redux/sampleAction';
+} from 'src/features/common/redux/sampleAction';
 
 describe('common/redux/sampleAction', () => {
   it('action: sampleAction', () => {

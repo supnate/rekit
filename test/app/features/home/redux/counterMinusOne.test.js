@@ -2,12 +2,12 @@ import { expect } from 'chai';
 
 import {
   COUNTER_MINUS_ONE,
-} from 'features/home/redux/constants';
+} from 'src/features/home/redux/constants';
 
 import {
   counterMinusOne,
   reducer,
-} from 'features/home/redux/counterMinusOne';
+} from 'src/features/home/redux/counterMinusOne';
 
 describe('home/redux/counterMinusOne', () => {
   it('action: counterMinusOne', () => {

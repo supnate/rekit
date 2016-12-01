@@ -6,6 +6,7 @@
 const path = require('path');
 const _ = require('lodash');
 const vio = require('./vio');
+const refactor = require('./refactor');
 const helpers = require('./helpers');
 
 module.exports = {
@@ -115,6 +116,20 @@ module.exports = {
     vio.save(targetPath, lines);
   },
 
+  renameInActions(feature, oldName, newName) {
+    // Rename export xxx from './xxx'
+    oldName = _.camelCase(oldName);
+    newName = _.camelCase(newName);
+    const targetPath = helpers.getReduxFile(feature, 'actions');
+    const lines = vio.getLines(targetPath);
+    const i = helpers.lineIndex(lines, new RegExp(`export +\\{ *${oldName} *\\} +from '\\.\\/${oldName}'`));
+    if (i >= 0) {
+      lines[i] = `export { ${newName} } from './${newName}';`;
+    }
+
+    vio.save(targetPath, lines);
+  },
+
   addToReducer(feature, action) {
     const targetPath = helpers.getReduxFile(feature, 'reducer');
     const lines = vio.getLines(targetPath);
@@ -134,6 +149,19 @@ module.exports = {
     helpers.removeLines(lines, `  ${camelActionName},`, helpers.lineIndex(lines, 'const reducers = ['));
 
     vio.save(targetPath, lines);
+  },
+
+  renameInReducer(feature, oldName, newName) {
+    const targetPath = helpers.getReduxFile(feature, 'reducer');
+    const ast = vio.getAst(targetPath);
+    oldName = _.camelCase(oldName);
+    newName = _.camelCase(newName);
+    const changes = [].concat(
+      refactor.renameImportSpecifier(ast, oldName, newName),
+      refactor.renameStringLiteral(ast, `./${oldName}`, `./${newName}`)
+    );
+    const code = refactor.updateSourceCode(vio.getContent(targetPath), changes);
+    vio.save(targetPath, code);
   },
 
   addToInitialState(feature, name, value) {
@@ -173,7 +201,7 @@ module.exports = {
     vio.save(targetPath, lines);
   },
 
-  addToRoute(feature, component, urlPath, isIndex) {
+  addToRoute(feature, component, urlPath, isIndex, name) {
     helpers.assertNotEmpty(feature, 'feature');
     helpers.assertNotEmpty(component, 'component name');
     helpers.assertFeatureExist(feature);
@@ -187,7 +215,7 @@ module.exports = {
     if (i === -1) {
       i = helpers.lastLineIndex(lines, /^ {2}]/);
     }
-    lines.splice(i, 0, `    { path: '${urlPath}', name: '${_.upperFirst(_.lowerCase(component))}', component: ${_.pascalCase(component)}${isIndex ? ', isIndex: true' : ''} },`);
+    lines.splice(i, 0, `    { path: '${urlPath}', name: '${name || _.upperFirst(_.lowerCase(component))}', component: ${_.pascalCase(component)}${isIndex ? ', isIndex: true' : ''} },`);
     vio.save(targetPath, lines);
   },
 
@@ -199,8 +227,49 @@ module.exports = {
     const targetPath = helpers.mapFile(feature, 'route.js');
     const lines = vio.getLines(targetPath);
     helpers.removeLines(lines, `  ${_.pascalCase(component)},`);
-    helpers.removeLines(lines, `component: ${_.pascalCase(component)}`);
+    const removed = helpers.removeLines(lines, `component: ${_.pascalCase(component)}`);
     vio.save(targetPath, lines);
+    return removed;
+  },
+
+  moveRoute(source, dest) {
+    if (source.feature === dest.feature) {
+      // If in the same feature, rename imported component name
+      const targetPath = helpers.mapFile(source.feature, 'route.js');
+      const ast = vio.getAst(targetPath);
+      const oldName = _.pascalCase(source.name);
+      const newName = _.pascalCase(dest.name);
+      const changes = [].concat(
+        refactor.renameImportSpecifier(ast, oldName, newName),
+        refactor.renameStringLiteral(ast, _.kebabCase(oldName), _.kebabCase(newName)),
+        refactor.renameStringLiteral(ast, _.upperFirst(_.lowerCase(oldName)), _.upperFirst(_.lowerCase(newName)))
+      );
+      const code = refactor.updateSourceCode(vio.getContent(targetPath), changes);
+      vio.save(targetPath, code);
+    } else {
+      const lines = this.removeFromRoute(source.feature, source.name);
+      let urlPath = null;
+      let isIndex = false;
+      let name = null;
+      if (lines && lines.length) {
+        const m1 = /path: *'([^']+)'/.exec(lines[0]);
+        if (m1) {
+          urlPath = m1[1];
+          if (urlPath === _.kebabCase(dest.name)) {
+            urlPath = null;
+          }
+        }
+        const m2 = /name: *'([^']+)'/.exec(lines[0]);
+        if (m2) {
+          name = m2[1];
+          if (name === _.upperFirst(_.lowerCase(dest.name))) {
+            name = null;
+          }
+        }
+        isIndex = /isIndex: true/.test(lines[0]);
+      }
+      this.addToRoute(dest.feature, dest.name, urlPath, isIndex, name);
+    }
   },
 
   addToRouteConfig(feature) {
@@ -241,15 +310,5 @@ module.exports = {
     helpers.removeLines(lines, `features/${_.kebabCase(feature)}/style.less';`);
 
     vio.save(targetPath, lines);
-  },
-
-  renameComponentInRoute(feature, oldName, newName) {
-    // Rename import variable
-    helpers.assertNotEmpty(feature, 'feature');
-    helpers.assertNotEmpty(oldName, 'old name');
-    helpers.assertNotEmpty(newName, 'new name');
-    helpers.assertFeatureExist(feature);
-
-    // TODO
   },
 };

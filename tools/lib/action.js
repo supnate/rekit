@@ -3,8 +3,9 @@
 const _ = require('lodash');
 const helpers = require('./helpers');
 const vio = require('./vio');
-const template = require('./template');
 const constant = require('./constant');
+const refactor = require('./refactor');
+const template = require('./template');
 const entry = require('./entry');
 
 module.exports = {
@@ -40,6 +41,43 @@ module.exports = {
     constant.remove(feature, actionType);
     entry.removeFromReducer(feature, name);
     entry.removeFromActions(feature, name);
+  },
+
+  move(source, dest) {
+    helpers.assertNotEmpty(source.feature, 'feature');
+    helpers.assertNotEmpty(source.name, 'action name');
+    helpers.assertFeatureExist(source.feature);
+    helpers.assertNotEmpty(dest.feature, 'feature');
+    helpers.assertNotEmpty(dest.name, 'action name');
+    helpers.assertFeatureExist(dest.feature);
+
+    source.feature = _.kebabCase(source.feature);
+    source.name = _.camelCase(source.name);
+    dest.feature = _.kebabCase(dest.feature);
+    dest.name = _.camelCase(dest.name);
+
+    const srcPath = helpers.getReduxFile(source.feature, source.name);
+    const destPath = helpers.getReduxFile(dest.feature, dest.name);
+    vio.mv(srcPath, destPath);
+
+    const oldActionType = _.upperSnakeCase(source.name);
+    const newActionType = _.upperSnakeCase(dest.name);
+    const ast = vio.getAst(destPath);
+    const changes = [].concat(
+      refactor.renameFunctionName(ast, source.name, dest.name),
+      refactor.renameImportSpecifier(ast, oldActionType, newActionType)
+    );
+    let code = vio.getContent(destPath);
+    code = refactor.updateSourceCode(code, changes);
+
+    if (source.feature === dest.feature) {
+      constant.rename(source.feature, oldActionType, newActionType);
+    } else {
+      constant.remove(source.feature, oldActionType);
+      constant.add(dest.feature, newActionType);
+    }
+
+    vio.save(destPath, code);
   },
 
   addAsync(feature, name, args) {

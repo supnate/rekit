@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import reducer from 'features/home/redux/reducer';
+import reducer from 'src/features/home/redux/reducer';
 
 describe('feature/home/redux/reducer', () => {
   it('feature reducer does nothing if no matched action', () => {

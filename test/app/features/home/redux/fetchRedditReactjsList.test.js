@@ -9,13 +9,13 @@ import {
   FETCH_REDDIT_REACTJS_LIST_SUCCESS,
   FETCH_REDDIT_REACTJS_LIST_FAILURE,
   FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
-} from 'features/home/redux/constants';
+} from 'src/features/home/redux/constants';
 
 import {
   fetchRedditReactjsList,
   dismissFetchRedditReactjsListError,
   reducer,
-} from 'features/home/redux/fetchRedditReactjsList';
+} from 'src/features/home/redux/fetchRedditReactjsList';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);

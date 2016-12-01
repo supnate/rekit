@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { Hello } from 'features/home';
+import { Hello } from 'src/features/home';
 
 describe('features/home/Hello', () => {
   it('renders node with correct class name', () => {

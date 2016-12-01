@@ -3,6 +3,7 @@
 // Summary:
 //  Rename variables in a Rekit element
 
+const _ = require('lodash');
 const babylon = require('babylon');
 const traverse = require('babel-traverse').default;
 const generate = require('babel-generator').default;
@@ -52,7 +53,7 @@ function renameClassName(ast, oldName, newName) {
   // Find the definition node of the class
   traverse(ast, {
     ClassDeclaration(path) {
-      if (path.node.id.name === oldName) {
+      if (path.node.id && path.node.id.name === oldName) {
         defNode = path.node.id;
       }
     },
@@ -64,22 +65,67 @@ function renameClassName(ast, oldName, newName) {
   return [];
 }
 
-function renameImportVariable(ast, oldName, newName) {
+function renameFunctionName(ast, oldName, newName) {
+  let defNode = null;
+  // Find the definition node of the class
+  traverse(ast, {
+    FunctionDeclaration(path) {
+      if (path.node.id && path.node.id.name === oldName) {
+        defNode = path.node.id;
+      }
+    },
+  });
+
+  if (defNode) {
+    return renameIdentifier(ast, oldName, newName, defNode);
+  }
+  return [];
+}
+
+function renameImportSpecifier(ast, oldName, newName) {
   // Summary:
   //  Rename the import(default, named) variable name and their reference.
   //  The simple example is to rename a component
+  let defNode = null;
+  // Find the definition node of the class
+  traverse(ast, {
+    ImportDefaultSpecifier(path) {
+      if (path.node.local.name === oldName) {
+        defNode = path.node.local;
+      }
+    },
+    ImportSpecifier(path) {
+      if (path.node.local.name === oldName) {
+        defNode = path.node.local;
+      }
+    }
+  });
+  if (defNode) {
+    return renameIdentifier(ast, oldName, newName, defNode);
+  }
+  return [];
 }
 
-function renamePropsMember(ast, oldName, newName) {
+function renameStringLiteral(ast, oldName, newName) {
+  // Summary:
+  //  Rename the string literal in ast
+  // Return:
+  //  All changes needed.
 
-}
-
-function renameFunctionName(ast, oldName, newName) {
-
-}
-
-function renameConstant(ast, oldName, newName) {
-  
+  const changes = [];
+  traverse(ast, {
+    StringLiteral(path) {
+      // Simple replace literal strings
+      if (path.node.value === oldName) {
+        changes.push({
+          start: path.node.start + 1,
+          end: path.node.end - 1,
+          replacement: newName,
+        });
+      }
+    },
+  });
+  return changes;
 }
 
 function renameCssClassName(ast, oldName, newName) {
@@ -112,8 +158,16 @@ function updateSourceCode(code, changes) {
   //  This must be called before code is changed some places else rather than ast
 
   changes.sort((c1, c2) => c2.start - c1.start);
+  // Remove same or overlapped changes
+  const newChanges = _.reduce(changes, (prev, curr) => {
+    if (!prev.length || _.last(prev).start > curr.end) {
+      prev.push(curr);
+    }
+    return prev;
+  }, []);
+
   const chars = code.split('');
-  changes.forEach((c) => {
+  newChanges.forEach((c) => {
     chars.splice(c.start, c.end - c.start, c.replacement);
   });
   return chars.join('');
@@ -121,6 +175,9 @@ function updateSourceCode(code, changes) {
 
 module.exports = {
   renameClassName,
+  renameFunctionName,
+  renameImportSpecifier,
   renameCssClassName,
+  renameStringLiteral,
   updateSourceCode,
 };

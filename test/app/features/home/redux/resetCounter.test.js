@@ -2,12 +2,12 @@ import { expect } from 'chai';
 
 import {
   RESET_COUNTER,
-} from 'features/home/redux/constants';
+} from 'src/features/home/redux/constants';
 
 import {
   resetCounter,
   reducer,
-} from 'features/home/redux/resetCounter';
+} from 'src/features/home/redux/resetCounter';
 
 describe('home/redux/resetCounter', () => {
   it('action: resetCounter', () => {

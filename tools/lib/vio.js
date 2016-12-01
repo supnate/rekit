@@ -7,7 +7,6 @@ const _ = require('lodash');
 const shell = require('shelljs');
 const colors = require('colors/safe');
 const babylon = require('babylon');
-const traverse = require('babel-traverse').default;
 const generate = require('babel-generator').default;
 
 const prjRoot = path.join(__dirname, '../../');
@@ -95,6 +94,11 @@ module.exports = {
       throw new Error('No file to move');
     }
 
+    if (shell.test('-e', newPath)) {
+      this.log('Error: target file already exists: ', 'red', newPath);
+      throw new Error('Target file already exists');
+    }
+
     if (fileLines[oldPath]) {
       fileLines[newPath] = fileLines[oldPath];
       delete fileLines[oldPath];
@@ -155,7 +159,7 @@ module.exports = {
       }
     }
 
-
+    // Create/update files
     for (const filePath of Object.keys(toSave)) {
       if (shell.test('-e', filePath)) {
         const lines = shell.cat(filePath).split(/\r?\n/);

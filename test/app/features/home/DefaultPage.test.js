@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { render, shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import ConnectedDefaultPage, { DefaultPage } from 'features/home/DefaultPage';
+import ConnectedDefaultPage, { DefaultPage } from 'src/features/home/DefaultPage';
 
 
 describe('features/home/DefaultPage', () => {

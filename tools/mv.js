@@ -46,6 +46,13 @@ switch (res.type) {
   case 'component':
     rekit.moveComponent(source, dest);
     break;
+  case 'page':
+    rekit.movePage(source, dest);
+    break;
+
+  case 'action':
+    rekit.moveAction(source, dest);
+    break;
 
   default:
     break;

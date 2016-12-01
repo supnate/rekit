@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { TestPage } from 'features/home/TestPage';
+import { TestPage } from 'src/features/home/TestPage';
 
 describe('home/TestPage', () => {
   it('renders node with correct class name', () => {

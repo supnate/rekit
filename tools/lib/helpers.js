@@ -59,7 +59,7 @@ module.exports = {
   },
 
   removeLines(lines, str) {
-    _.remove(lines, line => this.isStringMatch(line, str));
+    return _.remove(lines, line => this.isStringMatch(line, str));
   },
 
   addImportLine(lines, importLine) {

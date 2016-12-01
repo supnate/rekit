@@ -2,12 +2,12 @@ import { expect } from 'chai';
 
 import {
   ${_.upperSnakeCase(actionType)},
-} from 'features/${_.kebabCase(feature)}/redux/constants';
+} from 'src/features/${_.kebabCase(feature)}/redux/constants';
 
 import {
   ${_.camelCase(action)},
   reducer,
-} from 'features/${_.kebabCase(feature)}/redux/${_.camelCase(action)}';
+} from 'src/features/${_.kebabCase(feature)}/redux/${_.camelCase(action)}';
 
 describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
   it('action: ${_.camelCase(action)}', () => {

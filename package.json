@@ -56,9 +56,7 @@
         "module-resolver",
         {
           "alias": {
-            "src": "./src",
-            "features": "./src/features"
-          }
+            "src": "./src"          }
         }
       ]
     ],

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { ${_.pascalCase(component)} } from 'features/${_.kebabCase(feature)}/${_.pascalCase(component)}';
+import { ${_.pascalCase(component)} } from 'src/features/${_.kebabCase(feature)}/${_.pascalCase(component)}';
 
 describe('${_.kebabCase(feature)}/${_.pascalCase(component)}', () => {
   it('renders node with correct class name', () => {

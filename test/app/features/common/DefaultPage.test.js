@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { DefaultPage } from 'features/common/DefaultPage';
+import { DefaultPage } from 'src/features/common/DefaultPage';
 
 describe('common/DefaultPage', () => {
   it('renders node with correct class name', () => {

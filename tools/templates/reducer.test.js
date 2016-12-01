@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import reducer from 'features/${_.kebabCase(feature)}/redux/reducer';
+import reducer from 'src/features/${_.kebabCase(feature)}/redux/reducer';
 
 describe('feature/${_.kebabCase(feature)}/redux/reducer', () => {
   it('feature ${_.kebabCase(feature)} reducer should do nothing if no matched action', () => {

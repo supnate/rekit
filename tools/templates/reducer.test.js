@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import reducer from 'src/features/${_.kebabCase(feature)}/redux/reducer';
 
-describe('feature/${_.kebabCase(feature)}/redux/reducer', () => {
-  it('feature ${_.kebabCase(feature)} reducer should do nothing if no matched action', () => {
+describe('${_.kebabCase(feature)}/redux/reducer', () => {
+  it('does nothing if no matched action', () => {
     const prevState = {};
     const state = reducer(
       prevState,

@@ -27,16 +27,6 @@ module.exports = {
     component.move(source, dest);
     test.move(source, dest);
     style.move(source, dest);
-    if (source.feature === dest.feature) {
-      entry.renameInIndex(source.feature, source.name, dest.name);
-      entry.renameInStyle(source.feature, source.name, dest.name);
-    } else {
-      entry.removeFromIndex(source.feature, source.name);
-      entry.addToIndex(dest.feature, dest.name);
-
-      entry.removeFromStyle(source.feature, source.name);
-      entry.addToStyle(dest.feature, dest.name);
-    }
   },
 
   addPage(feature, name, urlPath, isIndex) {
@@ -71,7 +61,6 @@ module.exports = {
   moveAction(source, dest, isAsync) {
     action.move(source, dest, isAsync);
     test.moveAction(source, dest, isAsync);
-    
   },
 
   addAsyncAction(feature, name) {
@@ -87,16 +76,6 @@ module.exports = {
   moveAsyncAction(source, dest) {
     action.moveAsync(source, dest);
     test.moveAction(source, dest, true);
-    // if (source.feature === dest.feature) {
-    //   entry.renameInActions(source.feature, source.name, dest.name);
-    //   entry.renameInReducer(source.feature, source.name, dest.name);
-    // } else {
-    //   entry.removeFromActions(source.feature, source.name);
-    //   entry.addToActions(dest.feature, dest.name);
-
-    //   entry.removeFromReducer(source.feature, source.name);
-    //   entry.addToReducer(dest.feature, dest.name);
-    // }
   },
 
   addFeature(name) {
@@ -115,6 +94,10 @@ module.exports = {
     entry.removeFromRootReducer(name);
     entry.removeFromRouteConfig(name);
     entry.removeFromRootStyle(name);
+  },
+
+  moveFeature(oldName, newName) {
+    featureMgr.move(oldName, newName);
   },
 };
 

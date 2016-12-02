@@ -43,6 +43,9 @@ const dest = {
 };
 
 switch (res.type) {
+  case 'feature':
+    rekit.moveFeature(source.feature, dest.feature);
+    break;
   case 'component':
     rekit.moveComponent(source, dest);
     break;

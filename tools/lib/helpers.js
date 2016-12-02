@@ -134,6 +134,19 @@ module.exports = {
     obj.name = arr[1];
   },
 
+  getActionType(feature, action) {
+    return `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}`;
+  },
+
+  getAsyncActionTypes(feature, action) {
+    return {
+      begin: `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}_BEGIN`,
+      success: `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}_SUCCESS`,
+      failure: `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}_FAILURE`,
+      dismissError: `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}_DISMISS_ERROR`,
+    };
+  },
+
   mapName(feature, name) {
     // Map a component, page name to the file.
     return this.mapFile(feature, _.pascalCase(name));

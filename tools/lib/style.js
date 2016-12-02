@@ -44,7 +44,14 @@ module.exports = {
     const oldCssClass = `${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
     const newCssClass = `${_.kebabCase(dest.feature)}-${_.kebabCase(dest.name)}`;
 
-    lines = lines.map(line => line.replace(new RegExp(`\\.${oldCssClass}`), `.${newCssClass}`));
+    lines = lines.map(line => line.replace(`.${oldCssClass}`, `.${newCssClass}`));
     vio.save(destPath, lines);
+
+    if (source.feature === dest.feature) {
+      entry.renameInStyle(source.feature, source.name, dest.name);
+    } else {
+      entry.removeFromStyle(source.feature, source.name);
+      entry.addToStyle(dest.feature, dest.name);
+    }
   },
 };

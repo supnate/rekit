@@ -22,9 +22,9 @@ let mvs = {}; // Files to move
 function printDiff(diff) {
   diff.forEach((line) => {
     if (line.added) {
-      console.log(colors.green('  +  ') + colors.gray(line.value.replace(/\n/g, '')));
+      line.value.split('\n').forEach(l => l && console.log(colors.green('  +  ') + colors.gray(l)));
     } else if (line.removed) {
-      console.log(colors.red('  -  ') + colors.gray(line.value.replace(/\n/g, '')));
+      line.value.split('\n').forEach(l => l && console.log(colors.red('  -  ') + colors.gray(l)));
     }
   });
 }

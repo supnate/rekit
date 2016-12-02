@@ -58,6 +58,13 @@ module.exports = {
     code = refactor.updateSourceCode(code, changes);
     vio.save(destPath, code);
 
+    if (source.feature === dest.feature) {
+      entry.renameInIndex(source.feature, source.name, dest.name);
+    } else {
+      entry.removeFromIndex(source.feature, source.name);
+      entry.addToIndex(dest.feature, dest.name);
+    }
+
     // 1. Move the File.js
     // 2. Update the path in index.js
     // 3. Search all reference in the project features project.

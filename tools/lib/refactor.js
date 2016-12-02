@@ -5,6 +5,7 @@
 
 const _ = require('lodash');
 const traverse = require('babel-traverse').default;
+const vio = require('./vio');
 
 function getDefNode(name, scope) {
   // Summary:
@@ -196,6 +197,7 @@ function renameCssClassName(ast, oldName, newName) {
   return changes;
 }
 
+
 function updateSourceCode(code, changes) {
   // Summary:
   //  This must be called before code is changed some places else rather than ast
@@ -216,6 +218,17 @@ function updateSourceCode(code, changes) {
   return chars.join('');
 }
 
+function updateFile(filePath, getChanges) {
+  // Summary:
+  //  Update the source file by changes.
+
+  const ast = vio.getAst(filePath);
+  const changes = getChanges(ast);
+  let code = vio.getContent(filePath);
+  code = updateSourceCode(code, changes);
+  vio.save(filePath, code);
+}
+
 module.exports = {
   renameClassName,
   renameFunctionName,
@@ -225,4 +238,5 @@ module.exports = {
   renameCssClassName,
   renameStringLiteral,
   updateSourceCode,
+  updateFile,
 };

@@ -44,17 +44,13 @@ module.exports = {
     const oldDescribe = `${_.kebabCase(source.feature)}/${_.pascalCase(source.name)}`;
     const newDescribe = `${_.kebabCase(dest.feature)}/${_.pascalCase(dest.name)}`;
 
-    const ast = vio.getAst(destPath);
-    const changes = [].concat(
+    refactor.udpateFile(destPath, ast => [].concat(
       refactor.renameImportSpecifier(ast, source.name, dest.name),
       refactor.renameStringLiteral(ast, oldImportPath1, newImportPath1),
       refactor.renameStringLiteral(ast, oldImportPath2, newImportPath2),
       refactor.renameStringLiteral(ast, oldDescribe, newDescribe),
       refactor.renameStringLiteral(ast, oldCssClass, newCssClass)
-    );
-    let code = vio.getContent(destPath);
-    code = refactor.updateSourceCode(code, changes);
-    vio.save(destPath, code);
+    ));
   },
 
   addAction(feature, name, args) {
@@ -62,15 +58,11 @@ module.exports = {
     const context = {
       feature,
       action: name,
-      actionType: args.actionType || name,
     };
     if (args.isAsync) {
-      const upperSnakeActionName = _.upperSnakeCase(name);
-      context.CAMEL_ACTION_NAME = _.camelCase(name);
-      context.BEGIN_ACTION_TYPE = `${upperSnakeActionName}_BEGIN`;
-      context.SUCCESS_ACTION_TYPE = `${upperSnakeActionName}_SUCCESS`;
-      context.FAILURE_ACTION_TYPE = `${upperSnakeActionName}_FAILURE`;
-      context.DISMISS_ERROR_ACTION_TYPE = `${upperSnakeActionName}_DISMISS_ERROR`;
+      context.actionTypes = helpers.getAsyncActionTypes(feature, name);
+    } else {
+      context.actionType = args.actionType || helpers.getActionType(feature, name);
     }
     template.create(helpers.getReduxTestFile(feature, name), Object.assign({}, args, {
       templateFile: args.templateFile || (args.isAsync ? 'async_action.test.js' : 'action.test.js'),
@@ -113,9 +105,12 @@ module.exports = {
       refactor.renameStringLiteral(ast, oldDescribe, newDescribe)
     );
 
-    const oldUpperSnakeName = _.upperSnakeCase(source.name);
-    const newUpperSnakeName = _.upperSnakeCase(dest.name);
+    // const oldUpperSnakeName = _.upperSnakeCase(source.name);
+    // const newUpperSnakeName = _.upperSnakeCase(dest.name);
     if (isAsync) {
+      const oldActionTypes = helpers.getAsyncActionTypes(source.feature, source.name);
+      const newActionTypes = helpers.getAsyncActionTypes(dest.feature, dest.name);
+
       const oldIt1 = `dispatches success action when ${_.camelCase(source.name)} succeeds`;
       const newIt1 = `dispatches success action when ${_.camelCase(dest.name)} succeeds`;
 
@@ -125,24 +120,24 @@ module.exports = {
       const oldIt3 = `returns correct action by dismiss${_.pascalCase(source.name)}Error`;
       const newIt3 = `returns correct action by dismiss${_.pascalCase(dest.name)}Error`;
 
-      const oldIt4 = `handles action type ${oldUpperSnakeName}_BEGIN correctly`;
-      const newIt4 = `handles action type ${newUpperSnakeName}_BEGIN correctly`;
+      const oldIt4 = `handles action type ${oldActionTypes.begin} correctly`;
+      const newIt4 = `handles action type ${newActionTypes.begin} correctly`;
 
-      const oldIt5 = `handles action type ${oldUpperSnakeName}_SUCCESS correctly`;
-      const newIt5 = `handles action type ${newUpperSnakeName}_SUCCESS correctly`;
+      const oldIt5 = `handles action type ${oldActionTypes.success} correctly`;
+      const newIt5 = `handles action type ${newActionTypes.success} correctly`;
 
-      const oldIt6 = `handles action type ${oldUpperSnakeName}_FAILURE correctly`;
-      const newIt6 = `handles action type ${newUpperSnakeName}_FAILURE correctly`;
+      const oldIt6 = `handles action type ${oldActionTypes.failure} correctly`;
+      const newIt6 = `handles action type ${newActionTypes.failure} correctly`;
 
-      const oldIt7 = `handles action type ${oldUpperSnakeName}_DISMISS_ERROR correctly`;
-      const newIt7 = `handles action type ${newUpperSnakeName}_DISMISS_ERROR correctly`;
+      const oldIt7 = `handles action type ${oldActionTypes.dismissError} correctly`;
+      const newIt7 = `handles action type ${newActionTypes.dismissError} correctly`;
 
       changes = changes.concat(
         refactor.renameImportSpecifier(ast, `dismiss${_.pascalCase(source.name)}Error`, `dismiss${_.pascalCase(dest.name)}Error`),
-        refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_BEGIN`, `${newUpperSnakeName}_BEGIN`),
-        refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_SUCCESS`, `${newUpperSnakeName}_SUCCESS`),
-        refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_FAILURE`, `${newUpperSnakeName}_FAILURE`),
-        refactor.renameImportSpecifier(ast, `${oldUpperSnakeName}_DISMISS_ERROR`, `${newUpperSnakeName}_DISMISS_ERROR`),
+        refactor.renameImportSpecifier(ast, `${oldActionTypes.begin}`, `${newActionTypes.begin}`),
+        refactor.renameImportSpecifier(ast, `${oldActionTypes.success}`, `${newActionTypes.success}`),
+        refactor.renameImportSpecifier(ast, `${oldActionTypes.failure}`, `${newActionTypes.failure}`),
+        refactor.renameImportSpecifier(ast, `${oldActionTypes.dismissError}`, `${newActionTypes.dismissError}`),
         refactor.renameStringLiteral(ast, oldIt1, newIt1),
         refactor.renameStringLiteral(ast, oldIt2, newIt2),
         refactor.renameStringLiteral(ast, oldIt3, newIt3),
@@ -153,15 +148,18 @@ module.exports = {
       );
     } else {
       // Try to update it('xxx') for sync action, bound to the templates
+
+      const oldActionType = helpers.getActionType(source.feature, source.name);
+      const newActionType = helpers.getActionType(dest.feature, dest.name);
       const oldIt1 = `returns correct action by ${source.name}`;
       const newIt1 = `returns correct action by ${dest.name}`;
 
-      const oldIt2 = `handles action type ${_.upperSnakeCase(source.name)} correctly`;
-      const newIt2 = `handles action type ${_.upperSnakeCase(dest.name)} correctly`;
+      const oldIt2 = `handles action type ${oldActionType} correctly`;
+      const newIt2 = `handles action type ${newActionType} correctly`;
       changes = changes.concat(
         refactor.renameStringLiteral(ast, oldIt1, newIt1),
         refactor.renameStringLiteral(ast, oldIt2, newIt2),
-        refactor.renameImportSpecifier(ast, oldUpperSnakeName, newUpperSnakeName)
+        refactor.renameImportSpecifier(ast, oldActionType, newActionType)
       );
     }
     let code = vio.getContent(destPath);

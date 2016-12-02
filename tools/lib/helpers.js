@@ -92,13 +92,13 @@ module.exports = {
     this.removeLines(lines, `export const ${name} = '${name}';`);
   },
 
-  replaceStringLiteral(filePath, oldString, newString) {
-    const ast = vio.getAst(filePath);
-    const changes = refactor.renameStringLiteral(ast, oldString, newString);
-    let code = vio.getContent(filePath);
-    code = refactor.updateSourceCode(code, changes);
-    vio.save(filePath, code);
-  },
+  // replaceStringLiteral(filePath, oldString, newString) {
+  //   const ast = vio.getAst(filePath);
+  //   const changes = refactor.renameStringLiteral(ast, oldString, newString);
+  //   let code = vio.getContent(filePath);
+  //   code = refactor.updateSourceCode(code, changes);
+  //   vio.save(filePath, code);
+  // },
 
   isStringMatch(str, pattern) {
     if (typeof pattern === 'string') {
@@ -140,6 +140,7 @@ module.exports = {
 
   getAsyncActionTypes(feature, action) {
     return {
+      normal: this.getActionType(feature, action),
       begin: `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}_BEGIN`,
       success: `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}_SUCCESS`,
       failure: `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}_FAILURE`,

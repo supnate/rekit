@@ -1,26 +1,26 @@
 import {
-  ${BEGIN_ACTION_TYPE},
-  ${SUCCESS_ACTION_TYPE},
-  ${FAILURE_ACTION_TYPE},
-  ${DISMISS_ERROR_ACTION_TYPE},
+  ${actionTypes.begin},
+  ${actionTypes.success},
+  ${actionTypes.failure},
+  ${actionTypes.dismissError},
 } from './constants';
 
-export function ${CAMEL_ACTION_NAME}(args) {
+export function ${_.camelCase(action)}(args) {
   return (dispatch) => {
     dispatch({
-      type: ${BEGIN_ACTION_TYPE},
+      type: ${actionTypes.begin},
     });
     const promise = new Promise((resolve, reject) => {
       window.setTimeout(() => {
         if (args && !args.error) { // NOTE: args.error is only used for demo purpose
           dispatch({
-            type: ${SUCCESS_ACTION_TYPE},
+            type: ${actionTypes.success},
             data: {},
           });
           resolve();
         } else {
           dispatch({
-            type: ${FAILURE_ACTION_TYPE},
+            type: ${actionTypes.failure},
             data: {
               error: 'some error',
             },
@@ -36,37 +36,37 @@ export function ${CAMEL_ACTION_NAME}(args) {
 
 export function dismiss${_.pascalCase(action)}Error() {
   return {
-    type: ${DISMISS_ERROR_ACTION_TYPE},
+    type: ${actionTypes.dismissError},
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case ${BEGIN_ACTION_TYPE}:
+    case ${actionTypes.begin}:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Pending: true,
-        ${CAMEL_ACTION_NAME}Error: null,
+        ${_.camelCase(action)}Pending: true,
+        ${_.camelCase(action)}Error: null,
       };
 
-    case ${SUCCESS_ACTION_TYPE}:
+    case ${actionTypes.success}:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Pending: false,
-        ${CAMEL_ACTION_NAME}Error: null,
+        ${_.camelCase(action)}Pending: false,
+        ${_.camelCase(action)}Error: null,
       };
 
-    case ${FAILURE_ACTION_TYPE}:
+    case ${actionTypes.failure}:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Pending: false,
-        ${CAMEL_ACTION_NAME}Error: action.data.error,
+        ${_.camelCase(action)}Pending: false,
+        ${_.camelCase(action)}Error: action.data.error,
       };
 
-    case ${DISMISS_ERROR_ACTION_TYPE}:
+    case ${actionTypes.dismissError}:
       return {
         ...state,
-        ${CAMEL_ACTION_NAME}Error: null,
+        ${_.camelCase(action)}Error: null,
       };
 
     default:

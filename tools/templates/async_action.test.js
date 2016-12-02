@@ -4,49 +4,49 @@ import nock from 'nock';
 import { expect } from 'chai';
 
 import {
-  ${BEGIN_ACTION_TYPE},
-  ${SUCCESS_ACTION_TYPE},
-  ${FAILURE_ACTION_TYPE},
-  ${DISMISS_ERROR_ACTION_TYPE},
+  ${actionTypes.begin},
+  ${actionTypes.success},
+  ${actionTypes.failure},
+  ${actionTypes.dismissError},
 } from 'src/features/${_.kebabCase(feature)}/redux/constants';
 
 import {
-  ${CAMEL_ACTION_NAME},
+  ${_.camelCase(action)},
   dismiss${_.pascalCase(action)}Error,
   reducer,
-} from 'src/features/${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}';
+} from 'src/features/${_.kebabCase(feature)}/redux/${_.camelCase(action)}';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
+describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
   afterEach(() => {
     nock.cleanAll();
   });
 
-  it('dispatches success action when ${CAMEL_ACTION_NAME} succeeds', () => {
+  it('dispatches success action when ${_.camelCase(action)} succeeds', () => {
     const store = mockStore({});
 
     const expectedActions = [
-      { type: ${BEGIN_ACTION_TYPE} },
-      { type: ${SUCCESS_ACTION_TYPE}, data: {} },
+      { type: ${actionTypes.begin} },
+      { type: ${actionTypes.success}, data: {} },
     ];
 
-    return store.dispatch(${CAMEL_ACTION_NAME}({ error: false }))
+    return store.dispatch(${_.camelCase(action)}({ error: false }))
       .then(() => {
         expect(store.getActions()).to.deep.equal(expectedActions);
       });
   });
 
-  it('dispatches failure action when ${CAMEL_ACTION_NAME} fails', () => {
+  it('dispatches failure action when ${_.camelCase(action)} fails', () => {
     const store = mockStore({});
 
     const expectedActions = [
-      { type: ${BEGIN_ACTION_TYPE} },
-      { type: ${FAILURE_ACTION_TYPE}, data: { error: 'some error' } },
+      { type: ${actionTypes.begin} },
+      { type: ${actionTypes.failure}, data: { error: 'some error' } },
     ];
 
-    return store.dispatch(${CAMEL_ACTION_NAME}({ error: true }))
+    return store.dispatch(${_.camelCase(action)}({ error: true }))
       .catch(() => {
         expect(store.getActions()).to.deep.equal(expectedActions);
       });
@@ -54,49 +54,49 @@ describe('${_.kebabCase(feature)}/redux/${CAMEL_ACTION_NAME}', () => {
 
   it('returns correct action by dismiss${_.pascalCase(action)}Error', () => {
     const expectedAction = {
-      type: ${DISMISS_ERROR_ACTION_TYPE},
+      type: ${actionTypes.dismissError},
     };
     expect(dismiss${_.pascalCase(action)}Error()).to.deep.equal(expectedAction);
   });
 
-  it('handles action type ${BEGIN_ACTION_TYPE} correctly', () => {
-    const prevState = { ${CAMEL_ACTION_NAME}Pending: true };
+  it('handles action type ${actionTypes.begin} correctly', () => {
+    const prevState = { ${_.camelCase(action)}Pending: true };
     const state = reducer(
       prevState,
-      { type: ${BEGIN_ACTION_TYPE} }
+      { type: ${actionTypes.begin} }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${CAMEL_ACTION_NAME}Pending).to.be.true;
+    expect(state.${_.camelCase(action)}Pending).to.be.true;
   });
 
-  it('handles action type ${SUCCESS_ACTION_TYPE} correctly', () => {
-    const prevState = { ${CAMEL_ACTION_NAME}Pending: true };
+  it('handles action type ${actionTypes.success} correctly', () => {
+    const prevState = { ${_.camelCase(action)}Pending: true };
     const state = reducer(
       prevState,
-      { type: ${SUCCESS_ACTION_TYPE}, data: {} }
+      { type: ${actionTypes.success}, data: {} }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${CAMEL_ACTION_NAME}Pending).to.be.false;
+    expect(state.${_.camelCase(action)}Pending).to.be.false;
   });
 
-  it('handles action type ${FAILURE_ACTION_TYPE} correctly', () => {
-    const prevState = { ${CAMEL_ACTION_NAME}Pending: true };
+  it('handles action type ${actionTypes.failure} correctly', () => {
+    const prevState = { ${_.camelCase(action)}Pending: true };
     const state = reducer(
       prevState,
-      { type: ${FAILURE_ACTION_TYPE}, data: { error: new Error('some error') } }
+      { type: ${actionTypes.failure}, data: { error: new Error('some error') } }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${CAMEL_ACTION_NAME}Pending).to.be.false;
-    expect(state.${CAMEL_ACTION_NAME}Error).to.exist;
+    expect(state.${_.camelCase(action)}Pending).to.be.false;
+    expect(state.${_.camelCase(action)}Error).to.exist;
   });
 
-  it('handles action type ${DISMISS_ERROR_ACTION_TYPE} correctly', () => {
-    const prevState = { ${CAMEL_ACTION_NAME}Error: new Error('some error') };
+  it('handles action type ${actionTypes.dismissError} correctly', () => {
+    const prevState = { ${_.camelCase(action)}Error: new Error('some error') };
     const state = reducer(
       prevState,
-      { type: ${DISMISS_ERROR_ACTION_TYPE} }
+      { type: ${actionTypes.dismissError} }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${CAMEL_ACTION_NAME}Error).to.be.null;
+    expect(state.${_.camelCase(action)}Error).to.be.null;
   });
 });

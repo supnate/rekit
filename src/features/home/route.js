@@ -2,7 +2,6 @@ import {
   DefaultPage,
   TestPage1,
   TestPage2,
-  TestPage,
 } from './index';
 
 export default {
@@ -12,6 +11,5 @@ export default {
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
     { path: 'test-page-1', name: 'Test page 1', component: TestPage1 },
     { path: 'test-page-2', name: 'Test page 2', component: TestPage2 },
-    { path: 'test-page', name: 'Test page', component: TestPage },
   ],
 };

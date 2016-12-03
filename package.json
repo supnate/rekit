@@ -11,6 +11,10 @@
     "redux",
     "react-router"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/supnate/rekit.git"
+  },
   "scripts": {
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",

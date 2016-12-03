@@ -1,0 +1,62 @@
+@import '../../styles/mixins.scss';
+
+.home-default-page {
+  line-height: 160%;
+  position: relative;
+
+  .app-logo {
+    position: absolute;
+    top: -18px;
+    left: -10px;
+    width: 60px;
+  }
+
+  .home-hello {
+    padding-left: 60px;
+    margin-bottom: 30px;
+  }
+
+  ul.cmd {
+    margin: 10px 15px 0;
+    color: #666;
+    font-family: 'Courier New';
+  }
+
+  p {
+    margin-top: 20px;
+  }
+
+  .section-title {
+    padding: 5px 10px;
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+  }
+
+  .demo-count {
+    padding-top: 10px;
+    label {
+      color: green;
+      margin-left: 10px;
+    }
+    button {
+      margin-left: 10px;
+    }
+  }
+
+  .demo-reddit {
+    margin-top: 10px;
+    padding-left: 10px;
+
+    button {
+      margin-bottom: 10px;
+    }
+  }
+
+  .fetch-list-error {
+    color: red;
+  }
+
+  .home-reddit-list {
+    margin-bottom: 100px;
+  }
+}

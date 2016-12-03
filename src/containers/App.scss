@@ -1,0 +1,47 @@
+html, body, #react-root {
+  height: 100%;
+}
+
+.app {
+  height: 100%;
+
+  .sidebar {
+    position: fixed;
+    box-sizing: border-box;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 40px;
+    width: 260px;
+    height: 100%;
+    background-color: #f7f7f7;
+
+    li {
+      padding: 2px;
+      a {
+        border-bottom: none;
+      }
+    }
+
+    .memo {
+      &:before {
+        content: ' ';
+        display: block;
+        height: 2px;
+        width: 60px;
+        margin-bottom: 10px;
+        background-color: #ddd;
+      }
+      font-size: 13px;
+      margin-top: 40px;
+      line-height: 150%;
+      color: #aaa;
+    }
+  }
+
+  .page-container {
+    padding: 40px 40px 0 300px;
+    max-width: 800px;
+  }
+}

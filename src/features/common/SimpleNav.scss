@@ -1,0 +1,10 @@
+@import '../../styles/mixins.scss';
+
+.common-simple-nav {
+  ul ul {
+    margin-left: 15px;
+  }
+  a {
+    line-height: 150%;
+  }
+}

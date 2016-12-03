@@ -2,7 +2,7 @@
 // Usually maintained by Rekit CLI tools.
 
 import App from '../containers/App';
-import { PageNotFound } from '../components';
+import { PageNotFound } from '../features/common';
 import homeRoute from '../features/home/route';
 import commonRoute from '../features/common/route';
 

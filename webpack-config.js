@@ -1,6 +1,6 @@
 'use strict';
 //  Summary:
-//    Get webpack config for different target
+//    Get webpack config for different targets
 
 const path = require('path');
 const _ = require('lodash');
@@ -98,6 +98,10 @@ module.exports = (type) => { // eslint-disable-line
           test: /\.less$/,
           loader: isDev ? 'style-loader!css-loader?sourceMap!less-loader?sourceMap'
             : 'style-loader!css-loader!less-loader'
+        }, {
+          test: /\.scss$/,
+          loader: isDev ? 'style-loader!css-loader?sourceMap!sass-loader?sourceMap'
+            : 'style-loader!css-loader!sass-loader'
         }, {
           test: /\.css$/,
           loader: 'style-loader!css-loader'

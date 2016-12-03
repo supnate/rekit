@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { SimpleNav } from 'src/components';
+import { SimpleNav } from 'src/features/common';
 
 describe('components/SimpleNav', () => {
   it('renders node with correct dom structure', () => {
@@ -23,7 +23,7 @@ describe('components/SimpleNav', () => {
     );
 
     expect(
-      comp.find('.component-simple-nav').node
+      comp.find('.common-simple-nav').node
     ).to.exist;
     expect(
       comp.find('li').length

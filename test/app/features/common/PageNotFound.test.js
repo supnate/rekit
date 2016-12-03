@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { PageNotFound } from 'src/components';
+import { PageNotFound } from 'src/features/common';
 
 describe('components/PageNotFound', () => {
   it('renders node with correct class name', () => {
@@ -10,7 +10,7 @@ describe('components/PageNotFound', () => {
     );
 
     expect(
-      renderedComponent.find('.component-page-not-found').node
+      renderedComponent.find('.common-page-not-found').node
     ).to.exist;
   });
 });

@@ -115,6 +115,7 @@
     "redux-thunk": "^2.1.0",
     "request": "^2.75.0",
     "reselect": "^2.5.3",
+    "sass-loader": "^4.0.2",
     "shelljs": "^0.7.4",
     "style-loader": "^0.13.1",
     "trash": "^4.0.0",

@@ -3369,7 +3369,7 @@ loader-runner@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-2.2.0.tgz#824c1b699c4e7a2b6501b85902d5b862bf45b3fa"
 
-loader-utils@0.2.x, loader-utils@^0.2.11, loader-utils@^0.2.13, loader-utils@^0.2.5, loader-utils@^0.2.7, loader-utils@~0.2.2, loader-utils@~0.2.5:
+loader-utils@0.2.x, loader-utils@^0.2.11, loader-utils@^0.2.13, loader-utils@^0.2.15, loader-utils@^0.2.5, loader-utils@^0.2.7, loader-utils@~0.2.2, loader-utils@~0.2.5:
   version "0.2.16"
   resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-0.2.16.tgz#f08632066ed8282835dff88dfb52704765adee6d"
   dependencies:
@@ -5426,6 +5426,14 @@ rx-lite@^3.1.2:
 samsam@1.1.2, samsam@~1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.1.2.tgz#bec11fdc83a9fda063401210e40176c3024d1567"
+
+sass-loader@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-4.0.2.tgz#a616eb770366543e64f547c8630f39c4da75f15d"
+  dependencies:
+    async "^2.0.1"
+    loader-utils "^0.2.15"
+    object-assign "^4.1.0"
 
 sax@^1.1.4, sax@~1.2.1:
   version "1.2.1"

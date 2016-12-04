@@ -5,6 +5,12 @@
 
 module.exports = {
   name: 'saga',
+  accept: ['saga'],
+
+  install() {
+
+  },
+
   add() {
 
   },

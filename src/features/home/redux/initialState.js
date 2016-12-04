@@ -3,6 +3,8 @@ const initialState = {
   redditReactjsList: [],
   fetchRedditReactjsListError: null,
   fetchRedditReactjsListPending: false,
+  fetchRedditBySagaPending: false,
+  fetchRedditBySagaError: null,
 };
 
 export default initialState;

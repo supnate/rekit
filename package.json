@@ -117,6 +117,7 @@
     "react-router-redux": "^4.0.5",
     "redux": "^3.6.0",
     "redux-logger": "^2.6.1",
+    "redux-saga": "^0.13.0",
     "redux-thunk": "^2.1.0",
     "request": "^2.75.0",
     "reselect": "^2.5.3",

@@ -30,7 +30,7 @@ module.exports = (type) => { // eslint-disable-line
         main: [
           'react-hot-loader/patch',
           `webpack-hot-middleware/client?http://0.0.0.0:${pkgJson.rekit.devPort}`,
-          './styles/index.scss',
+          './styles/index.less',
           './index',
         ],
       },
@@ -54,7 +54,7 @@ module.exports = (type) => { // eslint-disable-line
       dist: {
         main: [
           'babel-polyfill',
-          './styles/index.scss',
+          './styles/index.less',
           './index'
         ],
       },

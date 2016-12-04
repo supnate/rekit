@@ -1,11 +1,11 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import createSagaMiddleware from 'redux-saga';
 import rootReducer from './rootReducer';
-import rootSaga from './rootSaga';
 
-const sagaMiddleWare = createSagaMiddleware();
-const middlewares = [thunk, sagaMiddleWare];
+const middlewares = [
+  thunk,
+];
+
 let devToolsExtension = f => f;
 
 /* istanbul ignore if  */
@@ -25,8 +25,6 @@ export default function configureStore(initialState) {
     applyMiddleware(...middlewares),
     devToolsExtension
   ));
-
-  sagaMiddleWare.run(rootSaga);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

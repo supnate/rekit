@@ -1,25 +1,9 @@
 'use strict';
 
-// Summary:
-//  Entrance of the plugin.
+function add() {
+
+}
 
 module.exports = {
-  name: 'saga',
-  accept: ['saga'],
-
-  install() {
-
-  },
-
-  add() {
-
-  },
-
-  remove() {
-
-  },
-
-  move() {
-
-  },
+  add,
 };

@@ -7,6 +7,15 @@ const _ = require('lodash');
 const traverse = require('babel-traverse').default;
 const vio = require('./vio');
 
+function isStringMatch(str, match) {
+  if (_.isString(match)) {
+    return _.includes(str, match);
+  } else if (_.isFunction(match)) {
+    return match(str);
+  }
+  return match.test(str);
+}
+
 function getDefNode(name, scope) {
   // Summary:
   //  Get the definition node for an identifier
@@ -63,6 +72,10 @@ function renameClassName(ast, oldName, newName) {
 }
 
 function renameFunctionName(ast, oldName, newName) {
+  // Summary:
+  //  Rename the name of the function first found. Usually used by
+  //  flat function definition file.
+
   let defNode = null;
   // Find the definition node of the class
   traverse(ast, {
@@ -197,6 +210,47 @@ function renameCssClassName(ast, oldName, newName) {
   return changes;
 }
 
+function lineIndex(lines, match, fromMatch) {
+  if (fromMatch && !_.isNumber(fromMatch)) {
+    fromMatch = lineIndex(lines, fromMatch);
+  }
+  if (_.isString(match)) {
+    // Match string
+    return _.findIndex(lines, l => l.indexOf(match) >= 0, fromMatch || 0);
+  } else if (_.isFunction(match)) {
+    // Callback
+    return _.findIndex(lines, match);
+  }
+
+  // Regular expression
+  return _.findIndex(lines, l => match.test(l), fromMatch || 0);
+}
+
+function lastLineIndex(lines, match) {
+  if (_.isString(match)) {
+    // String
+    return _.findLastIndex(lines, l => l.indexOf(match) >= 0);
+  } else if (_.isFunction(match)) {
+    // Callback
+    return _.findLastIndex(lines, match);
+  }
+
+  // Regular expression
+  return _.findLastIndex(lines, l => match.test(l));
+}
+
+function removeLines(lines, str) {
+  return _.remove(lines, line => isStringMatch(line, str));
+}
+
+function addImportLine(lines, importLine) {
+  // Summary:
+  //  Add import npm module to source code (abs path)
+  //  Use text matching instead of ast.
+
+  const i = lastLineIndex(lines, /^import /);
+  lines.splice(i + 1, 0, importLine);
+}
 
 function updateSourceCode(code, changes) {
   // Summary:
@@ -239,4 +293,8 @@ module.exports = {
   renameStringLiteral,
   updateSourceCode,
   updateFile,
+  lineIndex,
+  lastLineIndex,
+  addImportLine,
+  removeLines,
 };

@@ -82,6 +82,7 @@ module.exports = {
   },
 
   put(filePath, lines) {
+    if (typeof lines === 'string') lines = lines.split(/\r?\n/);
     fileLines[filePath] = lines;
     delete asts[filePath]; // ast needs to be updated
   },
@@ -92,8 +93,7 @@ module.exports = {
 
   save(filePath, lines) {
     if (lines) {
-      if (typeof lines === 'string') lines = lines.split(/\r?\n/);
-      fileLines[filePath] = lines;
+      this.put(filePath, lines);
     }
     toSave[filePath] = true;
   },

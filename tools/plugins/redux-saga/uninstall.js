@@ -23,7 +23,7 @@ function uninstall(prjRoot) {
   // Remove const sagaMiddleWare = createSagaMiddleware();
   refactor.removeLines(lines, 'const sagaMiddleWare = createSagaMiddleware();');
 
-  // Remove to middlewares
+  // Remove from middlewares
   refactor.removeLines(lines, '  sagaMiddleWare,');
 
   // Remove sagaMiddleWare.run(rootSaga);

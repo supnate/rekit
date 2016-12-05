@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
 const vio = require('./vio');
@@ -10,6 +11,14 @@ _.pascalCase = _.flow(_.camelCase, _.upperFirst);
 _.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
 
 module.exports = {
+  readTemplate(file) {
+    file = path.isAbsolute(file) ? file : path.join(__dirname, '../templates', file);
+    if (!shell.test('-e', file)) {
+      helpers.fatalError('Template file does\'t exist: ', file);
+    }
+    return vio.getContent(file);
+  },
+
   create(targetPath, args) {
     if (!args.templateFile && !args.content && !args.template) {
       helpers.fatalError('No template for generating' + targetPath + '.');
@@ -17,7 +26,7 @@ module.exports = {
 
     let content = args.content;
     if (!content) {
-      const tpl = args.template || helpers.readTemplate(args.templateFile);
+      const tpl = args.template || this.readTemplate(args.templateFile);
       const compiled = _.template(tpl, args.templateOptions || {});
       content = compiled(args.context || {});
     }

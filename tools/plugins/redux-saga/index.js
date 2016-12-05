@@ -1,9 +1,10 @@
 'use strict';
 
-function add() {
-
-}
+// Summary:
+//  Entrance of the plugin.
 
 module.exports = {
-  add,
+  description: 'Add/update/rename sagas for redux-saga.',
+  accept: ['async-action-saga'],
+  dependencies: ['redux-saga'],
 };

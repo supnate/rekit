@@ -1,6 +1,8 @@
 import initialState from './initialState';
+import { reducer as mySaga } from './mySaga';
 
 const reducers = [
+  mySaga,
 ];
 
 export default function reducer(state = initialState, action) {

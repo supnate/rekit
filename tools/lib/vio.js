@@ -30,6 +30,11 @@ function printDiff(diff) {
 }
 module.exports = {
   getLines(filePath) {
+    if (_.isArray(filePath)) {
+      // If it's already lines, return the arg.
+      return filePath;
+    }
+
     if (!fileLines[filePath]) {
       // if the file is moved, find the real file path
       const realFilePath = _.findKey(mvs, s => s === filePath) || filePath;
@@ -79,6 +84,12 @@ module.exports = {
 
   dirExists(dir) {
     return !!dirs[dir] && !toDel[dir];
+  },
+
+  ensurePathDir(fullPath) {
+    if (!shell.test('-e', path.dirname(fullPath))) {
+      shell.mkdir('-p', path.dirname(fullPath));
+    }
   },
 
   put(filePath, lines) {
@@ -182,6 +193,7 @@ module.exports = {
           printDiff(jsdiff.diffLines(oldContent, newContent));
         }
       } else {
+        this.ensurePathDir(filePath);
         this.log('Created: ', 'blue', filePath);
       }
       shell.ShellString(newContent).to(filePath);

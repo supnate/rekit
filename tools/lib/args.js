@@ -13,7 +13,7 @@ const parser = new ArgumentParser({
 parser.addArgument('type', {
   help: 'Type of element to create: one of [feature, component, page, action, async-action, test]',
   metavar: 'type',
-  choices: ['feature', 'component', 'page', 'action', 'async-action', 'test'],
+  // choices: ['feature', 'component', 'page', 'action', 'async-action', 'test'],
 });
 
 parser.addArgument('name', {

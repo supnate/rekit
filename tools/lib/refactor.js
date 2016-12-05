@@ -27,7 +27,6 @@ function getDefNode(name, scope) {
   return null;
 }
 
-
 function renameIdentifier(ast, oldName, newName, defNode) {
   // Summary:
   //  Rename identifiers with oldName in ast
@@ -252,6 +251,39 @@ function addImportLine(lines, importLine) {
   lines.splice(i + 1, 0, importLine);
 }
 
+function addExportFrom(filePath, exportLine) {
+  // Summary:
+  //  Add export xxx from '.xxx' at the top. Usually used by entry files such as index.js
+  const lines = vio.getLines(filePath);
+  const i = lastLineIndex(lines, /^export .* from /);
+  lines.splice(i + 1, 0, exportLine);
+}
+
+function removeExportFrom(filePath, modulePath) {
+  // Summary:
+  //  Remove export xxx from '.xxx' at the top. Usually used by entry files such as index.js
+  const lines = vio.getLines(filePath);
+  removeLines(lines, new RegExp(`export +.* +from +'${modulePath}'`));
+}
+
+function renameExportFrom(ast, oldName, newName, oldModulePath, newModulePath) {
+  // Summary:
+  //  Rename export xxx from '.xxx' at the top. Usually used by entry files such as index.js
+
+  let isFile = _.isString(ast);
+  if (isFile) {
+    ast = vio.getAst(ast);
+  }
+
+  const changes = [];
+
+  if (isFile) {
+    updateFile(file, changes);
+  }
+
+  return changes;
+}
+
 function updateSourceCode(code, changes) {
   // Summary:
   //  This must be called before code is changed some places else rather than ast
@@ -272,12 +304,14 @@ function updateSourceCode(code, changes) {
   return chars.join('');
 }
 
-function updateFile(filePath, getChanges) {
+function updateFile(filePath, changes) {
   // Summary:
   //  Update the source file by changes.
 
-  const ast = vio.getAst(filePath);
-  const changes = getChanges(ast);
+  if (_.isFunction(changes)) {
+    const ast = vio.getAst(filePath);
+    changes = changes(ast);
+  }
   let code = vio.getContent(filePath);
   code = updateSourceCode(code, changes);
   vio.save(filePath, code);
@@ -297,4 +331,8 @@ module.exports = {
   lastLineIndex,
   addImportLine,
   removeLines,
+
+  addExportFrom,
+  removeExportFrom,
+  renameExportFrom,
 };

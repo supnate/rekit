@@ -4,11 +4,23 @@
 const args = require('./lib/args');
 const rekit = require('./lib/rekit');
 const vio = require('./lib/vio');
+const plugin = require('./lib/plugin');
 
 console.time('✨  Done');
 
 const feature = args.feature;
 const name = args.name;
+
+
+function callPlugin() {
+  const pluginAction = plugin.getAction('add', args.type);
+  if (pluginAction) {
+    // console.log('calling: ', pluginAction, feature, name);
+    pluginAction(feature, name);
+    return true;
+  }
+  return false;
+}
 
 switch (args.type) {
   case 'feature':
@@ -32,6 +44,7 @@ switch (args.type) {
     break;
 
   default:
+    callPlugin();
     break;
 }
 

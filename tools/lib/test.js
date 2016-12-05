@@ -27,7 +27,7 @@ module.exports = {
 
     const srcPath = helpers.getTestFile(source.feature, source.name);
     const destPath = helpers.getTestFile(dest.feature, dest.name);
-    vio.mv(srcPath, destPath);
+    vio.move(srcPath, destPath);
 
     const oldCssClass = `.${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
     const newCssClass = `.${_.kebabCase(dest.feature)}-${_.kebabCase(dest.name)}`;
@@ -82,7 +82,7 @@ module.exports = {
 
     const srcPath = helpers.getReduxTestFile(source.feature, source.name);
     const destPath = helpers.getReduxTestFile(dest.feature, dest.name);
-    vio.mv(srcPath, destPath);
+    vio.move(srcPath, destPath);
 
     // Note: below string pattern binds to the test template, update here if template is changed.
     // For action/reducer import

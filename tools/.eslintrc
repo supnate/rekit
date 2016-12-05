@@ -5,6 +5,8 @@
     'one-var': 0,
     'no-param-reassign': 0,
     'no-continue': 0,
+    'prefer-rest-params': 0,
+    'prefer-spread': 0,
     'one-var-declaration-per-line': 0
   },
   'globals': {

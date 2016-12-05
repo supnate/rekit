@@ -6,6 +6,7 @@
 const _ = require('lodash');
 const traverse = require('babel-traverse').default;
 const vio = require('./vio');
+const utils = require('./utils');
 
 function isStringMatch(str, match) {
   if (_.isString(match)) {
@@ -25,6 +26,39 @@ function getDefNode(name, scope) {
     scope = scope.parent;
   }
   return null;
+}
+
+function updateSourceCode(code, changes) {
+  // Summary:
+  //  This must be called before code is changed some places else rather than ast
+
+  changes.sort((c1, c2) => c2.start - c1.start);
+  // Remove same or overlapped changes
+  const newChanges = _.reduce(changes, (prev, curr) => {
+    if (!prev.length || _.last(prev).start > curr.end) {
+      prev.push(curr);
+    }
+    return prev;
+  }, []);
+
+  const chars = code.split('');
+  newChanges.forEach((c) => {
+    chars.splice(c.start, c.end - c.start, c.replacement);
+  });
+  return chars.join('');
+}
+
+function updateFile(filePath, changes) {
+  // Summary:
+  //  Update the source file by changes.
+
+  if (_.isFunction(changes)) {
+    const ast = vio.getAst(filePath);
+    changes = changes(ast);
+  }
+  let code = vio.getContent(filePath);
+  code = updateSourceCode(code, changes);
+  vio.save(filePath, code);
 }
 
 function renameIdentifier(ast, oldName, newName, defNode) {
@@ -95,7 +129,9 @@ function renameImportSpecifier(ast, oldName, newName) {
   // Summary:
   //  Rename the import(default, named) variable name and their reference.
   //  The simple example is to rename a component
+
   let defNode = null;
+
   // Find the definition node of the class
   traverse(ast, {
     ImportDefaultSpecifier(path) {
@@ -137,6 +173,32 @@ function renameExportSpecifier(ast, oldName, newName) {
       }
     }
   });
+  return changes;
+}
+
+function renameModuleSource(ast, oldModuleSource, newModuleSource) {
+  // Summary:
+  //  Rename the module source for import/export xx from moduleSource.
+  //  It only compares the string rather that resolve to the absolute path.
+
+  const changes = [];
+
+  function renameSource(path) {
+    const node = path.node;
+    if (node.source && node.source.value === oldModuleSource) {
+      changes.push({
+        start: node.source.start + 1,
+        end: node.source.end - 1,
+        replacement: newModuleSource,
+      });
+    }
+  }
+
+  traverse(ast, {
+    ImportDeclaration: renameSource,
+    ExportNamedDeclaration: renameSource,
+  });
+
   return changes;
 }
 
@@ -251,70 +313,71 @@ function addImportLine(lines, importLine) {
   lines.splice(i + 1, 0, importLine);
 }
 
-function addExportFrom(filePath, exportLine) {
+function addExportFromLine(file, exportLine) {
   // Summary:
-  //  Add export xxx from '.xxx' at the top. Usually used by entry files such as index.js
-  const lines = vio.getLines(filePath);
+  //  Add export xxx from '.xxx' line at the top. Usually used by entry files such as index.js
+
+  const lines = vio.getLines(file);
   const i = lastLineIndex(lines, /^export .* from /);
   lines.splice(i + 1, 0, exportLine);
 }
 
-function removeExportFrom(filePath, modulePath) {
+function removeExportFromLine(file, moduleSource) {
   // Summary:
-  //  Remove export xxx from '.xxx' at the top. Usually used by entry files such as index.js
-  const lines = vio.getLines(filePath);
-  removeLines(lines, new RegExp(`export +.* +from +'${modulePath}'`));
+  //  Remove export xxx from '.xxx' line at the top. Usually used by entry files such as index.js
+
+  const lines = vio.getLines(file);
+  removeLines(lines, new RegExp(`export +.* +from +'${utils.escapRegExp(moduleSource)}'`));
 }
 
-function renameExportFrom(ast, oldName, newName, oldModulePath, newModulePath) {
+// function renameExportFrom(file, oldName, newName, oldModulePath, newModulePath) {
+//   // Summary:
+//   //  Rename export xxx from '.xxx' at the top. Usually used by entry files such as index.js
+
+//   const isFile = _.isString(file);
+//   const ast = isFile ? vio.getAst(file) : file;
+
+//   const changes = [];
+
+//   traverse(ast, {
+//     ExportNamedDeclaration(path) {
+//       const node = path.node;
+//       if (node.source && node.source.value === oldModulePath) {
+//         if (newModulePath) {
+//           changes.push({
+//             start: node.source.start + 1,
+//             end: node.source.end - 1,
+//             replacement: newModulePath,
+//           });
+//         }
+//         renameSpecifier(node.specifiers);
+//       }
+//     },
+//   });
+
+//   if (isFile) {
+//     updateFile(file, changes);
+//   }
+
+//   return changes;
+// }
+
+function acceptFilePathForAst(func) {
   // Summary:
-  //  Rename export xxx from '.xxx' at the top. Usually used by entry files such as index.js
+  //  Wrapper a function that accepts ast also accepts file path.
+  //  If it's file path, then update the file immediately.
 
-  let isFile = _.isString(ast);
-  if (isFile) {
-    ast = vio.getAst(ast);
-  }
-
-  const changes = [];
-
-  if (isFile) {
-    updateFile(file, changes);
-  }
-
-  return changes;
-}
-
-function updateSourceCode(code, changes) {
-  // Summary:
-  //  This must be called before code is changed some places else rather than ast
-
-  changes.sort((c1, c2) => c2.start - c1.start);
-  // Remove same or overlapped changes
-  const newChanges = _.reduce(changes, (prev, curr) => {
-    if (!prev.length || _.last(prev).start > curr.end) {
-      prev.push(curr);
+  return function(file) { // eslint-disable-line
+    let ast = file;
+    if (_.isString(file)) {
+      ast = vio.getAst(file);
     }
-    return prev;
-  }, []);
+    const args = _.toArray(arguments);
+    args[0] = ast;
+    const changes = func.apply(null, args);
 
-  const chars = code.split('');
-  newChanges.forEach((c) => {
-    chars.splice(c.start, c.end - c.start, c.replacement);
-  });
-  return chars.join('');
-}
-
-function updateFile(filePath, changes) {
-  // Summary:
-  //  Update the source file by changes.
-
-  if (_.isFunction(changes)) {
-    const ast = vio.getAst(filePath);
-    changes = changes(ast);
-  }
-  let code = vio.getContent(filePath);
-  code = updateSourceCode(code, changes);
-  vio.save(filePath, code);
+    return changes;
+  };
 }
 
 module.exports = {
@@ -332,7 +395,7 @@ module.exports = {
   addImportLine,
   removeLines,
 
-  addExportFrom,
-  removeExportFrom,
-  renameExportFrom,
+  addExportFromLine: acceptFilePathForAst(addExportFromLine),
+  removeExportFromLine: acceptFilePathForAst(removeExportFromLine),
+  renameModuleSource: acceptFilePathForAst(renameModuleSource),
 };

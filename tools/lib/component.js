@@ -44,7 +44,7 @@ module.exports = {
 
     const srcPath = helpers.mapName(source.feature, source.name) + '.js';
     const destPath = helpers.mapName(dest.feature, dest.name) + '.js';
-    vio.mv(srcPath, destPath);
+    vio.move(srcPath, destPath);
 
     const oldCssClass = `${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
     const newCssClass = `${_.kebabCase(dest.feature)}-${_.kebabCase(dest.name)}`;

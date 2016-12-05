@@ -38,7 +38,7 @@ module.exports = {
 
     const srcPath = helpers.mapName(source.feature, source.name) + '.less';
     const destPath = helpers.mapName(dest.feature, dest.name) + '.less';
-    vio.mv(srcPath, destPath);
+    vio.move(srcPath, destPath);
 
     let lines = vio.getLines(destPath);
     const oldCssClass = `${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;

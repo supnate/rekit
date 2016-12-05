@@ -5,7 +5,6 @@ const _ = require('lodash');
 const shell = require('shelljs');
 const colors = require('colors/safe');
 const vio = require('./vio');
-const refactor = require('./refactor');
 
 const nameCases = {};
 
@@ -16,6 +15,10 @@ _.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
 module.exports = {
   getProjectRoot() {
     return path.join(__dirname, '../../');
+  },
+
+  escapeRegExp(s) {
+    return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
   },
 
   ensurePathDir(fullPath) {
@@ -179,13 +182,13 @@ module.exports = {
     return path.join(this.getProjectRoot(), 'test/app/features', _.kebabCase(feature), fileName);
   },
 
-  refactorCode(filePath, getChanges) {
-    const ast = vio.getAst(filePath);
-    const changes = getChanges(ast); // refactor.renameObjectProperty(ast, oldName, newName);
-    let code = vio.getContent(filePath);
-    code = refactor.updateSourceCode(code, changes);
-    vio.save(filePath, code);
-  },
+  // refactorCode(filePath, getChanges) {
+  //   const ast = vio.getAst(filePath);
+  //   const changes = getChanges(ast); // refactor.renameObjectProperty(ast, oldName, newName);
+  //   let code = vio.getContent(filePath);
+  //   code = refactor.updateSourceCode(code, changes);
+  //   vio.save(filePath, code);
+  // },
 
   nameCases(name) {
     if (!nameCases[name]) {

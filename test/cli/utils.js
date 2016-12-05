@@ -86,6 +86,10 @@ function expectNoLines(file, lines) {
   lines.forEach(line => expectNoLine(file, line));
 }
 
+function escapeRegExp(s) {
+  return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
 module.exports = {
   mapFile,
   mapFeatureFile,
@@ -106,4 +110,5 @@ module.exports = {
   expectLines,
   expectNoLines,
   TEST_FEATURE_NAME,
+  escapeRegExp,
 };

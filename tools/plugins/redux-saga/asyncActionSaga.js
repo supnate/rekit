@@ -16,6 +16,7 @@ const prjRoot = helpers.getProjectRoot();
 const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
 
 function add(feature, name) {
+  feature = _.kebabCase(feature);
   name = _.camelCase(name);
 
   // Saga action is similar with async action except the template.
@@ -34,7 +35,19 @@ function add(feature, name) {
     },
   });
 
-  // Add saga ref to rootSaga
+  let targetPath;
+  // Add to sagas/index.js
+  targetPath = helpers.mapFile(feature, 'redux/sagas/index.js');
+  refactor.addExportFromLine(targetPath, `export ${name} from './${name}';`);
+
+  // Add saga ref to common/rootSaga.js
+  targetPath = path.join(prjRoot, 'src/common/rootSaga.js');
+  refactor.addImportLine(targetPath, `import * as ${name}Sagas from '../features/${feature}/redux/sagas';`);
+  const lines = vio.getLines(targetPath);
+  const i = refactor.lineIndex(lines, '].reduce', 'const sagas = [');
+  lines.splice(i, 0, `  ${name}Sagas,`);
+
+  vio.save(targetPath, lines);
 
   // Add saga test
 }
@@ -49,8 +62,18 @@ function remove(feature, name) {
   // Remove saga
   vio.del(helpers.mapFile(feature, `redux/sagas/${_.camelCase(name)}.js`));
 
-  // Remove from rootSaga
+  let targetPath;
+  // Remove from sagas/index.js
+  targetPath = helpers.mapFile(feature, 'redux/sagas/index.js');
+  refactor.removeExportFromLine(targetPath, `./${name}`);
 
+  // Remove from common/rootSaga.js
+  targetPath = path.join(prjRoot, 'src/common/rootSaga.js');
+  refactor.removeImportLine(targetPath, `../features/${feature}/redux/sagas`);
+  const lines = vio.getLines(targetPath);
+  refactor.removeLines(lines, `  ${name}Sagas,`);
+
+  vio.save(targetPath, lines);
 }
 
 function move(feature, name) {

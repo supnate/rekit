@@ -58,7 +58,7 @@ module.exports = {
 
     const srcPath = helpers.getReduxFile(source.feature, source.name);
     const destPath = helpers.getReduxFile(dest.feature, dest.name);
-    vio.mv(srcPath, destPath);
+    vio.move(srcPath, destPath);
 
     const oldActionType = helpers.getActionType(source.feature, source.name);
     const newActionType = helpers.getActionType(dest.feature, dest.name);
@@ -153,7 +153,7 @@ module.exports = {
 
     const srcPath = helpers.getReduxFile(source.feature, source.name);
     const destPath = helpers.getReduxFile(dest.feature, dest.name);
-    vio.mv(srcPath, destPath);
+    vio.move(srcPath, destPath);
 
     const oldActionTypes = helpers.getAsyncActionTypes(source.feature, source.name);
     const newActionTypes = helpers.getAsyncActionTypes(dest.feature, dest.name);

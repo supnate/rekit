@@ -28,6 +28,7 @@ function printDiff(diff) {
     }
   });
 }
+
 module.exports = {
   getLines(filePath) {
     if (_.isArray(filePath)) {
@@ -109,7 +110,7 @@ module.exports = {
     toSave[filePath] = true;
   },
 
-  mv(oldPath, newPath) {
+  move(oldPath, newPath) {
     if (toDel[oldPath] || !shell.test('-e', oldPath)) {
       this.log('Error: no file to move: ', 'red', oldPath);
       throw new Error('No file to move');

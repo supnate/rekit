@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const helpers = require('./helpers');
+const utils = require('./utils');
 const vio = require('./vio');
 const constant = require('./constant');
 const refactor = require('./refactor');
@@ -10,14 +10,14 @@ const entry = require('./entry');
 
 module.exports = {
   add(feature, name, args) {
-    helpers.assertNotEmpty(feature, 'feature');
-    helpers.assertNotEmpty(name, 'action name');
-    helpers.assertFeatureExist(feature);
+    utils.assertNotEmpty(feature, 'feature');
+    utils.assertNotEmpty(name, 'action name');
+    utils.assertFeatureExist(feature);
 
     // create component from template
     args = args || {};
-    const actionType = args.actionType || helpers.getActionType(feature, name);
-    template.create(helpers.getReduxFile(feature, name), Object.assign({}, args, {
+    const actionType = args.actionType || utils.getActionType(feature, name);
+    template.create(utils.getReduxFile(feature, name), Object.assign({}, args, {
       templateFile: args.templateFile || 'action.js',
       context: Object.assign({
         feature,
@@ -32,36 +32,36 @@ module.exports = {
   },
 
   remove(feature, name, actionType) {
-    helpers.assertNotEmpty(feature, 'feature');
-    helpers.assertNotEmpty(name, 'action name');
-    helpers.assertFeatureExist(feature);
+    utils.assertNotEmpty(feature, 'feature');
+    utils.assertNotEmpty(name, 'action name');
+    utils.assertFeatureExist(feature);
 
-    actionType = actionType || helpers.getActionType(feature, name);
-    vio.del(helpers.getReduxFile(feature, name));
+    actionType = actionType || utils.getActionType(feature, name);
+    vio.del(utils.getReduxFile(feature, name));
     constant.remove(feature, actionType);
     entry.removeFromReducer(feature, name);
     entry.removeFromActions(feature, name);
   },
 
   move(source, dest) {
-    helpers.assertNotEmpty(source.feature, 'feature');
-    helpers.assertNotEmpty(source.name, 'action name');
-    helpers.assertFeatureExist(source.feature);
-    helpers.assertNotEmpty(dest.feature, 'feature');
-    helpers.assertNotEmpty(dest.name, 'action name');
-    helpers.assertFeatureExist(dest.feature);
+    utils.assertNotEmpty(source.feature, 'feature');
+    utils.assertNotEmpty(source.name, 'action name');
+    utils.assertFeatureExist(source.feature);
+    utils.assertNotEmpty(dest.feature, 'feature');
+    utils.assertNotEmpty(dest.name, 'action name');
+    utils.assertFeatureExist(dest.feature);
 
     source.feature = _.kebabCase(source.feature);
     source.name = _.camelCase(source.name);
     dest.feature = _.kebabCase(dest.feature);
     dest.name = _.camelCase(dest.name);
 
-    const srcPath = helpers.getReduxFile(source.feature, source.name);
-    const destPath = helpers.getReduxFile(dest.feature, dest.name);
+    const srcPath = utils.getReduxFile(source.feature, source.name);
+    const destPath = utils.getReduxFile(dest.feature, dest.name);
     vio.move(srcPath, destPath);
 
-    const oldActionType = helpers.getActionType(source.feature, source.name);
-    const newActionType = helpers.getActionType(dest.feature, dest.name);
+    const oldActionType = utils.getActionType(source.feature, source.name);
+    const newActionType = utils.getActionType(dest.feature, dest.name);
 
     refactor.updateFile(destPath, ast => [].concat(
       refactor.renameFunctionName(ast, source.name, dest.name),
@@ -71,8 +71,8 @@ module.exports = {
     if (source.feature === dest.feature) {
       entry.renameInActions(source.feature, source.name, dest.name);
       // update the import path in actions.js
-      const targetPath = helpers.getReduxFile(source.feature, 'actions');
-      helpers.replaceStringLiteral(targetPath, `./${source.name}`, `./${dest.name}`);
+      const targetPath = utils.getReduxFile(source.feature, 'actions');
+      utils.replaceStringLiteral(targetPath, `./${source.name}`, `./${dest.name}`);
 
       entry.renameInReducer(source.feature, source.name, dest.name);
       constant.rename(source.feature, oldActionType, newActionType);
@@ -89,15 +89,15 @@ module.exports = {
   },
 
   addAsync(feature, name, args) {
-    helpers.assertNotEmpty(feature, 'feature');
-    helpers.assertNotEmpty(name, 'action name');
-    helpers.assertFeatureExist(feature);
+    utils.assertNotEmpty(feature, 'feature');
+    utils.assertNotEmpty(name, 'action name');
+    utils.assertFeatureExist(feature);
 
     // const upperSnakeActionName = _.upperSnakeCase(name);
-    const actionTypes = helpers.getAsyncActionTypes(feature, name);
+    const actionTypes = utils.getAsyncActionTypes(feature, name);
 
     args = args || {};
-    template.create(helpers.getReduxFile(feature, name), Object.assign({}, args, {
+    template.create(utils.getReduxFile(feature, name), Object.assign({}, args, {
       templateFile: args.templateFile || 'async_action.js',
       context: Object.assign({
         feature,
@@ -119,14 +119,14 @@ module.exports = {
   },
 
   removeAsync(feature, name) {
-    helpers.assertNotEmpty(feature, 'feature');
-    helpers.assertNotEmpty(name, 'action name');
-    helpers.assertFeatureExist(feature);
+    utils.assertNotEmpty(feature, 'feature');
+    utils.assertNotEmpty(name, 'action name');
+    utils.assertFeatureExist(feature);
 
     // const upperSnakeActionName = _.upperSnakeCase(name);
-    const actionTypes = helpers.getAsyncActionTypes(feature, name);
+    const actionTypes = utils.getAsyncActionTypes(feature, name);
 
-    vio.del(helpers.getReduxFile(feature, name));
+    vio.del(utils.getReduxFile(feature, name));
     constant.remove(feature, actionTypes.begin);
     constant.remove(feature, actionTypes.success);
     constant.remove(feature, actionTypes.failure);
@@ -139,24 +139,24 @@ module.exports = {
   },
 
   moveAsync(source, dest) {
-    helpers.assertNotEmpty(source.feature, 'feature');
-    helpers.assertNotEmpty(source.name, 'action name');
-    helpers.assertFeatureExist(source.feature);
-    helpers.assertNotEmpty(dest.feature, 'feature');
-    helpers.assertNotEmpty(dest.name, 'action name');
-    helpers.assertFeatureExist(dest.feature);
+    utils.assertNotEmpty(source.feature, 'feature');
+    utils.assertNotEmpty(source.name, 'action name');
+    utils.assertFeatureExist(source.feature);
+    utils.assertNotEmpty(dest.feature, 'feature');
+    utils.assertNotEmpty(dest.name, 'action name');
+    utils.assertFeatureExist(dest.feature);
 
     source.feature = _.kebabCase(source.feature);
     source.name = _.camelCase(source.name);
     dest.feature = _.kebabCase(dest.feature);
     dest.name = _.camelCase(dest.name);
 
-    const srcPath = helpers.getReduxFile(source.feature, source.name);
-    const destPath = helpers.getReduxFile(dest.feature, dest.name);
+    const srcPath = utils.getReduxFile(source.feature, source.name);
+    const destPath = utils.getReduxFile(dest.feature, dest.name);
     vio.move(srcPath, destPath);
 
-    const oldActionTypes = helpers.getAsyncActionTypes(source.feature, source.name);
-    const newActionTypes = helpers.getAsyncActionTypes(dest.feature, dest.name);
+    const oldActionTypes = utils.getAsyncActionTypes(source.feature, source.name);
+    const newActionTypes = utils.getAsyncActionTypes(dest.feature, dest.name);
 
     // Update the action file: rename function name and action types
     refactor.updateFile(destPath, ast => [].concat(
@@ -178,7 +178,7 @@ module.exports = {
       entry.renameInInitialState(source.feature, `${source.name}Error`, `${dest.name}Error`);
 
       // Update the import path in actions.js
-      const targetPath = helpers.getReduxFile(source.feature, 'actions');
+      const targetPath = utils.getReduxFile(source.feature, 'actions');
       refactor.updateFile(targetPath, ast => refactor.renameStringLiteral(ast, `./${source.name}`, `./${dest.name}`));
 
       constant.rename(source.feature, oldActionTypes.begin, newActionTypes.begin);

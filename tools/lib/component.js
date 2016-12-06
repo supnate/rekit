@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const helpers = require('./helpers');
+const utils = require('./utils');
 const vio = require('./vio');
 const refactor = require('./refactor');
 const template = require('./template');
@@ -10,13 +10,13 @@ const entry = require('./entry');
 
 module.exports = {
   add(feature, component, args) {
-    helpers.assertNotEmpty(feature, 'feature');
-    helpers.assertNotEmpty(component, 'component name');
-    helpers.assertFeatureExist(feature);
+    utils.assertNotEmpty(feature, 'feature');
+    utils.assertNotEmpty(component, 'component name');
+    utils.assertFeatureExist(feature);
 
     // create component from template
     args = args || {};
-    template.create(helpers.mapComponent(feature, component) + '.js', Object.assign({}, args, {
+    template.create(utils.mapComponent(feature, component) + '.js', Object.assign({}, args, {
       templateFile: args.templateFile || 'Component.js',
       context: Object.assign({ feature, component }, args.context || {}),
     }));
@@ -26,11 +26,11 @@ module.exports = {
   },
 
   remove(feature, component) {
-    helpers.assertNotEmpty(feature, 'feature');
-    helpers.assertNotEmpty(component, 'component name');
-    helpers.assertFeatureExist(feature);
+    utils.assertNotEmpty(feature, 'feature');
+    utils.assertNotEmpty(component, 'component name');
+    utils.assertFeatureExist(feature);
 
-    vio.del(helpers.mapComponent(feature, component) + '.js');
+    vio.del(utils.mapComponent(feature, component) + '.js');
     entry.removeFromIndex(feature, component);
   },
 
@@ -42,8 +42,8 @@ module.exports = {
     dest.feature = _.kebabCase(dest.feature);
     dest.name = _.pascalCase(dest.name);
 
-    const srcPath = helpers.mapName(source.feature, source.name) + '.js';
-    const destPath = helpers.mapName(dest.feature, dest.name) + '.js';
+    const srcPath = utils.mapName(source.feature, source.name) + '.js';
+    const destPath = utils.mapName(dest.feature, dest.name) + '.js';
     vio.move(srcPath, destPath);
 
     const oldCssClass = `${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
@@ -69,7 +69,7 @@ module.exports = {
     // 2. Update the path in index.js
     // 3. Search all reference in the project features project.
 
-    // const content = vio.getLines(helpers.mapComponent(source.feature, source.component) + '.js').join('\n');
+    // const content = vio.getLines(utils.mapComponent(source.feature, source.component) + '.js').join('\n');
     // this.remove(source.feature, source.component);
     // this.add(dest.feature, dest.component, { content });
   },

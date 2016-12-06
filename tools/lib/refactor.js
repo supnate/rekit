@@ -313,6 +313,14 @@ function addImportLine(lines, importLine) {
   lines.splice(i + 1, 0, importLine);
 }
 
+function removeImportLine(file, moduleSource) {
+  // Summary:
+  //  Remove import xxx from '.xxx' line at the top. Usually used by entry files such as index.js
+
+  const lines = vio.getLines(file);
+  removeLines(lines, new RegExp(`import +.* +from +'${utils.escapeRegExp(moduleSource)}'`));
+}
+
 function addExportFromLine(file, exportLine) {
   // Summary:
   //  Add export xxx from '.xxx' line at the top. Usually used by entry files such as index.js
@@ -327,7 +335,7 @@ function removeExportFromLine(file, moduleSource) {
   //  Remove export xxx from '.xxx' line at the top. Usually used by entry files such as index.js
 
   const lines = vio.getLines(file);
-  removeLines(lines, new RegExp(`export +.* +from +'${utils.escapRegExp(moduleSource)}'`));
+  removeLines(lines, new RegExp(`export +.* +from +'${utils.escapeRegExp(moduleSource)}'`));
 }
 
 // function renameExportFrom(file, oldName, newName, oldModulePath, newModulePath) {
@@ -374,9 +382,34 @@ function acceptFilePathForAst(func) {
     }
     const args = _.toArray(arguments);
     args[0] = ast;
+
     const changes = func.apply(null, args);
 
+    if (_.isString(file)) {
+      updateFile(file, changes);
+    }
+
     return changes;
+  };
+}
+
+function acceptFilePathForLines(func) {
+  // Summary:
+  //  Wrapper a function that accepts lines also accepts file path.
+  //  If it's file path, then update the file immediately.
+
+  return function(file) { // eslint-disable-line
+    let lines = file;
+    if (_.isString(file)) {
+      lines = vio.getLines(file);
+    }
+    const args = _.toArray(arguments);
+    args[0] = lines;
+    lines = func.apply(null, args);
+
+    if (_.isString(file)) {
+      vio.save(file, lines);
+    }
   };
 }
 
@@ -392,10 +425,12 @@ module.exports = {
   updateFile,
   lineIndex,
   lastLineIndex,
-  addImportLine,
-  removeLines,
-
-  addExportFromLine: acceptFilePathForAst(addExportFromLine),
-  removeExportFromLine: acceptFilePathForAst(removeExportFromLine),
   renameModuleSource: acceptFilePathForAst(renameModuleSource),
+
+  addImportLine: acceptFilePathForLines(addImportLine),
+  removeImportLine: acceptFilePathForLines(removeImportLine),
+
+  removeLines: acceptFilePathForLines(removeLines),
+  addExportFromLine: acceptFilePathForLines(addExportFromLine),
+  removeExportFromLine: acceptFilePathForLines(removeExportFromLine),
 };

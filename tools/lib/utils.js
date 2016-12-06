@@ -248,12 +248,24 @@ module.exports = {
   //   }
   // },
 
+  getFeatures() {
+    return _.toArray(shell.ls(path.join(this.getProjectRoot(), 'src/features')));
+  },
+
   fatalError(msg) {
-    console.error(colors.red('Error: ' + msg));
+    this.error(msg);
     throw new Error('Error: ' + msg);
+  },
+
+  log(msg) {
+    console.log(msg);
   },
 
   warn(msg) {
     console.log(colors.yellow('Warning: ' + msg));
+  },
+
+  error(msg) {
+    console.log(colors.red('Error: ' + msg));
   },
 };

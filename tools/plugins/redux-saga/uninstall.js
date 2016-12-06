@@ -5,7 +5,7 @@
 
 const path = require('path');
 const vio = require('../../lib/vio');
-const helpers = require('../../lib/helpers');
+const utils = require('../../lib/utils');
 const refactor = require('../../lib/refactor');
 
 function uninstall(prjRoot) {
@@ -32,7 +32,7 @@ function uninstall(prjRoot) {
   vio.save(configStorePath, lines);
 }
 
-const prjRoot = helpers.getProjectRoot();
+const prjRoot = utils.getProjectRoot();
 const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
 
 uninstall(prjRoot, pluginRoot);

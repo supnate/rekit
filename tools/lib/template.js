@@ -4,7 +4,7 @@ const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
 const vio = require('./vio');
-const helpers = require('./helpers');
+const utils = require('./utils');
 
 // Make sure it works in template
 _.pascalCase = _.flow(_.camelCase, _.upperFirst);
@@ -14,14 +14,14 @@ module.exports = {
   readTemplate(file) {
     file = path.isAbsolute(file) ? file : path.join(__dirname, '../templates', file);
     if (!shell.test('-e', file)) {
-      helpers.fatalError('Template file does\'t exist: ', file);
+      utils.fatalError('Template file does\'t exist: ', file);
     }
     return vio.getContent(file);
   },
 
   create(targetPath, args) {
     if (!args.templateFile && !args.content && !args.template) {
-      helpers.fatalError('No template for generating' + targetPath + '.');
+      utils.fatalError('No template for generating' + targetPath + '.');
     }
 
     let content = args.content;
@@ -31,7 +31,7 @@ module.exports = {
       content = compiled(args.context || {});
     }
     if (!args.force && (vio.fileExists(targetPath) || shell.test('-e', targetPath))) {
-      helpers.fatalError(`File already exists: ${targetPath}.`);
+      utils.fatalError(`File already exists: ${targetPath}.`);
     }
     const lines = content.split(/\r?\n/);
     vio.save(targetPath, lines);

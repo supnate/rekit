@@ -6,15 +6,16 @@
 const path = require('path');
 const shell = require('shelljs');
 const vio = require('../../lib/vio');
-const helpers = require('../../lib/helpers');
+const utils = require('../../lib/utils');
 const refactor = require('../../lib/refactor');
+const afterAddFeature = require('./hooks').afterAddFeature;
 
 function install(prjRoot, pluginRoot) {
   const rootSagaPath = path.join(prjRoot, 'src/common/rootSaga.js');
 
   // Check if saga plugin is already installed
   if (shell.test('-e', rootSagaPath)) {
-    // helpers.fatalError('src/common/rootSaga.js already exists.');
+    // utils.fatalError('src/common/rootSaga.js already exists.');
   }
 
   // Create src/common/rootSaga.js
@@ -41,10 +42,14 @@ function install(prjRoot, pluginRoot) {
   i = refactor.lineIndex(lines, 'return store;');
   lines.splice(i, 0, '  sagaMiddleWare.run(rootSaga);');
 
+  // Init existing features
+  // NOTE: sagas folder will not be deleted from features folders to avoid accident deletion
+  utils.getFeatures().forEach(afterAddFeature);
+
   vio.save(configStorePath, lines);
 }
 
-const prjRoot = helpers.getProjectRoot();
+const prjRoot = utils.getProjectRoot();
 const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
 
 install(prjRoot, pluginRoot);

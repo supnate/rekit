@@ -6,13 +6,38 @@
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
-const helpers = require('./helpers');
+const utils = require('./utils');
 
-const prjRoot = helpers.getProjectRoot();
+const prjRoot = utils.getProjectRoot();
 const plugins = [];
 
+function injectExtensionPoints(func, actionType, targetName) {
+  // Summary:
+  //  Hook: add/move/remove elements
+
+  function execExtension(hookName, args) {
+    plugins.forEach((p) => {
+      if (p.hooks && p.hooks[hookName]) {
+        p.hooks[hookName].apply(p.hooks, args);
+      }
+    });
+  }
+
+  return function() { // eslint-disable-line
+    const beforeHook = `before${_.pascalCase(actionType)}${_.pascalCase(targetName)}`;
+    execExtension(beforeHook, arguments);
+
+    const res = func.apply(null, arguments);
+
+    const afterHook = `after${_.pascalCase(actionType)}${_.pascalCase(targetName)}`;
+    execExtension(afterHook, arguments);
+
+    return res;
+  };
+}
+
 shell.ls(path.join(prjRoot, 'tools/plugins'))
-  .filter(d => shell.test('-d', path.join(prjRoot, 'tools/plugins', d)))
+  .filter(d => shell.test('-d', path.join(prjRoot, 'tools/plugins', d))) // only get dirs
   .forEach((d) => {
     const pluginRoot = path.join(prjRoot, 'tools/plugins', d);
     try {
@@ -20,15 +45,24 @@ shell.ls(path.join(prjRoot, 'tools/plugins'))
       const item = {
         index,
         actions: {},
+        hooks: {},
       };
 
       if (index.accept) {
         index.accept.forEach(
           (name) => {
             name = _.camelCase(name);
-            item.actions[name] = require(path.join(pluginRoot, name));
+            const actions = require(path.join(pluginRoot, name));
+            item.actions[name] = {};
+            Object.keys(actions).forEach((key) => {
+              item.actions[name][key] = injectExtensionPoints(actions[key], key, name);
+            });
           }
         );
+      }
+
+      if (shell.test('-e', path.join(pluginRoot, 'hooks.js'))) {
+        item.hooks = require(path.join(pluginRoot, 'hooks'));
       }
 
       plugins.push(item);
@@ -49,4 +83,5 @@ function getAction(action, typeName) {
 module.exports = {
   getAction,
   plugins,
+  injectExtensionPoints,
 };

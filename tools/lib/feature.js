@@ -3,7 +3,7 @@
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
-const helpers = require('./helpers');
+const utils = require('./utils');
 const vio = require('./vio');
 const refactor = require('./refactor');
 const entry = require('./entry');
@@ -11,16 +11,16 @@ const template = require('./template');
 
 module.exports = {
   add(name) {
-    helpers.assertNotEmpty(name);
-    const targetDir = path.join(helpers.getProjectRoot(), `src/features/${_.kebabCase(name)}`);
+    utils.assertNotEmpty(name);
+    const targetDir = path.join(utils.getProjectRoot(), `src/features/${_.kebabCase(name)}`);
     if (shell.test('-e', targetDir)) {
-      helpers.fatalError(`feature already exists: ${_.kebabCase(name)}`);
+      utils.fatalError(`feature already exists: ${_.kebabCase(name)}`);
     }
 
     vio.mkdir(targetDir);
     vio.mkdir(path.join(targetDir, 'redux'));
-    vio.mkdir(path.join(helpers.getProjectRoot(), 'test/app/features', _.kebabCase(name)));
-    vio.mkdir(path.join(helpers.getProjectRoot(), 'test/app/features', _.kebabCase(name), 'redux'));
+    vio.mkdir(path.join(utils.getProjectRoot(), 'test/app/features', _.kebabCase(name)));
+    vio.mkdir(path.join(utils.getProjectRoot(), 'test/app/features', _.kebabCase(name), 'redux'));
 
     // Create files from template
     [
@@ -40,29 +40,29 @@ module.exports = {
     });
 
     // Create wrapper reducer for the feature
-    template.create(path.join(helpers.getProjectRoot(), `test/app/features/${_.kebabCase(name)}/redux/reducer.test.js`), {
+    template.create(path.join(utils.getProjectRoot(), `test/app/features/${_.kebabCase(name)}/redux/reducer.test.js`), {
       templateFile: 'reducer.test.js',
       context: { feature: name }
     });
   },
 
   remove(name) {
-    vio.del(path.join(helpers.getProjectRoot(), 'src/features', _.kebabCase(name)));
-    vio.del(path.join(helpers.getProjectRoot(), 'test/app/features', _.kebabCase(name)));
+    vio.del(path.join(utils.getProjectRoot(), 'src/features', _.kebabCase(name)));
+    vio.del(path.join(utils.getProjectRoot(), 'test/app/features', _.kebabCase(name)));
   },
 
   move(oldName, newName) {
     // Summary:
     //  Move or rename a feature. Seems very heavy.
-    helpers.assertNotEmpty(oldName);
-    helpers.assertNotEmpty(newName);
-    helpers.assertFeatureExist(oldName);
-    helpers.assertFeatureNotExist(newName);
+    utils.assertNotEmpty(oldName);
+    utils.assertNotEmpty(newName);
+    utils.assertFeatureExist(oldName);
+    utils.assertFeatureNotExist(newName);
 
     oldName = _.kebabCase(oldName);
     newName = _.kebabCase(newName);
 
-    const prjRoot = helpers.getProjectRoot();
+    const prjRoot = utils.getProjectRoot();
 
     // Move feature folder
     const oldFolder = path.join(prjRoot, 'src/features', oldName);
@@ -86,7 +86,7 @@ module.exports = {
     entry.renameInRootStyle(oldName, newName);
 
     // Update feature/route.js for path and name if they bind to feature name
-    refactor.updateFile(helpers.mapFile(newName, 'route.js'), ast => [].concat(
+    refactor.updateFile(utils.mapFile(newName, 'route.js'), ast => [].concat(
       refactor.renameStringLiteral(ast, _.kebabCase(oldName), _.kebabCase(newName)), // Rename path
       refactor.renameStringLiteral(ast, _.upperFirst(_.lowerCase(oldName)), _.upperFirst(_.lowerCase(newName))) // Rename name
     ));

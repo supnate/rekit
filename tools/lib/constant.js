@@ -1,13 +1,13 @@
 'use strict';
 
 const _ = require('lodash');
-const helpers = require('./helpers');
+const utils = require('./utils');
 const vio = require('./vio');
 
 module.exports = {
   add(feature, name) {
     name = _.upperSnakeCase(name);
-    const targetPath = helpers.getReduxFile(feature, 'constants');
+    const targetPath = utils.getReduxFile(feature, 'constants');
     const lines = vio.getLines(targetPath);
     if (lines.length && !lines[lines.length - 1]) lines.pop();
     lines.push(`export const ${name} = '${name}';`);
@@ -18,9 +18,9 @@ module.exports = {
 
   remove(feature, name) {
     name = _.upperSnakeCase(name);
-    const targetPath = helpers.getReduxFile(feature, 'constants');
+    const targetPath = utils.getReduxFile(feature, 'constants');
     const lines = vio.getLines(targetPath);
-    helpers.removeLines(lines, `export const ${name} = '${name}';`);
+    utils.removeLines(lines, `export const ${name} = '${name}';`);
 
     vio.save(targetPath, lines);
   },
@@ -29,9 +29,9 @@ module.exports = {
     oldName = _.upperSnakeCase(oldName);
     newName = _.upperSnakeCase(newName);
 
-    const targetPath = helpers.getReduxFile(feature, 'constants');
+    const targetPath = utils.getReduxFile(feature, 'constants');
     const lines = vio.getLines(targetPath);
-    const i = helpers.lineIndex(lines, `export const ${oldName} = '${oldName}';`);
+    const i = utils.lineIndex(lines, `export const ${oldName} = '${oldName}';`);
     if (i >= 0) {
       lines[i] = `export const ${newName} = '${newName}';`;
     }

@@ -1,7 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
-const helpers = require('./helpers');
+const utils = require('./utils');
 const vio = require('./vio');
 const refactor = require('./refactor');
 const template = require('./template');
@@ -9,14 +9,14 @@ const template = require('./template');
 module.exports = {
   add(feature, component, args) {
     args = args || {};
-    template.create(helpers.getTestFile(feature, component), Object.assign({}, args, {
+    template.create(utils.getTestFile(feature, component), Object.assign({}, args, {
       templateFile: args.templateFile || 'Component.test.js',
       context: Object.assign({ feature, component }, args.context || {}),
     }));
   },
 
   remove(feature, component) {
-    vio.del(helpers.getTestFile(feature, component));
+    vio.del(utils.getTestFile(feature, component));
   },
 
   move(source, dest) {
@@ -25,8 +25,8 @@ module.exports = {
     dest.feature = _.kebabCase(dest.feature);
     dest.name = _.pascalCase(dest.name);
 
-    const srcPath = helpers.getTestFile(source.feature, source.name);
-    const destPath = helpers.getTestFile(dest.feature, dest.name);
+    const srcPath = utils.getTestFile(source.feature, source.name);
+    const destPath = utils.getTestFile(dest.feature, dest.name);
     vio.move(srcPath, destPath);
 
     const oldCssClass = `.${_.kebabCase(source.feature)}-${_.kebabCase(source.name)}`;
@@ -60,18 +60,18 @@ module.exports = {
       action: name,
     };
     if (args.isAsync) {
-      context.actionTypes = helpers.getAsyncActionTypes(feature, name);
+      context.actionTypes = utils.getAsyncActionTypes(feature, name);
     } else {
-      context.actionType = args.actionType || helpers.getActionType(feature, name);
+      context.actionType = args.actionType || utils.getActionType(feature, name);
     }
-    template.create(helpers.getReduxTestFile(feature, name), Object.assign({}, args, {
+    template.create(utils.getReduxTestFile(feature, name), Object.assign({}, args, {
       templateFile: args.templateFile || (args.isAsync ? 'async_action.test.js' : 'action.test.js'),
       context: Object.assign(context, args.context || {}),
     }));
   },
 
   removeAction(feature, name) {
-    vio.del(helpers.getReduxTestFile(feature, name));
+    vio.del(utils.getReduxTestFile(feature, name));
   },
 
   moveAction(source, dest, isAsync) {
@@ -80,8 +80,8 @@ module.exports = {
     dest.feature = _.kebabCase(dest.feature);
     dest.name = _.camelCase(dest.name);
 
-    const srcPath = helpers.getReduxTestFile(source.feature, source.name);
-    const destPath = helpers.getReduxTestFile(dest.feature, dest.name);
+    const srcPath = utils.getReduxTestFile(source.feature, source.name);
+    const destPath = utils.getReduxTestFile(dest.feature, dest.name);
     vio.move(srcPath, destPath);
 
     // Note: below string pattern binds to the test template, update here if template is changed.
@@ -108,8 +108,8 @@ module.exports = {
     // const oldUpperSnakeName = _.upperSnakeCase(source.name);
     // const newUpperSnakeName = _.upperSnakeCase(dest.name);
     if (isAsync) {
-      const oldActionTypes = helpers.getAsyncActionTypes(source.feature, source.name);
-      const newActionTypes = helpers.getAsyncActionTypes(dest.feature, dest.name);
+      const oldActionTypes = utils.getAsyncActionTypes(source.feature, source.name);
+      const newActionTypes = utils.getAsyncActionTypes(dest.feature, dest.name);
 
       const oldIt1 = `dispatches success action when ${_.camelCase(source.name)} succeeds`;
       const newIt1 = `dispatches success action when ${_.camelCase(dest.name)} succeeds`;
@@ -149,8 +149,8 @@ module.exports = {
     } else {
       // Try to update it('xxx') for sync action, bound to the templates
 
-      const oldActionType = helpers.getActionType(source.feature, source.name);
-      const newActionType = helpers.getActionType(dest.feature, dest.name);
+      const oldActionType = utils.getActionType(source.feature, source.name);
+      const newActionType = utils.getActionType(dest.feature, dest.name);
       const oldIt1 = `returns correct action by ${source.name}`;
       const newIt1 = `returns correct action by ${dest.name}`;
 

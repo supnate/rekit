@@ -11,7 +11,6 @@ console.time('✨  Done');
 const feature = args.feature;
 const name = args.name;
 
-
 function callPlugin() {
   const pluginAction = plugin.getAction('add', args.type);
   if (pluginAction) {

@@ -11,7 +11,7 @@ import {
 function* ${_.camelCase(action)}() {
   try {
     // Do Ajax call or other async operations here. delay(50) is only a placeholder.
-    const res = yield delay(50);
+    const res = yield delay(20);
     yield put({
       type: ${actionTypes.success},
       data: res,

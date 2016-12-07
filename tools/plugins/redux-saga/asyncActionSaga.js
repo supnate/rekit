@@ -41,6 +41,18 @@ function add(feature, name) {
   refactor.addExportFromLine(targetPath, `export ${name} from './${name}';`);
 
   // Add saga test
+  targetPath = utils.mapTestFile(feature, `redux/${name}.test.js`);
+  template.create(targetPath, {
+    templateFile: path.join(pluginRoot, 'templates/saga.test.js'),
+    context: Object.assign(context, args.context || {}),
+  });
+
+  // Add saga test
+  targetPath = utils.mapTestFile(feature, `redux/sagas/${name}.test.js`);
+  template.create(targetPath, {
+    templateFile: path.join(pluginRoot, 'templates/saga.test.js'),
+    context: Object.assign(context, args.context || {}),
+  });
 }
 
 

@@ -11,7 +11,7 @@ const utils = require('./utils');
 const prjRoot = utils.getProjectRoot();
 const plugins = [];
 
-function injectExtensionPoints(func, actionType, targetName) {
+function injectExtensionPoints(func, command, targetName) {
   // Summary:
   //  Hook: add/move/remove elements
 
@@ -24,12 +24,12 @@ function injectExtensionPoints(func, actionType, targetName) {
   }
 
   return function() { // eslint-disable-line
-    const beforeHook = `before${_.pascalCase(actionType)}${_.pascalCase(targetName)}`;
+    const beforeHook = `before${_.pascalCase(command)}${_.pascalCase(targetName)}`;
     execExtension(beforeHook, arguments);
 
     const res = func.apply(null, arguments);
 
-    const afterHook = `after${_.pascalCase(actionType)}${_.pascalCase(targetName)}`;
+    const afterHook = `after${_.pascalCase(command)}${_.pascalCase(targetName)}`;
     execExtension(afterHook, arguments);
 
     return res;
@@ -41,21 +41,21 @@ shell.ls(path.join(prjRoot, 'tools/plugins'))
   .forEach((d) => {
     const pluginRoot = path.join(prjRoot, 'tools/plugins', d);
     try {
-      const index = require(path.join(pluginRoot, 'index'));
+      const config = require(path.join(pluginRoot, 'config'));
       const item = {
-        index,
-        actions: {},
+        config,
+        commands: {},
         hooks: {},
       };
 
-      if (index.accept) {
-        index.accept.forEach(
+      if (config.accept) {
+        config.accept.forEach(
           (name) => {
             name = _.camelCase(name);
-            const actions = require(path.join(pluginRoot, name));
-            item.actions[name] = {};
-            Object.keys(actions).forEach((key) => {
-              item.actions[name][key] = injectExtensionPoints(actions[key], key, name);
+            const commands = require(path.join(pluginRoot, name));
+            item.commands[name] = {};
+            Object.keys(commands).forEach((key) => {
+              item.commands[name][key] = injectExtensionPoints(commands[key], key, name);
             });
           }
         );
@@ -72,16 +72,16 @@ shell.ls(path.join(prjRoot, 'tools/plugins'))
     }
   });
 
-function getAction(action, typeName) {
+function getCommand(command, typeName) {
   for (const p of plugins) {
-    const a = _.get(p, `actions.${_.camelCase(typeName)}.${_.camelCase(action)}`);
+    const a = _.get(p, `commands.${_.camelCase(typeName)}.${_.camelCase(command)}`);
     if (a) return a;
   }
   return null;
 }
 
 module.exports = {
-  getAction,
+  getCommand,
   plugins,
   injectExtensionPoints,
 };

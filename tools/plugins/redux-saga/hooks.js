@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const shell = require('shelljs');
 const utils = require('../../lib/utils');
 const vio = require('../../lib/vio');
 const refactor = require('../../lib/refactor');
@@ -12,9 +13,11 @@ function afterAddFeature(featureName) {
   //  Called after a feature is added. Add sagas folder and add entry in rootSaga.js
 
   let targetPath;
-  // Add sagas folder to the feature, and add index.js in it.
+  // Add sagas folder to the feature, and add index.js if they don't exist.
   targetPath = utils.mapFile(featureName, 'redux/sagas/index.js');
-  vio.save(targetPath, '\n');
+  if (!shell.test('-e', targetPath)) {
+    vio.save(targetPath, '\n');
+  }
 
   // Add entry to src/common/rootSaga.js
   targetPath = path.join(prjRoot, 'src/common/rootSaga.js');

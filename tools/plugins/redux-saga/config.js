@@ -5,18 +5,6 @@
 
 module.exports = {
   description: 'Add/update/rename sagas for redux-saga.',
+  version: '1.0.0',
   accept: ['async-action-saga'],
-  dependencies: ['redux-saga'],
-
-  afterAddFeature(featureName) {
-
-  },
-
-  afterRemoveFeature(featureName) {
-
-  },
-
-  afterMoveFeature(oldFeature, newFeature) {
-
-  },
 };

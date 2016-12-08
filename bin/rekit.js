@@ -47,7 +47,7 @@ const parser = new ArgumentParser({
 
 const subparsers = parser.addSubparsers({
   title: 'Sub commands',
-  dest: 'subCommandName',
+  dest: 'commandName',
 });
 
 // Create project
@@ -118,28 +118,30 @@ mvCmd.addArgument('source', {
 });
 
 mvCmd.addArgument('target', {
-  help: 'The destination element to reach, in format of <feature>/<name>, e.g.: \'rekit move component user/list-view employee/list\'. Name is unnecessary if move a feature.'
+  help: 'The target element to reach, in format of <feature>/<name>, e.g.: \'rekit move component user/list-view employee/list\'. Name is unnecessary if move a feature.'
 });
-
-// Load command supports from plugins
 
 const args = parser.parseArgs();
 
+console.time('😃  Done');
+// Convert aliases
+const aliases = { rm: 'remove', mv: 'move' };
+Object.keys(aliases).forEach((k) => {
+  if (args.commandName === k) {
+    args.commandName = aliases[k];
+  }
+});
 
-switch (args.subCommandName) {
+switch (args.commandName) {
   case 'create':
+    // Only create command is handled rekit
     create(args);
     break;
-  case 'add':
-    // rekitCore.addComponnet(args);
-    break;
-  case 'remove':
-    break;
-  case 'move':
-    break;
   default:
+    // Other command are handled by rekit-core
     rekitCore.handleCommand(args);
+    rekitCore.vio.flush();
     break;
 }
+console.timeEnd('😃  Done');
 
-// vio.flush();

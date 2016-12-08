@@ -2,20 +2,18 @@
 
 const path = require('path');
 const _ = require('lodash');
-const utils = require('../../lib/utils');
-const vio = require('../../lib/vio');
-const rekit = require('../../lib/rekit');
-const refactor = require('../../lib/refactor');
-const constant = require('../../lib/constant');
-const entry = require('../../lib/entry');
-const template = require('../../lib/template');
-const action = require('../../lib/action');
-const test = require('../../lib/test');
+const rekitCore = require('rekit-core');
 
-const prjRoot = utils.getProjectRoot();
-const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
+const utils = rekitCore.utils;
+const vio = rekitCore.vio;
+const refactor = rekitCore.refactor;
+const template = rekitCore.template;
+const action = rekitCore.action;
 
 function add(feature, name) {
+  const prjRoot = utils.getProjectRoot();
+  const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
+
   feature = _.kebabCase(feature);
   name = _.camelCase(name);
 
@@ -44,14 +42,14 @@ function add(feature, name) {
   targetPath = utils.mapTestFile(feature, `redux/${name}.test.js`);
   template.create(targetPath, {
     templateFile: path.join(pluginRoot, 'templates/saga.test.js'),
-    context: Object.assign(context, args.context || {}),
+    context: {},
   });
 
   // Add saga test
   targetPath = utils.mapTestFile(feature, `redux/sagas/${name}.test.js`);
   template.create(targetPath, {
     templateFile: path.join(pluginRoot, 'templates/saga.test.js'),
-    context: Object.assign(context, args.context || {}),
+    context: {},
   });
 }
 

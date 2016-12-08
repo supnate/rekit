@@ -4,9 +4,10 @@
 //  Execute when the plugin is uninstall
 
 const path = require('path');
-const vio = require('../../lib/vio');
-const utils = require('../../lib/utils');
-const refactor = require('../../lib/refactor');
+const rekitCore = require('rekit-core');
+
+const vio = rekitCore.vio;
+const refactor = rekitCore.refactor;
 
 function uninstall(prjRoot) {
   // Delete src/common/rootSaga.js
@@ -32,10 +33,10 @@ function uninstall(prjRoot) {
   vio.save(configStorePath, lines);
 }
 
-const prjRoot = utils.getProjectRoot();
-const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
+// const prjRoot = utils.getProjectRoot();
+// const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
 
-uninstall(prjRoot, pluginRoot);
-vio.flush();
+// uninstall(prjRoot, pluginRoot);
+// vio.flush();
 
 module.exports = uninstall;

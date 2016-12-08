@@ -5,10 +5,12 @@
 
 const path = require('path');
 const shell = require('shelljs');
-const vio = require('../../lib/vio');
-const utils = require('../../lib/utils');
-const refactor = require('../../lib/refactor');
+const rekitCore = require('rekit-core');
 const afterAddFeature = require('./hooks').afterAddFeature;
+
+const vio = rekitCore.vio;
+const utils = rekitCore.utils;
+const refactor = rekitCore.refactor;
 
 function install(prjRoot, pluginRoot) {
   const rootSagaPath = path.join(prjRoot, 'src/common/rootSaga.js');
@@ -49,9 +51,9 @@ function install(prjRoot, pluginRoot) {
   vio.save(configStorePath, lines);
 }
 
-const prjRoot = utils.getProjectRoot();
-const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
+// const prjRoot = utils.getProjectRoot();
+// const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
 
-install(prjRoot, pluginRoot);
-vio.flush();
+// install(prjRoot, pluginRoot);
+// vio.flush();
 module.exports = install;

@@ -3,11 +3,8 @@
     Run specific tests
   Usage examples:
    - node run_test.js // run all tests
-   - node run_test.js app // run app tests
-   - node run_test.js app/features/home // run tests for home feature
-   - node run_test.js app/features/home/redux/reducer.test.js // run reducer test
-   - node run_test.js cli // run cli tests
-   - node run_test.js cli/action.test.js // run action cli tests
+   - node run_test.js features/home // run tests for home feature
+   - node run_test.js features/home/redux/reducer.test.js // run reducer test
 */
 
 'use strict';
@@ -24,7 +21,7 @@ if (!args) {
 }
 
 if (args !== 'all') {
-  testFile = path.join(prjRoot, 'test', args);
+  testFile = path.join(prjRoot, 'tests', args);
   if (shell.test('-d', testFile)) {
     testFile = path.join(testFile, '**/*.test.js');
   }

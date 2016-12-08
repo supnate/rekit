@@ -1,6 +1,3 @@
-// Collect router rules from features and generate the root router config for React Router.
-// Usually maintained by Rekit CLI tools.
-
 import App from '../containers/App';
 import { PageNotFound } from '../features/common';
 import homeRoute from '../features/home/route';

@@ -45,6 +45,7 @@
   "rekit": {
     "version": "2.0.0",
     "devPort": 6076,
+    "plugins": [],
     "buildPort": 6077
   },
   "babel": {

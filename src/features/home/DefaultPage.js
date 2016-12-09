@@ -31,11 +31,11 @@ export class DefaultPage extends Component {
   }
 
   handleFetchReddit() {
-    this.props.actions.fetchRedditBySaga();
+    this.props.actions.fetchRedditReactjsList();
   }
 
   render() {
-    const { count, fetchRedditBySagaPending, redditReactjsList, fetchRedditBySagaError } = this.props.home;
+    const { count, fetchRedditReactjsListPending, redditReactjsList, fetchRedditReactjsListError } = this.props.home;
     return (
       <div className="home-default-page">
         <img src={require('../../images/logo.png')} className="app-logo" alt="logo" />
@@ -64,13 +64,13 @@ export class DefaultPage extends Component {
 
         <p className="section-title">To see how async flow works, here is an example of fetching reddit reactjs topics:</p>
         <div className="demo-reddit">
-          <button className="btn-fetch-reddit" disabled={fetchRedditBySagaPending} onClick={this.handleFetchReddit}>
-            {fetchRedditBySagaPending ? 'Fetching...' : 'Fetch reactjs topics'}
+          <button className="btn-fetch-reddit" disabled={fetchRedditReactjsListPending} onClick={this.handleFetchReddit}>
+            {fetchRedditReactjsListPending ? 'Fetching...' : 'Fetch reactjs topics'}
           </button>
           {
-            fetchRedditBySagaError &&
+            fetchRedditReactjsListError &&
               <div className="fetch-list-error">
-                Failed to load: {fetchRedditBySagaError.toString()}
+                Failed to load: {fetchRedditReactjsListError.toString()}
               </div>
           }
           <RedditList list={redditReactjsList} />

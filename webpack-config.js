@@ -63,7 +63,7 @@ module.exports = (type) => { // eslint-disable-line
 
     output: {
       // Js bundle name, [name] will be replaced by which is in entry
-      filename: '[name].bundle.js',
+      filename: '[name].js',
 
       // Where to save your build result
       path: path.join(__dirname, 'build/static'),
@@ -99,10 +99,6 @@ module.exports = (type) => { // eslint-disable-line
           test: /\.less$/,
           loader: isDev ? 'style-loader!css-loader?sourceMap!less-loader?sourceMap'
             : 'style-loader!css-loader!less-loader'
-        }, {
-          test: /\.scss$/,
-          loader: isDev ? 'style-loader!css-loader?sourceMap!sass-loader?sourceMap'
-            : 'style-loader!css-loader!sass-loader'
         }, {
           test: /\.css$/,
           loader: 'style-loader!css-loader'

@@ -5,14 +5,11 @@
 
 const path = require('path');
 const fs = require('fs');
-// const shell = require('shelljs');
 const utils = require('./utils');
 const rekitPkgJson = require('../package.json');
 
 function create(args) {
   console.log('creating: ', args);
-// http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.2.x.json
-  // const depsUrl1 = 'http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.2.x.json';
 
   const prjName = args.name;
   if (!prjName) {
@@ -32,12 +29,6 @@ function create(args) {
   // Rekit CLI itself.
   const rekitRoot = path.join(__dirname, '..');
 
-  // Remove unecessary deps
-  delete rekitPkgJson.dependencies.colors;
-  delete rekitPkgJson.dependencies.argparse;
-  delete rekitPkgJson.devDependencies.codecov;
-  delete rekitPkgJson.devDependencies['gitbook-cli'];
-
   // The package.json for the new created project
   const pkgJson = {
     name: prjName,
@@ -50,6 +41,7 @@ function create(args) {
       version: rekitPkgJson.version,
       devPort: 6076,
       buildPort: 6077,
+      css: args.sass ? 'sass' : 'less',
     },
   };
 
@@ -92,16 +84,30 @@ function create(args) {
   //   devDependencies: Object.keys(rekitPkgJson.devDependencies),
   // };
 
-  // Remove unecessary deps
-  // delete prjConfig.dependencies['request']; // eslint-disable-line
+  // If sass, change webpack configs.
+  if (args.sass) {
+    const configPath = path.join(prjPath, 'webpack-config.js');
+    let text = fs.readFileSync(configPath).toString();
+    text = text.replace(/\.less/g, '.scss').replace('less-loader', 'sass-loader');
+    fs.writeFileSync(configPath, text);
+  }
 
   console.log('Getting the latest dependencies versions...');
-
   function done(deps) {
     pkgJson.dependencies = deps.dependencies;
     pkgJson.devDependencies = deps.devDependencies;
+
+    if (args.sass) {
+      // If using sass
+      delete pkgJson.devDependencies['less']; // eslint-disable-line
+      delete pkgJson.devDependencies['less-loader'];
+    } else {
+      // If using less
+      delete pkgJson.devDependencies['node-sass'];
+      delete pkgJson.devDependencies['sass-loader'];
+    }
+
     fs.writeFileSync(path.join(prjPath, 'package.json'), JSON.stringify(pkgJson, null, '  '));
-    // shell.ShellString(JSON.stringify(pkgJson, null, '  ')).to(path.join(prjPath, 'package.json'));
     console.log('Project creation success!');
     console.log(`To run the project, please go to the project folder "${prjName}" and:`);
     console.log('  1. run "npm install" to install dependencies.');

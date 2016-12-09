@@ -9,47 +9,50 @@ const _ = require('lodash');
 const request = require('request');
 const rekitPkgJson = require('../package.json');
 
-function create(prjName) {
-  const rekitRoot = path.join(__dirname, '..');
+function create(args) {
+  const prjName = args.name;
   if (!prjName) {
     console.log('Error: please specify the project name.');
     process.exit(1);
   }
 
+  // The created project dir
+  const prjPath = path.join(process.cwd(), prjName);
+  if (shell.test('-e', prjPath)) {
+    console.log(`Error: target folder already exists: ${prjPath}`);
+    process.exit(1);
+  }
+  console.log('Welcome to Rekit, now creating your project...');
+  shell.mkdir(prjPath);
+
+  // Rekit CLI itself.
+  const rekitRoot = path.join(__dirname, '..');
+
+  // Remove unecessary deps
   delete rekitPkgJson.dependencies.colors;
   delete rekitPkgJson.dependencies.argparse;
   delete rekitPkgJson.devDependencies.codecov;
   delete rekitPkgJson.devDependencies['gitbook-cli'];
 
+  // The package.json for the new created project
   const pkgJson = {
     name: prjName,
     version: '0.0.1',
     private: true,
-    description: 'My awesome project.',
-    scripts: rekitPkgJson.scripts,
+    description: 'A new project created by Rekit.',
     babel: rekitPkgJson.babel,
     nyc: rekitPkgJson.nyc,
-    
   };
 
-  pkgJson.scripts.test = 'node ./tools/run_test.js app';
+  // Remove unecessary scripts
+  pkgJson.scripts = {
+    start: 'node ./tools/server.js',
+    build: 'node ./tools/build.js',
+    test: 'node ./tools/run_test.js',
+    'build:test': 'node ./tools/server.js -m build',
+  };
 
-  delete pkgJson.scripts.codecov;
-  delete pkgJson.scripts['test:rekit'];
-  delete pkgJson.scripts['test:npm'];
-  delete pkgJson.scripts['docs:prepare'];
-  delete pkgJson.scripts['docs:watch'];
-  delete pkgJson.scripts['docs:build'];
-  delete pkgJson.scripts['docs:publish'];
-
-  const prjPath = path.join(process.cwd(), prjName);
-  if (shell.test('-e', prjPath)) {
-    console.log(`Error: target folder has been existed: ${prjPath}`);
-    process.exit(1);
-  }
-  console.log('Welcome to rekit, now creating your project...');
-  shell.mkdir(prjPath);
-
+  // Copy all necessary files
   console.log('Copying files...');
   shell.cp('-R', path.join(rekitRoot, './src'), prjPath);
   shell.cp('-R', path.join(rekitRoot, './tools'), prjPath);
@@ -71,6 +74,7 @@ function create(prjName) {
     shell.cp(path.join(rekitRoot, file), prjPath);
   });
 
+  // Create gitignore
   shell.mv(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
 
   const prjConfig = {
@@ -78,7 +82,8 @@ function create(prjName) {
     devDependencies: _.keys(rekitPkgJson.devDependencies),
   };
 
-  delete prjConfig.dependencies['request'];
+  // Remove unecessary deps
+  delete prjConfig.dependencies['request']; // eslint-disable-line
 
   console.log('Getting dependencies versions...');
 
@@ -93,7 +98,7 @@ function create(prjName) {
     console.log('Enjoy!');
   }
 
-  request('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.1.x.json', function (error, response, body) {
+  request('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.2.x.json', function (error, response, body) {
     if (!error && response.statusCode === 200) {
       done(JSON.parse(body));
     } else {

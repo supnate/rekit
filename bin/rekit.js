@@ -67,6 +67,11 @@ createCmd.addArgument(['--plugin', '-p'], {
   action: 'storeTrue',
 });
 
+createCmd.addArgument(['--sass'], {
+  help: 'Use sass rather than less.',
+  action: 'storeTrue',
+});
+
 // Add sub-command
 const addCmd = subparsers.addParser('add',
   {
@@ -139,9 +144,13 @@ switch (args.commandName) {
     break;
   default:
     // Other command are handled by rekit-core
+    if (!rekitCore) {
+      console.log('Error: please run the command in a Rekit project.');
+      process.exit(1);
+    }
     rekitCore.handleCommand(args);
     rekitCore.vio.flush();
+    console.timeEnd('😃  Done'); // create command doesn't need time end.
     break;
 }
-console.timeEnd('😃  Done');
 

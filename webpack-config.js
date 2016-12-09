@@ -11,6 +11,7 @@ const pkgJson = require('./package.json');
 
 module.exports = (type) => { // eslint-disable-line
   // type is one of [dev, dll, test, dist]
+  // NOTE: for test, only module property is used.
 
   const isDev = type === 'dev';
   const isDist = type === 'dist';
@@ -24,7 +25,6 @@ module.exports = (type) => { // eslint-disable-line
     }[type],
     cache: true,
     context: path.join(__dirname, 'src'),
-
     entry: {
       dev: {
         main: [
@@ -58,6 +58,7 @@ module.exports = (type) => { // eslint-disable-line
           './index'
         ],
       },
+      test: null,
     }[type],
 
     output: {

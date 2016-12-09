@@ -4,12 +4,16 @@
 //  Create a new project.
 
 const path = require('path');
-const shell = require('shelljs');
-const _ = require('lodash');
-const request = require('request');
+const fs = require('fs');
+// const shell = require('shelljs');
+const utils = require('./utils');
 const rekitPkgJson = require('../package.json');
 
 function create(args) {
+  console.log('creating: ', args);
+// http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.2.x.json
+  // const depsUrl1 = 'http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.2.x.json';
+
   const prjName = args.name;
   if (!prjName) {
     console.log('Error: please specify the project name.');
@@ -18,12 +22,12 @@ function create(args) {
 
   // The created project dir
   const prjPath = path.join(process.cwd(), prjName);
-  if (shell.test('-e', prjPath)) {
+  if (fs.existsSync(prjPath)) {
     console.log(`Error: target folder already exists: ${prjPath}`);
     process.exit(1);
   }
   console.log('Welcome to Rekit, now creating your project...');
-  shell.mkdir(prjPath);
+  fs.mkdirSync(prjPath);
 
   // Rekit CLI itself.
   const rekitRoot = path.join(__dirname, '..');
@@ -39,9 +43,14 @@ function create(args) {
     name: prjName,
     version: '0.0.1',
     private: true,
-    description: 'A new project created by Rekit.',
+    description: `${prjName} created by Rekit.`,
     babel: rekitPkgJson.babel,
     nyc: rekitPkgJson.nyc,
+    rekit: {
+      version: rekitPkgJson.version,
+      devPort: 6076,
+      buildPort: 6077,
+    },
   };
 
   // Remove unecessary scripts
@@ -54,59 +63,58 @@ function create(args) {
 
   // Copy all necessary files
   console.log('Copying files...');
-  shell.cp('-R', path.join(rekitRoot, './src'), prjPath);
-  shell.cp('-R', path.join(rekitRoot, './tools'), prjPath);
-  shell.cp('-R', path.join(rekitRoot, './test'), prjPath);
+  function filterCssFiles(p) {
+    if (
+      (/\.less$/.test(p) && args.sass)
+      || (/\.scss$/.test(p) && !args.sass)
+    ) return false;
 
-  shell.rm(path.join(prjPath, 'test/cli/rekit.js'));
-  shell.rm(path.join(prjPath, 'test/cli/npm.js'));
-  shell.rm('-rf', path.join(prjPath, 'src/.tmp')); // in case _tmp folder is copied.
+    return true;
+  }
+  utils.copyFolderRecursiveSync(path.join(rekitRoot, './src'), prjPath, filterCssFiles);
+  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tools'), prjPath);
+  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tests'), prjPath);
 
   [
     '.eslintrc',
     'gitignore.tpl',
-    'favicon.png',
-    'webpack.dev.config.js',
-    'webpack.dist.config.js',
-    'webpack.dll.config.js',
+    'webpack-config.js',
     'webpack.test.config.js',
   ].forEach((file) => {
-    shell.cp(path.join(rekitRoot, file), prjPath);
+    utils.copyFileSync(path.join(rekitRoot, file), prjPath);
   });
 
   // Create gitignore
-  shell.mv(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
+  fs.rename(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
 
-  const prjConfig = {
-    dependencies: _.keys(rekitPkgJson.dependencies),
-    devDependencies: _.keys(rekitPkgJson.devDependencies),
-  };
+  // const prjConfig = {
+  //   dependencies: Object.keys(rekitPkgJson.dependencies),
+  //   devDependencies: Object.keys(rekitPkgJson.devDependencies),
+  // };
 
   // Remove unecessary deps
-  delete prjConfig.dependencies['request']; // eslint-disable-line
+  // delete prjConfig.dependencies['request']; // eslint-disable-line
 
-  console.log('Getting dependencies versions...');
+  console.log('Getting the latest dependencies versions...');
 
-  function done(pkgVersions) {
-    pkgJson.dependencies = _.pick(pkgVersions, prjConfig.dependencies);
-    pkgJson.devDependencies = _.pick(pkgVersions, prjConfig.devDependencies);
-    shell.ShellString(JSON.stringify(pkgJson, null, '  ')).to(path.join(prjPath, 'package.json'));
+  function done(deps) {
+    pkgJson.dependencies = deps.dependencies;
+    pkgJson.devDependencies = deps.devDependencies;
+    fs.writeFileSync(path.join(prjPath, 'package.json'), JSON.stringify(pkgJson, null, '  '));
+    // shell.ShellString(JSON.stringify(pkgJson, null, '  ')).to(path.join(prjPath, 'package.json'));
     console.log('Project creation success!');
     console.log(`To run the project, please go to the project folder "${prjName}" and:`);
     console.log('  1. run "npm install" to install dependencies.');
     console.log('  2. run "npm start" to start the dev server.');
     console.log('Enjoy!');
+    console.log('');
   }
 
-  request('http://raw.githubusercontent.com/supnate/rekit-deps/master/deps.2.x.json', function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      done(JSON.parse(body));
-    } else {
-      console.log('Network failure. Please check and retry.');
-      console.log(error || body);
-      shell.rm('-rf', prjPath);
-      process.exit(1);
-    }
+  utils.requestDeps().then(done).catch((err) => {
+    console.log('Failed to get dependencies. The project was not created. Please check and retry.');
+    console.log(err);
+    utils.deleteFolderRecursive(prjPath);
+    process.exit(1);
   });
 }
 

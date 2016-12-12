@@ -47,8 +47,8 @@ export class DefaultPage extends Component {
           The project is initialized with one feature named "home" and two test pages. To remove the test pages, run below commands:
         </p>
         <ul className="cmd">
-          <li>npm run rm:page home/test-page-1</li>
-          <li>npm run rm:page home/test-page-2</li>
+          <li>rekit rm page home/test-page-1</li>
+          <li>rekit rm page home/test-page-2</li>
         </ul>
         <p>
           For more command line tools usage, please visit: <a href="http://github.com/supnate/rekit">http://github.com/supnate/rekit</a>.

@@ -10,6 +10,9 @@ const refactor = rekitCore.refactor;
 const template = rekitCore.template;
 const action = rekitCore.action;
 
+_.pascalCase = _.flow(_.camelCase, _.upperFirst);
+_.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
+
 function add(feature, name) {
   const prjRoot = utils.getProjectRoot();
   const pluginRoot = path.join(prjRoot, 'tools/plugins/redux-saga');
@@ -40,7 +43,7 @@ function add(feature, name) {
   // Add to sagas/index.js
   targetPath = utils.mapFeatureFile(feature, 'redux/sagas/index.js');
   console.log(targetPath);
-  refactor.addExportFromLine(targetPath, `export ${name} from './${name}';`);
+  refactor.addExportFromLine(targetPath, `export { watch${_.pascalCase(name)} } from './${name}';`);
 
   // Add saga test
   targetPath = utils.mapTestFile(feature, `redux/sagas/${name}.test.js`);

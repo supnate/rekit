@@ -1,5 +1,5 @@
-import { takeEvery } from 'redux-saga';
-import { call, put, delay } from 'redux-saga/effects';
+import { delay, takeEvery } from 'redux-saga';
+import { call, put } from 'redux-saga/effects';
 
 import {
   ${actionTypes.begin},
@@ -8,10 +8,10 @@ import {
 } from '../constants';
 
 // worker Saga: will be fired on ${actionTypes.begin} actions
-function* ${_.camelCase(action)}() {
+export function* ${_.camelCase(action)}() {
   try {
     // Do Ajax call or other async operations here. delay(50) is only a placeholder.
-    const res = yield delay(20);
+    const res = yield call(delay, 20);
     yield put({
       type: ${actionTypes.success},
       data: res,
@@ -19,9 +19,7 @@ function* ${_.camelCase(action)}() {
   } catch (err) {
     yield put({
       type: ${actionTypes.failure},
-      data: {
-        error: err,
-      },
+      error: err,
     });
   }
 }
@@ -29,8 +27,8 @@ function* ${_.camelCase(action)}() {
 /*
   Alternatively you may use takeLatest.
 */
-function* saga() {
+function* watch${_.pascalCase(action)}() {
   yield takeEvery(${actionTypes.begin}, ${_.camelCase(action)});
 }
 
-export default saga;
+export default watch${_.pascalCase(action)};

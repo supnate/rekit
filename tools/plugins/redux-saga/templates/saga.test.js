@@ -20,11 +20,11 @@ describe('${_.kebabCase(feature)}/redux/sagas/${_.camelCase(action)}', () => {
   });
 
   it('should dispatch ${actionTypes.success} action when succeeded', () => {
-    expect(generator.next().value).to.deep.equal(put({});
+    expect(generator.next().value).to.deep.equal(put({}));
   });
 
   it('should dispatch ${actionTypes.failure} action when failed', () => {
-    expect(generator.next().value).to.deep.equal(put({});
+    expect(generator.next().value).to.deep.equal(put({}));
   });
 
   it('should be done when finished', () => {

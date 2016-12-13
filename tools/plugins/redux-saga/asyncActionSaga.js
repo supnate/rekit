@@ -22,9 +22,13 @@ function add(feature, name) {
     templateFile: path.join(pluginRoot, 'templates', 'async_action_saga.js'),
   });
 
+  let targetPath;
+
   // Add saga
   const actionTypes = utils.getAsyncActionTypes(feature, name);
-  template.create(utils.mapFile(feature, `redux/sagas/${name}.js`), {
+  targetPath = utils.mapFeatureFile(feature, `redux/sagas/${name}.js`);
+  console.log(targetPath);
+  template.generate(targetPath, {
     templateFile: path.join(pluginRoot, 'templates', 'saga.js'),
     context: {
       feature,
@@ -33,23 +37,21 @@ function add(feature, name) {
     },
   });
 
-  let targetPath;
   // Add to sagas/index.js
-  targetPath = utils.mapFile(feature, 'redux/sagas/index.js');
+  targetPath = utils.mapFeatureFile(feature, 'redux/sagas/index.js');
+  console.log(targetPath);
   refactor.addExportFromLine(targetPath, `export ${name} from './${name}';`);
 
   // Add saga test
-  targetPath = utils.mapTestFile(feature, `redux/${name}.test.js`);
-  template.create(targetPath, {
-    templateFile: path.join(pluginRoot, 'templates/saga.test.js'),
-    context: {},
-  });
-
-  // Add saga test
   targetPath = utils.mapTestFile(feature, `redux/sagas/${name}.test.js`);
-  template.create(targetPath, {
+  console.log(targetPath);
+  template.generate(targetPath, {
     templateFile: path.join(pluginRoot, 'templates/saga.test.js'),
-    context: {},
+    context: {
+      feature,
+      action: name,
+      actionTypes: utils.getAsyncActionTypes(feature, name),
+    },
   });
 }
 
@@ -61,11 +63,11 @@ function remove(feature, name) {
   action.removeAsync(feature, name);
 
   // Remove saga
-  vio.del(utils.mapFile(feature, `redux/sagas/${_.camelCase(name)}.js`));
+  vio.del(utils.mapFeatureFile(feature, `redux/sagas/${_.camelCase(name)}.js`));
 
   let targetPath;
   // Remove from sagas/index.js
-  targetPath = utils.mapFile(feature, 'redux/sagas/index.js');
+  targetPath = utils.mapFeatureFile(feature, 'redux/sagas/index.js');
   refactor.removeExportFromLine(targetPath, `./${name}`);
 
   // Remove test file

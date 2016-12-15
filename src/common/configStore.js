@@ -1,14 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './rootReducer';
-import createSagaMiddleware from 'redux-saga';
-import rootSaga from './rootSaga';
 
-const sagaMiddleWare = createSagaMiddleware();
-const middlewares = [
+const middlewares = [ // REKIT_ARCHOR_DO_NOT_CHANGE
   thunk,
-  sagaMiddleWare,
-];
+]; // REKIT_ARCHOR_DO_NOT_CHANGE
 
 let devToolsExtension = f => f;
 
@@ -30,14 +26,5 @@ export default function configureStore(initialState) {
     devToolsExtension
   ));
 
-  if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./rootReducer', () => {
-      const nextRootReducer = require('./rootReducer').default; // eslint-disable-line
-      store.replaceReducer(nextRootReducer);
-    });
-  }
-
-  sagaMiddleWare.run(rootSaga);
   return store;
 }

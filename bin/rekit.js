@@ -145,7 +145,7 @@ switch (args.commandName) {
   default:
     // Other command are handled by rekit-core
     if (!rekitCore) {
-      console.log('Error: please run the command in a Rekit project.');
+      console.log('Error: please ensure rekit-core is already installed.');
       process.exit(1);
     }
     rekitCore.handleCommand(args);

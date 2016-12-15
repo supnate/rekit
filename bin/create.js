@@ -9,8 +9,6 @@ const utils = require('./utils');
 const rekitPkgJson = require('../package.json');
 
 function create(args) {
-  console.log('creating: ', args);
-
   const prjName = args.name;
   if (!prjName) {
     console.log('Error: please specify the project name.');

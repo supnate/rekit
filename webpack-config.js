@@ -91,7 +91,7 @@ module.exports = (type) => { // eslint-disable-line
         {
           test: /\.jsx?$/,
           exclude: /node_modules|build/,
-          loader: 'babel-loader?cacheDirectory=true'
+          loader: 'babel-loader'
         }, {
           test: /\.(ttf|eot|svg|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: 'file-loader'

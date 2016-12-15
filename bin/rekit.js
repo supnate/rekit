@@ -7,7 +7,7 @@
 //  rekit action [...args]
 
 const path = require('path');
-const shell = require('shelljs');
+const fs = require('fs');
 const ArgumentParser = require('argparse').ArgumentParser;
 const rekitPkgJson = require('../package.json');
 const create = require('./create');
@@ -19,7 +19,7 @@ function getLocalRekitCore() {
   let prjRoot = null;
   // Traverse above until find the package.json.
   while (cwd && lastDir !== cwd) {
-    if (shell.test('-e', path.join(cwd, 'package.json'))) {
+    if (fs.existsSync(path.join(cwd, 'package.json'))) {
       prjRoot = cwd;
       break;
     }
@@ -27,7 +27,7 @@ function getLocalRekitCore() {
     cwd = path.join(cwd, '..');
   }
 
-  if (!prjRoot || !shell.test('-e', path.join(prjRoot, 'node_modules/rekit-core/package.json'))) {
+  if (!prjRoot || !fs.existsSync(path.join(prjRoot, 'node_modules/rekit-core/package.json'))) {
     return null;
   }
   return require(path.join(prjRoot, 'node_modules/rekit-core'));

@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "description": "Toolkit for building scalable web applications with React, Redux and React-router.",
   "bin": {
     "rekit": "./bin/rekit.js"

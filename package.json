@@ -20,7 +20,7 @@
     "build": "node ./tools/build.js",
     "test": "node ./tools/run_test.js",
     "build:test": "node ./tools/build_test_server.js",
-
+    "codecov": "codecov",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build",

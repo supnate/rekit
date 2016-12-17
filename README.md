@@ -1,5 +1,7 @@
 # <img src="/images/logo_text.png?raw=true" width="228">
 
+> Rekit 2.0 is coming! Note that the docs here are mainly for 1.0. There will be slight changes for 2.0, but don't worry, it will be fully compatible with 1.0 apps :-P.
+
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router.
 
 It helps you focus on business logic rather than dealing with massive libraries, patterns, configurations etc.

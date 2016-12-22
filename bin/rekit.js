@@ -88,6 +88,16 @@ addCmd.addArgument('name', {
   help: 'The element name to add, in format of <feature>/<name>, e.g.: \'rekit add component user/list-view\'. Name is unnecessary if add a feature.'
 });
 
+addCmd.addArgument(['--connect', '-c'], {
+  help: 'Whether to connect to the Redux store. Only used for component.',
+  action: 'storeTrue',
+});
+
+addCmd.addArgument(['--url-path', '-u'], {
+  help: 'The url path added to react router config. Only used for page/component.',
+  defaultValue: '$auto',
+});
+
 // Remove sub-command
 const rmCmd = subparsers.addParser('remove',
   {

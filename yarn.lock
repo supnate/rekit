@@ -5369,7 +5369,7 @@ repeating@^2.0.0:
   dependencies:
     is-finite "^1.0.0"
 
-request@2, request@>=2.42.0, request@^2.47.0, request@^2.55.0, request@^2.61.0, request@^2.74.0, request@^2.75.0:
+request@2, request@>=2.42.0, request@^2.47.0, request@^2.55.0, request@^2.61.0, request@^2.74.0, request@^2.75.0, request@^2.79.0:
   version "2.79.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.79.0.tgz#4dfe5bf6be8b8cdc37fcf93e04b65577722710de"
   dependencies:

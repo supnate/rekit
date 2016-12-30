@@ -154,7 +154,6 @@ Rekit provides a basic tool set for a typical React + Redux project. Once the pr
  * Use mocha, enzyme, istanbul for testing.
  * Use [eslint-config-airbnb](https://github.com/airbnb/javascript) for code style check.
  * Support [Redux dev tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd).
- * [Webpack Dashboard](https://github.com/FormidableLabs/webpack-dashboard) integrated.
  * Command line tools to mange actions, reducers, components and pages.
 
 

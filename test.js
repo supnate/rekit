@@ -2,5 +2,5 @@
 
 const core = require('rekit-core');
 console.time('abc');
-console.log(core.refactor.getFeatureStructure('home'));
+console.log(core.refactor.getFeatureStructure('home').misc);
 console.timeEnd('abc');

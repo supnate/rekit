@@ -98,6 +98,11 @@ addCmd.addArgument(['--url-path', '-u'], {
   defaultValue: '$auto',
 });
 
+addCmd.addArgument(['--async', '-a'], {
+  help: 'Whether the action is async using redux-thunk.',
+  action: 'storeTrue',
+});
+
 // Remove sub-command
 const rmCmd = subparsers.addParser('remove',
   {

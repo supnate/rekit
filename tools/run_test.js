@@ -34,6 +34,7 @@ const opts = {
 
 const params = [
   'mocha-webpack',
+  '--colors',
   '--include',
   'tests/before-all.js',
   '--webpack-config',

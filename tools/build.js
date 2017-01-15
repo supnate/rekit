@@ -8,6 +8,12 @@ const crypto = require('crypto');
 // const utils = require('./lib/utils');
 const webpack = require('webpack');
 const config = require('../webpack-config')('dist');
+// config.stats = {
+//   chunks: true,
+// };
+var ProgressPlugin = require('webpack/lib/ProgressPlugin');
+
+
 // const ArgumentParser = require('argparse').ArgumentParser;
 
 // const parser = new ArgumentParser({
@@ -72,7 +78,19 @@ shell.cp(path.join(__dirname, '../src/favicon.png'), buildFolder);
 // Webpack build
 console.log('Building, it may take a few seconds...');
 console.time('Done');
-webpack(config, (err) => {
+const compiler = webpack(config);
+
+let lastPercentage = 0;
+compiler.apply(new ProgressPlugin((percentage, msg) => {
+  percentage = Math.round(percentage * 10000) / 100;
+  if (/building modules/.test(msg) && percentage - lastPercentage < 8) {
+    return;
+  }
+  lastPercentage = percentage;
+  console.log(percentage + '%', msg);
+}));
+
+compiler.run((err) => {
   if (err) console.log(err);
   else {
     // Add timestamp hash to bundle file name.
@@ -80,4 +98,3 @@ webpack(config, (err) => {
     console.timeEnd('Done');
   }
 });
-

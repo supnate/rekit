@@ -2,7 +2,7 @@ import {
   DefaultPage,
   TestPage1,
   TestPage2,
-} from './index';
+} from './';
 
 export default {
   path: '',

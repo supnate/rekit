@@ -1,5 +1,9 @@
 @import './mixins.scss';
 
+html, body, #react-root {
+  height: 100%;
+}
+
 body, td {
   color: #555;
   font-family: Arial, "Helvetica Neue",Helvetica,sans-serif;

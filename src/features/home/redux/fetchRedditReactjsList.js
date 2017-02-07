@@ -1,56 +1,53 @@
-import fetch from 'isomorphic-fetch';
+import axios from 'axios';
 import {
-  FETCH_REDDIT_REACTJS_LIST_BEGIN,
-  FETCH_REDDIT_REACTJS_LIST_SUCCESS,
-  FETCH_REDDIT_REACTJS_LIST_FAILURE,
-  FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
+  HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN,
+  HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS,
+  HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE,
+  HOME_FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
 } from './constants';
 
 export function fetchRedditReactjsList() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
-      type: FETCH_REDDIT_REACTJS_LIST_BEGIN,
+      type: HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN,
     });
     return new Promise(async (resolve, reject) => {
+      let res;
       try {
-        const res = await fetch('http://www.reddit.com/r/reactjs.json');
-        if (res.ok) {
-          const json = await res.json();
-          dispatch({
-            type: FETCH_REDDIT_REACTJS_LIST_SUCCESS,
-            data: json,
-          });
-          resolve(json);
-        } else {
-          throw new Error(res);
-        }
+        res = await axios.get('http://www.reddit.com/r/reactjs.json');
       } catch (err) {
         dispatch({
-          type: FETCH_REDDIT_REACTJS_LIST_FAILURE,
-          data: {},
+          type: HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE,
+          data: { error: err },
         });
         reject(err);
+        return;
       }
-    }).catch(() => {});
+      dispatch({
+        type: HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS,
+        data: res.data,
+      });
+      resolve(res);
+    });
   };
 }
 
 export function dismissFetchRedditReactjsListError() {
   return {
-    type: FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
+    type: HOME_FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case FETCH_REDDIT_REACTJS_LIST_BEGIN:
+    case HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN:
       return {
         ...state,
         fetchRedditReactjsListPending: true,
         fetchRedditReactjsListError: null,
       };
 
-    case FETCH_REDDIT_REACTJS_LIST_SUCCESS:
+    case HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS:
       return {
         ...state,
         fetchRedditReactjsListPending: false,
@@ -58,14 +55,14 @@ export function reducer(state, action) {
         redditReactjsList: action.data.data.children
       };
 
-    case FETCH_REDDIT_REACTJS_LIST_FAILURE:
+    case HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE:
       return {
         ...state,
         fetchRedditReactjsListPending: false,
         fetchRedditReactjsListError: action.data.error,
       };
 
-    case FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR:
+    case HOME_FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR:
       return {
         ...state,
         fetchRedditReactjsListError: null,

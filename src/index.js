@@ -1,38 +1,33 @@
+// Summary:
+//   This is the entry of the application, works together with index.html.
+
 import 'babel-polyfill';
 import React from 'react';
 import { AppContainer } from 'react-hot-loader';
 import { render } from 'react-dom';
-import Root from './containers/Root';
 import { browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import configStore from './common/configStore';
+import Root from './Root';
 
 const store = configStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-let root = document.getElementById('react-root');
-if (!root) {
-  root = document.createElement('div');
-  root.id = 'react-root';
-  document.body.appendChild(root);
+function renderApp(app) {
+  render(
+    <AppContainer>
+      {app}
+    </AppContainer>,
+    document.getElementById('react-root')
+  );
 }
 
-render(
-  <AppContainer>
-    <Root store={store} history={history} />
-  </AppContainer>,
-  root
-);
+renderApp(<Root store={store} history={history} />);
 
 // Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept('./containers/Root', () => {
-    const NextRoot = require('./containers/Root').default; // eslint-disable-line
-    render(
-      <AppContainer>
-        <NextRoot store={store} history={history} />
-      </AppContainer>,
-      root
-    );
+  module.hot.accept('./Root', () => {
+    const NextRoot = require('./Root').default; // eslint-disable-line
+    renderApp(<NextRoot store={store} history={history} />);
   });
 }

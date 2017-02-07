@@ -76,7 +76,6 @@ module.exports = (type) => { // eslint-disable-line
       isDev && new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
       isDist && new LodashModuleReplacementPlugin(),
-      isDist && new webpack.optimize.DedupePlugin(),
       isDist && new webpack.optimize.UglifyJsPlugin(),
       isDist && new webpack.optimize.AggressiveMergingPlugin(),
       new webpack.DefinePlugin({

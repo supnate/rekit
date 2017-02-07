@@ -41,10 +41,6 @@ const parser = new ArgumentParser({
   description: 'Build scalable web applications with React, Redux and React-router.'
 });
 
-// parser.addArgument('action', {
-//   help: 'The action to take. Rekit core provides [add, remove, move]',
-// });
-
 const subparsers = parser.addSubparsers({
   title: 'Sub commands',
   dest: 'commandName',
@@ -69,6 +65,11 @@ createCmd.addArgument(['--plugin', '-p'], {
 
 createCmd.addArgument(['--sass'], {
   help: 'Use sass rather than less.',
+  action: 'storeTrue',
+});
+
+createCmd.addArgument(['--clean', '-c'], {
+  help: 'Create a clean app without sample actions/pages.',
   action: 'storeTrue',
 });
 
@@ -142,7 +143,7 @@ mvCmd.addArgument('target', {
 });
 
 const args = parser.parseArgs();
-
+console.log('args: ', args);
 console.time('😃  Done');
 // Convert aliases
 const aliases = { rm: 'remove', mv: 'move' };
@@ -168,4 +169,3 @@ switch (args.commandName) {
     console.timeEnd('😃  Done'); // create command doesn't need time end.
     break;
 }
-

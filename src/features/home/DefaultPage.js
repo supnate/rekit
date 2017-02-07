@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Hello, RedditList } from './index';
+import { Hello, RedditList } from './';
 import * as actions from './redux/actions';
 
 export class DefaultPage extends Component {
@@ -44,7 +44,7 @@ export class DefaultPage extends Component {
           This is a sample page of the project. Seeing this page means everything works well now!
         </p>
         <p>
-          The project is initialized with one feature named "home" and two test pages. To remove the test pages, run below commands:
+          The project is initialized with one feature named &quot;home&quot; and two test pages. To remove the test pages, run below commands:
         </p>
         <ul className="cmd">
           <li>rekit rm page home/test-page-1</li>

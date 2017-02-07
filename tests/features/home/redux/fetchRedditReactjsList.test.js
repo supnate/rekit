@@ -5,10 +5,10 @@ import nock from 'nock';
 import { expect } from 'chai';
 
 import {
-  FETCH_REDDIT_REACTJS_LIST_BEGIN,
-  FETCH_REDDIT_REACTJS_LIST_SUCCESS,
-  FETCH_REDDIT_REACTJS_LIST_FAILURE,
-  FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
+  HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN,
+  HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS,
+  HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE,
+  HOME_FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
 } from 'src/features/home/redux/constants';
 
 import {
@@ -38,14 +38,11 @@ describe('home/redux/fetchRedditReactjsList', () => {
       .reply(200, { data: { children: list } });
     const store = mockStore({ redditReactjsList: [] });
 
-    const expectedActions = [
-      { type: FETCH_REDDIT_REACTJS_LIST_BEGIN },
-      { type: FETCH_REDDIT_REACTJS_LIST_SUCCESS, data: { data: { children: list } } },
-    ];
-
     return store.dispatch(fetchRedditReactjsList())
       .then(() => {
-        expect(store.getActions()).to.deep.equal(expectedActions);
+        const actions = store.getActions();
+        expect(actions[0]).to.have.property('type', HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN);
+        expect(actions[1]).to.have.property('type', HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS);
       });
   });
 
@@ -55,63 +52,59 @@ describe('home/redux/fetchRedditReactjsList', () => {
       .reply(500, null);
     const store = mockStore({ redditReactjsList: [] });
 
-    const expectedActions = [
-      { type: FETCH_REDDIT_REACTJS_LIST_BEGIN },
-      { type: FETCH_REDDIT_REACTJS_LIST_FAILURE, data: {} },
-    ];
-
     return store.dispatch(fetchRedditReactjsList())
-      .then(() => {
-        store.getActions().forEach((action, i) => {
-          expect(_.isMatch(action, expectedActions[i])).to.be.true;
-        });
+      .catch(() => {
+        const actions = store.getActions();
+        expect(actions[0]).to.have.property('type', HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN);
+        expect(actions[1]).to.have.property('type', HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE);
+        expect(actions[1]).to.have.deep.property('data.error').that.exist;
       });
   });
 
   it('dismissFetchRedditReactjsListError', () => {
     const expectedAction = {
-      type: FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
+      type: HOME_FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR,
     };
     expect(dismissFetchRedditReactjsListError()).to.deep.equal(expectedAction);
   });
 
-  it(`reducer should handle ${FETCH_REDDIT_REACTJS_LIST_BEGIN}`, () => {
+  it(`reducer should handle ${HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN}`, () => {
     const prevState = { fetchRedditReactjsListPending: true };
     const state = reducer(
       prevState,
-      { type: FETCH_REDDIT_REACTJS_LIST_BEGIN }
+      { type: HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN }
     );
     expect(state).to.not.equal(prevState);
     expect(state.fetchRedditReactjsListPending).to.be.true;
   });
 
-  it(`reducer should handle ${FETCH_REDDIT_REACTJS_LIST_SUCCESS}`, () => {
+  it(`reducer should handle ${HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS}`, () => {
     const prevState = { fetchRedditReactjsListPending: true };
     const state = reducer(
       prevState,
-      { type: FETCH_REDDIT_REACTJS_LIST_SUCCESS, data: { data: { children: [] } } }
+      { type: HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS, data: { data: { children: [] } } }
     );
     expect(state).to.not.equal(prevState);
     expect(state.fetchRedditReactjsListPending).to.be.false;
     expect(state.redditReactjsList).to.exist;
   });
 
-  it(`reducer should handle ${FETCH_REDDIT_REACTJS_LIST_FAILURE}`, () => {
+  it(`reducer should handle ${HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE}`, () => {
     const prevState = { fetchRedditReactjsListPending: true };
     const state = reducer(
       prevState,
-      { type: FETCH_REDDIT_REACTJS_LIST_FAILURE, data: { error: new Error('some error') } }
+      { type: HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE, data: { error: new Error('some error') } }
     );
     expect(state).to.not.equal(prevState);
     expect(state.fetchRedditReactjsListPending).to.be.false;
     expect(state.fetchRedditReactjsListError).to.exist;
   });
 
-  it(`reducer should handle ${FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR}`, () => {
+  it(`reducer should handle ${HOME_FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR}`, () => {
     const prevState = { fetchRedditReactjsListError: new Error('some error') };
     const state = reducer(
       prevState,
-      { type: FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR, data: {} }
+      { type: HOME_FETCH_REDDIT_REACTJS_LIST_DISMISS_ERROR, data: {} }
     );
     expect(state).to.not.equal(prevState);
     expect(state.fetchRedditReactjsListError).to.be.null;

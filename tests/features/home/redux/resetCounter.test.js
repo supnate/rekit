@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-  RESET_COUNTER,
+  HOME_RESET_COUNTER,
 } from 'src/features/home/redux/constants';
 
 import {
@@ -12,16 +12,16 @@ import {
 describe('home/redux/resetCounter', () => {
   it('action: resetCounter', () => {
     const expectedAction = {
-      type: RESET_COUNTER,
+      type: HOME_RESET_COUNTER,
     };
     expect(resetCounter()).to.deep.equal(expectedAction);
   });
 
-  it('reducer should handle RESET_COUNTER', () => {
+  it('reducer should handle HOME_RESET_COUNTER', () => {
     const prevState = { count: 10 };
     const state = reducer(
       prevState,
-      { type: RESET_COUNTER }
+      { type: HOME_RESET_COUNTER }
     );
     expect(state).to.not.equal(prevState); // should be immutable
     expect(state.count).to.equal(0);

@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import {
-  COUNTER_PLUS_ONE,
+  HOME_COUNTER_PLUS_ONE,
 } from 'src/features/home/redux/constants';
 
 import {
@@ -12,16 +12,16 @@ import {
 describe('home/redux/counterPlusOne', () => {
   it('action: counterPlusOne', () => {
     const expectedAction = {
-      type: COUNTER_PLUS_ONE,
+      type: HOME_COUNTER_PLUS_ONE,
     };
     expect(counterPlusOne()).to.deep.equal(expectedAction);
   });
 
-  it(`reducer should handle ${COUNTER_PLUS_ONE}`, () => {
+  it(`reducer should handle ${HOME_COUNTER_PLUS_ONE}`, () => {
     const prevState = { count: 0 };
     const state = reducer(
       prevState,
-      { type: COUNTER_PLUS_ONE }
+      { type: HOME_COUNTER_PLUS_ONE }
     );
     expect(state).to.not.equal(prevState); // should be immutable
     expect(state.count).to.equal(1);

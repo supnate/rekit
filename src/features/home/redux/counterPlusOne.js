@@ -1,16 +1,16 @@
 import {
-  COUNTER_PLUS_ONE,
+  HOME_COUNTER_PLUS_ONE,
 } from './constants';
 
 export function counterPlusOne() {
   return {
-    type: COUNTER_PLUS_ONE,
+    type: HOME_COUNTER_PLUS_ONE,
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case COUNTER_PLUS_ONE:
+    case HOME_COUNTER_PLUS_ONE:
       return {
         ...state,
         count: state.count + 1,

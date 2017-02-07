@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "2.0.0-alpha.4",
+  "version": "2.0.0-alpha.5",
   "description": "Toolkit for building scalable web applications with React, Redux and React-router.",
   "bin": {
     "rekit": "./bin/rekit.js"
@@ -28,10 +28,11 @@
   },
   "rekit": {
     "version": "2.0.0",
-    "devPort": 6076,
+    "devPort": 6075,
+    "portalPort": 6076,
+    "buildPort": 6077,
     "plugins": [],
-    "css": "less",
-    "buildPort": 6077
+    "css": "less"
   },
   "babel": {
     "presets": [
@@ -98,6 +99,7 @@
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
     "babel-register": "^6.22.0",
+    "body-parser": "^1.16.0",
     "chai": "^3.5.0",
     "codecov": "^1.0.1",
     "colors": "^1.1.2",
@@ -142,6 +144,8 @@
     "redux-mock-store": "^1.2.2",
     "redux-saga": "^0.14.3",
     "redux-thunk": "^2.2.0",
+    "rekit-core": "next",
+    "rekit-portal": "next",
     "request": "^2.79.0",
     "reselect": "^2.5.3",
     "sass-loader": "^5.0.0",
@@ -150,6 +154,7 @@
     "style-loader": "^0.13.1",
     "trash": "^4.0.0",
     "url-loader": "^0.5.7",
+    "watchpack": "^1.2.0",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",

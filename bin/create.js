@@ -37,8 +37,10 @@ function create(args) {
     nyc: rekitPkgJson.nyc,
     rekit: {
       version: rekitPkgJson.version,
-      devPort: 6076,
+      devPort: 6075,
+      portalPort: 6076,
       buildPort: 6077,
+      plugins: [],
       css: args.sass ? 'sass' : 'less',
     },
   };

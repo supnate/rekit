@@ -1,6 +1,11 @@
 'use strict';
 
+// Summary:
+//  This script is used to start dev server, build result server and rekit portal.
+//  Feel free to edit it to meet your specific requirement since this file has been copied to your project.
+
 const path = require('path');
+const http = require('http');
 const shell = require('shelljs');
 const crypto = require('crypto');
 const express = require('express');
@@ -8,6 +13,7 @@ const fallback = require('express-history-api-fallback');
 const webpack = require('webpack');
 const devMiddleware = require('webpack-dev-middleware');
 const hotMiddleware = require('webpack-hot-middleware');
+const rekitPortalMiddleWare = require('rekit-portal/middleware');
 const pkgJson = require('../package.json');
 const getConfig = require('../webpack-config');
 const ArgumentParser = require('argparse').ArgumentParser;
@@ -20,7 +26,7 @@ const parser = new ArgumentParser({
 parser.addArgument(['-m', '--mode'], {
   help: 'Server mode, dev or build.',
   metavar: 'mode',
-  choices: ['dev', 'build'],
+  choices: ['dev', 'build', 'portal'],
 });
 
 const args = parser.parseArgs();
@@ -92,6 +98,32 @@ function startBuildServer() {
   });
 }
 
+// Start an express server for rekit-portal.
+function startPortalServer() {
+  console.log('starting rekit portal...');
+  const app = express();
+  const server = http.createServer(app);
+  const root = path.join(__dirname, '../node_modules/rekit-portal/dist');
+  app.use(rekitPortalMiddleWare()(server, app));
+  app.use(express.static(root));
+  app.use(fallback('index.html', { root }));
+
+  // Other files should not happen, respond 404
+  app.get('*', (req, res) => {
+    console.log('Warning: unknown req: ', req.path);
+    res.sendStatus(404);
+  });
+
+  const port = pkgJson.rekit.portalPort;
+  server.listen(port, (err) => {
+    if (err) {
+      console.error(err);
+    }
+
+    console.log(`The rekit portal server is listening at http://localhost:${port}/`);
+  });
+}
+
 // Build dll to accerlarate webpack build performance for dev-time.
 function buildDevDll() {
   const dllConfig = getConfig('dll');
@@ -142,11 +174,6 @@ function buildDevDll() {
   return Promise.resolve();
 }
 
-switch (args.mode) {
-  case 'build':
-    startBuildServer();
-    break;
-
-  default:
-    buildDevDll().then(startDevServer);
-}
+if (!args.mode || args.mode === 'build') startBuildServer();
+if (!args.mode || args.mode === 'dev') buildDevDll().then(startDevServer);
+if (!args.mode || args.mode === 'portal') startPortalServer();

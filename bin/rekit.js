@@ -143,7 +143,6 @@ mvCmd.addArgument('target', {
 });
 
 const args = parser.parseArgs();
-console.log('args: ', args);
 console.time('😃  Done');
 // Convert aliases
 const aliases = { rm: 'remove', mv: 'move' };

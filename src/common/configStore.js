@@ -1,10 +1,15 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from './rootReducer';
+import rootSaga from './rootSaga';
 
-const middlewares = [ // REKIT_ARCHOR_DO_NOT_CHANGE
+const sagaMiddleware = createSagaMiddleware();
+// NOTE: Do not change middleares delaration pattern since rekit plugins may register middlewares to it.
+const middlewares = [
   thunk,
-]; // REKIT_ARCHOR_DO_NOT_CHANGE
+  sagaMiddleware,
+];
 
 let devToolsExtension = f => f;
 
@@ -34,5 +39,6 @@ export default function configureStore(initialState) {
     });
   }
 
+  sagaMiddleware.run(rootSaga);
   return store;
 }

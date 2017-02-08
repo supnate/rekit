@@ -5,3 +5,4 @@ export { default as RedditList } from './RedditList';
 export { default as TestPage1 } from './TestPage1';
 export { default as TestPage2 } from './TestPage2';
 export { default as CleanApp } from './CleanApp';
+export { default as RedditSagaPage } from './RedditSagaPage';

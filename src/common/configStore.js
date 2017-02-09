@@ -5,6 +5,7 @@ import rootReducer from './rootReducer';
 import rootSaga from './rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
+
 // NOTE: Do not change middleares delaration pattern since rekit plugins may register middlewares to it.
 const middlewares = [
   thunk,

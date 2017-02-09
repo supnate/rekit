@@ -1,15 +1,24 @@
 // This file is auto maintained by rekit-plugin-redux-saga,
-// you probally should not need to manually edit it.
+// you usually don't need to manually edit it.
 
-import homeSagas from '../features/home/redux/sagas';
+import * as homeSagas from '../features/home/redux/sagas';
+import * as commonSagas from '../features/common/redux/sagas';
 
-const sagas = [
+// NOTE: DO NOT chanage featureSagas declearation pattern, it's used by rekit-plugin-redux-saga.
+const featureSagas = [
   homeSagas,
+  commonSagas,
 ];
 
+const sagas = featureSagas.reduce((prev, curr) => [
+  ...prev,
+  ...Object.keys(curr).map(k => curr[k]),
+], [])
+// a saga should be function, below filter avoids error if redux/sagas.js is empty;
+.filter(s => typeof s === 'function');
+
 function* rootSaga() {
-  // flatten sagas first
-  yield sagas.reduce((prev, curr) => [...prev, ...curr], []).map(saga => saga());
+  yield sagas.map(saga => saga());
 }
 
 export default rootSaga;

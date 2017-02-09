@@ -1,4 +1,4 @@
-import { delay, takeEvery } from 'redux-saga';
+import { delay, takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import {
   ${actionTypes.begin},
@@ -7,7 +7,8 @@ import {
   ${actionTypes.dismissError},
 } from './constants';
 
-export function ${_.camelCase(action)}(args) {
+export function ${_.camelCase(action)}() {
+  // If need to pass args to saga, pass it with the begin action.
   return {
     type: ${actionTypes.begin},
   };
@@ -19,6 +20,39 @@ export function dismiss${_.pascalCase(action)}Error() {
   };
 }
 
+// worker Saga: will be fired on ${actionTypes.begin} actions
+export function* do${_.pascalCase(action)}() {
+  // If necessary, use argument to receive the begin action with parameters.
+  let res;
+  try {
+    // Do Ajax call or other async request here. delay(20) is just a placeholder.
+    res = yield call(delay, 20);
+  } catch (err) {
+    yield put({
+      type: ${actionTypes.failure},
+      error: err,
+    });
+    return;
+  }
+  // Dispatch success action out of try/catch so that render errors are not catched.
+  yield put({
+    type: ${actionTypes.success},
+    data: res,
+  });
+}
+
+/*
+  Alternatively you may use takeEvery.
+
+  takeLatest does not allow concurrent fetches of user. If an action gets
+  dispatched while another is already pending, that pending one is cancelled
+  and only the latest one will be run.
+*/
+export function* watch${_.pascalCase(action)}() {
+  yield takeLatest(${actionTypes.begin}, do${_.pascalCase(action)});
+}
+
+// Redux reducer
 export function reducer(state, action) {
   switch (action.type) {
     case ${actionTypes.begin}:
@@ -52,31 +86,3 @@ export function reducer(state, action) {
       return state;
   }
 }
-
-// worker Saga: will be fired on ${actionTypes.begin} actions
-export function* ${_.camelCase(action)}BySaga() {
-  let res;
-  try {
-    // Do Ajax call or other async operations here. delay(50) is only a placeholder.
-    res = yield call(delay, 20);
-  } catch (err) {
-    yield put({
-      type: ${actionTypes.failure},
-      error: err,
-    });
-    return;
-  }
-  yield put({
-    type: ${actionTypes.success},
-    data: res,
-  });
-}
-
-/*
-  Alternatively you may use takeLatest.
-*/
-function* watch${_.pascalCase(action)}() {
-  yield takeLatest(${actionTypes.begin}, ${_.camelCase(action)});
-}
-
-export default watch${_.pascalCase(action)};

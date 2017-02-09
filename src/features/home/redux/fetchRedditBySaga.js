@@ -21,7 +21,7 @@ export function dismissFetchRedditBySagaError() {
 }
 
 // worker Saga: put async logic here.
-function* workerSaga() {
+function* doFetchRedditBySaga(action) {
   let res;
   try {
     res = yield call(axios.get, 'http://www.reddit.com/r/reactjs.json');
@@ -47,8 +47,8 @@ function* workerSaga() {
   dispatched while a fetch is already pending, that pending fetch is cancelled
   and only the latest one will be run.
 */
-export function* saga() {
-  yield takeLatest(HOME_FETCH_REDDIT_BY_SAGA_BEGIN, workerSaga);
+export function* watchFetchRedditBySaga() {
+  yield takeLatest(HOME_FETCH_REDDIT_BY_SAGA_BEGIN, doFetchRedditBySaga);
 }
 
 export function reducer(state, action) {

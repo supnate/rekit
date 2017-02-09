@@ -1,6 +1,6 @@
 # <img src="/images/logo_text.png?raw=true" width="228">
 
-> Rekit 2.0 is coming! You could try it by `npm install -g rekit@next`. Also you could view the live demo at: https://rekit-portal.herokuapp.com . Note that the docs here are mainly for 1.0. There will be some changes for 2.0, but don't worry, it will be fully compatible with 1.0 apps :-P.
+> Rekit 2.0 is coming! You could try it by `npm install -g rekit@next`. Also you could the preview live demo at: https://rekit-portal.herokuapp.com . Note that the docs here are mainly for 1.0. There will be some changes for 2.0, but don't worry, it will be fully compatible with 1.0 apps :-P.
 
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router.
 

@@ -1,1 +1,1 @@
-export { watchFetchRedditBySaga } from './fetchRedditBySaga';
+export { watchA2 } from './a2';

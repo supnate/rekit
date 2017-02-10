@@ -1,8 +1,13 @@
 // This file is auto maintained by rekit-plugin-redux-saga,
 // you usually don't need to manually edit it.
 
+import * as homeSagas from '../features/home/redux/sagas';
+import * as commonSagas from '../features/common/redux/sagas';
+
 // NOTE: DO NOT chanage featureSagas declearation pattern, it's used by rekit-plugin-redux-saga.
 const featureSagas = [
+  homeSagas,
+  commonSagas,
 ];
 
 const sagas = featureSagas.reduce((prev, curr) => [

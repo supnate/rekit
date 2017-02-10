@@ -3,6 +3,7 @@
 // Summary:
 //  This plugin allows to use saga for redux async actions rather than
 //  redux-thunk by default. It overrides the action management provided by rekit-core.
+//  And it delegates action mgmt to rekit-core if it's not async.
 
 const path = require('path');
 const _ = require('lodash');
@@ -15,6 +16,10 @@ const action = rekitCore.action;
 
 _.pascalCase = _.flow(_.camelCase, _.upperFirst);
 _.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
+
+function argsConfig() {
+  // Config args accepted when using Rekit cmds
+}
 
 function add(feature, name, args) {
   feature = _.kebabCase(feature);
@@ -90,6 +95,7 @@ function move(source, target) {
 }
 
 module.exports = {
+  argsConfig,
   add,
   remove,
   move,

@@ -5,6 +5,10 @@ const initialState = {
   fetchRedditReactjsListPending: false,
   fetchRedditBySagaPending: false,
   fetchRedditBySagaError: null,
+  a1Pending: false,
+  a1Error: null,
+  a2Pending: false,
+  a2Error: null,
 };
 
 export default initialState;

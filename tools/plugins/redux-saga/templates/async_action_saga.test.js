@@ -56,7 +56,7 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
     }));
   });
 
-  it('should be done when finished', () => {
+  it('returns done when finished', () => {
     expect(generator.next()).to.deep.equal({ done: true, value: undefined });
   });
 

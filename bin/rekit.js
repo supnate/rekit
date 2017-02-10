@@ -30,7 +30,7 @@ function getLocalRekitCore() {
   if (!prjRoot || !fs.existsSync(path.join(prjRoot, 'node_modules/rekit-core/package.json'))) {
     return null;
   }
-  return require(path.join(prjRoot, 'node_modules/rekit-core'));
+  return require(path.join(prjRoot, 'node_modules/rekit-core')); // eslint-disable-line
 }
 
 const rekitCore = getLocalRekitCore();
@@ -86,7 +86,7 @@ addCmd.addArgument('type', {
 });
 
 addCmd.addArgument('name', {
-  help: 'The element name to add, in format of <feature>/<name>, e.g.: \'rekit add component user/list-view\'. Name is unnecessary if add a feature.'
+  help: 'The element name to add, in format of <feature>/<name>, e.g.: \'rekit add component user/list-view\'. <name> is unnecessary if add a feature.'
 });
 
 addCmd.addArgument(['--connect', '-c'], {
@@ -141,6 +141,12 @@ mvCmd.addArgument('source', {
 mvCmd.addArgument('target', {
   help: 'The target element to reach, in format of <feature>/<name>, e.g.: \'rekit move component user/list-view employee/list\'. Name is unnecessary if move a feature.'
 });
+
+if (rekitCore) {
+  rekitCore.plugin.getPlugins().forEach((p) => {
+    if (p.config.defineArgs) p.config.defineArgs(addCmd, mvCmd, rmCmd);
+  });
+}
 
 const args = parser.parseArgs();
 console.time('😃  Done');

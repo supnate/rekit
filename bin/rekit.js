@@ -11,6 +11,7 @@ const fs = require('fs');
 const ArgumentParser = require('argparse').ArgumentParser;
 const rekitPkgJson = require('../package.json');
 const create = require('./create');
+const createPlugin = require('./createPlugin');
 
 // If runs under a project
 function getLocalRekitCore() {
@@ -38,6 +39,7 @@ const rekitCore = getLocalRekitCore();
 const parser = new ArgumentParser({
   version: rekitPkgJson.version,
   addHelp: true,
+  allowAbbrev: false,
   description: 'Build scalable web applications with React, Redux and React-router.'
 });
 
@@ -149,6 +151,7 @@ if (rekitCore) {
 }
 
 const args = parser.parseArgs();
+console.log(args);
 console.time('😃  Done');
 // Convert aliases
 const aliases = { rm: 'remove', mv: 'move' };

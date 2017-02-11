@@ -9,6 +9,8 @@ const initialState = {
   a1Error: null,
   a2Pending: false,
   a2Error: null,
+  a5Pending: false,
+  a5Error: null,
 };
 
 export default initialState;

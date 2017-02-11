@@ -11,23 +11,23 @@ export function fetchRedditReactjsList() {
     dispatch({
       type: HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN,
     });
-    return new Promise(async (resolve, reject) => {
-      let res;
-      try {
-        res = await axios.get('http://www.reddit.com/r/reactjs.json');
-      } catch (err) {
-        dispatch({
-          type: HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE,
-          data: { error: err },
-        });
-        reject(err);
-        return;
-      }
-      dispatch({
-        type: HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS,
-        data: res.data,
-      });
-      resolve(res);
+    return new Promise((resolve, reject) => {
+      axios.get('http://www.reddit.com/r/reactjs.json').then(
+        (res) => {
+          dispatch({
+            type: HOME_FETCH_REDDIT_REACTJS_LIST_SUCCESS,
+            data: res.data,
+          });
+          resolve(res);
+        },
+        (err) => {
+          dispatch({
+            type: HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE,
+            data: { error: err },
+          });
+          reject(err);
+        },
+      );
     });
   };
 }

@@ -19,3 +19,7 @@ export const HOME_A_2_BEGIN = 'HOME_A_2_BEGIN';
 export const HOME_A_2_SUCCESS = 'HOME_A_2_SUCCESS';
 export const HOME_A_2_FAILURE = 'HOME_A_2_FAILURE';
 export const HOME_A_2_DISMISS_ERROR = 'HOME_A_2_DISMISS_ERROR';
+export const HOME_A_5_BEGIN = 'HOME_A_5_BEGIN';
+export const HOME_A_5_SUCCESS = 'HOME_A_5_SUCCESS';
+export const HOME_A_5_FAILURE = 'HOME_A_5_FAILURE';
+export const HOME_A_5_DISMISS_ERROR = 'HOME_A_5_DISMISS_ERROR';

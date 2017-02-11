@@ -6,6 +6,7 @@ import { reducer as fetchRedditReactjsList } from './fetchRedditReactjsList';
 import { reducer as fetchRedditBySaga } from './fetchRedditBySaga';
 import { reducer as a1Reducer } from './a1';
 import { reducer as a2Reducer } from './a2';
+import { reducer as a5Reducer } from './a5';
 
 const reducers = [
   counterPlusOne,
@@ -15,6 +16,7 @@ const reducers = [
   fetchRedditBySaga,
   a1Reducer,
   a2Reducer,
+  a5Reducer,
 ];
 
 export default function reducer(state = initialState, action) {

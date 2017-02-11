@@ -7,3 +7,4 @@ export { fetchRedditReactjsList, dismissFetchRedditReactjsListError } from './fe
 export { fetchRedditBySaga, dismissFetchRedditBySagaError } from './fetchRedditBySaga';
 export { a1, dismissA1Error } from './a1';
 export { a2, dismissA2Error } from './a2';
+export { a5, dismissA5Error } from './a5';

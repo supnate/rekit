@@ -31,7 +31,7 @@ export class DefaultPage extends Component {
   }
 
   handleFetchReddit() {
-    this.props.actions.fetchRedditReactjsList();
+    this.props.actions.fetchRedditReactjsList().catch(err => console.error('err:', err));
   }
 
   render() {

@@ -31,7 +31,7 @@
     "devPort": 6075,
     "portalPort": 6076,
     "buildPort": 6077,
-    "plugins": ["redux-saga"],
+    "plugins": [],
     "css": "less"
   },
   "babel": {

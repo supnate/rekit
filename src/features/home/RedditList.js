@@ -14,7 +14,7 @@ export default class RedditList extends PureComponent {
       <ul className="home-reddit-list">
         {
           this.props.list.length > 0 ?
-            this.props.list.map(item => <li key={item.data2.id}><a href={item.data.url}>{item.data.title}</a></li>)
+            this.props.list.map(item => <li key={item.data.id}><a href={item.data.url}>{item.data.title}</a></li>)
             : <li className="no-items-tip">No items yet.</li>
         }
       </ul>

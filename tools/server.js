@@ -72,7 +72,7 @@ function startDevServer() {
     if (err) {
       console.error(err);
     }
-    console.log(`Listening at http://localhost:${pkgJson.rekit.devPort}/`);
+    console.log(`Dev server listening at http://localhost:${pkgJson.rekit.devPort}/`);
   });
 }
 
@@ -94,7 +94,7 @@ function startBuildServer() {
       console.error(err);
     }
 
-    console.log(`Listening at http://localhost:${pkgJson.rekit.buildPort}/`);
+    console.log(`Dist server at http://localhost:${pkgJson.rekit.buildPort}/`);
   });
 }
 
@@ -120,7 +120,7 @@ function startPortalServer() {
       console.error(err);
     }
 
-    console.log(`The rekit portal server is listening at http://localhost:${port}/`);
+    console.log(`Portal server is listening at http://localhost:${port}/`);
   });
 }
 

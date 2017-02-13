@@ -8,7 +8,7 @@ const fs = require('fs');
 const utils = require('./utils');
 const rekitPkgJson = require('../package.json');
 
-function create(args) {
+function createApp(args) {
   const prjName = args.name;
   if (!prjName) {
     console.log('Error: please specify the project name.');
@@ -124,4 +124,4 @@ function create(args) {
   });
 }
 
-module.exports = create;
+module.exports = createApp;

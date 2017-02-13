@@ -10,7 +10,7 @@ const path = require('path');
 const fs = require('fs');
 const ArgumentParser = require('argparse').ArgumentParser;
 const rekitPkgJson = require('../package.json');
-const create = require('./create');
+const createApp = require('./createApp');
 const createPlugin = require('./createPlugin');
 
 // If runs under a project
@@ -73,6 +73,12 @@ createCmd.addArgument(['--sass'], {
 createCmd.addArgument(['--clean', '-c'], {
   help: 'Create a clean app without sample actions/pages.',
   action: 'storeTrue',
+});
+
+// Create plugin command
+const installPluginCmd = subparsers.addParser('install', { // eslint-disable-line
+  addHelp: true,
+  description: 'Install a Rekit plugin.',
 });
 
 // Add sub-command
@@ -164,7 +170,10 @@ Object.keys(aliases).forEach((k) => {
 switch (args.commandName) {
   case 'create':
     // Only create command is handled rekit
-    create(args);
+    if (args.plugin) {
+      createPlugin(args, rekitCore);
+      console.timeEnd('😃  Done'); // create command doesn't need time end.
+    }else createApp(args);
     break;
   default:
     // Other command are handled by rekit-core

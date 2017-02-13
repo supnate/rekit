@@ -5,123 +5,56 @@
 
 const path = require('path');
 const fs = require('fs');
-const utils = require('./utils');
-const rekitPkgJson = require('../package.json');
+const _ = require('lodash');
 
-function create(args) {
-  const prjName = args.name;
-  if (!prjName) {
+function createPlugin(args, rekitCore) {
+  const pluginName = _.kebabCase(args.name.replace(/^rekit-plugin-/i, ''));
+  if (!pluginName) {
     console.log('Error: please specify the plugin name.');
     process.exit(1);
   }
+  console.log('Creating plugin: ', pluginName);
 
-  // The created project dir
-  const prjPath = path.join(process.cwd(), prjName);
-  if (fs.existsSync(prjPath)) {
-    console.log(`Error: target folder already exists: ${prjPath}`);
-    process.exit(1);
-  }
-  console.log('Welcome to Rekit, now creating your project...');
-  fs.mkdirSync(prjPath);
-
-  // Rekit CLI itself.
-  const rekitRoot = path.join(__dirname, '..');
-
-  // The package.json for the new created project
-  const pkgJson = {
-    name: prjName,
-    version: '0.0.1',
-    private: true,
-    description: `${prjName} created by Rekit.`,
-    babel: rekitPkgJson.babel,
-    nyc: rekitPkgJson.nyc,
-    rekit: {
-      version: rekitPkgJson.version,
-      devPort: 6075,
-      portalPort: 6076,
-      buildPort: 6077,
-      plugins: [],
-      css: args.sass ? 'sass' : 'less',
-    },
-  };
-
-  // Remove unecessary scripts
-  pkgJson.scripts = {
-    start: 'node ./tools/server.js',
-    build: 'node ./tools/build.js',
-    test: 'node ./tools/run_test.js',
-    'build:test': 'node ./tools/server.js -m build',
-  };
-
-  // Copy all necessary files
-  console.log('Copying files...');
-  function filterCssFiles(p) {
-    if (
-      (/\.less$/.test(p) && args.sass)
-      || (/\.scss$/.test(p) && !args.sass)
-    ) return false;
-
-    return true;
-  }
-  utils.copyFolderRecursiveSync(path.join(rekitRoot, './src'), prjPath, filterCssFiles);
-  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tools'), prjPath);
-  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tests'), prjPath);
-
-  [
-    '.eslintrc',
-    'gitignore.tpl',
-    'webpack-config.js',
-    'webpack.test.config.js',
-  ].forEach((file) => {
-    utils.copyFileSync(path.join(rekitRoot, file), prjPath);
-  });
-
-  // Create gitignore
-  fs.rename(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
-
-  // const prjConfig = {
-  //   dependencies: Object.keys(rekitPkgJson.dependencies),
-  //   devDependencies: Object.keys(rekitPkgJson.devDependencies),
-  // };
-
-  // If sass, change webpack configs.
-  if (args.sass) {
-    const configPath = path.join(prjPath, 'webpack-config.js');
-    let text = fs.readFileSync(configPath).toString();
-    text = text.replace(/\.less/g, '.scss').replace('less-loader', 'sass-loader');
-    fs.writeFileSync(configPath, text);
-  }
-
-  console.log('Getting the latest dependencies versions...');
-  function done(deps) {
-    pkgJson.dependencies = deps.dependencies;
-    pkgJson.devDependencies = deps.devDependencies;
-
-    if (args.sass) {
-      // If using sass
-      delete pkgJson.devDependencies['less']; // eslint-disable-line
-      delete pkgJson.devDependencies['less-loader'];
-    } else {
-      // If using less
-      delete pkgJson.devDependencies['node-sass'];
-      delete pkgJson.devDependencies['sass-loader'];
+  let pluginRoot;
+  if (rekitCore) {
+    // Inside a Rekit project
+    const pluginsDir = path.join(rekitCore.utils.getProjectRoot(), 'tools/plugins');
+    pluginRoot = path.join(pluginsDir, pluginName);
+    if (!fs.existsSync(pluginsDir)) {
+      fs.mkdirSync(pluginsDir);
     }
-
-    fs.writeFileSync(path.join(prjPath, 'package.json'), JSON.stringify(pkgJson, null, '  '));
-    console.log('Project creation success!');
-    console.log(`To run the project, please go to the project folder "${prjName}" and:`);
-    console.log('  1. run "npm install" to install dependencies.');
-    console.log('  2. run "npm start" to start the dev server.');
-    console.log('Enjoy!');
-    console.log('');
+  } else {
+    pluginRoot = path.join(process.cwd(), `rekit-plugin-${pluginName}`);
   }
 
-  utils.requestDeps().then(done).catch((err) => {
-    console.log('Failed to get dependencies. The project was not created. Please check and retry.');
-    console.log(err);
-    utils.deleteFolderRecursive(prjPath);
-    process.exit(1);
+  fs.mkdirSync(pluginRoot);
+  const mapFile = file => path.join(pluginRoot, file);
+
+  // Create plugin files
+  console.log('Copying files...');
+  [
+    'config.js',
+    'elementType.js',
+    'index.js',
+    'package.json.tpl',
+  ].forEach((file) => {
+    const tpl = fs.readFileSync(path.join(__dirname, 'plugin-template', file)).toString();
+    const compiled = _.template(tpl);
+    const content = compiled({ pluginName });
+    fs.writeFileSync(mapFile(file), content);
   });
+
+  // Rename elementType file to real plugin name
+  fs.renameSync(mapFile('elementType.js'), mapFile(`${_.camelCase}.js`));
+
+  // Delete package.json if inside a Rekit project
+  if (rekitCore) {
+    fs.unlinkSync(mapFile('package.json.tpl'));
+  } else {
+    fs.renameSync(mapFile('package.json.tpl'), mapFile('package.json'));
+  }
+
+  console.log('Plugin creation success.');
 }
 
-module.exports = create;
+module.exports = createPlugin;

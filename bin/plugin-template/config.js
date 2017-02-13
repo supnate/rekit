@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  accept: ['action'],
+  accept: ['${pluginName}'],
   defineArgs(addCmd, mvCmd, rmCmd) {
     // Rekit uses argparse for command line args parsing: https://www.npmjs.com/package/argparse
     // Since your plugin uses below commands, defineArgs method allows to define args to the command.

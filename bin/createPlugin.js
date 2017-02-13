@@ -45,7 +45,7 @@ function createPlugin(args, rekitCore) {
   });
 
   // Rename elementType file to real plugin name
-  fs.renameSync(mapFile('elementType.js'), mapFile(`${_.camelCase}.js`));
+  fs.renameSync(mapFile('elementType.js'), mapFile(`${_.camelCase(pluginName)}.js`));
 
   // Delete package.json if inside a Rekit project
   if (rekitCore) {
@@ -54,7 +54,8 @@ function createPlugin(args, rekitCore) {
     fs.renameSync(mapFile('package.json.tpl'), mapFile('package.json'));
   }
 
-  console.log('Plugin creation success.');
+  console.log('Plugin creation success: ', pluginRoot);
+  console.log('Learn more about Rekit plugin at: http://rekit.js.org/docs/plugin.html');
 }
 
 module.exports = createPlugin;

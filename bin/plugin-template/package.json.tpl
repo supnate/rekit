@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "description of ${pluginName}",
   "keywords": [
-    "rekit",
+    "rekit"
   ],
   "dependencies": {
-    "rekit-core": "next",
+    "rekit-core": "next"
   },
   "devDependencies": {
   }

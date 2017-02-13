@@ -60,11 +60,6 @@ createCmd.addArgument('name', {
   help: 'The project name',
 });
 
-createCmd.addArgument(['--plugin', '-p'], {
-  help: 'Indicate its a Rekit plugin project',
-  action: 'storeTrue',
-});
-
 createCmd.addArgument(['--sass'], {
   help: 'Use sass rather than less.',
   action: 'storeTrue',
@@ -75,10 +70,33 @@ createCmd.addArgument(['--clean', '-c'], {
   action: 'storeTrue',
 });
 
-// Create plugin command
-const installPluginCmd = subparsers.addParser('install', { // eslint-disable-line
+const createPluginCmd = subparsers.addParser('create-plugin', {
+  addHelp: true,
+  description: 'Create a Rekit plugin. If under a Rekit project, create a local plugin; otherwise create a plugin as a npm package.',
+});
+
+createPluginCmd.addArgument('name', {
+  help: 'The plugin name',
+});
+
+// Install plugin command
+const installPluginCmd = subparsers.addParser('install', {
   addHelp: true,
   description: 'Install a Rekit plugin.',
+});
+
+installPluginCmd.addArgument('name', {
+  help: 'The plugin name',
+});
+
+// Uninstall plugin command
+const uninstallPluginCmd = subparsers.addParser('uninstall', {
+  addHelp: true,
+  description: 'Uninstall a Rekit plugin.',
+});
+
+uninstallPluginCmd.addArgument('name', {
+  help: 'The plugin name',
 });
 
 // Add sub-command
@@ -170,10 +188,15 @@ Object.keys(aliases).forEach((k) => {
 switch (args.commandName) {
   case 'create':
     // Only create command is handled rekit
-    if (args.plugin) {
-      createPlugin(args, rekitCore);
-      console.timeEnd('😃  Done'); // create command doesn't need time end.
-    }else createApp(args);
+    createApp(args);
+    break;
+  case 'create-plugin':
+    createPlugin(args, rekitCore);
+    console.timeEnd('😃  Done'); // create command doesn't need time end.
+    break;
+  case 'install':
+    break;
+  case 'uninstall':
     break;
   default:
     // Other command are handled by rekit-core

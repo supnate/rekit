@@ -1,6 +1,6 @@
 import {
-  // DefaultPage,
-  // TestPage,
+  DefaultPage,
+  TestPage,
 } from './';
 
 export default {
@@ -9,13 +9,9 @@ export default {
   childRoutes: [
     { path: 'default-page',
       name: 'Default page',
-      // component: DefaultPage,
-      getComponent(loc, cb) {
-        console.log('lazy load default page');
-        import('./DefaultPage').then(m => cb(null, m.default));
-      },
+      component: DefaultPage,
       isIndex: true,
     },
-    // { path: 'test-page', name: 'Test page', component: TestPage },
+    { path: 'test-page', name: 'Test page', component: TestPage },
   ],
 };

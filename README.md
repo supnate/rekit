@@ -126,7 +126,7 @@ Rekit creates a web application with a special folder structure. It groups appli
 
 ## Philosophy
 1. ***Different application logic for a single functionality should be placed in one place.***
-You don't want to jump among different folders to edit code for the same functionality. Such as one functionality usually contains component, actions, reducers, styes, etc. Navigating between these files takes too much time when the project grows large and becomes complicated. So Rekit organizes different parts of a feature into one folder. You can finish a functionality just in one folder.
+You don't want to jump among different folders to edit code for the same functionality. Such as one functionality usually contains component, actions, reducers, styles, etc. Navigating between these files takes too much time when the project grows large and becomes complicated. So Rekit organizes different parts of a feature into one folder. You can finish a functionality just in one folder.
 
 2. ***Developer should own every line of the project configuration.***
 Configuration errors often cause weird behaviors of your application and they are usually very hard to debug. If you don't know how each part of your project works together, you are at the risk of wasting tons of time on configuration errors. So Rekit just creates the project with an initial correct config and put every line of configuration into your project, you should understand and is responsible to maintain it.

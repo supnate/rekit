@@ -33,6 +33,7 @@ function createApp(args) {
     version: '0.0.1',
     private: true,
     description: `${prjName} created by Rekit.`,
+    keywords: ['rekit'],
     babel: rekitPkgJson.babel,
     nyc: rekitPkgJson.nyc,
     rekit: {

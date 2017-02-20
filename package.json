@@ -20,6 +20,7 @@
     "build": "node ./tools/build.js",
     "test": "node ./tools/run_test.js",
     "build:test": "node ./tools/build_test_server.js",
+    "npm:test": "node ./tests/npm_test.js",
     "codecov": "codecov",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
@@ -86,6 +87,7 @@
     "argparse": "^1.0.7",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "body-parser": "^1.16.0",
+    "lodash": "^4.17.4",
     "global": "^4.3.1",
     "request": "^2.79.0"
   },
@@ -126,7 +128,6 @@
     "jsdom": "^9.10.0",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
-    "lodash": "^4.17.4",
     "lodash-webpack-plugin": "^0.11.0",
     "memobind": "^0.5.0",
     "mocha": "^3.0.2",

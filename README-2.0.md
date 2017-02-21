@@ -63,9 +63,6 @@ To change the ports dev-servers runniong on, edit the `rekit` section in `packag
 }
 ```
 
-## Sublimetext Plugin
-Sublime text plugin provides sidebar menus for a Rekit application by which you can easily do common tasks like creating components, running tests etc, see more introduction from: https://github.com/supnate/rekit-sublime
-
 ## See the Real World Example
 Rekit portal itself is just a typical Rekit application! So it's a good example for your reference. You can view the live demo at: [https://rekit-portal.herokuapp.com](https://rekit-portal.herokuapp.com). It not only demostrates how a Rekit app is structured but also the capabilities of Rekit portal.
 

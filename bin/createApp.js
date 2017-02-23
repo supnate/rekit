@@ -51,7 +51,6 @@ function createApp(args) {
     start: 'node ./tools/server.js',
     build: 'node ./tools/build.js',
     test: 'node ./tools/run_test.js',
-    'build:test': 'node ./tools/server.js -m build',
   };
 
   // Copy all necessary files

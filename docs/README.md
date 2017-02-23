@@ -1,14 +1,25 @@
 ## Table of Contents
 
-* [Read Me](/README.md)
-* [One Action One File](/docs/one-action-one-file.md)
-* [Concepts](/docs/concepts.md)
-* [Welcome Page](/docs/welcome-page.md)
-* [Command Line Tools](/docs/cli.md)
-* [Sublime Plugin](/docs/sublime-plugin.md)
-* [Example: Simple Forum](/docs/example.md)
+* [Introduction](/README.md)
+  * [Concepts](/docs/concepts.md)
+  * [One Action One File](/docs/one-action-one-file.md)
+  * [Create a new app](/docs/create-app.md)
+  * [Welcome Page](/docs/welcome-page.md)
+* [Command line tools](/docs/welcome-page.md)
+* [Rekit portal](/docs/welcome-page.md)
+* [Plugins](/docs/welcome-page.md)
+  * [Introduction](/docs/welcome-page.md)
+  * [Install a plugin](/docs/welcome-page.md)
+  * [Create plugin](/docs/welcome-page.md)
+  * [Plugin priority](/docs/welcome-page.md)
 * [Routing](/docs/routing.md)
 * [Styling](/docs/styling.md)
 * [Testing](/docs/testing.md)
 * [Bundling](/docs/webpack.md)
 * [Code Quality Check](/docs/eslint.md)
+
+
+* [Command Line Tools](/docs/cli.md)
+* [Sublime Plugin](/docs/sublime-plugin.md)
+* [Example: Simple Forum](/docs/example.md)
+

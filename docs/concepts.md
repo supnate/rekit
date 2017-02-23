@@ -1,7 +1,10 @@
 ## Concepts
-Before starting a Rekit project, some basic concepts of the project need to be explained:
+Rekit doesn't wrap or change any API of React, Redux or React router but just provides tools to do trival tasks for you. So there are no new concepts in the project. If you can understand React, Redux and React router, you can understand Rekit projects easily.
+
+Below is just the description about how those concepts are used/managed by Rekit.
+
 #### Feature
-This is the top level concept of a project, also it may be the only new concept here. Each feature corresponds to a logical part of an application. For example, an EShop application usually contains below features:
+This is the top level concept of a project, and it's the core concept of Rekit. A feature is some capability of an application. For example, an EShop application usually contains below features:
  * `customer`: manage basic customer information.
  * `product`: manage products on sale.
  * `category`: manage product categories.
@@ -9,10 +12,21 @@ This is the top level concept of a project, also it may be the only new concept 
  * `user`: manage admins of the system.
  * etc...
 
-A feature usually always contains multiple actions, components and pages.
+A feature usually always contains multiple actions, components or routing rules.
+
+There are two default features created automatically for a new Rekit application:
+
+1. `common`: it's the place you put all cross-feature elements such as components, actions, etc. In Rekit 1.0, there was a `components` folder outside of all features where you put common components. Now they are expected to be put here in Rekit 2.0. This change reduces the number of conepts and makes the folder structure more consistent.
+2. `home`: the base feature of the project and the start point of the application. Usually the most basic functionality is put here, such as the overall layout container, fundamental application data, etc.
+
+However this is just the way recommended by Rekit. Don't hesitate to rename or delete the default features if you want.
+
+To get a quick feel on feature concept, just look at the Rekit portal live demo: [https://rekit-portal.herokuapp.com](https://rekit-portal.herokuapp.com).
+
+And the next chapter will describe the thought of [feature oriented architecture]() behind Rekit.
 
 #### Component
-It's just React component. In a Rekit project, there are two types of component: one is common component which is not related with any features, it's put in the `src/components` folder. The other is feature component which is provided by a feature, so it is put under the feature folder.
+It's just the component concept of React.
 
 #### Page
 Page is some of special component which maps to the concept of 'Container' in the best practice of [separating presentational and container components](http://redux.js.org/docs/basics/UsageWithReact.html) pattern. A page also usually maps to a specific URL path, so when creating a page also needs to create a routing definition.

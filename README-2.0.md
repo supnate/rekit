@@ -97,7 +97,7 @@ rekit add component forum/TopicList
 rekit add action forum/fetch-topic-list -a
 ```
 
-Here `forum` is the feature name, TopicList is a component under the feature.
+Here `forum` is the feature name, TopicList is a component under the feature. `-a` flag indicates it's an async action.
 
 To rename it from `TopicList` to `Topics`, run below commands:
 ```
@@ -111,7 +111,7 @@ rekit rm component forum/TopicList
 rekit rm action forum/fetch-topic-list
 ```
 
-Actuall there is nothing magic behind, Rekit just does what you need to do managually. Every Rekit command will clearly show you what it does behind. For example, below snapshot shows how Rekit renames an async action:
+Actuall there is nothing magic behind, Rekit just does what you manually need to do. Every Rekit command will clearly show you what it does behind. For example, below snapshot shows how Rekit renames an async action:
 
 <img src="/images/mv_async_action.png" alt="mv-async-action" />
 

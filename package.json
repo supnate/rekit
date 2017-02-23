@@ -19,7 +19,6 @@
     "start": "node ./tools/server.js",
     "build": "node ./tools/build.js",
     "test": "node ./tools/run_test.js",
-    "build:test": "node ./tools/build_test_server.js",
     "npm:test": "node ./tests/npm_test.js",
     "codecov": "codecov",
     "docs:prepare": "gitbook install",

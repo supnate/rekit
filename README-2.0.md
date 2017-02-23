@@ -97,6 +97,8 @@ rekit add component forum/TopicList
 rekit add action forum/fetch-topic-list -a
 ```
 
+Here `forum` is the feature name, TopicList is a component under the feature.
+
 To rename it from `TopicList` to `Topics`, run below commands:
 ```
 rekit mv component forum/TopicList forum/Topics
@@ -109,14 +111,16 @@ rekit rm component forum/TopicList
 rekit rm action forum/fetch-topic-list
 ```
 
-Actuall there is nothing magic behind, Rekit just does what you need to managually do. Every Rekit command will clearly show you what it does behind, for example, below picture shows how Rekit renames an async action:
-
-<img src="/images/rekit-portal-snapshot.png" alt="rekit-portal-snapshot" />
-
-## Rekit portal
-Rekit command line tools have been very useful, but Rekit portal provides a more intuitive way: it's almost an IDE for Rekit development! It not only provides web UIs for creating/renaming/moving/deleting elements of a Rekit app, but also provides tools for analyzing/building/testing a Rekit application. See below pictures of how Rekit portal looks like.
+Actuall there is nothing magic behind, Rekit just does what you need to do managually. Every Rekit command will clearly show you what it does behind. For example, below snapshot shows how Rekit renames an async action:
 
 <img src="/images/mv_async_action.png" alt="mv-async-action" />
+
+You would never want to do it manually right? :-P
+
+## Rekit portal
+Rekit command line tools have been very useful, but Rekit portal provides a more intuitive and zero learning-cost way: it's almost an IDE for Rekit development! It not only provides web UIs for creating/renaming/moving/deleting elements of a Rekit app, but also provides tools for analyzing/building/testing a Rekit application. See below pictures of how Rekit portal looks like.
+
+<img src="/images/rekit-portal-snapshot.png" alt="rekit-portal-snapshot" />
 
 And you can view the live demo at: [https://rekit-portal.herokuapp.com](https://rekit-portal.herokuapp.com).
 
@@ -125,13 +129,15 @@ You can found more introduction about Rekit portal at: [http://rekit.js.org/port
 ## Plugins
 You can use or create plugins to enhance or customize the behavior of Rekit. That is you can either alter the default behavior like how Rekit creates an async action or let Rekit support more element types like `selector` based on [reselect](https://github.com/reactjs/reselect).
 
-For example, there have been two plugins:
-1. [rekit-plugin-redux-saga](https://github.com/supnate/rekit-plugin-redux-saga): allows Rekit to uses `redux-saga` rather than `redux-thunk` when creating an async action.
-2. [rekit-plugin-reselect](https://github.com/supnate/rekit-plugin): provides a new element type named `selector` based on [reselect](https://github.com/reactjs/reselect) so that you can manage selectors by Rekit for your project.
+For example, there have been two plugins available:
+
+1. [rekit-plugin-redux-saga](https://github.com/supnate/rekit-plugin-redux-saga): allows Rekit to uses `redux-saga` rather than `redux-thunk` when creating async actions.
+2. [rekit-plugin-reselect](https://github.com/supnate/rekit-plugin): adds a new element type named `selector` based on [reselect](https://github.com/reactjs/reselect) to Rekit. So that you can manage selectors by Rekit for your project.
 
 There are two types of plugins:
-1. Public plugin: plugins published on npm so that all people could use it.
-2. Local plugin: plugins that only meet the requirements for your own project. They are placed under `<prjroot>/tools/plugins` folder.
+
+1. ***Public plugins***: plugins published on npm so that all people could use it.
+2. ***Local plugins***: plugins only meet the requirements for your own project. They are placed under `<prjroot>/tools/plugins` folder.
 
 To create a plugin, use below command:
 ```
@@ -147,7 +153,7 @@ For more information, please read the document at: [http://rekit.js.org/plugin](
  * Powerful Rekit portal to boost the efficiency of development.
  * Command line tools to mange actions, reducers, components and pages.
  * Embed build script and test server for the build result.
- * Use [Webpack](http://webpack.github.io) for bundling.
+ * Use [Webpack 2](http://webpack.js.org) for bundling.
  * Use [Babel](https://babeljs.io/) for ES2015(ES6)+ support.
  * Use [React hot loader](http://gaearon.github.io/react-hot-loader/) for hot module replacement.
  * Use [Redux](http://redux.js.org/) for application state management.
@@ -155,14 +161,14 @@ For more information, please read the document at: [http://rekit.js.org/plugin](
  * Use [React-router](https://github.com/reactjs/react-router) for routing and it's configured with Redux reducer.
  * Not found page configured for React-router.
  * Use [Webpack dll plugin](http://webpack.github.io/docs/list-of-plugins.html#dllplugin) to improve dev-time build performance.
- * Use [Less](http://lesscss.org/) or [Sass]() as CSS transpilers.
- * Use mocha, enzyme for testing.
- * Use istanbul for testing coverage report.
+ * Use [Less](http://lesscss.org/) or [Sass](https://sass-lang.com/) as CSS transpilers.
+ * Use [mocha](https://mochajs.org/), [enzyme](https://github.com/airbnb/enzyme) for testing.
+ * Use [istanbul](https://github.com/gotwarlost/istanbul) for testing coverage report.
  * Use [eslint-config-airbnb](https://github.com/airbnb/javascript) for code style check.
  * Support [Redux dev tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd).
 
 ## Documentation
-http://rekit.js.org
+[http://rekit.js.org](http://rekit.js.org)
 
 ## License
 MIT

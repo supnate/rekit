@@ -1,6 +1,6 @@
-# <img src="/images/logo_text.png?raw=true" width="228">
+# <img src="/images/logo_text_2.0.png?raw=true" width="260">
 
-> 🎉🎉🎉 Rekit 2.0 is out with nice new features! Check out the [release notes](https://github.com/supnate/rekit/releases/tag/v2.0.0) now. 
+> 🎉🎉🎉 Rekit 2.0 is out with nice new features! Check out the [release notes](https://github.com/supnate/rekit/releases/tag/v2.0.0) now!
 
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router.
 
@@ -22,10 +22,10 @@ Besides creating apps, Rekit also provides powerful tools for managing the proje
 To learn more about Rekit, read the overall introduction at:
 [Rekit 2.0: the next generation React development]()
 
-And below are two quick demos:
+And below are two quick video demos:
 
-1. Counter: create a simple counter in 1 minute!
-2. Reddit list viewer: show the latest reactjs topics on reddit, using async actions, in 2 minutes!
+1. [Counter](): create a simple counter in 1 minute!
+2. [Reddit list viewer](): show the latest reactjs topics on reddit, using async actions, in 2 minutes!
 
 
 ## Installation

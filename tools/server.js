@@ -29,6 +29,11 @@ parser.addArgument(['-m', '--mode'], {
   choices: ['dev', 'build', 'portal'],
 });
 
+parser.addArgument(['--readonly'], {
+  help: 'Whether build server server is readonly',
+  action: 'storeTrue',
+});
+
 const args = parser.parseArgs();
 
 const srcPath = path.join(__dirname, '../src');
@@ -104,7 +109,7 @@ function startPortalServer() {
   const app = express();
   const server = http.createServer(app);
   const root = path.join(__dirname, '../node_modules/rekit-portal/dist');
-  app.use(rekitPortalMiddleWare()(server, app));
+  app.use(rekitPortalMiddleWare()(server, app, { readonly: !!args.readonly }));
   app.use(express.static(root));
   app.use(fallback('index.html', { root }));
 

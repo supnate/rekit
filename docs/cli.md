@@ -1,348 +1,177 @@
-# Command Line Tools
-Besides the Sublime plugin, you can use command line tools to complete common tasks like testing, creating/removing features, actions, pages, components etc.
+## Command Line Tools
+Rekit provides a set of command line tools to manage components, actions and routing rules for Rekit projects. They are implemented as JavaScript modules in the package [rekit-core](https://github.com/supnate/rekit-core). Then Rekit just wraps them as command line tools. Actually `rekit-core` is also used by [Rekit Portal](https://github.com/supnate/rekit-portal).
 
-Below is the list of all npm scripts provided by Rekit:
+
+### Create an app
+You can use below command to create an app:
+```
+rekit create <app-name> [--sass]
+```
+
+This will create an app named `app-name` under the current directory. The flag `--sass` allows to use [sass](https://sass-lang.com) instead of [less](http://lesscss.org) as the css transpiler.
+
+### Create a plugin
+You can use below command to create a plugin:
+```
+rekit create-plugin <plugin-name>
+```
+It will create a local plugin if the current directory is in a Rekit project, otherwise create a public plugin.
+
+For more information, please read the document at: [http://rekit.js.org/plugin](http://rekit.js.org/plugin.).
+
+### Install a plugin
+If you will use a plugin via npm, use the below command:
+```
+rekit install-plugin <plugin-name>
+```
+
+This will execute `install.js` script of the plugin to do the initialization and added the plugin name to `rekit.plugins` section of package.json.
+
+### Rekit tools
+
+Rekit tools are pure scripts shipped with created applications. They are put in the `tools` folder of your app and are supposed to be edited to meet additional requirements of your project.
+
+##### tools/server.js
+This script is used to start dev servers, by default it starts all 3 servers include webpack dev server, Rekit portal and the build result server. You can only start some of servers by arguments.
+
+Usage:
+```
+node tools/server.js [-m, --mode] [--readonly]
+```
+
+- `mode`: if not provided, all 3 dev servers are started. Otherwise only the specified dev server is started. It could be:
+  - `dev`: webpack dev server
+  - `portal`: Rekit portal
+  - `build`: start a static express server for build folder.
+- `readonly`: start the Rekit portal on readonly mode. It's useful to start a portal server only for explore the project structure. For example, the Rekit portal [live demo](https://rekit-portal.herokuapp.com) is running on readonly mode.
+
+It's also available as the npm script: `npm start`. 
+
+##### tools/run_test.js
+This script is helpful to run one or multiple unit tests. It accepts argument what tests files should be run.
+
+Usage:
+```
+node tools/run_test.js <file-pattern>
+```
+
+The file pattern is the same as what `mocha` accepts. If no `file-pattern` specified, it runs all tests and generates test coverage report. Otherwise run tests matches the pattern.
+
+For example:
+```
+node tools/run_test.js features/home/redux/counterPlusOne.test.js  // run test of a redux action
+node tools/run_test.js features/home // run all tests of home feature
+node tools/run_test.js // run all tests and generate test coverage report
+```
+
+It's also available as the npm script: `npm test`. 
+
+#### tools/build.js
+This script is used to build the project.
+
+Usage:
+```
+node tools/build.js
+```
+
+It's also available as the npm script: `npm run build`. It will build the project to the `build` folder.
+
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Scripts</th>
+      <th style="text-align: left" width="200px">Run with npm</th>
+      <th style="text-align: left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tools/server.js</td>
+      <td>npm start -- [-m, --mode] [{dev|portal|build}] [--readonly]</td>
+      <td>
+        Start dev servers, by default it starts all 3 servers include webpack dev server, Rekit portal and the build result server.
+        You can only start some of servers by arguments. `readonly` argument tells Rekit portal to run on readonly mode. It's useful to start a portal server only for explore the project structure. For example, the Rekit portal [live demo](https://rekit-portal.herokuapp.com) is running on readonly mode.
+      </td>
+    </tr>
+    <tr>
+      <td>tools/build.js</td>
+      <td>npm run build</td>
+      <td>Build the project to `build` folder.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+### Manage features, components and actions.
+This is the key part of daily Rekit development. You will use below commands to mange Rekit elements.
+
+> Note: though all commands are put under the `rekit` command, i.e. `rekit add component home/comp1`. Actually Rekit will find the local `rekit-core` package in your app to finish the operation. So execute `rekit` commands under different Rekit apps may have different behaviors if those apps depends on different versions of `rekit-core`.
+
+All such commands have silimar patterns:
+
+- `rekit add <type>`: add an element of the type.
+- `rekit mv <type>`: move/rename an element of the type.
+- `rekit rm <type>`: delete an element of the type.
+
+Almose all commands supports [-h] argument to see the usage help. i.e. `rekit add -h`.
+
+Below is the list of all Rekit commands to manage project elements:
 
 <table>
     <thead>
         <tr>
-            <th style="text-align: left">Tools</th>
+            <th style="text-align: left">Commands</th>
             <th style="text-align: left">Description</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-          <td>npm run add:feature feature-name</td>
+          <td>rekit add feature &lt;feature-name&gt;</td>
           <td>Add a new feature.</td>
         </tr>
         <tr>
-          <td>npm test</td>
-          <td>Run app tests.</td>
+          <td>rekit mv feature &lt;old-name&gt; &lt;new-name&gt;</td>
+          <td>Rename a feature.</td>
         </tr>
         <tr>
-          <td>npm test test-file</td>
-          <td>Run specific test files.</td>
+          <td>rekit rm feature &lt;feature-name&gt;</td>
+          <td>Delete a feature.</td>
+        </tr>
+
+        <tr>
+          <td>rekit add component &lt;component-name&gt; [-u] [-c]</td>
+          <td>
+            Add a new component.<br />
+            - `-u`: specify the url pattern of the component.
+            - `-c`: it's a container component connected to Redux store.
+          </td>
         </tr>
         <tr>
-          <td>npm test:cli</td>
-          <td>Run command line tools tests.</td>
+          <td>rekit mv component &lt;old-name&gt; &lt;new-name&gt;</td>
+          <td>Rename a component.</td>
         </tr>
         <tr>
-          <td>npm run rm:feature feature-name</td>
-          <td>Remove a feature.</td>
+          <td>rekit rm component &lt;component-name&gt;</td>
+          <td>Delete a component.</td>
+        </tr>
+
+        <tr>
+          <td>rekit add action &lt;action-name&gt; [-a]</td>
+          <td>
+            Add a new action. <br />
+            - `-u`: add an async action.
+          </td>
         </tr>
         <tr>
-          <td>npm run add:page feature-name/page-name[url-path]</td>
-          <td>Add a new page.</td>
+          <td>rekit mv action &lt;old-name&gt; &lt;new-name&gt;</td>
+          <td>Rename an action.</td>
         </tr>
         <tr>
-          <td>npm run rm:page feature-name/page-name</td>
-          <td>Remove a page.</td>
-        </tr>
-        <tr>
-          <td>npm run add:component [feature-name/]component-name</td>
-          <td>Add a new component.</td>
-        </tr>
-        <tr>
-          <td>npm run rm:component [feature-name/]component-name</td>
-          <td>Remove a component.</td>
-        </tr>
-        <tr>
-          <td>npm run add:action feature-name/action-name [action-type]</td>
-          <td>Add a new action.</td>
-        </tr>
-        <tr>
-          <td>npm run rm:action feature-name/action-name [action-type]</td>
-          <td>Remove an action.</td>
-        </tr>
-        <tr>
-          <td>npm run add:async-action feature-name/action-name</td>
-          <td>Add a new async action.</td>
-        </tr>
-        <tr>
-          <td>npm run rm:async-action feature-name/action-name</td>
-          <td>Remove an async action.</td>
+          <td>rekit rm action &lt;action-name&gt;</td>
+          <td>Delete an action.</td>
         </tr>
     </tbody>
 </table>
 
-### Naming
-Before introducing the command line tools, here is the naming rules used for the tools to generate code or files. And what ever names provided to the command line tools, they will be converted to follow below rules. For example, by running `npm run add:page home/my-page` will create a component named `MyPage.js` even if the provided component name is in kebab case.
- * `feature`: Folder name: kebab case. For example: `npm run add:feature myFeature` will create a folder named `my-feature`.
- * `page`: File name and class name: upper first letter. For example: `npm run add:page feature/my-page` will create files `MyPage.js` and `MyPage.less`.
- * `url path`: kebab case. It's converted from the page name as it's always mapped to a page. For above command, it defines url path as 'my-page' in the route config.
- * `component`: File name and class name: upper first letter. For example: `npm run add:component feature/my-component` will create files `MyComponent.js` and `MyComponent.less`.
- * `action`: Function name: camel case. For example: `npm run add:action feature/my-action` will create a function named `myAction` in actions.js.
- * `action type`: Constant name and value: upper snake case. Action types are created when an action is created.  For example: `npm run add:action feature/my-action` will create a action type `MY_ACTION`.
 
-
-### Adding a feature
-Usage:
-```
-npm run add:feature feature-name
-```
-
-Args:
-* `feature-name`: the feature name.
-
-Example:
-```
-npm run add:feature product
-```
-Result:
-* Create a folder named `product` under the `src/features/` folder.
-* Create files of `actions.js`, `constants.js`, `reducer.js` in the redux folder and `index.js`, `selectors.js` and `style.less` in the feature folder.
-* Import and combine the feature reducer in `src/common/rootReducer.js`
-* Import and define the feature routeConfig in `src/common/routeConfig.js`
-* Import the feature style.less in `src/styles/index.less`
-* Create a default page: `DefaultPage`. See `npm run add:page` command for details.
-* Create a sample action: `productSampleAction`. See `npm run add:action` command for details.
-
-### Removing a feature
-Usage:
-```
-npm run rm:feature feature-name
-```
-
-Args:
-* `feature-name`: the feature name.
-
-Example:
-```
-npm run rm:feature my-feature
-```
-
-Result:
-* Remove the folder `src/features/my-feature`.
-* Remove the related reducer from `src/common/rootReducer`.
-* Remove the related route config from `src/common/routeConfig`.
-* Remove the less import from `src/styles/index.less`.
-
-### Adding a page
-Usage:
-```
-npm run add:page feature-name/page-name [url-path]
-```
-Args:
-* `feature-name`: the feature name the page belongs to.
-* `page-name`: the page name.
-* `url-path`: optional. The url path used to define the routing. Defaults to `page-name`.
-
-Example:
-```
-npm run add:page my-feature/my-page
-```
-
-Result:
-* Add the page component: `src/features/my-feature/MyPage.js`.
-* Add the page style file: `src/features/my-feature/MyPage.less`.
-* Export the page component in `src/features/my-feature/index.js`.
-* Import MyPage.less in `src/features/my-feature/style.less`.
-* Define routing in `src/features/my-feature/route.js` with url path.
-* Add a unit test file `test/app/features/my-feature/MyPage.test.js`.
-
-### Removing a page
-Usage:
-```
-npm run rm:page feature-name/page-name
-```
-
-Args:
-* `feature-name`: the feature name the page belongs to.
-* `page-name`: the page name to remove.
-
-Example:
-```
-npm run rm:page my-feature/my-page
-```
-Result:
-* Remove the page component: `src/features/my-feature/MyPage.js`.
-* Remove the page style file: `src/features/my-feature/MyPage.less`.
-* Remove the page component export in `src/features/my-feature/index.js`.
-* Remove MyPage.less import in `src/features/my-feature/style.less`.
-* Remove routing config in `src/features/my-feature/route.js`.
-* Remove the unit test file `test/app/features/my-feature/MyPage.test.js`.
-
-### Adding a component for a feature
-Usage:
-```
-npm run add:component feature-name/component-name
-```
-
-Args:
-* `feature-name`: the feature name the component belongs to.
-* `component-name`: the component name.
-
-Example:
-```
-npm run add:component my-feature/my-component
-```
-
-Result:
-* Add the component: `src/features/my-feature/MyComponent.js`.
-* Add the component style file: `src/features/my-feature/MyComponent.less`.
-* Export the component in `src/features/my-feature/index.js`.
-* Import MyComponent.less in `src/features/my-feature/style.less`.
-* Add a unit test file `test/app/features/my-feature/MyComponent.test.js`.
-
-### Removing a component from a feature
-Usage:
-```
-npm run rm:component feature-name/component-name
-```
-
-Args:
-* `feature-name`: the feature name the component belongs to.
-* `component-name`: the component name.
-
-Example:
-```
-npm run rm:component my-feature/my-component
-```
-
-Result:
-* Remove the component: `src/features/my-feature/MyComponent.js`.
-* Remove the component style file: `src/features/my-feature/MyComponent.less`.
-* Remove the export of component from `src/features/my-feature/index.js`.
-* Remove the import MyComponent.less from `src/features/my-feature/style.less`.
-* Remove the unit test file `test/app/features/my-feature/MyComponent.test.js`.
-
-### Adding a common component
-Usage:
-```
-npm run add:component component-name
-```
-
-Args:
-* `component-name`: the component name.
-
-Example:
-```
-npm run add:component my-component
-```
-
-Result:
-* Add the component: `src/components/MyComponent.js`.
-* Add the component style file: `src/components/MyComponent.less`.
-* Export the component in `src/components/index.js`.
-* Import MyComponent.less in `src/components/style.less`.
-* Add a unit test file `test/app/components/MyComponent.test.js`.
-
-### Removing a common component
-Usage:
-```
-npm run rm:component component-name
-```
-
-Args:
-* `component-name`: the component name.
-
-Example:
-```
-npm run rm:component my-component
-```
-
-Result:
-* Remove the component: `src/components/MyComponent.js`.
-* Remove the component style file: `src/components/MyComponent.less`.
-* Remove the export of component from `src/components/index.js`.
-* Remove the import MyComponent.less from `src/components/style.less`.
-* Remove the unit test file `test/app/comonents/MyComponent.test.js`.
-
-### Adding an action
-Usage:
-```
-npm run add:action feature-name/action-name [action-type]
-```
-Args:
-* `feature-name`: the feature name the action belongs to.
-* `action-name`: the action name. It's also used as the action method name.
-* `action-type`: optional. The action type name. It's usually not needed. Defaults to `ACTION_NAME`.
-
-Example:
-```
-npm run add:action my-feature/my-action
-```
-
-Result:
-* Add a action file `src/features/my-feature/redux/myAction.js
-* Add action type `MY_ACTION` to `src/features/my-feature/redux/constants.js`.
-* Import and export the action method `myAction` in `src/features/my-feature/redux/actions.js`.
-* Import the reducer in `src/features/my-feature/redux/reducer.js`.
-* Add a test file `src/features/my-feature/redux/myAction.test.js`.
-
-### Removing an action
-Usage:
-```
-npm run rm:action feature-name/action-name
-```
-
-Usage:
-```
-npm run add:action my-feature/action-name [action-type]
-```
-Args:
-* `feature-name`: the feature name the action belongs to.
-* `action-name`: the action name. It's also used as the action method name.
-* `action-type`: optional. The action type name. It's usually not needed. Defaults to `ACTION_NAME`.
-
-Example:
-```
-npm run rm:action feature-name/my-action
-```
-
-Result:
-* Remove the action file `src/features/my-feature/redux/myAction.js
-* Remove action type `MY_ACTION` from `src/features/my-feature/redux/constants.js`.
-* Remove the import/export `myAction` from `src/features/my-feature/redux/actions.js`.
-* Remove the import from `src/features/my-feature/redux/reducer.js`.
-* Remove the test file `src/features/my-feature/redux/myAction.test.js`.
-
-### Adding an async action
-Usage:
-```
-npm run add:async-action feature-name/async-action-name
-```
-
-Args:
-* `feature-name`: the feature name the action belongs to.
-* `action-name`: the action name. It's also used as the action method name.
-
-Example:
-```
-npm run add:async-action my-feature/fetch-topic-list
-```
-
-Result:
-* Add action type `FETCH_TOPIC_LIST_BEGIN` to `src/features/my-feature/redux/constants.js`.
-* Add action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/redux/constants.js`.
-* Add action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/redux/constants.js`.
-* Add action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/redux/constants.js`.
-* Add a action file `src/features/my-feature/redux/fetchTopicList.js
-* Import and export `fetchTopicList`, `dismissFetchTopicListError` from `src/features/my-feature/redux/actions.js`.
-* Add a test file `src/features/my-feature/redux/fetchTopicList.test.js`.
-
-
-### Removing an async action
-Usage:
-```
-npm run rm:async-action feature-name/async-action-name
-```
-
-Args:
-* `feature-name`: the feature name the action belongs to.
-* `action-name`: the action name. It's also used as the action method name.
-
-Example:
-```
-npm run rm:action my-feature/fetch-topic-list
-```
-
-Result:
-* Remove action type `FETCH_TOPIC_LIST_BEGIN` to `src/features/my-feature/redux/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_PENDING` to `src/features/my-feature/redux/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_SUCCESS` to `src/features/my-feature/redux/constants.js`.
-* Remove action type `FETCH_TOPIC_LIST_FAILURE` to `src/features/my-feature/redux/constants.js`.
-* Remove the action file `src/features/my-feature/redux/fetchTopicList.js
-* Remove the import/export `fetchTopicList`, `dismissFetchTopicListError` from `src/features/my-feature/redux/actions.js`.
-* Remove the test file `src/features/my-feature/redux/fetchTopicList.test.js`.

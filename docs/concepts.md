@@ -1,10 +1,11 @@
 ## Concepts
-Rekit doesn't wrap or change any API of React, Redux or React router but just provides tools to do trival tasks for you. So there are no new concepts in the project. If you can understand React, Redux and React router, you can understand Rekit projects easily.
+Rekit doesn't wrap or change any API of React, Redux or React router but just provides tools to manage necessary boilerplate code for you. So there are no new concepts(except feature) in the project. If you can understand React, Redux and React router, you can understand Rekit projects easily.
 
 Below is just the description about how those concepts are used/managed by Rekit.
 
 #### Feature
-This is the top level concept of a project, and it's the core concept of Rekit. A feature is some capability of an application. For example, an EShop application usually contains below features:
+Feature is the top level concept of a project, and it's the core concept of Rekit. A feature is actually a natural concept that describes some capability of an application. For example, an EShop application usually contains below features:
+
  * `customer`: manage basic customer information.
  * `product`: manage products on sale.
  * `category`: manage product categories.
@@ -12,7 +13,7 @@ This is the top level concept of a project, and it's the core concept of Rekit. 
  * `user`: manage admins of the system.
  * etc...
 
-A feature usually always contains multiple actions, components or routing rules.
+A feature usually always contains multiple actions, components or routing rules. A Rekit application always consists of multiple features.
 
 There are two default features created automatically for a new Rekit application:
 
@@ -26,19 +27,29 @@ To get a quick feel on feature concept, just look at the Rekit portal live demo:
 And the next chapter will describe the thought of [feature oriented architecture]() behind Rekit.
 
 #### Component
-It's just the component concept of React.
+It's just the component concept of React. [By Redux](http://redux.js.org/docs/basics/UsageWithReact.html), components could be divided into categories: `container` and `presentational`. Actually the key difference is whether to connect component to the Redux store. So Rekit allows to create these two types of components by setting options:
+```
+rekit add component home/Comp [-c]
+```
+The `-c` flag indicates it's a container component. Rekit will use different template to generate a component.
 
-#### Page
-Page is some of special component which maps to the concept of 'Container' in the best practice of [separating presentational and container components](http://redux.js.org/docs/basics/UsageWithReact.html) pattern. A page also usually maps to a specific URL path, so when creating a page also needs to create a routing definition.
+To use the component with React router, that is a component is represented on some url pattern, Rekit allows to specify a `-u` argument:
+```
+rekit add component home/Page1 -u page1
+```
+
+This will define a React router rule in the `route.js` file of the feature. Then you can access the component by http://localhost/home/page1.
+
 
 #### Action
-It's just [Redux action](http://redux.js.org/docs/basics/Actions.html).
+It's just [Redux action](http://redux.js.org/docs/basics/Actions.html). There are two types of actions: sync and async. As described in Redux's doc, async actions are actually not new concepts but indicates a work flow of async operations.
 
-#### Async action
-When developing a web application, we often need to request data from server side. It needs to be implemented as an `async-action`. Actually it is not anything new but just combining some normal actions and reducers. In Rekit, when creating an async-action, it creates the code skeleton to handle request begin, request pending, request success, request failure action types. And maintain the requestPending, requestError state in the reducer. With the command line tool `npm run add:async-action` it automatically creates the skeleton and you only need to fill the application logic in different technical artifacts. See below command line tools guide to see more details.
+By default Rekit uses `redux-thunk` for async actions. When creating an async-action, Rekit creates the code boilerplate to handle request begin, request pending, request success, request failure action types. And maintain the requestPending, requestError state in the reducer. With the command line tool `npm run add:async-action` it automatically creates the skeleton and you only need to fill the application logic in different technical artifacts. See below command line tools guide to see more details.
+
+```
+rekit add action home/doRequest [-a]
+```
+The `-a` flag indicates if it's an async action.
 
 #### Reducer
-It's just [Redux reducer](http://redux.js.org/docs/basics/Reducers.html).
-
-### Container
-The top level container of the application, it usually defines the top level UI layout and it's the container of pages. They are in `src/containers` folder. Very few containers are needed.
+It's just [Redux reducer](http://redux.js.org/docs/basics/Reducers.html). But Rekit re-organizes the code structure for reducers compared to the official way. See the [one action one file]() chapter.

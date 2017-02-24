@@ -11,7 +11,7 @@
       "url": "https://github.com/supnate/rekit/"
     },
     "theme-default": {
-      "showLevel": true,
+      "showLevel": false,
       "styles": {
         "website": "build/gitbook.css"
       }

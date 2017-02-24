@@ -1,15 +1,15 @@
-## Table of Contents
+# Table of Contents
 
+* [Read Me](/README.md)
 * [Introduction](/README-2.0.md)
-  * [Get started](/docs/folder-structure.md)
+  * [Get started](/docs/get-started.md)
   * [Concepts](/docs/concepts.md)
   * [Feature oriented architecture](/docs/feature-architecture.md)
-  * [One Action One File](/docs/one-action-one-file.md)
+  * [One action one file](/docs/one-action-one-file.md)
   * [Namings](/docs/namings.md)
   * [Examples](/docs/examples.md)
-* [Command line tools](/docs/cli.md)
 * [Rekit portal](/docs/portal.md)
-  * [Introduction](/docs/portal.md)
+  * [Overview](/docs/portal.md)
   * [Project explorer](/docs/portal.md)
   * [Manage project elements](/docs/portal.md)
   * [Dashboard](/docs/portal-dashboard.md)
@@ -18,6 +18,10 @@
   * [Element diagram](/docs/portal-element-diagram.md)
   * [Build the project](/docs/portal-build.md)
   * [Test the project](/docs/portal-test.md)
+* [Command line tools](/docs/cli.md)
+  * [Create apps and plugins](/docs/cli.md)
+  * [Manage elements](/docs/cli.md)
+  * [Other tools](/docs/cli.md)
 * [Plugins](/docs/plugins.md)
   * [Introduction](/docs/welcome-page.md)
   * [Install a plugin](/docs/welcome-page.md)
@@ -31,4 +35,5 @@
 * [Testing](/docs/testing.md)
 * [Bundling](/docs/webpack.md)
 * [Code Quality Check](/docs/eslint.md)
+* [Feedback](/docs/feedback.md)
 

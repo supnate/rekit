@@ -76,33 +76,6 @@ node tools/build.js
 
 It's also available as the npm script: `npm run build`. It will build the project to the `build` folder.
 
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Scripts</th>
-      <th style="text-align: left" width="200px">Run with npm</th>
-      <th style="text-align: left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>tools/server.js</td>
-      <td>npm start -- [-m, --mode] [{dev|portal|build}] [--readonly]</td>
-      <td>
-        Start dev servers, by default it starts all 3 servers include webpack dev server, Rekit portal and the build result server.
-        You can only start some of servers by arguments. `readonly` argument tells Rekit portal to run on readonly mode. It's useful to start a portal server only for explore the project structure. For example, the Rekit portal [live demo](https://rekit-portal.herokuapp.com) is running on readonly mode.
-      </td>
-    </tr>
-    <tr>
-      <td>tools/build.js</td>
-      <td>npm run build</td>
-      <td>Build the project to `build` folder.</td>
-    </tr>
-  </tbody>
-</table>
-
-
 ### Manage features, components and actions.
 This is the key part of daily Rekit development. You will use below commands to mange Rekit elements.
 
@@ -114,7 +87,7 @@ All such commands have silimar patterns:
 - `rekit mv <type>`: move/rename an element of the type.
 - `rekit rm <type>`: delete an element of the type.
 
-Almose all commands supports [-h] argument to see the usage help. i.e. `rekit add -h`.
+All commands supports [-h] argument to see the usage help. i.e. `rekit add -h`.
 
 Below is the list of all Rekit commands to manage project elements:
 
@@ -122,7 +95,7 @@ Below is the list of all Rekit commands to manage project elements:
     <thead>
         <tr>
             <th style="text-align: left">Commands</th>
-            <th style="text-align: left">Description</th>
+            <th style="text-align: left; width: 250px;">Description</th>
         </tr>
     </thead>
     <tbody>

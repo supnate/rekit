@@ -35,7 +35,7 @@ It reads the route config of the whole application and generates links to differ
 By the sample you can quickly see how component, actions and reducers work together.
 
 **3. A demo to fetch latest topics of `reactjs` channel from Reddit**
-This is just the same example from the official Redux site: [https://redux.js.org/docs/advanced/ExampleRedditAPI.html](https://redux.js.org/docs/advanced/ExampleRedditAPI.html). It demostrates the [async actions](/docs/concepts#async-action) for a Redux application. But the Rekit version uses one file one action pattern, and it addes error handling which is a common requirement for real-world apps.
+This is just the same example from the official Redux site: [https://redux.js.org/docs/advanced/ExampleRedditAPI.html](https://redux.js.org/docs/advanced/ExampleRedditAPI.html). It demostrates the [async actions](/docs/concepts#async-action) for a Redux application. But the Rekit version uses [one action one file pattern](/docs/one-action-one-file.md), and it adds error handling which is a common requirement for real-world apps.
 
 ### Try Rekit Portal
 Rekit portal is a new dev tool shipped with Rekit 2.0. When a Rekit app is started, the Rekit portal is also auto started at: [http://localhost:6076](http://localhost:6076) by default:

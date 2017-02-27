@@ -68,6 +68,8 @@ Here is a list about what different colors and lines mean:
 </table>
 
 ### Element diagram
+This diagram provides a focused view of the relationship between the selected element and others.
+It helps to understand a module quickly, and helps to find out over-complicated modules.
 
 
 ### Test coverage

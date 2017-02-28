@@ -1,13 +1,13 @@
 ## Rekit portal
 
-Rekit portal is a ne dev tool shiped with Rekit 2.0. It's not only CLI wrappers, but also a central place to manage and analyze your application. It's motivated by different problems of React, Redux development:
+Rekit portal is a new dev tool shipped with Rekit 2.0. It's not only CLI wrappers, but also a central place to manage and analyze your application. It's motivated by different problems of React, Redux development:
 
 1. UI interface is zero learning cost, and more intuitive than CLIs, just as you always create a Java class using eclipse like IDE.
 2. Are you confident about how a system works if you'd not touched it for 3 months?
 3. How does a new team member quickly dive it into a project?
 4. What's the effect to a project if you want to do hacks for some special cases.
 
-With these objectives, Rekit portal aims to be a powerful and easy to use IDE for React, Redux development, though there still be a long way to go. But I believe it has a good start:
+With these objectives, Rekit portal aims to be a powerful and easy to use IDE for React, Redux development, though there still be a long way to go. But I believe it has been a good start.
 
 ### Project explorer
 The project explorer provides a more meaningful view of the project folder structure by grouping source files by `features`, `actions`, `components`. You can easily see the functionality structure rather than just folder structure. You can see it at the left side of Rekit portal:

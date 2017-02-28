@@ -1,6 +1,6 @@
 ## Namings
 
-Rekit forces consistent naming rules. Either command line tools or Rekit portal follow below naming rules to create features, components and actions. If you create them manually should also follow the rules.
+Rekit forces consistent naming rules by auto converting the input. Either command line tools or Rekit portal follow below naming rules to create features, components and actions. If you create them manually should also follow the rules.
 
 > NOTE: Whatever names provided as arguments will be converted. For example, the command `rekit add component home/my-page` will create a component named `MyPage.js` even the provided component name is in kebab case.
 

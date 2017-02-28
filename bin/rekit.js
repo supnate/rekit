@@ -12,6 +12,7 @@ const ArgumentParser = require('argparse').ArgumentParser;
 const rekitPkgJson = require('../package.json');
 const createApp = require('./createApp');
 const createPlugin = require('./createPlugin');
+const installPlugin = require('./installPlugin');
 
 // If runs under a project
 function getLocalRekitCore() {
@@ -90,14 +91,14 @@ installPluginCmd.addArgument('name', {
 });
 
 // Uninstall plugin command
-const uninstallPluginCmd = subparsers.addParser('uninstall', {
-  addHelp: true,
-  description: 'Uninstall a Rekit plugin.',
-});
+// const uninstallPluginCmd = subparsers.addParser('uninstall', {
+//   addHelp: true,
+//   description: 'Uninstall a Rekit plugin.',
+// });
 
-uninstallPluginCmd.addArgument('name', {
-  help: 'The plugin name',
-});
+// uninstallPluginCmd.addArgument('name', {
+//   help: 'The plugin name',
+// });
 
 // Add sub-command
 const addCmd = subparsers.addParser('add',
@@ -195,6 +196,7 @@ switch (args.commandName) {
     console.timeEnd('😃  Done'); // create command doesn't need time end.
     break;
   case 'install':
+    installPlugin(args, rekitCore);
     break;
   case 'uninstall':
     break;

@@ -10,7 +10,7 @@
   * [Examples](/docs/examples.md)
 * [Rekit portal](/docs/portal.md)
 * [Command line tools](/docs/cli.md)
-* [Plugins](/docs/plugins.md)
+* [Plugin](/docs/plugin.md)
   * [Introduction](/docs/welcome-page.md)
   * [Install a plugin](/docs/welcome-page.md)
   * [Create a plugin](/docs/welcome-page.md)

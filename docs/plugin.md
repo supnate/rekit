@@ -53,7 +53,7 @@ module.exports = {
 
 ```
 
-We can see two parts:
+There are two parts:
 
 #### 1. accept
 It's an array of element types that the plugin could handle. Here it's `action`, it will override the default behavior how Rekit handles `action`. Whenever an element type is defined here, there should be a module named `${elementType}.js` where defines `add`, `remove`, `move` method to manage those elements. For example, element type `action` is defined, there should be a module `action.js` in the plugin folder:
@@ -144,7 +144,7 @@ module.exports = {
 ```
 
 ## Using a plugin
-For local plugins, you don't need to do anything else besides creating it. And it has highest priority for handling element types.
+For local plugins, you don't need to do anything else besides creating it. And it has highest priority for handling element types if there are conflicts.
 
 For public plugins, that is installed from npm. You need to register it in `rekit` section of `package.json`:
 
@@ -152,10 +152,28 @@ For public plugins, that is installed from npm. You need to register it in `reki
 {
 ...,
 "rekit": {
-  "plugins": ["redux-saga", "applo"], 
+  "plugins": ["redux-saga", "apollo"], 
 },
 ...,
 }
 ```
 
-Here you should only define public plugins in the `plugins` property, but not local plugins which are always loaded by Rekit. Not that the order of plugin names matters while they accept 
+Here you should only define public plugins in the `plugins` property so that they are loaded by Rekit. Local plugins will be always loaded by Rekit. Note that the order of plugin names matters while they accept same element types, the eariers have higher priority.
+
+While there are conflicts that multiple plugins accept the same element type, the priority from high to low is: local plugins &lt; public plugins &lt; Rekit default behavior.
+
+> NOTE: plugins which support more element types could only be used via command line tools for now.
+
+## Plugin development
+For most cases, a plugin just creates bolierplate code based on some template; refactors code when moving, deleting source files. Rekit-core exports many useful APIs for accerlarating plugin development. You may just need to compose those APIs to meet your requirement. For example, to alternate how Rekit create less style file for a component, you may just need to create below plugin:
+
+```javascript
+module.exports = {
+  add(feature, name) {
+    rekitCore.style....
+  }
+};
+```
+
+## API reference
+TBD...

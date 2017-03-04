@@ -13,7 +13,7 @@ Feature is the top level concept of a project, and it's the core concept of Reki
  * `user`: manage admins of the system.
  * etc...
 
-A feature usually always contains multiple actions, components or routing rules. A Rekit application always consists of multiple features.
+A feature usually always contains multiple actions, components or routing rules. A Rekit application always consists of multiple features. By this approach, a large application could always be divided into multiple small, well-decoupled, understandable features.
 
 There are two default features created automatically for a new Rekit application:
 
@@ -39,7 +39,6 @@ rekit add component home/Page1 -u page1
 ```
 
 This will define a React router rule in the `route.js` file under the feature folder. Then you can access the component at http://localhost:6075/home/page1.
-
 
 #### Action
 It's just [Redux action](http://redux.js.org/docs/basics/Actions.html). There are two types of actions: sync and async. As described in Redux's doc, async action isn't actually a new concept but describes a work flow of async operations.

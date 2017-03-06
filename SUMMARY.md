@@ -3,6 +3,7 @@
 * [Read Me](/README.md)
 * [Introduction](/README-2.0.md)
   * [Get started](/docs/get-started.md)
+  * [App Architecture](/docs/app.md)
   * [Concepts](/docs/concepts.md)
   * [Feature oriented architecture](/docs/feature-architecture.md)
   * [One action one file](/docs/one-action-one-file.md)

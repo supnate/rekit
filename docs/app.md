@@ -1,5 +1,5 @@
 ## Rekit app architecture
-You can create a well configured React app by Rekit with one command line. The app is designed to be scalable, testable and maintainable so that it meets the requirements of a real-world application.
+You can create a React app by Rekit with one command line with no configuration needed. The app is designed to be scalable, testable and maintainable so that it meets the requirements of a real-world application.
 
 One of the key concepts of Rekit is dividing a large app into small pieces called features. A feature is some capability of an application. It's small and well decoupled, so it's easy to understand and maintain.
 
@@ -15,6 +15,7 @@ As the above picture shows, Rekit creates an application with a special folder s
 ```
 |-- project-name
 |    |-- src
+|    |    +-- common
 |    |    |-- features
 |    |    |    |-- home
 |    |    |    |    +-- redux
@@ -26,7 +27,6 @@ As the above picture shows, Rekit creates an application with a special folder s
 |    |    |    |    |-- ...
 |    |    |    +-- feature-1
 |    |    |    +-- feature-2
-|    |    |-- common
 |    |    +-- styles
 |    --- tools
 |    |    +-- plugins

@@ -28,7 +28,7 @@ The dashboard provides an overall status view of the project such as overview di
 <img src="/images/portal-dashboard.png" width="700" alt="dashboard" />
 
 ### Overview diagram
-The most notible part of the dashboard is the overview diagram. It's an intuitive view about the architecture of a Rekit project. It's also interactive, you can mouse move to different features, components, actions to see the relationship of some specific element. You can also click a node to deep dive into it. Below information is covered by the overview diagram:
+The most notable part of the dashboard is the overview diagram. It's an intuitive view about the architecture of a Rekit project. It's also interactive, you can mouse move to different features, components, actions to see the relationship of some specific element. You can also click a node to deep dive into it. Below information is covered by the overview diagram:
 
 1. Relationship between modules.
 2. The relative size of features.

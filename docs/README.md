@@ -17,8 +17,6 @@
 * [Testing](/docs/testing.md)
 * [Bundling](/docs/webpack.md)
 * [Code Quality Check](/docs/eslint.md)
-
-
 * [Command Line Tools](/docs/cli.md)
 * [Sublime Plugin](/docs/sublime-plugin.md)
 * [Example: Simple Forum](/docs/example.md)

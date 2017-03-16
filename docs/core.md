@@ -1,5 +1,5 @@
 ## Rekit core
-[Rekit core](https://github.com/supnate/rekit-core) provides core functions for manaing Rekit apps, it's used by both Rekit command line tools and Rekit portal.
+[Rekit core](https://github.com/supnate/rekit-core) provides core functions for managing Rekit apps, it's used by both Rekit command line tools and Rekit portal.
 
 When a Rekit app is created, it has auto added `rekit-core` as a dependency. When you execute a command like 'rekit add feature f1' it finds the current installed `rekit-core` in the project to add a feature. So `rekit-core` is not global but project independent. Different Rekit apps may use different versions of `rekit-core`. This gurantees that the upgrade of `rekit-core` doesn't break existing Rekit apps potentially.
 

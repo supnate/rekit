@@ -17,7 +17,7 @@
  * 4. Runt 'npm test' and check success.
  * 5. Create a public plugin named 'rekit-plugin-public-test', generate a dummy js module
  * 6. Config the plugin in the app
- * 7. Run 'rekit add public-test home/pt1', check result.
+ * 7. Run 'rekit add sanity-test home/pt1', check result.
  * 8. Run 'rekit mv public-test home/pt1 home/pt2', then check result.
  * 9. Run 'rekit rm public-test home/pt1 home/pt2', then check result.
  * 10. Create a local plugin named 'rekit-plugin-local-test', generate a dummy js module
@@ -71,7 +71,7 @@ const appRoot = path.join(prjRoot, '../', appName);
 const appPkgJsonPath = path.join(appRoot, 'package.json');
 
 // Remove app folder
-shell.rmdir(appRoot);
+shell.rm('-rf', appRoot);
 
 // Uninstall Rekit globally and unlink it.
 console.log('Uninstalling Rekit globally......');
@@ -109,7 +109,44 @@ exec('yarn', { cwd: appRoot });
 
 // Run tests
 console.log('Run test for the app...');
-exec('npm test', { cwd: appRoot });
+// exec('npm test', { cwd: appRoot });
+
+// Create a public plugin: rekit-plugin-public-test
+console.log('Create a public plugin');
+const publicPluginRoot = path.join(appRoot, '../rekit-plugin-public-test');
+shell.rm('-rf', publicPluginRoot);
+exec('rekit create-plugin public-test', { cwd: path.join(appRoot, '../') });
+exec('npm link', { cwd: publicPluginRoot });
+exec('npm link rekit-plugin-public-test', { cwd: appRoot });
+pkg.rekit.plugins.push('public-test');
+shell.ShellString(JSON.stringify(pkg)).to(appPkgJsonPath);
+shell.cat(path.join(__dirname, 'sanity/pluginSample.js')).to(path.join(publicPluginRoot, 'publicTest.js'));
+exec('rekit add public-test home/my-cls', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls.js'))).to.be.true;
+exec('rekit mv public-test home/my-cls home/my-cls-2', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls.js'))).to.be.false;
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls2.js'))).to.be.true;
+exec('rekit mv public-test home/my-cls-2 common/my-cls', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls2.js'))).to.be.false;
+expect(shell.exists(path.join(appRoot, 'src/features/common/MyCls.js'))).to.be.true;
+exec('rekit rm public-test common/my-cls', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/common/MyCls.js'))).to.be.false;
+
+// Create a local plugin: rekit-plugin-local-test
+console.log('Create a local plugin');
+const localPluginRoot = path.join(appRoot, './tools/plugins/rekit-plugin-local-test');
+exec('rekit create-plugin local-test', { cwd: appRoot });
+shell.cat(path.join(__dirname, 'sanity/pluginSample.js')).to(path.join(localPluginRoot, 'localTest.js'));
+exec('rekit add local-test home/my-cls', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls.js'))).to.be.true;
+exec('rekit mv local-test home/my-cls home/my-cls-2', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls.js'))).to.be.false;
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls2.js'))).to.be.true;
+exec('rekit mv local-test home/my-cls-2 common/my-cls', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/home/MyCls2.js'))).to.be.false;
+expect(shell.exists(path.join(appRoot, 'src/features/common/MyCls.js'))).to.be.true;
+exec('rekit rm local-test common/my-cls', { cwd: appRoot });
+expect(shell.exists(path.join(appRoot, 'src/features/common/MyCls.js'))).to.be.false;
 
 // Start the server
 console.log('Start the app...');

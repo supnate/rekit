@@ -35,7 +35,6 @@ function createPlugin(args, rekitCore) {
   [
     'config.js',
     'elementType.js',
-    'index.js',
     'package.json.tpl',
   ].forEach((file) => {
     const tpl = fs.readFileSync(path.join(__dirname, 'plugin-template', file)).toString();

@@ -31,7 +31,7 @@ function reset() {
   // exec('npm unlink rekit-plugin-public-test', { cwd: appRoot });
   shell.rm('-rf', publicPluginRoot);
   shell.rm('-rf', localPluginRoot);
-  _.remove(pkg.rekit.plugins, 'public-test');
+  _.pull(pkg.rekit.plugins, 'public-test');
   shell.ShellString(JSON.stringify(pkg, null, '  ')).to(appPkgJsonPath);
 }
 

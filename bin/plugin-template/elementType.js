@@ -5,36 +5,38 @@
 
 // rekitCore is the one that is dependent by the project using the plugin.
 // You may need it to perform common tasks such as use refactor to rename variables in a module.
-// const rekitCore = require('rekit-core');
 
-function add(feature, name) {
-  console.log('Adding ${pluginName}.');
+function handleElement(rekitCore) {
+  function add(feature, name) {
+    console.log('Adding ${pluginName}.');
+  }
+
+  function remove(feature, name) {
+    console.log('Removing ${pluginName}.');
+  }
+
+  function move(source, target) {
+    console.log('Moving ${pluginName}.');
+  }
+
+  /* Uncomment below code to enable installation and uninstallation*/
+  // function install() {
+  //   // Called when using 'rekit install plugin-name' to install the plugin.
+  //   // Should check repeated installation.
+  //   console.log('Installing ${pluginName}');
+  // }
+  // function uninstall() {
+  //   // Called when using 'rekit uninstall plugin-name' to install the plugin.
+  //   // Should check repeated uninstallation.
+  //   console.log('Uninstalling ${pluginName}');
+  // }
+  return {
+    add,
+    remove,
+    move,
+    // install,
+    // uninstall,
+  };
 }
 
-function remove(feature, name) {
-  console.log('Removing ${pluginName}.');
-}
-
-function move(source, target) {
-  console.log('Moving ${pluginName}.');
-}
-
-/* Uncomment below code to enable installation and uninstallation*/
-// function install() {
-//   // Called when using 'rekit install plugin-name' to install the plugin.
-//   // Should check repeated installation.
-//   console.log('Installing ${pluginName}');
-// }
-// function uninstall() {
-//   // Called when using 'rekit uninstall plugin-name' to install the plugin.
-//   // Should check repeated uninstallation.
-//   console.log('Uninstalling ${pluginName}');
-// }
-
-module.exports = {
-  // install,
-  // uninstall,
-  add,
-  remove,
-  move,
-};
+module.exports = handleElement;

@@ -170,7 +170,7 @@ mvCmd.addArgument('target', {
 });
 
 if (rekitCore) {
-  rekitCore.plugin.getPlugins().forEach((p) => {
+  rekitCore.plugin.getPlugins(rekitCore).forEach((p) => {
     if (p.config.defineArgs) p.config.defineArgs(addCmd, mvCmd, rmCmd);
   });
 }

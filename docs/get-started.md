@@ -48,6 +48,9 @@ From the dashboard, you find test coverage report have not been generated. Don't
 
 You can learn more from the [Rekit portal](/docs/portal.md) page.
 
+### Edit the root container
+Rekit creates a single page application by default. You may need to edit the root container first to define your own container layout. The source file is at `src/features/home/App.js`.
+
 ### Two quick tutorial videos
 There are two samples on the welcome page, and they are also demos on Redux's official web site. Now let's see how to create them with Rekit.
 

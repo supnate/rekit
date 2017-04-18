@@ -33,9 +33,7 @@
     "devPort": 6075,
     "portalPort": 6076,
     "buildPort": 6077,
-    "plugins": [
-      "public-test"
-    ],
+    "plugins": [],
     "css": "less"
   },
   "babel": {

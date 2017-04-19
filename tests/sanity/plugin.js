@@ -72,3 +72,7 @@ expect(shell.test('-e', path.join(appRoot, 'src/features/common/MyCls.js'))).to.
 exec('rekit rm public-test common/my-cls', { cwd: appRoot });
 expect(shell.test('-e', path.join(appRoot, 'src/features/common/MyCls.js'))).to.be.false;
 
+reset();
+
+
+

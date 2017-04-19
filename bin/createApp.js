@@ -79,11 +79,6 @@ function createApp(args) {
   // Create gitignore
   fs.rename(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
 
-  // const prjConfig = {
-  //   dependencies: Object.keys(rekitPkgJson.dependencies),
-  //   devDependencies: Object.keys(rekitPkgJson.devDependencies),
-  // };
-
   // If sass, change webpack configs.
   if (args.sass) {
     const configPath = path.join(prjPath, 'webpack-config.js');

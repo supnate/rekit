@@ -59,6 +59,16 @@ parser.addArgument(['--local-portal'], {
   action: 'storeTrue',
 });
 
+parser.addArgument(['--sass'], {
+  help: 'Use sass instead of less.',
+  action: 'storeTrue',
+});
+
+parser.addArgument(['--start'], {
+  help: 'Whether to start the server',
+  action: 'storeTrue',
+});
+
 const args = parser.parseArgs();
 
 function exec(cmd, opts) {
@@ -86,21 +96,21 @@ exec(`npm install -g ${prjRoot}`);
 
 // Create a Rekit app
 console.log('Create a new Rekit app...');
-exec(`rekit create ${appName}`, { cwd: path.join(prjRoot, '..') });
+exec(`rekit create ${appName}${args.sass ? ' --sass' : ''}`, { cwd: path.join(prjRoot, '..') });
 
 const pkg = require(appPkgJsonPath); // eslint-disable-line
 if (args.local_core) {
   // Use local rekit-core
   console.log('Use local rekit core optionally');
   pkg.devDependencies['rekit-core'] = path.join(prjRoot, '../rekit-core');
-  shell.ShellString(JSON.stringify(pkg)).to(appPkgJsonPath);
+  shell.ShellString(JSON.stringify(pkg, null, '  ')).to(appPkgJsonPath);
 }
 
 if (args.local_portal) {
   // Use local rekit-portal
   console.log('Use local rekit portal optionally');
   pkg.devDependencies['rekit-portal'] = path.join(prjRoot, '../rekit-portal');
-  shell.ShellString(JSON.stringify(pkg)).to(appPkgJsonPath);
+  shell.ShellString(JSON.stringify(pkg, null, '  ')).to(appPkgJsonPath);
 }
 
 // Install deps
@@ -112,6 +122,8 @@ console.log('Run test for the app...');
 exec('npm test', { cwd: appRoot });
 
 // Start the server
-console.log('Start the app...');
-exec('npm start', { cwd: appRoot });
+if (args.start) {
+  console.log('Start the app...');
+  exec('npm start', { cwd: appRoot });
+}
 

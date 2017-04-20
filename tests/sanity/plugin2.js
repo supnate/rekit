@@ -56,23 +56,23 @@ exec('rekit rm action common/a1', { cwd: appRoot });
 expect(shell.test('-e', path.join(appRoot, 'src/features/common/redux/a1.js'))).to.be.false;
 
 // rekit-plugin-selector
-// pluginRoot = path.join(appRoot, '../rekit-plugin-redux-saga');
-// exec(`npm install ${pluginRoot}`, { cwd: appRoot });
-// pkg.rekit.plugins.push('redux-saga');
-// exec('rekit add action home/a1 -a', { cwd: appRoot });
-// expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a1.js'))).to.be.true;
-// exec('npm test features/home/redux/a1.test.js');
+pluginRoot = path.join(appRoot, '../rekit-plugin-redux-saga');
+exec(`npm install ${pluginRoot}`, { cwd: appRoot });
+pkg.rekit.plugins.push('redux-saga');
+exec('rekit add action home/a1 -a', { cwd: appRoot });
+expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a1.js'))).to.be.true;
+exec('npm test features/home/redux/a1.test.js');
 
-// exec('rekit mv action home/a1 home/a2', { cwd: appRoot });
-// expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a1.js'))).to.be.false;
-// expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a2.js'))).to.be.true;
-// exec('npm test features/home/redux/a2.test.js');
+exec('rekit mv action home/a1 home/a2', { cwd: appRoot });
+expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a1.js'))).to.be.false;
+expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a2.js'))).to.be.true;
+exec('npm test features/home/redux/a2.test.js');
 
-// exec('rekit mv public-test home/a1 common/a1', { cwd: appRoot });
-// expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a1.js'))).to.be.false;
-// expect(shell.test('-e', path.join(appRoot, 'src/features/common/redux/a2.js'))).to.be.true;
-// exec('npm test features/common/redux/a1.test.js');
+exec('rekit mv public-test home/a1 common/a1', { cwd: appRoot });
+expect(shell.test('-e', path.join(appRoot, 'src/features/home/redux/a1.js'))).to.be.false;
+expect(shell.test('-e', path.join(appRoot, 'src/features/common/redux/a2.js'))).to.be.true;
+exec('npm test features/common/redux/a1.test.js');
 
-// exec('rekit rm public-test common/a1', { cwd: appRoot });
-// expect(shell.test('-e', path.join(appRoot, 'src/features/common/redux/a1.js'))).to.be.false;
+exec('rekit rm public-test common/a1', { cwd: appRoot });
+expect(shell.test('-e', path.join(appRoot, 'src/features/common/redux/a1.js'))).to.be.false;
 

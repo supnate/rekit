@@ -69,9 +69,9 @@ expect(shell.test('-e', path.join(appRoot, 'src/features/home/selectors/s1.js'))
 expect(shell.test('-e', path.join(appRoot, 'src/features/home/selectors/s2.js'))).to.be.true;
 exec('npm test features/home/selectors/s2.test.js', { cwd: appRoot });
 
-exec('rekit mv selector home/s1 common/s1', { cwd: appRoot });
-expect(shell.test('-e', path.join(appRoot, 'src/features/home/selectors/s1.js'))).to.be.false;
-expect(shell.test('-e', path.join(appRoot, 'src/features/common/selectors/s2.js'))).to.be.true;
+exec('rekit mv selector home/s2 common/s1', { cwd: appRoot });
+expect(shell.test('-e', path.join(appRoot, 'src/features/home/selectors/s2.js'))).to.be.false;
+expect(shell.test('-e', path.join(appRoot, 'src/features/common/selectors/s1.js'))).to.be.true;
 exec('npm test features/common/selectors/s1.test.js', { cwd: appRoot });
 
 exec('rekit rm selector common/s1', { cwd: appRoot });

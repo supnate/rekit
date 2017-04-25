@@ -101,21 +101,21 @@ exec(`rekit create ${appName}${args.sass ? ' --sass' : ''}`, { cwd: path.join(pr
 const pkg = require(appPkgJsonPath); // eslint-disable-line
 if (args.local_core) {
   // Use local rekit-core
-  console.log('Use local rekit core optionally');
+  console.log('Use local rekit core.');
   pkg.devDependencies['rekit-core'] = path.join(prjRoot, '../rekit-core');
   shell.ShellString(JSON.stringify(pkg, null, '  ')).to(appPkgJsonPath);
 }
 
 if (args.local_portal) {
   // Use local rekit-portal
-  console.log('Use local rekit portal optionally');
+  console.log('Use local rekit portal.');
   pkg.devDependencies['rekit-portal'] = path.join(prjRoot, '../rekit-portal');
   shell.ShellString(JSON.stringify(pkg, null, '  ')).to(appPkgJsonPath);
 }
 
 // Install deps
 console.log('Install deps for the app...');
-exec('yarn', { cwd: appRoot });
+exec('npm install', { cwd: appRoot });
 
 // Run tests
 console.log('Run test for the app...');

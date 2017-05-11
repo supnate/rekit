@@ -3,8 +3,9 @@
  * It groups URLs by features.
 */
 
-import React, { PureComponent, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class SimpleNav extends PureComponent {
   static propTypes = {

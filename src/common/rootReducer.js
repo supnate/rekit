@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
+// import { routerReducer } from 'react-router-redux';
 import homeReducer from '../features/home/redux/reducer';
 import commonReducer from '../features/common/redux/reducer';
 
@@ -10,7 +10,7 @@ import commonReducer from '../features/common/redux/reducer';
 // So that it's easy for others to understand it and Rekit could manage theme.
 
 const reducerMap = {
-  routing: routerReducer,
+  // routing: routerReducer,
   home: homeReducer,
   common: commonReducer,
 };

@@ -15,8 +15,8 @@ export default class SimpleNav extends PureComponent {
   renderLinks(items, basePath) {
     return (
       <ul>
-        {
-          items.reduce((prev, item) => {
+        {items.reduce((prev, item) => {
+            if (item.autoIndexRoute) return prev;
             let path;
             if (/^\//.test(item.path)) {
               path = item.path;
@@ -31,8 +31,7 @@ export default class SimpleNav extends PureComponent {
               prev.push(<li key={`${path}_wrapper`}>{this.renderLinks(item.childRoutes, path)}</li>);
             }
             return prev;
-          }, [])
-        }
+          }, [])}
       </ul>
     );
   }

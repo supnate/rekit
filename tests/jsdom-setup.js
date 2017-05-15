@@ -1,19 +1,8 @@
 // NOTE: you should imort this jsdom setup for any component which uses React-router
 // of which Link component is often used.
 
-const jsdom = require('jsdom').jsdom;
+const JSDOM = require('jsdom').JSDOM;
 
-const exposedProperties = ['window', 'navigator', 'document'];
-
-global.document = jsdom('<div id="react-root"></div>');
-global.window = document.defaultView;
-Object.keys(document.defaultView).forEach((property) => {
-  if (typeof global[property] === 'undefined') {
-    exposedProperties.push(property);
-    global[property] = document.defaultView[property];
-  }
-});
-
-global.navigator = {
-  userAgent: 'node.js'
-};
+global.window = new JSDOM('<!DOCTYPE html><div id="react-root"></div>').window;
+global.document = window.document;
+global.navigator = window.navigator;

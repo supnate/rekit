@@ -4,7 +4,7 @@ import {
 } from './';
 
 export default {
-  path: '',
+  path: '/',
   name: 'Home',
   childRoutes: [
     { path: 'default-page',

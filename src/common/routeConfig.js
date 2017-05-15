@@ -20,31 +20,20 @@ const routes = [{
 }];
 
 // Handle isIndex property of route config:
-//  1. remove the first child with isIndex=true if no path property from childRoutes
-//  2. assign it to the indexRoute property of the parent.
+//  Dupicate it and put it as the first route rule.
 function handleIndexRoute(route) {
   if (!route.childRoutes || !route.childRoutes.length) {
     return;
   }
 
-  route.childRoutes = route.childRoutes.filter(child => { // eslint-disable-line
-    if (child.isIndex) {
-      /* istanbul ignore next */
-      if (process.env.NODE_ENV === 'dev' && route.indexRoute) {
-        console.error('More than one index route: ', route);
-      }
-
-      /* istanbul ignore else */
-      if (!route.indexRoute) {
-        const indexRoute = { ...child };
-        delete indexRoute.path;
-        route.indexRoute = indexRoute; // eslint-disable-line
-        if (!child.path) return false;
-      }
-    }
-    return true;
-  });
-
+  const indexRoute = route.childRoutes.find(child => child.isIndex);
+  if (indexRoute) {
+    const first = { ...indexRoute };
+    first.path = route.path;
+    first.exact = true;
+    first.autoIndexRoute = true; // mark it so that the simple nav won't show it.
+    route.childRoutes.unshift(first);
+  }
   route.childRoutes.forEach(handleIndexRoute);
 }
 

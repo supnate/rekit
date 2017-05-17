@@ -65,11 +65,16 @@ function createApp(args) {
   }
   utils.copyFolderRecursiveSync(path.join(rekitRoot, './src'), prjPath, filterCssFiles);
   utils.copyFolderRecursiveSync(path.join(rekitRoot, './tools'), prjPath);
-  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tests'), prjPath);
+  fs.mkdirSync(path.join(rekitRoot, './tests'));
+  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tests/features'), prjPath);
 
   [
     '.eslintrc',
     'gitignore.tpl',
+    'tests/.eslintrc',
+    'tests/before-all.js',
+    'tests/index.test.js',
+    'tests/jsdom-setup.js',
     'webpack-config.js',
     'webpack.test.config.js',
   ].forEach((file) => {

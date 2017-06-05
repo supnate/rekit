@@ -63,22 +63,27 @@ function createApp(args) {
 
     return true;
   }
-  utils.copyFolderRecursiveSync(path.join(rekitRoot, './src'), prjPath, filterCssFiles);
-  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tools'), prjPath);
-  fs.mkdirSync(path.join(rekitRoot, './tests'));
-  utils.copyFolderRecursiveSync(path.join(rekitRoot, './tests/features'), prjPath);
+  utils.copyFolderRecursiveSync(path.join(rekitRoot, 'src'), prjPath, filterCssFiles);
+  utils.copyFolderRecursiveSync(path.join(rekitRoot, 'tools'), prjPath);
+  fs.mkdirSync(path.join(prjPath, 'tests'));
+  utils.copyFolderRecursiveSync(path.join(rekitRoot, 'tests/features'), path.join(prjPath, 'tests'));
 
   [
     '.eslintrc',
     'gitignore.tpl',
-    'tests/.eslintrc',
-    'tests/before-all.js',
-    'tests/index.test.js',
-    'tests/jsdom-setup.js',
     'webpack-config.js',
     'webpack.test.config.js',
   ].forEach((file) => {
     utils.copyFileSync(path.join(rekitRoot, file), prjPath);
+  });
+
+  [
+    'tests/.eslintrc',
+    'tests/before-all.js',
+    'tests/index.test.js',
+    'tests/jsdom-setup.js',
+  ].forEach((file) => {
+    utils.copyFileSync(path.join(rekitRoot, file), path.join(prjPath, 'tests'));
   });
 
   // Create gitignore

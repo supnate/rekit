@@ -59,7 +59,7 @@ function deleteFolderRecursive(dirPath) {
 
 function requestDeps() {
   return new Promise((resolve, reject) => {
-    request('https://supnate.github.io/rekit-deps/deps.2.x.json', function (error, response, body) {
+    request('https://supnate.github.io/rekit-deps/deps.2.0.x.json', function (error, response, body) {
       if (!error && response.statusCode == 200) {
         resolve(JSON.parse(body));
       } else {

@@ -88,6 +88,7 @@
     "argparse": "^1.0.7",
     "body-parser": "^1.17.1",
     "lodash": "^4.17.4",
+    "react-router-redux": "next",
     "request": "^2.81.0"
   },
   "devDependencies": {
@@ -143,8 +144,9 @@
     "react-dom": "^15.5.4",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-redux": "^5.0.4",
-    "react-router-dom": "^4.1.1",
     "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
+    "react-router-redux": "next",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
     "redux-mock-store": "^1.2.3",

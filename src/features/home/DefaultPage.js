@@ -17,7 +17,7 @@ export class DefaultPage extends Component {
     return (
       <div className="home-default-page">
         <a href="http://github.com/supnate/rekit"><img src={require('../../images/logo.png')} className="app-logo" alt="logo" /></a>
-        <h1>Welcome to your Rekit project!</h1>
+        <h1>Welcome to your Rekit application!</h1>
         <p>
           Contratulations! You have created your Rekit app successfully! Seeing this page means everything works well now.
         </p>
@@ -28,10 +28,10 @@ export class DefaultPage extends Component {
           The app has been initialized with two features named &quot;common&quot; and &quot;home&quot; and two samples: counter and Reddit list viewer as shown below.
         </p>
         <p>
-          This page is the default root container of your application. You can edit it at the 'src/features/home/DefaultPage.js'.
+          To learn more about how to get started, you can visit: <a href="http://rekit.js.org/get-started">Get started</a>
         </p>
         <h3>Demos</h3>
-        <p>Here are two simple demos for your quick reference. You can open the browser console to see Redux action logs.</p>
+        <p>Here are two simple demos for your quick reference. You can open the browser dev tools to see Redux action logs.</p>
         <p className="section-title">To see how Redux works in the project, here is the demo of a simple counter:</p>
         <div className="demo-count">
           <button className="btn-minus-one" onClick={counterMinusOne} disabled={count === 0}>-</button>

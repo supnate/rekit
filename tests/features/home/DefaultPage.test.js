@@ -40,37 +40,37 @@ describe('features/home/DefaultPage', () => {
     ).to.exist;
   });
 
-  // it('should disable fetch button when fetching reddit', () => {
-  //   const pageProps = {
-  //     home: {
-  //       fetchRedditReactjsListPending: true,
-  //     },
-  //     actions: {},
-  //   };
-  //   const renderedComponent = shallow(
-  //     <DefaultPage {...pageProps} />
-  //   );
+  it('should disable fetch button when fetching reddit', () => {
+    const pageProps = {
+      home: {
+        fetchRedditReactjsListPending: true,
+      },
+      actions: {},
+    };
+    const renderedComponent = shallow(
+      <DefaultPage {...pageProps} />
+    );
 
-  //   expect(
-  //     renderedComponent.find('.btn-fetch-reddit[disabled]').node
-  //   ).to.exist;
-  // });
+    expect(
+      renderedComponent.find('.btn-fetch-reddit[disabled]').node
+    ).to.exist;
+  });
 
-  // it('should show error if fetch failed', () => {
-  //   const pageProps = {
-  //     home: {
-  //       fetchRedditReactjsListError: new Error('server error'),
-  //     },
-  //     actions: {},
-  //   };
-  //   const renderedComponent = shallow(
-  //     <DefaultPage {...pageProps} />
-  //   );
+  it('should show error if fetch failed', () => {
+    const pageProps = {
+      home: {
+        fetchRedditReactjsListError: new Error('server error'),
+      },
+      actions: {},
+    };
+    const renderedComponent = shallow(
+      <DefaultPage {...pageProps} />
+    );
 
-  //   expect(
-  //     renderedComponent.find('.fetch-list-error').node
-  //   ).to.exist;
-  // });
+    expect(
+      renderedComponent.find('.fetch-list-error').node
+    ).to.exist;
+  });
 
   // it('counter actions are called when buttons clicked', () => {
   //   const pageProps = {

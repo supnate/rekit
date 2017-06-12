@@ -7,7 +7,8 @@ describe('components/SimpleNav', () => {
   it('renders node with correct dom structure', () => {
     const routes = [{
       childRoutes: [
-        { path: '/root' },
+        { path: '/', childRoutes: [{ path: 'abc' }] },
+        { path: '/root', autoIndexRoute: true },
         { path: 'relative-path', name: 'Link Name' },
         {
           path: 'sub-links',
@@ -27,6 +28,6 @@ describe('components/SimpleNav', () => {
     ).to.exist;
     expect(
       comp.find('li').length
-    ).to.equal(6);
+    ).to.equal(8);
   });
 });

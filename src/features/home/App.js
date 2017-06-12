@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SimpleNav from '../common/SimpleNav';
 import routeConfig from '../../common/routeConfig';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from 'react-router-dom';
 
 /*
   This is the root component of your app. Here you define the overall layout

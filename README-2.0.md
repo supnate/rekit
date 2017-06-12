@@ -2,7 +2,7 @@
 
 > 🎉🎉🎉 Rekit 2.0 is out with nice new features! Check out the [release notes](https://github.com/supnate/rekit/releases/tag/v2.0.0) now!
 
-Rekit is a toolkit for building scalable web applications with React, Redux and React-router.
+Rekit is a toolkit for building scalable web applications with React, Redux and React-router. It's an all-in-one solution for creating modern React apps.
 
 It helps you focus on business logic rather than dealing with massive libraries, patterns, configurations etc.
 

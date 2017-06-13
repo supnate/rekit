@@ -81,6 +81,7 @@ function createApp(args) {
     'tests/.eslintrc',
     'tests/before-all.js',
     'tests/index.test.js',
+    'tests/Root.test.js',
     'tests/jsdom-setup.js',
   ].forEach((file) => {
     utils.copyFileSync(path.join(rekitRoot, file), path.join(prjPath, 'tests'));

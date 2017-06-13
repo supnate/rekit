@@ -6,7 +6,6 @@
     "rekit"
   ],
   "dependencies": {
-    "rekit-core": "next"
   },
   "devDependencies": {
   }

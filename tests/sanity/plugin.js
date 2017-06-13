@@ -56,6 +56,7 @@ expect(shell.test('-e', path.join(appRoot, 'src/features/common/MyCls.js'))).to.
 console.log('Create a public plugin', appRoot);
 
 exec('rekit create-plugin public-test', { cwd: path.join(appRoot, '../') });
+exec('npm install lodash --save-dev', { cwd: publicPluginRoot });
 exec('npm link', { cwd: publicPluginRoot });
 exec('npm link rekit-plugin-public-test', { cwd: appRoot });
 pkg.rekit.plugins.push('public-test');
@@ -73,6 +74,3 @@ exec('rekit rm public-test common/my-cls', { cwd: appRoot });
 expect(shell.test('-e', path.join(appRoot, 'src/features/common/MyCls.js'))).to.be.false;
 
 reset();
-
-
-

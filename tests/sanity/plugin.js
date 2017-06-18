@@ -1,8 +1,12 @@
 'use strict';
 
 /**
- * Test create plugin. It add a public plugin and local plugin separately and test them in the Rekit project itself.
+ * Test create plugin. It add a public plugin and local plugin separately and test them in the
+ * app created by rekit sanity test: a-rekit-npm-test-app.
  * If test succeeds, the plugins will be removed.
+ * It does below things:
+ *   1. Create a local plugin, test add/mv/rm command.
+ *   2. Create a plublic plugin, test add/mv/rm command.
 **/
 
 const path = require('path');
@@ -18,7 +22,7 @@ function exec(cmd, opts) {
   }
 }
 
-const appRoot = path.join(__dirname, '../../');
+const appRoot = path.join(__dirname, '../../../a-rekit-npm-test-app');
 const appPkgJsonPath = path.join(appRoot, './package.json');
 const pkg = require(appPkgJsonPath); // eslint-disable-line
 

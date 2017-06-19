@@ -25,6 +25,16 @@ function reset() {
   _.pull(pkg.rekit.plugins, 'redux-saga');
   _.pull(pkg.rekit.plugins, 'selector');
   shell.ShellString(JSON.stringify(pkg, null, '  ')).to(appPkgJsonPath);
+
+  shell.exec('rekit rm action home/a1', { cwd: appRoot });
+  shell.exec('rekit rm action home/a2', { cwd: appRoot });
+  shell.exec('rekit rm action common/a1', { cwd: appRoot });
+  shell.exec('rekit rm action common/a2', { cwd: appRoot });
+  shell.exec('rekit rm selector home/s1', { cwd: appRoot });
+  shell.exec('rekit rm selector home/s2', { cwd: appRoot });
+  shell.exec('rekit rm selector common/s1', { cwd: appRoot });
+  shell.exec('rekit rm selector common/s2', { cwd: appRoot });
+
   shell.rm('-rf', path.join(appRoot, 'node_modules/rekit-plugin-redux-saga'));
   shell.rm('-rf', path.join(appRoot, 'node_modules/rekit-plugin-selector'));
 }

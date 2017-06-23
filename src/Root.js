@@ -1,3 +1,5 @@
+/* This is the Root component mainly initializes Redux and React Router. */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';

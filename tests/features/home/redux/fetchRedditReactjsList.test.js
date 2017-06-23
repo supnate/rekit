@@ -57,7 +57,7 @@ describe('home/redux/fetchRedditReactjsList', () => {
         const actions = store.getActions();
         expect(actions[0]).to.have.property('type', HOME_FETCH_REDDIT_REACTJS_LIST_BEGIN);
         expect(actions[1]).to.have.property('type', HOME_FETCH_REDDIT_REACTJS_LIST_FAILURE);
-        expect(actions[1]).to.have.deep.property('data.error').that.exist;
+        expect(actions[1]).to.have.nested.property('data.error').that.exist;
       });
   });
 

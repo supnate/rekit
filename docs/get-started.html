@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Bundling · Rekit</title>
+        <title>Get started · Rekit</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="eslint.html" />
+    <link rel="next" href="app.html" />
     
     
-    <link rel="prev" href="testing.html" />
+    <link rel="prev" href="../README-2.0.md" />
     
 
     </head>
@@ -116,7 +116,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.2.1" data-path="get-started.html">
+        <li class="chapter active" data-level="1.2.1" data-path="get-started.html">
             
                 <a href="get-started.html">
             
@@ -303,7 +303,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.10" data-path="webpack.html">
+        <li class="chapter " data-level="1.10" data-path="webpack.html">
             
                 <a href="webpack.html">
             
@@ -359,7 +359,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Bundling</a>
+        <a href=".." >Get started</a>
     </h1>
 </div>
 
@@ -374,18 +374,47 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="bundling">Bundling</h2>
-<p>Webpack is also considered one of the most difficult parts for building a React application. Luckily again Rekit setups everything for you. There are 4 webpack config files corresponding to different usage:</p>
-<ul>
-<li><code>webpack.dev.config.js</code>: the dev time config.</li>
-<li><code>webpack.dll.config.js</code>: the config used by webpack-dll-plugin</li>
-<li><code>webpack.dist.config.js</code>: the config for dist version.</li>
-<li><code>webpack.test.config.js</code>: the config for test build.</li>
-</ul>
-<h4 id="boost-the-build-performance-by-using-webpack-dll-plugin">Boost the build performance by using webpack-dll-plugin</h4>
-<p>When a React application grows large, the build time in dev time takes long time. The <code>webpack-dll-plugin</code> could resolve the problem. There&apos;s little doc about it but there&apos;s a great article introducing it: <a href="http://engineering.invisionapp.com/post/optimizing-webpack/" target="_blank">http://engineering.invisionapp.com/post/optimizing-webpack/</a> . Rekit takes use the approach mentioned in the article.</p>
-<p>The basic idea is to build common libs such as React, Redux, React-router into a separate dll bundle. So that they don&apos;t need to be built every time your code is changed. By doing this the build time could be significantly reduced.</p>
-<p>Rekit integrates the process in <code>tools/server.js</code> which is run when calling <code>npm start</code>. The script checks versions of all packages needed for the dll build. So that it auto builds a new dll when any dependency version is changed.</p>
+                                <h2 id="get-started">Get started</h2>
+<p>The easiest way to try out Rekit is creating a Rekit app and playing with it. Just 3 steps:</p>
+<h5 id="1-install-rekit">1. Install Rekit</h5>
+<pre class="language-"><code>$ npm install -g rekit
+</code></pre><h5 id="2-create-an-app">2. Create an app</h5>
+<pre class="language-"><code>$ rekit create my-app
+$ cd my-app
+$ npm install
+</code></pre><h5 id="3-start-it">3. Start it!</h5>
+<pre class="language-"><code>$ npm start
+</code></pre><h3 id="see-the-welcome-page">See the welcome page</h3>
+<p>The app should be started in a few seconds, then you can access it at: <a href="http://localhost:6075" target="_blank">http://localhost:6075</a>.</p>
+<p>If everything is ok, you should be able to see the welcome page:</p>
+<p><img src="../images/welcome-page.png" width="700" alt="Rekit Welcome Page"></p>
+<p>The welcome page consists of 3 parts:</p>
+<p><strong>1. A simple nav component</strong>
+It reads the route config of the whole application and generates links to different pages.</p>
+<p><strong>2. A counter demo using sync actions.</strong>
+By the sample you can quickly see how component, actions and reducers work together.</p>
+<p><strong>3. A demo to fetch latest topics of <code>reactjs</code> channel from Reddit</strong>
+This is just the same example from the official Redux site: <a href="https://redux.js.org/docs/advanced/ExampleRedditAPI.html" target="_blank">https://redux.js.org/docs/advanced/ExampleRedditAPI.html</a>. It demostrates the <a href="concepts#async-action">async actions</a> for a Redux application. But the Rekit version uses <a href="one-action-one-file.html">one action one file pattern</a>, and it adds error handling which is a common requirement for real-world apps.</p>
+<h3 id="try-rekit-portal">Try Rekit Portal</h3>
+<p>Rekit portal is a new dev tool shipped with Rekit 2.0. When a Rekit app is started, the Rekit portal is also auto started at: <a href="http://localhost:6076" target="_blank">http://localhost:6076</a> by default:</p>
+<p><img src="../images/portal-local.png" width="700" alt="Rekit Portal"></p>
+<p>It not only provides web UIs for creating/renaming/moving/deleting elements of a Rekit app, but also provides tools for analyzing/building/testing a Rekit application.</p>
+<p>From the dashboard, you find test coverage report have not been generated. Don&apos;t hesitate to click the run tests button and get a quick view about how Rekit portal helps to do such tasks in a super easy way!</p>
+<p>You can learn more from the <a href="portal.html">Rekit portal</a> page.</p>
+<h3 id="where-to-start">Where to start</h3>
+<p>Rekit creates a single page application by default. You may need to edit the root container first to define your own container layout. The source file is at <code>src/features/home/App.js</code>.</p>
+<h3 id="two-quick-tutorial-videos">Two quick tutorial videos</h3>
+<p>There are two samples on the welcome page, and they are also demos on Redux&apos;s official web site. Now let&apos;s see how to create them with Rekit.</p>
+<ol>
+<li><a href="https://rekit.js.org" target="_blank">Create a counter with Rekit in 1 minute!</a></li>
+</ol>
+<p><img src="../images/youtube.png" width="400" alt="Demo video"></p>
+<ol>
+<li><a href="https://rekit.js.org" target="_blank">Create a Reddit list viewer step by step (5 minutes).</a></li>
+</ol>
+<p><img src="../images/youtube.png" width="400" alt="Demo video"></p>
+<h3 id="thats-it">That&apos;s it!</h3>
+<p>You have already created your very first Rekit app and tried powerful Rekit tools! Now you can read more details about Rekit in the following pages.</p>
 
                                 
                                 </section>
@@ -413,12 +442,12 @@
 
             
                 
-                <a href="testing.html" class="navigation navigation-prev " aria-label="Previous page: Testing">
+                <a href="../README-2.0.md" class="navigation navigation-prev " aria-label="Previous page: Introduction">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="eslint.html" class="navigation navigation-next " aria-label="Next page: Code Quality Check">
+                <a href="app.html" class="navigation navigation-next " aria-label="Next page: App Architecture">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -429,7 +458,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Bundling","level":"1.10","depth":1,"next":{"title":"Code Quality Check","level":"1.11","depth":1,"path":"docs/eslint.md","ref":"docs/eslint.md","articles":[]},"previous":{"title":"Testing","level":"1.9","depth":1,"path":"docs/testing.md","ref":"docs/testing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/webpack.md","mtime":"2017-04-11T07:37:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-06-26T09:42:03.157Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Get started","level":"1.2.1","depth":2,"next":{"title":"App Architecture","level":"1.2.2","depth":2,"path":"docs/app.md","ref":"docs/app.md","articles":[]},"previous":{"title":"Introduction","level":"1.2","depth":1,"path":"README-2.0.md","ref":"README-2.0.md","articles":[{"title":"Get started","level":"1.2.1","depth":2,"path":"docs/get-started.md","ref":"docs/get-started.md","articles":[]},{"title":"App Architecture","level":"1.2.2","depth":2,"path":"docs/app.md","ref":"docs/app.md","articles":[]},{"title":"Concepts","level":"1.2.3","depth":2,"path":"docs/concepts.md","ref":"docs/concepts.md","articles":[]},{"title":"Feature oriented architecture","level":"1.2.4","depth":2,"path":"docs/feature-architecture.md","ref":"docs/feature-architecture.md","articles":[]},{"title":"One action one file","level":"1.2.5","depth":2,"path":"docs/one-action-one-file.md","ref":"docs/one-action-one-file.md","articles":[]},{"title":"Namings","level":"1.2.6","depth":2,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},{"title":"Examples","level":"1.2.7","depth":2,"path":"docs/examples.md","ref":"docs/examples.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/get-started.md","mtime":"2017-06-09T04:21:07.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-06-26T09:42:03.157Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

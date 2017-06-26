@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Bundling · Rekit</title>
+        <title>Examples · Rekit</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.2">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="eslint.html" />
+    <link rel="next" href="core.html" />
     
     
-    <link rel="prev" href="testing.html" />
+    <link rel="prev" href="namings.html" />
     
 
     </head>
@@ -194,7 +194,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.7" data-path="examples.html">
+        <li class="chapter active" data-level="1.2.7" data-path="examples.html">
             
                 <a href="examples.html">
             
@@ -303,7 +303,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.10" data-path="webpack.html">
+        <li class="chapter " data-level="1.10" data-path="webpack.html">
             
                 <a href="webpack.html">
             
@@ -359,7 +359,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Bundling</a>
+        <a href=".." >Examples</a>
     </h1>
 </div>
 
@@ -374,18 +374,13 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h2 id="bundling">Bundling</h2>
-<p>Webpack is also considered one of the most difficult parts for building a React application. Luckily again Rekit setups everything for you. There are 4 webpack config files corresponding to different usage:</p>
-<ul>
-<li><code>webpack.dev.config.js</code>: the dev time config.</li>
-<li><code>webpack.dll.config.js</code>: the config used by webpack-dll-plugin</li>
-<li><code>webpack.dist.config.js</code>: the config for dist version.</li>
-<li><code>webpack.test.config.js</code>: the config for test build.</li>
-</ul>
-<h4 id="boost-the-build-performance-by-using-webpack-dll-plugin">Boost the build performance by using webpack-dll-plugin</h4>
-<p>When a React application grows large, the build time in dev time takes long time. The <code>webpack-dll-plugin</code> could resolve the problem. There&apos;s little doc about it but there&apos;s a great article introducing it: <a href="http://engineering.invisionapp.com/post/optimizing-webpack/" target="_blank">http://engineering.invisionapp.com/post/optimizing-webpack/</a> . Rekit takes use the approach mentioned in the article.</p>
-<p>The basic idea is to build common libs such as React, Redux, React-router into a separate dll bundle. So that they don&apos;t need to be built every time your code is changed. By doing this the build time could be significantly reduced.</p>
-<p>Rekit integrates the process in <code>tools/server.js</code> which is run when calling <code>npm start</code>. The script checks versions of all packages needed for the dll build. So that it auto builds a new dll when any dependency version is changed.</p>
+                                <h2 id="examples">Examples</h2>
+<p>Below are real-world apps created with Rekit, you can look at them for reference:</p>
+<ol>
+<li><a href="https://github.com/supnate/rekit-portal" target="_blank">Rekit portal</a>: the Rekit dev tool shipped with Rekit 2.0, it&apos;s built with Rekit so it&apos;s also a good example.</li>
+<li><a href="https://github.com/supnate/command-pad" target="_blank">Command pad</a>: a handy GUI tool for managing command line tasks, built with <a href="http://electron.atom.io" target="_blank">Electron</a> and Rekit 1.0.</li>
+<li><a href="https://github.com/supnate/rekit-example" target="_blank">Simple forum</a>: a simple forum application built with Rekit 1.0. It connects to a real backend server powered by <a href="https://leancloud.cn" target="_blank">Leancloud.cn</a>( a <a href="https://www.parse.com" target="_blank">Parse</a> like Saas service).</li>
+</ol>
 
                                 
                                 </section>
@@ -413,12 +408,12 @@
 
             
                 
-                <a href="testing.html" class="navigation navigation-prev " aria-label="Previous page: Testing">
+                <a href="namings.html" class="navigation navigation-prev " aria-label="Previous page: Namings">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="eslint.html" class="navigation navigation-next " aria-label="Next page: Code Quality Check">
+                <a href="core.html" class="navigation navigation-next " aria-label="Next page: Rekit core">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -429,7 +424,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Bundling","level":"1.10","depth":1,"next":{"title":"Code Quality Check","level":"1.11","depth":1,"path":"docs/eslint.md","ref":"docs/eslint.md","articles":[]},"previous":{"title":"Testing","level":"1.9","depth":1,"path":"docs/testing.md","ref":"docs/testing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/webpack.md","mtime":"2017-04-11T07:37:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-06-26T09:42:03.157Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"1.2.7","depth":2,"next":{"title":"Rekit core","level":"1.3","depth":1,"path":"docs/core.md","ref":"docs/core.md","articles":[]},"previous":{"title":"Namings","level":"1.2.6","depth":2,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/examples.md","mtime":"2017-04-11T07:37:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-06-26T09:42:03.157Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

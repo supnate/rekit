@@ -49,6 +49,11 @@ const parser = new ArgumentParser({
   description: 'Integration test.',
 });
 
+parser.addArgument(['--local-rekit'], {
+  help: 'Whether to use local Rekit. Otherwise install from npm repository.',
+  action: 'storeTrue',
+});
+
 parser.addArgument(['--local-core'], {
   help: 'Whether to use local rekit-core. Otherwise install from npm repository.',
   action: 'storeTrue',
@@ -91,8 +96,13 @@ console.log('Unlinking Rekit......');
 exec('npm unlink', { cwd: prjRoot });
 
 // Install Rekit globally from local folder
-console.log('Install Rekit globally from local folder...');
-exec(`npm install -g ${prjRoot}`);
+if (args.local_rekit) {
+  console.log('Install Rekit globally from local folder...');
+  exec(`npm install -g ${prjRoot}`);
+} else {
+  console.log('Install Rekit globally');
+  exec('npm install -g rekit');
+}
 
 // Create a Rekit app
 console.log('Create a new Rekit app...');

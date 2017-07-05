@@ -1,6 +1,6 @@
 # <img src="/images/logo_text_2.0.png?raw=true" width="260">
 
-> 🎉🎉🎉 Rekit 2.0 is out with nice new features! Check out the [release notes](https://github.com/supnate/rekit/releases/tag/v2.0.1) now!
+> 🎉🎉🎉 Rekit 2.0 is out with nice new features!
 
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router. It's an all-in-one solution for creating modern React apps.
 
@@ -25,7 +25,7 @@ To learn more about Rekit, read the overall introduction at:
 
 And below are two quick video demos:
 
-1. [Counter](): create a simple counter in 1 minute!
+1. [Counter](https://youtu.be/HT6YzZtbPKc): create a simple counter in 1 minute!
 2. [Reddit list viewer](): show the latest reactjs topics on Reddit using async actions.
 
 
@@ -59,8 +59,8 @@ To change the ports dev-servers running on, edit the `rekit` section in `package
   ...
   "rekit": {
     "devPort": 6075,
-    "buildPort": 6076,
-    "portalPort": 6077,
+    "portalPort": 6076,
+    "buildPort": 6077,
     ...
   }
   ...
@@ -126,7 +126,7 @@ Rekit command line tools have been very useful, but Rekit portal provides a more
 
 And you can view the live demo at: [https://rekit-portal.herokuapp.com](https://rekit-portal.herokuapp.com).
 
-You can found more introduction about Rekit portal at: [http://rekit.js.org](http://rekit.js.org/docs/portal.html).
+You can found more introduction about Rekit portal at: [http://rekit.js.org/docs/portal.html](http://rekit.js.org/docs/portal.html).
 
 ## Plugins
 You can use or create plugins to enhance or customize the behavior of Rekit. That is you can either alter the default behavior like how Rekit creates an async action or let Rekit support more element types like `selector` based on [reselect](https://github.com/reactjs/reselect).
@@ -134,7 +134,7 @@ You can use or create plugins to enhance or customize the behavior of Rekit. Tha
 For example, there have been two plugins available:
 
 1. [rekit-plugin-redux-saga](https://github.com/supnate/rekit-plugin-redux-saga): allows Rekit to uses `redux-saga` rather than `redux-thunk` when creating async actions.
-2. [rekit-plugin-reselect](https://github.com/supnate/rekit-plugin): adds a new element type named `selector` based on [reselect](https://github.com/reactjs/reselect) to Rekit. So that you can manage selectors by Rekit for your project.
+2. [rekit-plugin-selector](https://github.com/supnate/rekit-plugin-selector): adds a new element type named `selector` based on [reselect](https://github.com/reactjs/reselect) to Rekit. So that you can manage selectors by Rekit for your project.
 
 There are two types of plugins:
 
@@ -147,7 +147,7 @@ rekit create-plugin my-plugin
 ```
 It will create a local plugin if the current directory is in a Rekit project, otherwise create a public plugin.
 
-For more information, please read the document at: [http://rekit.js.org](http://rekit.js.org/docs/plugin.html).
+For more information, please read the document at: [http://rekit.js.org/docs/plugin.html](http://rekit.js.org/docs/plugin.html).
 
 ## Key Features
  * It's production-ready but not a starter kit.

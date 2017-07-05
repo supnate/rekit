@@ -25,8 +25,9 @@ renderApp(<Root store={store} routeConfig={routeConfig} />);
 // Hot Module Replacement API
 /* istanbul ignore if  */
 if (module.hot) {
-  module.hot.accept('./Root', () => {
-    const NextRoot = require('./Root').default; // eslint-disable-line
-    renderApp(<NextRoot store={store} routeConfig={routeConfig} />);
+  module.hot.accept('./common/routeConfig', () => {
+    // const nextRoot = require('./Root').default; // eslint-disable-line
+    const nextRouteConfig = require('./common/routeConfig').default; // eslint-disable-line
+    renderApp(<Root store={store} routeConfig={nextRouteConfig} />);
   });
 }

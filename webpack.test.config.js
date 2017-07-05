@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
-const webpackConfig = require('./webpack-config');
 
 // Since webpack.test.config.js is used by command line, save it as a separate file.
 

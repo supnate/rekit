@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "Toolkit for building scalable web applications with React, Redux and React-router.",
   "bin": {
     "rekit": "./bin/rekit.js"
@@ -86,9 +86,7 @@
   },
   "dependencies": {
     "argparse": "^1.0.7",
-    "body-parser": "^1.17.2",
     "lodash": "^4.17.4",
-    "react-router-redux": "next",
     "request": "^2.81.0"
   },
   "devDependencies": {

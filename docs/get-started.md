@@ -54,7 +54,7 @@ Rekit creates a single page application by default. You may need to edit the roo
 ### Two quick tutorial videos
 There are two samples on the welcome page, and they are also demos on Redux's official web site. Now let's see how to create them with Rekit.
 
-1. [Create a counter with Rekit in 1 minute!](https://rekit.js.org)
+1. [Create a counter with Rekit in 1 minute!](https://youtu.be/HT6YzZtbPKc)
 
 <img src="/images/youtube.png" width="400" alt="Demo video" />
 

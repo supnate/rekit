@@ -58,7 +58,7 @@ There are two samples on the welcome page, and they are also demos on Redux's of
 
 <img src="/images/youtube.png" width="400" alt="Demo video" />
 
-2. [Create a Reddit list viewer step by step (5 minutes).](https://rekit.js.org)
+2. [Create a Reddit list viewer step by step (5 minutes).](https://youtu.be/edq5lWsxZMg)
 
 <img src="/images/youtube.png" width="400" alt="Demo video" />
 

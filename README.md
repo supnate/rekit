@@ -1,6 +1,6 @@
 # <img src="/images/logo_text_2.0.png?raw=true" width="260">
 
-> 🎉🎉🎉 Rekit 2.0 is out with nice new features!
+> 🎉🎉🎉 [Rekit 2.0 is out with nice new features!](https://medium.com/@nate_wang/rekit-2-0-next-generation-react-development-ce8bbba51e94)
 
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router. It's an all-in-one solution for creating modern React apps.
 
@@ -13,7 +13,7 @@ It helps you focus on business logic rather than dealing with massive libraries,
 [![Demo](https://img.shields.io/badge/demo-link-blue.svg)](https://rekit-portal.herokuapp.com)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-Rekit creates apps following general best practices. The apps created are designed to be scalable, testable and maintainable by using [feature oriented architecture](https://github.com), [one action per file pattern](https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk). This ensures application logic is well grouped and decoupled.
+Rekit creates apps following general best practices. The apps created are designed to be scalable, testable and maintainable by using [feature oriented architecture](https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0), [one action per file pattern](https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk). This ensures application logic is well grouped and decoupled.
 
 Besides creating apps, Rekit also provides powerful tools for managing the project:
 
@@ -26,7 +26,7 @@ To learn more about Rekit, read the overall introduction at:
 And below are two quick video demos:
 
 1. [Counter](https://youtu.be/HT6YzZtbPKc): create a simple counter in 1 minute!
-2. [Reddit list viewer](): show the latest reactjs topics on Reddit using async actions.
+2. [Reddit API usage](https://youtu.be/edq5lWsxZMg): show the latest reactjs topics on Reddit using async actions.
 
 
 ## Installation
@@ -155,7 +155,7 @@ For more information, please read the document at: [http://rekit.js.org/docs/plu
  * Powerful Rekit portal to boost the efficiency of development.
  * Command line tools to mange actions, reducers, components and pages.
  * Embed build script and test server for the build result.
- * Use [Webpack 2](http://webpack.js.org) for bundling.
+ * Use [Webpack 3](http://webpack.js.org) for bundling.
  * Use [Babel](https://babeljs.io/) for ES2015(ES6)+ support.
  * Use [React hot loader](http://gaearon.github.io/react-hot-loader/) for hot module replacement.
  * Use [Redux](http://redux.js.org/) for application state management.

@@ -374,7 +374,7 @@
                                 
                                 <h1 id=""><img src="images/logo_text_2.0.png?raw=true" width="260"></h1>
 <blockquote>
-<p>&#x1F389;&#x1F389;&#x1F389; Rekit 2.0 is out with nice new features! Check out the <a href="https://github.com/supnate/rekit/releases/tag/v2.0.1" target="_blank">release notes</a> now!</p>
+<p>&#x1F389;&#x1F389;&#x1F389; <a href="https://medium.com/@nate_wang/rekit-2-0-next-generation-react-development-ce8bbba51e94" target="_blank">Rekit 2.0 is out with nice new features!</a></p>
 </blockquote>
 <p>Rekit is a toolkit for building scalable web applications with React, Redux and React-router. It&apos;s an all-in-one solution for creating modern React apps.</p>
 <p>It helps you focus on business logic rather than dealing with massive libraries, patterns, configurations etc.</p>
@@ -384,7 +384,7 @@
 <a href="https://codecov.io/github/supnate/rekit" target="_blank"><img src="https://img.shields.io/codecov/c/github/supnate/rekit/master.svg" alt="Coverage Status"></a>
 <a href="https://rekit-portal.herokuapp.com" target="_blank"><img src="https://img.shields.io/badge/demo-link-blue.svg" alt="Demo"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT licensed"></a></p>
-<p>Rekit creates apps following general best practices. The apps created are designed to be scalable, testable and maintainable by using <a href="https://github.com" target="_blank">feature oriented architecture</a>, <a href="https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk" target="_blank">one action per file pattern</a>. This ensures application logic is well grouped and decoupled.</p>
+<p>Rekit creates apps following general best practices. The apps created are designed to be scalable, testable and maintainable by using <a href="https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0" target="_blank">feature oriented architecture</a>, <a href="https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk" target="_blank">one action per file pattern</a>. This ensures application logic is well grouped and decoupled.</p>
 <p>Besides creating apps, Rekit also provides powerful tools for managing the project:</p>
 <ol>
 <li><a href="">Command line tools</a>: you can use these tools to create/rename/move/delete project elements like components, actions etc.</li>
@@ -394,8 +394,8 @@
 <a href="">Rekit 2.0: the next generation React development</a></p>
 <p>And below are two quick video demos:</p>
 <ol>
-<li><a href="">Counter</a>: create a simple counter in 1 minute!</li>
-<li><a href="">Reddit list viewer</a>: show the latest reactjs topics on Reddit using async actions.</li>
+<li><a href="https://youtu.be/HT6YzZtbPKc" target="_blank">Counter</a>: create a simple counter in 1 minute!</li>
+<li><a href="https://youtu.be/edq5lWsxZMg" target="_blank">Reddit API usage</a>: show the latest reactjs topics on Reddit using async actions.</li>
 </ol>
 <h2 id="installation">Installation</h2>
 <pre class="language-"><code>npm install -g rekit
@@ -418,8 +418,8 @@ npm start
   ...
   &quot;rekit&quot;: {
     &quot;devPort&quot;: 6075,
-    &quot;buildPort&quot;: 6076,
-    &quot;portalPort&quot;: 6077,
+    &quot;portalPort&quot;: 6076,
+    &quot;buildPort&quot;: 6077,
     ...
   }
   ...
@@ -463,13 +463,13 @@ rekit rm action forum/fetch-topic-list
 <p>Rekit command line tools have been very useful, but Rekit portal provides a more intuitive and zero learning-cost way: it&apos;s almost an IDE for Rekit development! It not only provides web UIs for creating/renaming/moving/deleting elements of a Rekit app, but also provides tools for analyzing/building/testing a Rekit application. See below pictures of how Rekit portal looks like.</p>
 <p><img src="images/rekit-portal-snapshot.png" alt="rekit-portal-snapshot"></p>
 <p>And you can view the live demo at: <a href="https://rekit-portal.herokuapp.com" target="_blank">https://rekit-portal.herokuapp.com</a>.</p>
-<p>You can found more introduction about Rekit portal at: <a href="http://rekit.js.org/docs/portal.html" target="_blank">http://rekit.js.org</a>.</p>
+<p>You can found more introduction about Rekit portal at: <a href="http://rekit.js.org/docs/portal.html" target="_blank">http://rekit.js.org/docs/portal.html</a>.</p>
 <h2 id="plugins">Plugins</h2>
 <p>You can use or create plugins to enhance or customize the behavior of Rekit. That is you can either alter the default behavior like how Rekit creates an async action or let Rekit support more element types like <code>selector</code> based on <a href="https://github.com/reactjs/reselect" target="_blank">reselect</a>.</p>
 <p>For example, there have been two plugins available:</p>
 <ol>
 <li><a href="https://github.com/supnate/rekit-plugin-redux-saga" target="_blank">rekit-plugin-redux-saga</a>: allows Rekit to uses <code>redux-saga</code> rather than <code>redux-thunk</code> when creating async actions.</li>
-<li><a href="https://github.com/supnate/rekit-plugin" target="_blank">rekit-plugin-reselect</a>: adds a new element type named <code>selector</code> based on <a href="https://github.com/reactjs/reselect" target="_blank">reselect</a> to Rekit. So that you can manage selectors by Rekit for your project.</li>
+<li><a href="https://github.com/supnate/rekit-plugin-selector" target="_blank">rekit-plugin-selector</a>: adds a new element type named <code>selector</code> based on <a href="https://github.com/reactjs/reselect" target="_blank">reselect</a> to Rekit. So that you can manage selectors by Rekit for your project.</li>
 </ol>
 <p>There are two types of plugins:</p>
 <ol>
@@ -479,7 +479,7 @@ rekit rm action forum/fetch-topic-list
 <p>To create a plugin, use below command:</p>
 <pre class="language-"><code>rekit create-plugin my-plugin
 </code></pre><p>It will create a local plugin if the current directory is in a Rekit project, otherwise create a public plugin.</p>
-<p>For more information, please read the document at: <a href="http://rekit.js.org/docs/plugin.html" target="_blank">http://rekit.js.org</a>.</p>
+<p>For more information, please read the document at: <a href="http://rekit.js.org/docs/plugin.html" target="_blank">http://rekit.js.org/docs/plugin.html</a>.</p>
 <h2 id="key-features">Key Features</h2>
 <ul>
 <li>It&apos;s production-ready but not a starter kit.</li>
@@ -487,7 +487,7 @@ rekit rm action forum/fetch-topic-list
 <li>Powerful Rekit portal to boost the efficiency of development.</li>
 <li>Command line tools to mange actions, reducers, components and pages.</li>
 <li>Embed build script and test server for the build result.</li>
-<li>Use <a href="http://webpack.js.org" target="_blank">Webpack 2</a> for bundling.</li>
+<li>Use <a href="http://webpack.js.org" target="_blank">Webpack 3</a> for bundling.</li>
 <li>Use <a href="https://babeljs.io/" target="_blank">Babel</a> for ES2015(ES6)+ support.</li>
 <li>Use <a href="http://gaearon.github.io/react-hot-loader/" target="_blank">React hot loader</a> for hot module replacement.</li>
 <li>Use <a href="http://redux.js.org/" target="_blank">Redux</a> for application state management.</li>
@@ -542,7 +542,7 @@ rekit rm action forum/fetch-topic-list
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Read Me","level":"1.1","depth":1,"next":{"title":"Introduction","level":"1.2","depth":1,"path":"README-2.0.md","ref":"README-2.0.md","articles":[{"title":"Get started","level":"1.2.1","depth":2,"path":"docs/get-started.md","ref":"docs/get-started.md","articles":[]},{"title":"App Architecture","level":"1.2.2","depth":2,"path":"docs/app.md","ref":"docs/app.md","articles":[]},{"title":"Concepts","level":"1.2.3","depth":2,"path":"docs/concepts.md","ref":"docs/concepts.md","articles":[]},{"title":"Feature oriented architecture","level":"1.2.4","depth":2,"path":"docs/feature-architecture.md","ref":"docs/feature-architecture.md","articles":[]},{"title":"One action one file","level":"1.2.5","depth":2,"path":"docs/one-action-one-file.md","ref":"docs/one-action-one-file.md","articles":[]},{"title":"Namings","level":"1.2.6","depth":2,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},{"title":"Examples","level":"1.2.7","depth":2,"path":"docs/examples.md","ref":"docs/examples.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"README.md","mtime":"2017-06-23T04:42:47.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-06-26T09:42:03.157Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Read Me","level":"1.1","depth":1,"next":{"title":"Introduction","level":"1.2","depth":1,"path":"README-2.0.md","ref":"README-2.0.md","articles":[{"title":"Get started","level":"1.2.1","depth":2,"path":"docs/get-started.md","ref":"docs/get-started.md","articles":[]},{"title":"App Architecture","level":"1.2.2","depth":2,"path":"docs/app.md","ref":"docs/app.md","articles":[]},{"title":"Concepts","level":"1.2.3","depth":2,"path":"docs/concepts.md","ref":"docs/concepts.md","articles":[]},{"title":"Feature oriented architecture","level":"1.2.4","depth":2,"path":"docs/feature-architecture.md","ref":"docs/feature-architecture.md","articles":[]},{"title":"One action one file","level":"1.2.5","depth":2,"path":"docs/one-action-one-file.md","ref":"docs/one-action-one-file.md","articles":[]},{"title":"Namings","level":"1.2.6","depth":2,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},{"title":"Examples","level":"1.2.7","depth":2,"path":"docs/examples.md","ref":"docs/examples.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"README.md","mtime":"2017-07-06T16:34:17.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-07-06T16:34:28.910Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

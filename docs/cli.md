@@ -17,7 +17,7 @@ rekit create-plugin <plugin-name>
 ```
 It will create a local plugin if the current directory is in a Rekit project, otherwise create a public plugin.
 
-For more information, please read the document at: [http://rekit.js.org/plugin](http://rekit.js.org/plugin.).
+For more information, please read the document at: [http://rekit.js.org/docs/plugin.html](http://rekit.js.org/docs/plugin.html).
 
 ### Install a plugin
 If you will use a plugin via npm, use the below command:

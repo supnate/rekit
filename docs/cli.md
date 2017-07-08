@@ -22,7 +22,7 @@ For more information, please read the document at: [http://rekit.js.org/docs/plu
 ### Install a plugin
 If you will use a plugin via npm, use the below command:
 ```
-rekit install-plugin <plugin-name>
+rekit install <plugin-name>
 ```
 
 This will execute `install.js` script of the plugin to do the initialization and added the plugin name to `rekit.plugins` section of package.json.

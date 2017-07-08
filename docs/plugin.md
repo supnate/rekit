@@ -165,15 +165,7 @@ While there are conflicts that multiple plugins accept the same element type, th
 > NOTE: plugins which support more element types could only be used via command line tools for now.
 
 ## Plugin development
-For most cases, a plugin just creates bolierplate code based on some template; refactors code when moving, deleting source files. Rekit-core exports many useful APIs for accerlarating plugin development. You may just need to compose those APIs to meet your requirement. For example, to alternate how Rekit create less style file for a component, you may just need to create below plugin:
-
-```javascript
-module.exports = {
-  add(feature, name) {
-    rekitCore.style....
-  }
-};
-```
+For most cases, a plugin just creates bolierplate code based on some template; refactors code when moving, deleting source files. Rekit-core exports many useful APIs for accerlarating plugin development. You may just need to compose those APIs to meet your requirement.
 
 ## API reference
-TBD...
+See the link: [http://rekit.js.org/api/index.html](http://rekit.js.org/api/index.html)

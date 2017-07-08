@@ -5,7 +5,6 @@
   * [Get started](/docs/get-started.md)
   * [App Architecture](/docs/app.md)
   * [Concepts](/docs/concepts.md)
-  * [Feature oriented architecture](/docs/feature-architecture.md)
   * [One action one file](/docs/one-action-one-file.md)
   * [Namings](/docs/namings.md)
   * [Examples](/docs/examples.md)

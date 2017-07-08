@@ -20,9 +20,6 @@ Besides creating apps, Rekit also provides powerful tools for managing the proje
  1. [Command line tools](): you can use these tools to create/rename/move/delete project elements like components, actions etc.
  2. [Rekit portal](https://github.com/supnate/rekit-portal): it's a new dev tool shipped with Rekit 2.0. It not only provides web UIs for creating/renaming/moving/deleting elements of a Rekit app, but also provides tools for analyzing/building/testing a Rekit application. You can think of Rekit portal like an IDE for React development. See a live demo at: [https://rekit-portal.herokuapp.com](https://rekit-portal.herokuapp.com)
 
-To learn more about Rekit, read the overall introduction at:
-[Rekit 2.0: the next generation React development]()
-
 And below are two quick video demos:
 
 1. [Counter](https://youtu.be/HT6YzZtbPKc): create a simple counter in 1 minute!

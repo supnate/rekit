@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>refactor/importExport.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-action.html">action</a><ul class='methods'><li data-type='method'><a href="module-action.html#.add">add</a></li><li data-type='method'><a href="module-action.html#.addAsync">addAsync</a></li><li data-type='method'><a href="module-action.html#.move">move</a></li><li data-type='method'><a href="module-action.html#.moveAsync">moveAsync</a></li><li data-type='method'><a href="module-action.html#.remove">remove</a></li><li data-type='method'><a href="module-action.html#.removeAsync">removeAsync</a></li></ul></li><li><a href="module-app.html">app</a><ul class='methods'><li data-type='method'><a href="module-app.html#.getDeps">getDeps</a></li><li data-type='method'><a href="module-app.html#~getFeatureRoutes">getFeatureRoutes</a></li><li data-type='method'><a href="module-app.html#~getFeatures">getFeatures</a></li><li data-type='method'><a href="module-app.html#~getFeatureStructure">getFeatureStructure</a></li><li data-type='method'><a href="module-app.html#~getRootRoutePath">getRootRoutePath</a></li><li data-type='method'><a href="module-app.html#~getSrcFiles">getSrcFiles</a></li></ul></li><li><a href="module-component.html">component</a><ul class='methods'><li data-type='method'><a href="module-component.html#.add">add</a></li><li data-type='method'><a href="module-component.html#.remove">remove</a></li><li data-type='method'><a href="module-component.html#.remove">remove</a></li></ul></li><li><a href="module-constant.html">constant</a><ul class='methods'><li data-type='method'><a href="module-constant.html#.add">add</a></li><li data-type='method'><a href="module-constant.html#.remove">remove</a></li><li data-type='method'><a href="module-constant.html#.rename">rename</a></li></ul></li><li><a href="module-feature.html">feature</a><ul class='methods'><li data-type='method'><a href="module-feature.html#.add">add</a></li><li data-type='method'><a href="module-feature.html#.move">move</a></li><li data-type='method'><a href="module-feature.html#.remove">remove</a></li></ul></li><li><a href="module-refactor.html">refactor</a><ul class='methods'><li data-type='method'><a href="module-refactor.html#.addExportFrom">addExportFrom</a></li><li data-type='method'><a href="module-refactor.html#.addImportFrom">addImportFrom</a></li><li data-type='method'><a href="module-refactor.html#.addToArray">addToArray</a></li><li data-type='method'><a href="module-refactor.html#.removeFromArray">removeFromArray</a></li><li data-type='method'><a href="module-refactor.html#.renameClassName">renameClassName</a></li><li data-type='method'><a href="module-refactor.html#.renameFunctionName">renameFunctionName</a></li><li data-type='method'><a href="module-refactor.html#.renameIdentifier">renameIdentifier</a></li></ul></li><li><a href="module-rekit-core.html">rekit-core</a><ul class='methods'><li data-type='method'><a href="module-rekit-core.html#.addAction">addAction</a></li><li data-type='method'><a href="module-rekit-core.html#.addAsyncAction">addAsyncAction</a></li><li data-type='method'><a href="module-rekit-core.html#.addComponent">addComponent</a></li><li data-type='method'><a href="module-rekit-core.html#.addFeature">addFeature</a></li><li data-type='method'><a href="module-rekit-core.html#.handleCommand">handleCommand</a></li><li data-type='method'><a href="module-rekit-core.html#.moveAction">moveAction</a></li><li data-type='method'><a href="module-rekit-core.html#.moveAsyncAction">moveAsyncAction</a></li><li data-type='method'><a href="module-rekit-core.html#.moveComponent">moveComponent</a></li><li data-type='method'><a href="module-rekit-core.html#.moveFeature">moveFeature</a></li><li data-type='method'><a href="module-rekit-core.html#.removeAction">removeAction</a></li><li data-type='method'><a href="module-rekit-core.html#.removeAsyncAction">removeAsyncAction</a></li><li data-type='method'><a href="module-rekit-core.html#.removeComponent">removeComponent</a></li><li data-type='method'><a href="module-rekit-core.html#.removeFeature">removeFeature</a></li></ul></li><li><a href="module-style.html">style</a><ul class='methods'><li data-type='method'><a href="module-style.html#.add">add</a></li><li data-type='method'><a href="module-style.html#.remove">remove</a></li><li data-type='method'><a href="module-style.html#.remove">remove</a></li></ul></li><li><a href="module-template.html">template</a><ul class='methods'><li data-type='method'><a href="module-template.html#.generate">generate</a></li><li data-type='method'><a href="module-template.html#.readTemplate">readTemplate</a></li></ul></li><li><a href="module-test.html">test</a><ul class='methods'><li data-type='method'><a href="module-test.html#.add">add</a></li><li data-type='method'><a href="module-test.html#.addAction">addAction</a></li><li data-type='method'><a href="module-test.html#.move">move</a></li><li data-type='method'><a href="module-test.html#.moveAction">moveAction</a></li><li data-type='method'><a href="module-test.html#.remove">remove</a></li><li data-type='method'><a href="module-test.html#.removeAction">removeAction</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#.joinPath">joinPath</a></li><li data-type='method'><a href="module-utils.html#.mapSrcFile">mapSrcFile</a></li><li data-type='method'><a href="module-utils.html#.setSilent">setSilent</a></li><li data-type='method'><a href="module-utils.html#~error">error</a></li><li data-type='method'><a href="module-utils.html#~fatalError">fatalError</a></li><li data-type='method'><a href="module-utils.html#~getActionType">getActionType</a></li><li data-type='method'><a href="module-utils.html#~getAsyncActionTypes">getAsyncActionTypes</a></li><li data-type='method'><a href="module-utils.html#~getFullPath">getFullPath</a></li><li data-type='method'><a href="module-utils.html#~getPkgJson">getPkgJson</a></li><li data-type='method'><a href="module-utils.html#~getProjectRoot">getProjectRoot</a></li><li data-type='method'><a href="module-utils.html#~getRelativePath">getRelativePath</a></li><li data-type='method'><a href="module-utils.html#~log">log</a></li><li data-type='method'><a href="module-utils.html#~setPkgJson">setPkgJson</a></li><li data-type='method'><a href="module-utils.html#~setProjectRoot">setProjectRoot</a></li><li data-type='method'><a href="module-utils.html#~warn">warn</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#nearestCharAfter">nearestCharAfter</a></li><li><a href="global.html#nearestCharBefore">nearestCharBefore</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">refactor/importExport.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+const _ = require('lodash');
+const traverse = require('babel-traverse').default;
+const generate = require('babel-generator').default;
+const babelTypes = require('babel-types');
+const common = require('./common');
+const identifier = require('./identifier');
+
+const babelGeneratorOptions = {
+  quotes: 'single',
+};
+
+function formatMultilineImport(importCode) {
+  // format import statement to:
+  // import {
+  //   name1,
+  //   name2,
+  // } from './xxx';
+
+  const m = importCode.match(/\{([^}]+)\}/);
+  if (m) {
+    const arr = _.compact(m[1].split(/, */).map(_.trim));
+    if (arr.length) {
+      return importCode.replace(/\{[^}]+\}/, `{\n  ${arr.join(',\n  ')},\n}`);
+    }
+  }
+  return importCode;
+}
+
+/**
+ * Import from a given module source. This methods operates import statement:
+ * import defaultImmport, { namedImport ... } from './module-source';
+ * It noly supports es6 modules import but not commonJS or AMD or others...
+ * @param {string} ast - Which module to manage import statement.
+ * @param {string} moduleSource - From which module source to add import from. If not found, the create an import line.
+ * @index {string} defaultImport - The default import. If not need, pass it as null. The module should haven't import the default.
+ * @index {string|array} namedImport - The named imports. If has imported, then do nothing.
+ * @index {string} namespaceImport - The new function name.
+ * @alias module:refactor.addImportFrom
+ * @example
+ * const refactor = require('rekit-core').refactor;
+ * refactor.addImportFrom(file, './some-module', 'SomeModule', ['method1', 'method2']);
+ * // it generates: import SomeModule, { method1, method2 } from './some-module';
+**/
+function addImportFrom(ast, moduleSource, defaultImport, namedImport, namespaceImport) {
+  // Summary:
+  //  Add import from source module. Such as import { xxx } from './x';
+  let names = [];
+
+  if (namedImport) {
+    if (typeof namedImport === 'string') {
+      names.push(namedImport);
+    } else {
+      names = names.concat(namedImport);
+    }
+  }
+
+  const changes = [];
+  const t = babelTypes;
+
+  let targetImportPos = 0;
+  let sourceExisted = false;
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const node = path.node;
+      // multilines means whether to separate import specifiers into different lines
+      const multilines = node.loc.start.line !== node.loc.end.line;
+      targetImportPos = path.node.end + 1;
+
+      if (!node.specifiers || !node.source || node.source.value !== moduleSource) return;
+      sourceExisted = true;
+      let newNames = [];
+      const alreadyHaveDefaultImport = !!_.find(node.specifiers, { type: 'ImportDefaultSpecifier' });
+      const alreadyHaveNamespaceImport = !!_.find(node.specifiers, { type: 'ImportNamespaceSpecifier' });
+      if (defaultImport &amp;&amp; !alreadyHaveDefaultImport) newNames.push(defaultImport);
+      if (namespaceImport &amp;&amp; !alreadyHaveNamespaceImport) newNames.push(namespaceImport);
+
+      newNames = newNames.concat(names);
+
+      // only add names which don't exist
+      newNames = newNames.filter(n => !_.find(node.specifiers, s => s.local.name === n));
+
+      if (newNames.length > 0) {
+        const newSpecifiers = [].concat(node.specifiers);
+        newNames.forEach((n) => {
+          const local = t.identifier(n);
+          const imported = local; // TODO: doesn't support local alias.
+          if (n === defaultImport) {
+            newSpecifiers.unshift(t.importDefaultSpecifier(local));
+          } else if (n === namespaceImport) {
+            newSpecifiers.push(t.importNamespaceSpecifier(local));
+          } else {
+            newSpecifiers.push(t.importSpecifier(local, imported));
+          }
+        });
+
+        const newNode = Object.assign({}, node, { specifiers: newSpecifiers });
+        let newCode = generate(newNode, babelGeneratorOptions).code;
+
+        if (multilines) {
+          newCode = formatMultilineImport(newCode);
+        }
+        changes.push({
+          start: node.start,
+          end: node.end,
+          replacement: newCode,
+        });
+      }
+    }
+  });
+
+  if (changes.length === 0 &amp;&amp; !sourceExisted) {
+    // add new import declaration if module source doesn't exist
+    const specifiers = [];
+    if (defaultImport) {
+      specifiers.push(t.importDefaultSpecifier(t.identifier(defaultImport)));
+    }
+    if (namespaceImport) {
+      specifiers.push(t.importNamespaceSpecifier(t.identifier(namespaceImport)));
+    }
+
+    names.forEach((n) => {
+      const local = t.identifier(n);
+      const imported = local;
+      specifiers.push(t.importSpecifier(local, imported));
+    });
+
+    const node = t.importDeclaration(specifiers, t.stringLiteral(moduleSource));
+    const code = generate(node, babelGeneratorOptions).code;
+    changes.push({
+      start: targetImportPos,
+      end: targetImportPos,
+      replacement: `${code}\n`,
+    });
+  }
+
+  return changes;
+}
+
+/**
+ * Export from a given module source. This methods operates export ... from statement:
+ * @param {string} ast - Which module to manage export from statement.
+ * @param {string} moduleSource - From which module source to add import from. If not found, the create an import line.
+ * @index {string} defaultExport - The default import. If not need, pass it as null. The module should haven't import the default.
+ * @index {string|array} namedExport - The named imports. If has imported, then do nothing.
+ * @alias module:refactor.addExportFrom
+**/
+function addExportFrom(ast, moduleSource, defaultExport, namedExport) {
+  // Summary:
+  //  Add export from source module. Such as export { xxx } from './x';
+  let names = [];
+
+  if (namedExport) {
+    if (typeof namedExport === 'string') {
+      names.push(namedExport);
+    } else {
+      names = names.concat(namedExport);
+    }
+  }
+
+  const changes = [];
+  const t = babelTypes;
+
+  let targetExportPos = 0;
+  let sourceExisted = false;
+  traverse(ast, {
+    ExportNamedDeclaration(path) {
+      const node = path.node;
+      targetExportPos = path.node.end + 1;
+      if (!node.specifiers || !node.source || node.source.value !== moduleSource) return;
+      sourceExisted = true;
+      let newNames = [];
+      const alreadyHaveDefaultExport = !!_.find(node.specifiers, s => _.get(s, 'local.name') === 'default');
+      if (defaultExport &amp;&amp; !alreadyHaveDefaultExport) newNames.push(defaultExport);
+
+      newNames = newNames.concat(names);
+
+      // only add names which don't exist
+      newNames = newNames.filter(n => !_.find(node.specifiers, s => (_.get(s, 'exported.name') || _.get(s, 'local.name')) === n));
+
+      if (newNames.length > 0) {
+        const newSpecifiers = [].concat(node.specifiers);
+        newNames.forEach((n) => {
+          const local = t.identifier(n);
+          const exported = local; // TODO: doesn't support local alias.
+          if (n === defaultExport) {
+            newSpecifiers.unshift(t.exportSpecifier(t.identifier('default'), exported));
+          } else {
+            newSpecifiers.push(t.exportSpecifier(local, exported));
+          }
+        });
+
+        const newNode = Object.assign({}, node, { specifiers: newSpecifiers });
+        const newCode = generate(newNode, babelGeneratorOptions).code;
+        changes.push({
+          start: node.start,
+          end: node.end,
+          replacement: newCode,
+        });
+      }
+    }
+  });
+
+  if (changes.length === 0 &amp;&amp; !sourceExisted) {
+    const specifiers = [];
+    if (defaultExport) {
+      specifiers.push(t.exportSpecifier(t.identifier('default'), t.identifier(defaultExport)));
+    }
+
+    names.forEach((n) => {
+      const local = t.identifier(n);
+      const exported = local;
+      specifiers.push(t.exportSpecifier(local, exported));
+    });
+
+    const node = t.ExportNamedDeclaration(null, specifiers, t.stringLiteral(moduleSource));
+    const code = generate(node, babelGeneratorOptions).code;
+    changes.push({
+      start: targetExportPos,
+      end: targetExportPos,
+      replacement: `${code}\n`,
+    });
+  }
+
+  return changes;
+}
+
+function renameImportAsSpecifier(ast, oldName, newName) {
+  let defNode = null;
+  let changes = [];
+
+  traverse(ast, {
+    ImportSpecifier(path) {
+      if (_.get(path.node, 'local.name') === oldName) {
+        defNode = path.node.local;
+      }
+    }
+  });
+  if (defNode) {
+    changes = changes.concat(identifier.renameIdentifier(ast, oldName, newName, defNode));
+  }
+  return changes;
+}
+
+function renameImportSpecifier(ast, oldName, newName, moduleSource) {
+  // Summary:
+  //  Rename the import(default, named) variable name and their reference.
+  //  The simple example is to rename a component
+  //  NOTE: only rename imported name!
+  //  eg: import { A as A1 } from './A'; A -> B  import { B as A1 } from './A';
+  //  import fetchList from './action';
+  //  import { fetchList as fetchTopicList } from '../topic/action';
+
+  let defNode = null;
+  let changes = [];
+
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const node = path.node;
+      if (moduleSource &amp;&amp; _.get(node, 'source.value') !== moduleSource) return;
+      // console.log(_.get(node, 'source.value'), moduleSource);
+      node.specifiers.forEach((specifier) => {
+        if (
+          (specifier.type === 'ImportDefaultSpecifier' || specifier.type === 'ImportNamespaceSpecifier')
+          &amp;&amp; _.get(specifier, 'local.name') === oldName
+        ) {
+          defNode = specifier.local;
+        }
+
+        // only rename imported specifier
+        if (specifier.type === 'ImportSpecifier' &amp;&amp; _.get(specifier, 'imported.name') === oldName) {
+          if (_.get(specifier, 'local.name') === oldName) {
+            defNode = specifier.local;
+          } else {
+            changes.push({
+              start: specifier.imported.start,
+              end: specifier.imported.end,
+              replacement: newName,
+            });
+          }
+        }
+      });
+    }
+  });
+  if (defNode) {
+    changes = changes.concat(identifier.renameIdentifier(ast, oldName, newName, defNode));
+  }
+  return changes;
+}
+
+function renameExportSpecifier(ast, oldName, newName, moduleSource) {
+  // It only rename export specifier but not references.
+  const changes = [];
+  traverse(ast, {
+    ExportSpecifier(path) {
+      const node = path.node;
+      if (moduleSource &amp;&amp; _.get(path.parentPath.node, 'source.value') !== moduleSource) return;
+
+      if (_.get(node, 'local.name') === oldName) {
+        changes.push({
+          start: node.local.start,
+          end: node.local.end,
+          replacement: newName,
+        });
+      } else if (_.get(node, 'exported.name') === oldName) {
+        changes.push({
+          start: node.exported.start,
+          end: node.exported.end,
+          replacement: newName,
+        });
+      }
+    }
+  });
+  return changes;
+}
+
+function renameModuleSource(ast, oldModuleSource, newModuleSource) {
+  // Summary:
+  //  Rename the module source for import/export xx from moduleSource.
+  //  It only compares the string rather that resolve to the absolute path.
+
+  const changes = [];
+
+  function renameSource(path) {
+    const node = path.node;
+    if (node.source &amp;&amp; node.source.value === oldModuleSource) {
+      changes.push({
+        start: node.source.start + 1,
+        end: node.source.end - 1,
+        replacement: newModuleSource,
+      });
+    }
+  }
+
+  traverse(ast, {
+    ImportDeclaration: renameSource,
+    ExportNamedDeclaration: renameSource,
+  });
+
+  return changes;
+}
+
+function removeImportSpecifier(ast, name) {
+  // Remove import specifier by local name
+
+  let names = name;
+  if (typeof name === 'string') {
+    names = [name];
+  }
+  const changes = [];
+  traverse(ast, {
+    ImportDeclaration(path) {
+      const node = path.node;
+      const multilines = node.loc.start.line !== node.loc.end.line;
+      if (!node.specifiers) return;
+      const newSpecifiers = node.specifiers.filter(s => !names.includes(s.local.name));
+      if (newSpecifiers.length === 0) {
+        // no specifiers, should delete the import statement
+        changes.push({
+          start: node.start,
+          end: node.end,
+          replacement: '',
+        });
+      } else if (newSpecifiers.length !== node.specifiers.length) {
+        // remove the specifier import
+        const newNode = Object.assign({}, node, { specifiers: newSpecifiers });
+        let newCode = generate(newNode, {}).code;
+        if (multilines) newCode = formatMultilineImport(newCode);
+        changes.push({
+          start: node.start,
+          end: node.end,
+          replacement: newCode,
+        });
+      }
+    }
+  });
+
+  return changes;
+}
+
+function removeImportBySource(ast, moduleSource) {
+  const changes = [];
+
+  function removeBySource(path) {
+    const node = path.node;
+    if (!node.source) return;
+    if (node.source.value === moduleSource) {
+      changes.push({
+        start: node.start,
+        end: node.end,
+        replacement: '',
+      });
+    }
+  }
+  traverse(ast, {
+    ExportNamedDeclaration: removeBySource,
+    ImportDeclaration: removeBySource,
+  });
+
+  return changes;
+}
+
+module.exports = {
+  addImportFrom: common.acceptFilePathForAst(addImportFrom),
+  addExportFrom: common.acceptFilePathForAst(addExportFrom),
+
+  renameImportSpecifier: common.acceptFilePathForAst(renameImportSpecifier),
+  renameImportAsSpecifier: common.acceptFilePathForAst(renameImportAsSpecifier),
+  renameExportSpecifier: common.acceptFilePathForAst(renameExportSpecifier),
+
+  removeImportSpecifier: common.acceptFilePathForAst(removeImportSpecifier),
+  // removeExportSpecifier: common.acceptFilePathForAst(removeExportSpecifier),
+  removeImportBySource: common.acceptFilePathForAst(removeImportBySource),
+
+  renameModuleSource: common.acceptFilePathForAst(renameModuleSource),
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jul 09 2017 00:09:43 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

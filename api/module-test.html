@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>test - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-action.html">action</a><ul class='methods'><li data-type='method'><a href="module-action.html#.add">add</a></li><li data-type='method'><a href="module-action.html#.addAsync">addAsync</a></li><li data-type='method'><a href="module-action.html#.move">move</a></li><li data-type='method'><a href="module-action.html#.moveAsync">moveAsync</a></li><li data-type='method'><a href="module-action.html#.remove">remove</a></li><li data-type='method'><a href="module-action.html#.removeAsync">removeAsync</a></li></ul></li><li><a href="module-app.html">app</a><ul class='methods'><li data-type='method'><a href="module-app.html#.getDeps">getDeps</a></li><li data-type='method'><a href="module-app.html#~getFeatureRoutes">getFeatureRoutes</a></li><li data-type='method'><a href="module-app.html#~getFeatures">getFeatures</a></li><li data-type='method'><a href="module-app.html#~getFeatureStructure">getFeatureStructure</a></li><li data-type='method'><a href="module-app.html#~getRootRoutePath">getRootRoutePath</a></li><li data-type='method'><a href="module-app.html#~getSrcFiles">getSrcFiles</a></li></ul></li><li><a href="module-component.html">component</a><ul class='methods'><li data-type='method'><a href="module-component.html#.add">add</a></li><li data-type='method'><a href="module-component.html#.remove">remove</a></li><li data-type='method'><a href="module-component.html#.remove">remove</a></li></ul></li><li><a href="module-constant.html">constant</a><ul class='methods'><li data-type='method'><a href="module-constant.html#.add">add</a></li><li data-type='method'><a href="module-constant.html#.remove">remove</a></li><li data-type='method'><a href="module-constant.html#.rename">rename</a></li></ul></li><li><a href="module-feature.html">feature</a><ul class='methods'><li data-type='method'><a href="module-feature.html#.add">add</a></li><li data-type='method'><a href="module-feature.html#.move">move</a></li><li data-type='method'><a href="module-feature.html#.remove">remove</a></li></ul></li><li><a href="module-refactor.html">refactor</a><ul class='methods'><li data-type='method'><a href="module-refactor.html#.addExportFrom">addExportFrom</a></li><li data-type='method'><a href="module-refactor.html#.addImportFrom">addImportFrom</a></li><li data-type='method'><a href="module-refactor.html#.addToArray">addToArray</a></li><li data-type='method'><a href="module-refactor.html#.removeFromArray">removeFromArray</a></li><li data-type='method'><a href="module-refactor.html#.renameClassName">renameClassName</a></li><li data-type='method'><a href="module-refactor.html#.renameFunctionName">renameFunctionName</a></li><li data-type='method'><a href="module-refactor.html#.renameIdentifier">renameIdentifier</a></li></ul></li><li><a href="module-rekit-core.html">rekit-core</a><ul class='methods'><li data-type='method'><a href="module-rekit-core.html#.addAction">addAction</a></li><li data-type='method'><a href="module-rekit-core.html#.addAsyncAction">addAsyncAction</a></li><li data-type='method'><a href="module-rekit-core.html#.addComponent">addComponent</a></li><li data-type='method'><a href="module-rekit-core.html#.addFeature">addFeature</a></li><li data-type='method'><a href="module-rekit-core.html#.handleCommand">handleCommand</a></li><li data-type='method'><a href="module-rekit-core.html#.moveAction">moveAction</a></li><li data-type='method'><a href="module-rekit-core.html#.moveAsyncAction">moveAsyncAction</a></li><li data-type='method'><a href="module-rekit-core.html#.moveComponent">moveComponent</a></li><li data-type='method'><a href="module-rekit-core.html#.moveFeature">moveFeature</a></li><li data-type='method'><a href="module-rekit-core.html#.removeAction">removeAction</a></li><li data-type='method'><a href="module-rekit-core.html#.removeAsyncAction">removeAsyncAction</a></li><li data-type='method'><a href="module-rekit-core.html#.removeComponent">removeComponent</a></li><li data-type='method'><a href="module-rekit-core.html#.removeFeature">removeFeature</a></li></ul></li><li><a href="module-style.html">style</a><ul class='methods'><li data-type='method'><a href="module-style.html#.add">add</a></li><li data-type='method'><a href="module-style.html#.remove">remove</a></li><li data-type='method'><a href="module-style.html#.remove">remove</a></li></ul></li><li><a href="module-template.html">template</a><ul class='methods'><li data-type='method'><a href="module-template.html#.generate">generate</a></li><li data-type='method'><a href="module-template.html#.readTemplate">readTemplate</a></li></ul></li><li><a href="module-test.html">test</a><ul class='methods'><li data-type='method'><a href="module-test.html#.add">add</a></li><li data-type='method'><a href="module-test.html#.addAction">addAction</a></li><li data-type='method'><a href="module-test.html#.move">move</a></li><li data-type='method'><a href="module-test.html#.moveAction">moveAction</a></li><li data-type='method'><a href="module-test.html#.remove">remove</a></li><li data-type='method'><a href="module-test.html#.removeAction">removeAction</a></li></ul></li><li><a href="module-utils.html">utils</a><ul class='methods'><li data-type='method'><a href="module-utils.html#.joinPath">joinPath</a></li><li data-type='method'><a href="module-utils.html#.mapSrcFile">mapSrcFile</a></li><li data-type='method'><a href="module-utils.html#.setSilent">setSilent</a></li><li data-type='method'><a href="module-utils.html#~error">error</a></li><li data-type='method'><a href="module-utils.html#~fatalError">fatalError</a></li><li data-type='method'><a href="module-utils.html#~getActionType">getActionType</a></li><li data-type='method'><a href="module-utils.html#~getAsyncActionTypes">getAsyncActionTypes</a></li><li data-type='method'><a href="module-utils.html#~getFullPath">getFullPath</a></li><li data-type='method'><a href="module-utils.html#~getPkgJson">getPkgJson</a></li><li data-type='method'><a href="module-utils.html#~getProjectRoot">getProjectRoot</a></li><li data-type='method'><a href="module-utils.html#~getRelativePath">getRelativePath</a></li><li data-type='method'><a href="module-utils.html#~log">log</a></li><li data-type='method'><a href="module-utils.html#~setPkgJson">setPkgJson</a></li><li data-type='method'><a href="module-utils.html#~setProjectRoot">setProjectRoot</a></li><li data-type='method'><a href="module-utils.html#~warn">warn</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#nearestCharAfter">nearestCharAfter</a></li><li><a href="global.html#nearestCharBefore">nearestCharBefore</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">test</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Unit test manager. Manages tests for actions/reducers and components. Usually used with action/component manager.</p></div>
+        
+
+        
+            
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="test.js.html">test.js</a>, <a href="test.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".add"><span class="type-signature">(static) </span>add<span class="signature">(feature, name, args<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="test.js.html">test.js</a>, <a href="test.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Add the unit test boilerplate file for a component.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const test = require('rekit-core').test;
+test.add('home', 'Hello');
+
+// Result => Create the unit test boilerplate file at: 'tests/features/home/Hello.test.js'.</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The feature name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The component name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The args passed to rekit-core/template.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>templateFile</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>Component.test.js</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>The template file to create test file.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".addAction"><span class="type-signature">(static) </span>addAction<span class="signature">(feature, name, args<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="test.js.html">test.js</a>, <a href="test.js.html#line111">line 111</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Add the unit test boilerplate file for an action (using different templates for sync or async).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const test = require('rekit-core').test;
+test.addAction('home', 'doSomething', { isAsync: true });
+
+// Result => Create the unit test boilerplate file at: 'tests/features/home/redux/doSomething.test.js'.</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The feature name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The action name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The args passed to rekit-core/template.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>templateFile</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>Component.test.js</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>The template file to create test file.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isAsync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether the action is async.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".move"><span class="type-signature">(static) </span>move<span class="signature">(source, target)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="test.js.html">test.js</a>, <a href="test.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Move/rename the unit test file for a component.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ElementArg</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Which component test to move.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ElementArg</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The target location of the component test.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".moveAction"><span class="type-signature">(static) </span>moveAction<span class="signature">(source, target, args<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="test.js.html">test.js</a>, <a href="test.js.html#line149">line 149</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Move/rename the unit test file for an action.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ElementArg</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Which action test to move.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ElementArg</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The target location of the action test.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Only used to indicates if it's async.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>isAsync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    <code>false</code>
+                
+                </td>
+            
+
+            <td class="description last"><p>Whether it's an async action.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".remove"><span class="type-signature">(static) </span>remove<span class="signature">(feature, name)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="test.js.html">test.js</a>, <a href="test.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Remove the unit test file for a component.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const test = require('rekit-core').test;
+test.remove('home', 'Hello');
+
+// Result => Delete the test file of: 'tests/features/home/Hello.test.js'.</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The feature name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The component name.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".removeAction"><span class="type-signature">(static) </span>removeAction<span class="signature">(feature, name)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="test.js.html">test.js</a>, <a href="test.js.html#line136">line 136</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Remove the unit test file for an action (either sync or async).</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The feature name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The action name.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jul 09 2017 00:09:43 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

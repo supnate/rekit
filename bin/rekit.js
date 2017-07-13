@@ -123,7 +123,6 @@ addCmd.addArgument(['--connect', '-c'], {
 
 addCmd.addArgument(['--url-path', '-u'], {
   help: 'The url path added to react router config. Only used for page/component.',
-  defaultValue: '$auto',
   dest: 'urlPath',
 });
 

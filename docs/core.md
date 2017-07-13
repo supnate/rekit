@@ -6,7 +6,7 @@ When a Rekit app is created, it has auto added `rekit-core` as a dependency. Whe
 ## API reference
 Rekit core APIs are well modularized and documented. It's the foundation for create custom Rekit plugins.
 
-You can view the API docs at: [http://rekit.js.org/rekit-core/api](http://rekit.js.org/rekit-core/api).
+You can view the API docs at: [http://rekit.js.org/api](http://rekit.js.org/api).
 
 You can create your own plugins based on Rekit-core.
 

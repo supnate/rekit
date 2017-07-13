@@ -1,6 +1,6 @@
 ## Testing
 
-Testing a React + Redux application is difficult, you need to know many libs/tools regarding React testing and learn their usage. But Rekit will setup everything for you. You just need to write test code in the auto generated test files, running test with the Sublime plugin and reading the coverage report in a browser.
+Testing a React + Redux application is difficult, you need to know many libs/tools regarding React testing and learn their usage. But Rekit will setup everything for you. You just need to write test code in the auto generated test files, running test with Rekit portal and reading the coverage report in a browser.
 
 However here is the process of how React testing works. You can know how Rekit setups the testing process.
 

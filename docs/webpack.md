@@ -1,10 +1,8 @@
 ## Bundling
 
-Webpack is also considered one of the most difficult parts for building a React application. Luckily again Rekit setups everything for you. There are 4 webpack config files corresponding to different usage:
+Webpack is also considered one of the most difficult parts for building a React application. Luckily again Rekit setups everything for you. There are 2 webpack config files corresponding to different usage:
 
-* `webpack.dev.config.js`: the dev time config.
-* `webpack.dll.config.js`: the config used by webpack-dll-plugin
-* `webpack.dist.config.js`: the config for dist version.
+* `webpack.config.js`: it's a webpack config factory for dev, dll and dist bundling.
 * `webpack.test.config.js`: the config for test build.
 
 #### Boost the build performance by using webpack-dll-plugin

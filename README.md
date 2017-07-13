@@ -24,7 +24,10 @@ Besides creating apps, Rekit also provides powerful tools for managing the proje
 And below are two quick video demos:
 
 1. [Counter](https://youtu.be/HT6YzZtbPKc): create a simple counter in 1 minute!
+[<img src="/images/video-counter.png" width="400" alt="Rekit Demo"/>](https://youtu.be/HT6YzZtbPKc "Rekit Demo")
+
 2. [Reddit API usage](https://youtu.be/edq5lWsxZMg): show the latest reactjs topics on Reddit using async actions.
+[<img src="/images/video-reddit-api.png" width="400" alt="Rekit Demo"/>](https://youtu.be/edq5lWsxZMg "Rekit Demo")
 
 
 ## Installation

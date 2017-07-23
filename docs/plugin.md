@@ -13,7 +13,7 @@ Now you can create a Rekit plugin to alter the default behavior like how Rekit c
 Actually, there have been such two plugins available:
 
 1. [rekit-plugin-redux-saga](https://github.com/supnate/rekit-plugin-redux-saga): allows Rekit to uses `redux-saga` rather than `redux-thunk` when creating async actions.
-2. [rekit-plugin-reselect](https://github.com/supnate/rekit-plugin): adds a new element type named `selector` based on [reselect](https://github.com/reactjs/reselect) to Rekit. So that you can manage selectors by Rekit for your project.
+2. [rekit-plugin-reselect](https://github.com/supnate/rekit-plugin-selector): adds a new element type named `selector` based on [reselect](https://github.com/reactjs/reselect) to Rekit. So that you can manage selectors by Rekit for your project.
 
 The two plugins are not only productable but also reference about how to create Rekit plugins.
 

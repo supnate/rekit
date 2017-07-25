@@ -156,7 +156,7 @@ For more information, please read the document at: [http://rekit.js.org/docs/plu
  * It's production-ready but not a starter kit.
  * Zero additional configuration needed after creating an app.
  * Powerful Rekit portal to boost the efficiency of development.
- * Command line tools to mange actions, reducers, components and pages.
+ * Command line tools to manage actions, reducers, components and pages.
  * Embed build script and test server for the build result.
  * Use [Webpack 3](http://webpack.js.org) for bundling.
  * Use [Babel](https://babeljs.io/) for ES2015(ES6)+ support.

@@ -28,7 +28,7 @@ export class DefaultPage extends Component {
           The app has been initialized with two features named &quot;common&quot; and &quot;home&quot; and two samples: counter and Reddit list viewer as shown below.
         </p>
         <p>
-          To learn more about how to get started, you can visit: <a href="http://rekit.js.org/get-started">Get started</a>
+          To learn more about how to get started, you can visit: <a href="http://rekit.js.org/docs/get-started">Get started</a>
         </p>
         <h3>Demos</h3>
         <p>Here are two simple demos for your quick reference. You can open the browser dev tools to see Redux action logs.</p>

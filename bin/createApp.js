@@ -94,7 +94,7 @@ function createApp(args) {
   if (args.sass) {
     const configPath = path.join(prjPath, 'webpack-config.js');
     let text = fs.readFileSync(configPath).toString();
-    text = text.replace(/\.less/g, '.scss').replace('less-loader', 'sass-loader');
+    text = text.replace(/\.less/g, '.scss').replace(/less\-loader/g, 'sass-loader');
     fs.writeFileSync(configPath, text);
   }
 

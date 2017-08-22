@@ -89,7 +89,10 @@ compiler.run((err) => {
   if (err) console.log(err);
   else {
     // Add timestamp hash to bundle file name.
-    shell.mv(path.join(buildFolder, './static/main.js'), path.join(buildFolder, `/static/main.${timestamp}.js`));
-    console.timeEnd('Done');
+    // Use timeout so that the bundle analyzer will find main.js before renaming.
+    setTimeout(() => {
+      shell.mv(path.join(buildFolder, './static/main.js'), path.join(buildFolder, `/static/main.${timestamp}.js`));
+      console.timeEnd('Done');
+    }, 100);
   }
 });

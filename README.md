@@ -76,7 +76,7 @@ To change the ports dev-servers running on, edit the `rekit` section in `package
 There is a another simple forum application built with Rekit 1.0 (will be migrated to 2.0 soon). See more introduction at: [http://github.com/supnate/rekit-example](http://github.com/supnate/rekit-example)
 
 ## Motivation
-While building a React + Redux + React-router application, there are many trival but important tasks to do besides the appication logic itself. These tasks are necessary to construct good architecture but are not actually related with your application funcionality at all. So Rekit is created to do all trival tasks for you so that you can just focus on the business logic.
+While building a React + Redux + React-router application, there are many trivial but important tasks to do besides the appication logic itself. These tasks are necessary to construct good architecture but are not actually related with your application funcionality at all. So Rekit is created to do all trivial tasks for you so that you can just focus on the business logic.
 
 For example: to create a list page to show recent topics of a forum application, typically you need to finish below tasks before you start writing the real topic list logic:
 

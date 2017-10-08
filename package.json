@@ -86,7 +86,8 @@
   },
   "dependencies": {
     "argparse": "^1.0.7",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "request": "^2.81.0"    
   },
   "devDependencies": {
     "axios": "^0.16.2",
@@ -151,7 +152,6 @@
     "redux-thunk": "^2.2.0",
     "rekit-core": "^2.0.1",
     "rekit-portal": "^2.0.5",
-    "request": "^2.83.0",
     "reselect": "^3.0.1",
     "sass-loader": "^6.0.6",
     "shelljs": "^0.7.8",

@@ -14,6 +14,7 @@ const webpack = require('webpack');
 const devMiddleware = require('webpack-dev-middleware');
 const hotMiddleware = require('webpack-hot-middleware');
 const rekitPortalMiddleWare = require('rekit-portal/middleware');
+const request = require('request');
 const pkgJson = require('../package.json');
 const getConfig = require('../webpack-config');
 const ArgumentParser = require('argparse').ArgumentParser;
@@ -64,6 +65,13 @@ function startDevServer() {
   // Also support files from root folder, mainly for the dev-vendor bundle
   app.use(express.static(path.join(__dirname, '../')));
 
+  // Proxy all calls /api when DEV to 
+  const { rekit: { proxy: API } } = pkgJson;
+  if (API) {
+    app.get('/api/*', (req, res) => req.pipe(request.get(`${API}${req.originalUrl}`)).pipe(res));
+    app.post('/api/*', (req, res) => req.pipe(request.post(`${API}${req.originalUrl}`)).pipe(res));
+  }
+
   // History api fallback
   app.use(fallback('index.html', { root: path.join(__dirname, '../src') }));
 
@@ -78,6 +86,9 @@ function startDevServer() {
       console.error(err);
     }
     console.log(`Dev server listening at http://localhost:${pkgJson.rekit.devPort}/`);
+    if (API) {
+      console.log(`Proxy to API Server(Only for dev): ${API}`);
+    }
   });
 }
 

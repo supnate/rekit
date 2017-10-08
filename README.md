@@ -169,6 +169,8 @@ For more information, please read the document at: [http://rekit.js.org/docs/plu
  * Use [istanbul](https://github.com/gotwarlost/istanbul) for testing coverage report.
  * Use [eslint-config-airbnb](https://github.com/airbnb/javascript) for code style check.
  * Support [Redux dev tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd).
+* Proxy to API in DEV like [create-react-app](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development). e.g.  fetch(/api/\<your path>) 
+
 
 ## Documentation
 [http://rekit.js.org](http://rekit.js.org)

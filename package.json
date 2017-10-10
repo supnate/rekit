@@ -87,7 +87,7 @@
   "dependencies": {
     "argparse": "^1.0.7",
     "lodash": "^4.17.4",
-    "request": "^2.81.0"
+    "request": "^2.81.0"    
   },
   "devDependencies": {
     "axios": "^0.16.2",

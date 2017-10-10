@@ -19,7 +19,7 @@ describe('home/RedditList', () => {
     );
 
     expect(
-      renderedComponent.find('.home-reddit-list').node
+      renderedComponent.find('.home-reddit-list').getElement()
     ).to.exist;
 
     expect(
@@ -34,7 +34,7 @@ describe('home/RedditList', () => {
     );
 
     expect(
-      renderedComponent.find('.no-items-tip').node
+      renderedComponent.find('.no-items-tip').getElement()
     ).to.exist;
   });
 });

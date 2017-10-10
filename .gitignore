@@ -13,3 +13,4 @@ _book
 .nyc_output
 .tmp
 .DS_Store
+Thumbs.db

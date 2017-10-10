@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { render, shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import ConnectedDefaultPage, { DefaultPage } from 'src/features/home/DefaultPage';
@@ -15,7 +15,7 @@ describe('features/home/DefaultPage', () => {
     };
     const store = createStore(state => state, pageProps);
 
-    const wrapper = render(
+    const wrapper = mount(
       <Provider store={store}>
         <ConnectedDefaultPage />
       </Provider>
@@ -36,7 +36,7 @@ describe('features/home/DefaultPage', () => {
     );
 
     expect(
-      renderedComponent.find('.home-default-page').node
+      renderedComponent.find('.home-default-page').getElement()
     ).to.exist;
   });
 
@@ -52,7 +52,7 @@ describe('features/home/DefaultPage', () => {
     );
 
     expect(
-      renderedComponent.find('.btn-fetch-reddit[disabled]').node
+      renderedComponent.find('.btn-fetch-reddit[disabled]').getElement()
     ).to.exist;
   });
 
@@ -68,30 +68,30 @@ describe('features/home/DefaultPage', () => {
     );
 
     expect(
-      renderedComponent.find('.fetch-list-error').node
+      renderedComponent.find('.fetch-list-error').getElement()
     ).to.exist;
   });
 
-  // it('counter actions are called when buttons clicked', () => {
-  //   const pageProps = {
-  //     home: {},
-  //     actions: {
-  //       counterPlusOne: sinon.spy(),
-  //       counterMinusOne: sinon.spy(),
-  //       resetCounter: sinon.spy(),
-  //       fetchRedditReactjsList: sinon.spy(),
-  //     },
-  //   };
-  //   const renderedComponent = shallow(
-  //     <DefaultPage {...pageProps} />
-  //   );
-  //   renderedComponent.find('.btn-plus-one').simulate('click');
-  //   renderedComponent.find('.btn-minus-one').simulate('click');
-  //   renderedComponent.find('.btn-reset-counter').simulate('click');
-  //   renderedComponent.find('.btn-fetch-reddit').simulate('click');
-  //   expect(pageProps.actions.counterPlusOne).to.have.property('callCount', 1);
-  //   expect(pageProps.actions.counterMinusOne).to.have.property('callCount', 1);
-  //   expect(pageProps.actions.resetCounter).to.have.property('callCount', 1);
-  //   expect(pageProps.actions.fetchRedditReactjsList).to.have.property('callCount', 1);
-  // });
+  it('counter actions are called when buttons clicked', () => {
+    const pageProps = {
+      home: {},
+      actions: {
+        counterPlusOne: sinon.spy(),
+        counterMinusOne: sinon.spy(),
+        resetCounter: sinon.spy(),
+        fetchRedditReactjsList: sinon.spy(),
+      },
+    };
+    const renderedComponent = shallow(
+      <DefaultPage {...pageProps} />
+    );
+    renderedComponent.find('.btn-plus-one').simulate('click');
+    renderedComponent.find('.btn-minus-one').simulate('click');
+    renderedComponent.find('.btn-reset-counter').simulate('click');
+    renderedComponent.find('.btn-fetch-reddit').simulate('click');
+    expect(pageProps.actions.counterPlusOne).to.have.property('callCount', 1);
+    expect(pageProps.actions.counterMinusOne).to.have.property('callCount', 1);
+    expect(pageProps.actions.resetCounter).to.have.property('callCount', 1);
+    expect(pageProps.actions.fetchRedditReactjsList).to.have.property('callCount', 1);
+  });
 });

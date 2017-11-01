@@ -88,7 +88,7 @@ function createApp(args) {
   });
 
   // Create gitignore
-  fs.rename(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
+  fs.renameSync(path.join(prjPath, 'gitignore.tpl'), path.join(prjPath, '.gitignore'));
 
   // If sass, change webpack configs.
   if (args.sass) {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RedditList } from './';
-import * as actions from './redux/actions';
+import { counterPlusOne, counterMinusOne, resetCounter, fetchRedditReactjsList } from './redux/actions';
 
 export class DefaultPage extends Component {
   static propTypes = {
@@ -68,7 +68,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators({ counterPlusOne, counterMinusOne, resetCounter, fetchRedditReactjsList }, dispatch)
   };
 }
 

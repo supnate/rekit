@@ -65,7 +65,7 @@ function startDevServer() {
   // Also support files from root folder, mainly for the dev-vendor bundle
   app.use(express.static(path.join(__dirname, '../')));
 
-  // Proxy all calls /api when DEV to 
+  // Proxy all calls /api when DEV to
   const { rekit: { proxy: API } } = pkgJson;
   if (API) {
     app.get('/api/*', (req, res) => req.pipe(request.get(`${API}${req.originalUrl}`)).pipe(res));
@@ -90,6 +90,8 @@ function startDevServer() {
       console.log(`Proxy to API Server(Only for dev): ${API}`);
     }
   });
+
+  compiler.plugin('done', (...args) => console.log('done: ', args));
 }
 
 // Start an express server for build result.

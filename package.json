@@ -6,6 +6,7 @@
   "bin": {
     "rekit": "./bin/rekit.js"
   },
+  "files": ["bin", "package.json", "LICENSE"],
   "keywords": [
     "rekit",
     "react",
@@ -17,156 +18,23 @@
     "url": "https://github.com/supnate/rekit.git"
   },
   "scripts": {
-    "start": "node ./tools/server.js",
-    "build": "node ./tools/build.js",
-    "test": "node ./tools/run_test.js",
+    "test": "node ./tests/sanity/rekit.js",
     "test:plugin": "node ./tests/sanity/plugin.js",
-    "test:rekit": "node ./tests/sanity/rekit.js",
     "test:npm": "node ./tests/npm_test.js",
-    "codecov": "codecov",
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build",
     "docs:publish": "npm run docs:prepare && rm -rf _book && gitbook build"
   },
-  "rekit": {
-    "version": "2.0.0",
-    "devPort": 6075,
-    "portalPort": 6076,
-    "buildPort": 6077,
-    "plugins": [],
-    "css": "less"
-  },
-  "babel": {
-    "presets": [
-      "env",
-      "react",
-      "babel-preset-stage-0"
-    ],
-    "plugins": [
-      "react-hot-loader/babel",
-      "syntax-dynamic-import",
-      "lodash",
-      [
-        "module-resolver",
-        {
-          "alias": {
-            "src": "./src"
-          }
-        }
-      ]
-    ],
-    "env": {
-      "dev": {
-        "plugins": []
-      },
-      "test": {
-        "plugins": [
-          "istanbul"
-        ]
-      }
-    }
-  },
-  "nyc": {
-    "include": [
-      "index.js",
-      "src/**/*.js",
-      "tools/lib/*.js"
-    ],
-    "exclude": [
-      "tools/**/templates",
-      ".tmp"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary"
-    ],
-    "cache": false,
-    "sourceMap": false,
-    "instrument": true
-  },
   "dependencies": {
     "argparse": "^1.0.7",
     "download-git-repo": "^1.0.1",
-    "lodash": "^4.17.4",
-    "request": "^2.81.0"
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "axios": "^0.17.0",
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^8.0.1",
-    "babel-loader": "^7.0.0",
-    "babel-plugin-istanbul": "^4.1.4",
-    "babel-plugin-lodash": "^3.2.11",
-    "babel-plugin-module-resolver": "^2.7.1",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-react-jsx-source": "^6.22.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-register": "^6.26.0",
     "chai": "^4.1.2",
-    "codecov": "^3.0.0",
-    "colors": "^1.1.2",
-    "cross-env": "^5.1.1",
-    "css-loader": "^0.28.4",
-    "diff": "^3.2.0",
-    "enzyme": "^3.1.0",
-    "enzyme-adapter-react-16": "^1.0.2",
     "eslint": "^4.10.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-import-resolver-babel-module": "^3.0.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.1.0",
-    "estraverse": "^4.2.0",
-    "estraverse-fb": "^1.3.2",
-    "express": "^4.16.2",
-    "express-history-api-fallback": "^2.2.1",
-    "file-loader": "^1.1.5",
     "gitbook-cli": "^2.3.0",
-    "global": "^4.3.2",
-    "isomorphic-fetch": "^2.2.1",
-    "jsdom": "^11.2.0",
-    "less": "^2.7.3",
-    "less-loader": "^4.0.5",
-    "lodash-webpack-plugin": "^0.11.4",
-    "memobind": "^0.5.0",
-    "mocha": "^4.0.1",
-    "mocha-webpack": "^1.0.1",
-    "nock": "^9.0.27",
-    "node-sass": "^4.5.3",
-    "npm-run": "^4.1.2",
-    "nyc": "^11.2.1",
-    "prop-types": "^15.5.10",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-hot-loader": "^3.1.1",
-    "react-redux": "^5.0.5",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1",
-    "react-router-redux": "^5.0.0-alpha.8",
-    "react-test-renderer": "16",
-    "redux": "^3.7.2",
-    "redux-logger": "^3.0.6",
-    "redux-mock-store": "^1.3.0",
-    "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0",
-    "rekit-core": "^2.0.1",
-    "rekit-portal": "^2.0.5",
-    "reselect": "^3.0.1",
-    "sass-loader": "^6.0.6",
-    "shelljs": "^0.7.8",
-    "sinon": "^4.0.2",
-    "socket.io": "^2.0.4",
-    "style-loader": "^0.19.0",
-    "trash": "^4.0.1",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.8.1",
-    "webpack-bundle-analyzer": "^2.8.2",
-    "webpack-dev-middleware": "^1.10.2",
-    "webpack-hot-middleware": "^2.20.0",
-    "webpack-node-externals": "^1.6.0"
+    "shelljs": "^0.7.8"
   }
 }

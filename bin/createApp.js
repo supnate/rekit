@@ -9,6 +9,7 @@ const download = require('download-git-repo');
 const utils = require('./utils');
 
 function createApp(args) {
+  console.log(args);
   const prjName = args.name;
   if (!prjName) {
     console.log('Error: please specify the project name.');
@@ -25,7 +26,6 @@ function createApp(args) {
   fs.mkdirSync(prjPath);
 
   // Download boilerplate from: https://github.com/supnate/rekit-boilerplate
-  console.log('Downloading the boilerplate...');
   download('supnate/rekit-boilerplate#dist', prjPath, (err) => {
     if (err) {
       console.log('Failed to get dependencies. The project was not created. Please check and retry.');
@@ -43,12 +43,11 @@ function createApp(args) {
 
       console.log('Project creation success!');
       console.log(`To run the project, please go to the project folder "${prjName}" and:`);
-      console.log('  1. run "npm install" to install dependencies.');
-      console.log('  2. run "npm start" to start the dev server.');
+      console.log('  1. Run "npm install" to install dependencies.');
+      console.log('  2. Run "npm start" to start the dev server.');
       console.log('Enjoy!');
       console.log('');
     }
-    console.log(err ? 'Error' : 'Success');
   });
 }
 

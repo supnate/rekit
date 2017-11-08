@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const request = require('request'); // use request lib so that it respects proxy
 
 // Credit to: http://stackoverflow.com/questions/13786160/copy-folder-recursively-in-node-js
 function copyFileSync(source, target) {
@@ -57,21 +56,8 @@ function deleteFolderRecursive(dirPath) {
   }
 }
 
-function requestDeps() {
-  return new Promise((resolve, reject) => {
-    request('https://supnate.github.io/rekit-deps/deps.2.1.x.json', function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        resolve(JSON.parse(body));
-      } else {
-        reject(error || response.statusCode);
-      }
-    })
-  });
-}
-
 module.exports = {
   copyFileSync,
   copyFolderRecursiveSync,
   deleteFolderRecursive,
-  requestDeps,
 };

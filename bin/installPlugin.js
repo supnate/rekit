@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const execSync = require('child_process').execSync;
+const { execSync } = require('child_process');
 
 function installPlugin(args, rekitCore) {
   console.time('Done.');
@@ -27,7 +27,7 @@ function installPlugin(args, rekitCore) {
     if (fs.existsSync(path.join(prjRoot, 'yarn.lock'))) {
       cmd = `yarn add ${pluginName}`;
     } else {
-      cmd = `npm install ${pluginName}`;
+      cmd = `npm install ${pluginName} --save-dev`;
     }
     execSync(cmd, { cwd: prjRoot, stdio: 'pipe' });
   }

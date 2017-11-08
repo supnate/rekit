@@ -2,5 +2,4 @@ language: node_js
 node_js:
   - "stable"
   - "6"
-after_success: npm run codecov
 install: npm install

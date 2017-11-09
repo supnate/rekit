@@ -1,8 +1,12 @@
 {
 	"private": true,
+	"name": "rekit-packages",
 	"workspaces": [
     "packages/*"
-  ],
+	],
+	"scripts": {
+		"test": "lerna run test --stream"
+	},
 	"devDependencies": {
 		"gitbook-cli": "^2.3.0",
 		"lerna": "^2.5.1"

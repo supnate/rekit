@@ -5,11 +5,15 @@
 
 const path = require('path');
 const fs = require('fs');
-const download = require('download-git-repo');
+// const download = require('download-git-repo');
 const utils = require('./utils');
 
+function download(a1, dest, callback) {
+  utils.copyFolderRecursiveSync(path.join(__dirname, '../../../../rekit-boilerplate'), dest, p => !/node_modules/.test(p));
+  callback();
+}
+
 function createApp(args) {
-  console.log(args);
   const prjName = args.name;
   if (!prjName) {
     console.log('Error: please specify the project name.');
@@ -25,21 +29,31 @@ function createApp(args) {
   console.log('Welcome to Rekit, now creating your project...');
   fs.mkdirSync(prjPath);
 
-  // Download boilerplate from: https://github.com/supnate/rekit-boilerplate
+  // Download boilerplate from: https://github.com/supnate/rekit-boilerplate dist branch.
   download('supnate/rekit-boilerplate#dist', prjPath, (err) => {
     if (err) {
-      console.log('Failed to get dependencies. The project was not created. Please check and retry.');
+      console.log('Failed to download the boilerplate. The project was not created. Please check and retry.');
       console.log(err);
       utils.deleteFolderRecursive(prjPath);
       process.exit(1);
     } else {
-      // Remove yarn.ock
-      fs.unlinkSync(path.join(prjPath, 'yarn.lock')); // Remove yarn.lock
+      // Remove yarn.lock
+      const yarnLockPath = path.join(prjPath, 'yarn.lock');
+      if (fs.existsSync(yarnLockPath)) {
+        fs.unlinkSync(yarnLockPath);
+      }
 
       // Modify package.json
       const appPkgJson = require(path.join(prjPath, 'package.json')); // eslint-disable-line
       appPkgJson.name = prjName;
       appPkgJson.description = `${prjName} created by Rekit.`;
+
+      // Execute postCreate in the boilerplate, so that it could handle '--clean', '--sass' flags.
+      const postCreateScript = path.join(prjPath, 'postCreate.js');
+      if (fs.existsSync(postCreateScript)) {
+        const postCreate = require();
+        postCreate(args);
+      }
 
       console.log('Project creation success!');
       console.log(`To run the project, please go to the project folder "${prjName}" and:`);

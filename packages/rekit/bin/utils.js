@@ -23,9 +23,8 @@ function copyFolderRecursiveSync(source, target, filter) {
   let files = [];
 
   // check if folder needs to be created or integrated
-  const targetFolder = path.join(target, path.basename(source));
-  if (!fs.existsSync(targetFolder)) {
-    fs.mkdirSync(targetFolder);
+  if (!fs.existsSync(target)) {
+    fs.mkdirSync(target);
   }
 
   // copy
@@ -33,10 +32,11 @@ function copyFolderRecursiveSync(source, target, filter) {
     files = fs.readdirSync(source);
     files.forEach((file) => {
       const curSource = path.join(source, file);
+      if (filter && !filter(curSource)) return;
       if (fs.lstatSync(curSource).isDirectory()) {
-        copyFolderRecursiveSync(curSource, targetFolder, filter);
-      } else if (!filter || filter(curSource)) {
-        copyFileSync(curSource, targetFolder);
+        copyFolderRecursiveSync(curSource, path.join(target, path.basename(curSource)), filter);
+      } else {
+        copyFileSync(curSource, target);
       }
     });
   }

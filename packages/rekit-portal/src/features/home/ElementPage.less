@@ -1,0 +1,40 @@
+@import '../../styles/mixins.less';
+
+.home-element-page {
+  h2 {
+    line-height: 60px;
+    font-weight: normal;
+  }
+
+  .page-title {
+    .mark {
+      display: inline-block;
+      padding: 0;
+      width: 16px;
+      margin-left: 5px;
+      line-height: 16px;
+      border-radius: 2px;
+      font-size: 12px;
+      text-align: center;
+      transform: translateY(-2px);
+      color: #fff;
+      cursor: default;
+
+      &-c { background-color: #42bd41; }
+      &-r { background-color: #ffb300; }
+      &-a { background-color: #4fc3f7; }
+    }
+  }
+
+  .pic-wrapper {
+    text-align: center;
+    img {
+      margin-top: 20px;
+      max-width: 600px;
+    }
+  }
+
+  .ant-tabs-bar {
+    background-color: #fff;
+  }
+}

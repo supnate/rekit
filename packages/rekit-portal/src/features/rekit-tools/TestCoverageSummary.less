@@ -1,0 +1,37 @@
+@import '../../styles/mixins.less';
+
+.rekit-tools-test-coverage-summary {
+  .ant-alert {  margin-top: 15px; }
+  .ant-btn { margin-top: 20px;}
+
+  ul {
+    margin: 0 10px;
+    li {
+      padding: 8px 0;
+
+      h4 {
+        font-size: 14px;
+      }
+
+      &.feature-coverage {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  .coverage-percent {
+    background-color: #f7f7f7;
+    height: 10px;
+    width: 100%;
+    margin-top: 5px;
+
+    .percent-inner {
+      background-color: #81C784;
+      height: 100%;
+    }
+  }
+
+  .feature-coverage .coverage-percent {
+    height: 6px;
+  }
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <title>Rekit portal</title>
+    <style type="text/css">
+      html, body {
+        height: 100%;
+        font-family: Arial, 'Hiragino Sans GB', 'Hiragino Sans GB W3', 'Microsoft Yahei';
+      }
+
+      #loading-wrapper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #f0f0f0;
+        z-index: 9999;
+      }
+
+      #loading-node {
+        width: 300px;
+        box-sizing: border-box;
+        height: 10px;
+        border: 2px solid #fff;
+        z-index: 9999;
+        border-radius: 8px;
+        background-color: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-size: 12px;
+      }
+
+      #loading-node img {
+        width: 32px;
+        position: absolute;
+        left: 134px;
+        top: -80px;
+
+        -webkit-animation-name: spin;
+        -webkit-animation-duration: 1500ms;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        -moz-animation-name: spin;
+        -moz-animation-duration: 1500ms;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-timing-function: linear;
+        -ms-animation-name: spin;
+        -ms-animation-duration: 1500ms;
+        -ms-animation-iteration-count: infinite;
+        -ms-animation-timing-function: linear;
+        
+        animation-name: spin;
+        animation-duration: 1500ms;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+      }
+      @-ms-keyframes spin {
+        from { -ms-transform: rotate(0deg); }
+        to { -ms-transform: rotate(360deg); }
+      }
+      @-moz-keyframes spin {
+        from { -moz-transform: rotate(0deg); }
+        to { -moz-transform: rotate(360deg); }
+      }
+      @-webkit-keyframes spin {
+        from { -webkit-transform: rotate(0deg); }
+        to { -webkit-transform: rotate(360deg); }
+      }
+      @keyframes spin {
+        from { transform:rotate(0deg); }
+        to { transform:rotate(360deg); }
+      }
+
+      #loading-node div {
+        height: 100%;
+        border-radius: 4px;
+        background-color: #00bfff;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      #loading-node label {
+        font-size: 12px;
+        color: #999;
+        display: block;
+        text-align: center;
+        font-family: Arial;
+        position: absolute;
+        top: -28px;
+        left: 0;
+        width: 100%;
+        line-height: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-wrapper">
+      <div id="loading-node"><label>Loading...0%</label><div></div><img src="/src/images/logo_small.png" /></div>
+    </div>
+    <div id="react-root" />
+    <script src="/.tmp/dev-vendors.js"></script>
+    <script>
+      /* eslint-disable */
+      (function() {
+        var loadingNode = document.getElementById('loading-node');
+        var textNode = loadingNode.childNodes[0];
+        var barNode = loadingNode.childNodes[1];
+        var req = new XMLHttpRequest();
+
+        // report progress events
+        req.addEventListener('progress', function(evt) {
+          var percentComplete = (evt.loaded || 0) / (evt.total || 2348700);
+          if (percentComplete > 1) percentComplete = 1;
+          var percent = Math.round(percentComplete * 100, 10) + '%';
+          textNode.innerHTML = 'Loading...' + percent;
+          barNode.style.width = percent;
+        }, false);
+
+        // load responseText into a new script element
+        req.addEventListener('load', function(evt) {
+          window.setTimeout(function() {
+            // timeout to ensure 100% progress bar.
+            var scriptNode = document.createElement('script');
+            scriptNode.innerHTML = evt.target.responseText;
+            document.getElementsByTagName('head')[0].appendChild(scriptNode);
+          }, 0);
+        }, false);
+
+        // TODO: handle load error
+
+        req.open('GET', '/static/main.js');
+        req.send();
+      })();
+
+      // Call this function when the initialization finishes
+      function ON_REKIT_PORTAL_LOAD() {
+        var node = document.getElementById('loading-wrapper');
+        node && node.parentNode.removeChild(node);
+        ON_REKIT_PORTAL_LOAD = null; // This func could not be called multiple times
+      }
+    </script>
+    <script>
+      /* eslint-disable */
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-91539219-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </body>
+</html>

@@ -1,14 +1,13 @@
 build
 node_modules
 npm-debug.log
+lerna-debug.log
 yarn-error.log
 target
-node
 src/_tmp
 static
 dist
 coverage
-rekit_temp_app
 _book
 .nyc_output
 .tmp

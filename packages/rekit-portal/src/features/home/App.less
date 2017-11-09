@@ -1,0 +1,47 @@
+@import '../../styles/mixins.less';
+
+.home-app {
+  height: 100%;
+  background-color: #fff;
+  &.ant-layout {
+    flex-wrap: nowrap;
+  }
+  &.loading {
+    padding: 20px;
+    color: #999;
+  }
+
+  .home-side-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 0;
+    padding: 10px;
+    width: 300px;
+    height: 100%;
+
+    .common-simple-nav {
+      position: absolute;
+      z-index: 999;
+      bottom: 0;
+    }
+  }
+
+  .ant-layout-sider {
+    background-color: #f7f7f7;
+  }
+
+  .page-container {
+    position: fixed;
+    min-width: 700px;
+    overflow: auto;
+    left: 300px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 40px;
+    background-color: #fff;
+  }
+}

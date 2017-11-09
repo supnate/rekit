@@ -1,0 +1,34 @@
+@import '../../styles/mixins.less';
+
+.rekit-tools-test-coverage-page {
+  position: absolute;
+  min-width: 960px;
+  left: 40px;
+  top: 100px;
+  right: 40px;
+  bottom: 40px;
+  h2 {
+    margin-top: -60px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+
+    .ant-btn {
+      float: right;
+    }
+  }
+  iframe {
+    position: absolute;
+    display: block;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .no-coverage {
+    p, .ant-alert {
+      margin-top: 20px;
+    }
+  }
+}

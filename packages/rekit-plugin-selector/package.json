@@ -1,0 +1,13 @@
+{
+  "name": "rekit-plugin-selector",
+  "version": "1.0.0",
+  "description": "Description of rekit-plugin-selector.",
+  "keywords": [
+    "rekit"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "reselect": "^3.0.0"
+  },
+  "devDependencies": {}
+}

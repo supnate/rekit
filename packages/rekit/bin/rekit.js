@@ -37,9 +37,6 @@ function getLocalRekitCore() {
       return null;
     }
   }
-  // if (!prjRoot || !fs.existsSync(pkgJson) || !(require(pkgJson).devDependencies['rekit-core'] || require(pkgJson).dependencies['rekit-core'])) {
-  //   return null;
-  // }
   return require(path.join(prjRoot, 'node_modules/rekit-core')); // eslint-disable-line
 }
 

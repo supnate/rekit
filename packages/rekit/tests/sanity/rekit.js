@@ -82,7 +82,7 @@ function exec(cmd, opts) {
 
 const appName = 'a-rekit-npm-test-app';
 const prjRoot = path.join(__dirname, '../../');
-const appRoot = path.join(prjRoot, '../', appName);
+const appRoot = path.join(prjRoot, '../../../', appName);
 const appPkgJsonPath = path.join(appRoot, 'package.json');
 
 // Remove app folder

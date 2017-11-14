@@ -29,7 +29,8 @@ function getLocalRekitCore() {
     cwd = path.join(cwd, '..');
   }
 
-  if (!prjRoot || !fs.existsSync(path.join(prjRoot, 'node_modules/rekit-core/package.json'))) {
+  const pkgJson = path.join(prjRoot, 'node_modules/rekit-core/package.json');
+  if (!prjRoot || !fs.existsSync(pkgJson) || !(require(pkgJson).devDependencies['rekit-core'] || require(pkgJson).dependencies['rekit-core'])) {
     return null;
   }
   return require(path.join(prjRoot, 'node_modules/rekit-core')); // eslint-disable-line

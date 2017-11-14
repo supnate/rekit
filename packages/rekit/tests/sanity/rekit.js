@@ -90,18 +90,18 @@ shell.rm('-rf', appRoot);
 
 // Uninstall Rekit globally and unlink it.
 console.log('Uninstalling Rekit globally......');
-exec('npm uninstall -g rekit');
+shell.exec('yarn global remove rekit');
 
 console.log('Unlinking Rekit......');
-exec('npm unlink', { cwd: prjRoot });
+shell.exec('yarn unlink', { cwd: prjRoot });
 
 // Install Rekit globally from local folder
 if (args.local_rekit) {
   console.log('Install Rekit globally from local folder...');
-  exec(`npm install -g ${prjRoot}`);
+  exec(`yarn global add file:${prjRoot}`);
 } else {
   console.log('Install Rekit globally');
-  exec('npm install -g rekit');
+  exec('yarn global add rekit');
 }
 
 // Create a Rekit app
@@ -125,15 +125,15 @@ if (args.local_portal) {
 
 // Install deps
 console.log('Install deps for the app...');
-exec('npm install', { cwd: appRoot });
+exec('yarn', { cwd: appRoot });
 
 // Run tests
 console.log('Run test for the app...');
-exec('npm test', { cwd: appRoot });
+exec('yarn test', { cwd: appRoot });
 
 // Start the server
 if (args.start) {
   console.log('Start the app...');
-  exec('npm start', { cwd: appRoot });
+  exec('yarn start', { cwd: appRoot });
 }
 

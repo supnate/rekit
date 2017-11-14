@@ -5,13 +5,13 @@
 
 const path = require('path');
 const fs = require('fs');
-// const download = require('download-git-repo');
+const download = require('download-git-repo');
 const utils = require('./utils');
 
-function download(a1, dest, callback) {
-  utils.copyFolderRecursiveSync(path.join(__dirname, '../../../../rekit-boilerplate'), dest, p => !/node_modules/.test(p));
-  callback();
-}
+// function download(a1, dest, callback) {
+//   utils.copyFolderRecursiveSync(path.join(__dirname, '../../../../rekit-boilerplate'), dest, p => !/node_modules/.test(p));
+//   callback();
+// }
 
 function createApp(args) {
   const prjName = args.name;

@@ -82,7 +82,7 @@ function exec(cmd, opts) {
 
 const appName = 'a-rekit-npm-test-app';
 const prjRoot = path.join(__dirname, '../../');
-const appRoot = path.join(prjRoot, '../../../', appName);
+const appRoot = path.join(prjRoot, '../../', appName);
 const appPkgJsonPath = path.join(appRoot, 'package.json');
 
 // Remove app folder
@@ -106,7 +106,7 @@ if (args.local_rekit) {
 
 // Create a Rekit app
 console.log('Create a new Rekit app...');
-exec(`rekit create ${appName}${args.sass ? ' --sass' : ''}`, { cwd: path.join(prjRoot, '..') });
+exec(`rekit create ${appName}${args.sass ? ' --sass' : ''}`, { cwd: path.join(appRoot, '..') });
 
 const pkg = require(appPkgJsonPath); // eslint-disable-line
 if (args.local_core) {

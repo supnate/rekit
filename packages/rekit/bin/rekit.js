@@ -30,9 +30,16 @@ function getLocalRekitCore() {
   }
 
   const pkgJson = prjRoot ? path.join(prjRoot, 'package.json') : null;
-  if (!prjRoot || !fs.existsSync(pkgJson) || !(require(pkgJson).devDependencies['rekit-core'] || require(pkgJson).dependencies['rekit-core'])) {
-    return null;
+  if (!prjRoot || !fs.existsSync(pkgJson)) return null;
+  else {
+    const pj = require(pkgJson);
+    if (!(pj.devDependencies && pj.devDependencies['rekit-core'] || pj.dependencies && pj.dependencies['rekit-core'])) {
+      return null;
+    }
   }
+  // if (!prjRoot || !fs.existsSync(pkgJson) || !(require(pkgJson).devDependencies['rekit-core'] || require(pkgJson).dependencies['rekit-core'])) {
+  //   return null;
+  // }
   return require(path.join(prjRoot, 'node_modules/rekit-core')); // eslint-disable-line
 }
 

@@ -37,22 +37,18 @@ function createApp(args) {
       utils.deleteFolderRecursive(prjPath);
       process.exit(1);
     } else {
-      // Remove yarn.lock
-      const yarnLockPath = path.join(prjPath, 'yarn.lock');
-      if (fs.existsSync(yarnLockPath)) {
-        fs.unlinkSync(yarnLockPath);
-      }
-
       // Modify package.json
       const appPkgJson = require(path.join(prjPath, 'package.json')); // eslint-disable-line
       appPkgJson.name = prjName;
       appPkgJson.description = `${prjName} created by Rekit.`;
+      fs.writeFileSync(path.join(prjPath, 'package.json'), JSON.stringify(appPkgJson, null, '  '));
 
       // Execute postCreate in the boilerplate, so that it could handle '--clean', '--sass' flags.
       const postCreateScript = path.join(prjPath, 'postCreate.js');
       if (fs.existsSync(postCreateScript)) {
-        const postCreate = require();
+        const postCreate = require(postCreateScript);
         postCreate(args);
+        fs.unlinkSync(postCreateScript);
       }
 
       console.log('Project creation success!');

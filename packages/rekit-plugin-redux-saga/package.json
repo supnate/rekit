@@ -1,0 +1,22 @@
+{
+  "name": "rekit-plugin-redux-saga",
+  "version": "1.0.0",
+  "description": "Use redux-saga for async actions.",
+  "keywords": [
+    "rekit",
+    "react",
+    "redux",
+    "react-router"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/supnate/rekit-plugin-redux-saga.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "redux-saga": "^0.14.3",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+  }
+}

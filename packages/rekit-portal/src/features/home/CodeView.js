@@ -15,7 +15,6 @@ import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-dart';
 import 'prismjs/components/prism-diff';
 import 'prismjs/components/prism-git';
-import 'prismjs/components/prism-jade';
 import 'prismjs/components/prism-makefile';
 import 'prismjs/components/prism-perl';
 import 'prismjs/components/prism-php';

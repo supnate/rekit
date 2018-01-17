@@ -88,6 +88,7 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "history": "^4.6.1",
+    "monaco-editor": "^0.10.1",
     "socket.io": "^2.0.1",
     "watchpack": "^1.3.1"
   },

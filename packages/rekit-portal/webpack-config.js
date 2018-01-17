@@ -91,9 +91,7 @@ module.exports = (type) => { // eslint-disable-line
       publicPath: '/static/'
     },
 
-    stats: {
-      error: true,
-    },
+    stats: 'errors-only',
 
     plugins: _.compact([
       isDist && new webpack.LoaderOptionsPlugin({

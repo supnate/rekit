@@ -15,7 +15,7 @@ describe('home/About', () => {
     );
 
     expect(
-      renderedComponent.find('.home-about').node
+      renderedComponent.find('.home-about').getElement()
     ).to.exist;
   });
 });

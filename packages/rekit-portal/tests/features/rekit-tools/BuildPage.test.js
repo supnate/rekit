@@ -17,7 +17,7 @@ describe('rekit-tools/BuildPage', () => {
     );
 
     expect(
-      renderedComponent.find('.rekit-tools-build-page').node
+      renderedComponent.find('.rekit-tools-build-page').getElement()
     ).to.exist;
   });
 });

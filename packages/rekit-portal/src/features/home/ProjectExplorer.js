@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Cookies from 'js-cookie';
 import { bindActionCreators } from 'redux';
@@ -322,7 +323,7 @@ export class ProjectExplorer extends Component {
     return (
       <Menu
         style={{ minWidth: 150 }}
-        onSelect={this.handleMenuClick}
+        onClick={this.handleMenuClick}
         selectedKeys={[]}
       >
         {

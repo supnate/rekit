@@ -23,7 +23,7 @@ describe('common/SimpleNav', () => {
     );
 
     expect(
-      comp.find('.common-simple-nav').node
+      comp.find('.common-simple-nav').getElement()
     ).to.exist;
     expect(
       comp.find('li').length

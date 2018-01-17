@@ -10,7 +10,7 @@ describe('components/PageNotFound', () => {
     );
 
     expect(
-      renderedComponent.find('.common-page-not-found').node
+      renderedComponent.find('.common-page-not-found').getElement()
     ).to.exist;
   });
 });

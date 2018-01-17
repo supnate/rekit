@@ -15,7 +15,7 @@ describe('home/App', () => {
     );
 
     expect(
-      renderedComponent.find('.home-app').node
+      renderedComponent.find('.home-app').getElement()
     ).to.exist;
   });
 });

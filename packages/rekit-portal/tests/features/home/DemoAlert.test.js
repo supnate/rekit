@@ -10,7 +10,7 @@ describe('home/DemoAlert', () => {
     );
 
     expect(
-      renderedComponent.find('.home-demo-alert').node
+      renderedComponent.find('.home-demo-alert').getElement()
     ).to.exist;
   });
 });

@@ -14,7 +14,7 @@ describe('diagram/ElementDiagram', () => {
     );
 
     expect(
-      renderedComponent.find('.diagram-element-diagram').node
+      renderedComponent.find('.diagram-element-diagram').getElement()
     ).to.exist;
   });
 });

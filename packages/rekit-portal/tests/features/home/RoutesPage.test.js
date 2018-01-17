@@ -25,7 +25,7 @@ describe('home/RoutesPage', () => {
     );
 
     expect(
-      renderedComponent.find('.home-routes-page').node
+      renderedComponent.find('.home-routes-page').getElement()
     ).to.exist;
   });
 });

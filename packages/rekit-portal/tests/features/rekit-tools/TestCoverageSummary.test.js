@@ -17,7 +17,7 @@ describe('rekit-tools/TestCoverageSummary', () => {
     );
 
     expect(
-      renderedComponent.find('.rekit-tools-test-coverage-summary').node
+      renderedComponent.find('.rekit-tools-test-coverage-summary').getElement()
     ).to.exist;
   });
 });

@@ -16,7 +16,7 @@ describe('home/SidePanel', () => {
     );
 
     expect(
-      renderedComponent.find('.home-side-panel').node
+      renderedComponent.find('.home-side-panel').getElement()
     ).to.exist;
   });
 });

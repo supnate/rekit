@@ -15,7 +15,7 @@ describe('home/ProjectExplorer', () => {
     );
 
     expect(
-      renderedComponent.find('.home-project-explorer').node
+      renderedComponent.find('.home-project-explorer').getElement()
     ).to.exist;
   });
 });

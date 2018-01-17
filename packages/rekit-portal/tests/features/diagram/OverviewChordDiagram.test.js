@@ -22,7 +22,7 @@ describe('diagram/OverviewChordDiagram', () => {
     );
 
     expect(
-      renderedComponent.find('.diagram-overview-chord-diagram').node
+      renderedComponent.find('.diagram-overview-chord-diagram').getElement()
     ).to.exist;
   });
 });

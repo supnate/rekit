@@ -24,7 +24,7 @@ describe('rekit-cmds/CmdForm', () => {
     );
 
     expect(
-      renderedComponent.find('.rekit-cmds-cmd-form').node
+      renderedComponent.find('.rekit-cmds-cmd-form').getElement()
     ).to.exist;
   });
 });

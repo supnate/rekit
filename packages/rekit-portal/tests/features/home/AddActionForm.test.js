@@ -10,7 +10,7 @@ describe('home/AddActionForm', () => {
     );
 
     expect(
-      renderedComponent.find('.home-add-action-form').node
+      renderedComponent.find('.home-add-action-form').getElement()
     ).to.exist;
   });
 });

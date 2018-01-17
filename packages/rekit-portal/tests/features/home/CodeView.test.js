@@ -19,7 +19,7 @@ describe('home/CodeView', () => {
     );
 
     expect(
-      renderedComponent.find('.home-code-view').node
+      renderedComponent.find('.home-code-view').getElement()
     ).to.exist;
   });
 });

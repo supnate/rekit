@@ -10,7 +10,7 @@ describe('diagram/FeatureDiagram', () => {
     );
 
     expect(
-      renderedComponent.find('.diagram-feature-diagram').node
+      renderedComponent.find('.diagram-feature-diagram').getElement()
     ).to.exist;
   });
 });

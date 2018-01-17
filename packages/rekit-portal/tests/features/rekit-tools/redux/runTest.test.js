@@ -49,7 +49,7 @@ describe('rekit-tools/redux/runTest', () => {
         const actions = store.getActions();
         expect(actions[0]).to.have.property('type', REKIT_TOOLS_RUN_TEST_BEGIN);
         expect(actions[1]).to.have.property('type', REKIT_TOOLS_RUN_TEST_FAILURE);
-        expect(actions[1]).to.have.deep.property('data.error');
+        expect(actions[1]).to.have.nested.property('data.error');
       });
   });
 

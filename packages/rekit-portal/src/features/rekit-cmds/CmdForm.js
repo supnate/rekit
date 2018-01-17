@@ -146,7 +146,7 @@ export class CmdForm extends Component {
     return (
       <div className="rekit-cmds-cmd-form">
         <Form
-          horizontal
+          layout="horizontal"
           onSubmit={this.handleSubmit}
         >
           {

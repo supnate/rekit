@@ -34,7 +34,7 @@ describe('home/ElementPage', () => {
     );
 
     expect(
-      renderedComponent.find('.home-element-page').node
+      renderedComponent.find('.home-element-page').getElement()
     ).to.exist;
   });
 });

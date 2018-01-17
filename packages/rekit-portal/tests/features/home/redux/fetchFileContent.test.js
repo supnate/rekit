@@ -36,7 +36,7 @@ describe('home/redux/fetchFileContent', () => {
         const actions = store.getActions();
         expect(actions[0]).to.have.property('type', HOME_FETCH_FILE_CONTENT_BEGIN);
         expect(actions[1]).to.have.property('type', HOME_FETCH_FILE_CONTENT_SUCCESS);
-        expect(actions[1]).to.have.deep.property('data.content', 'file content');
+        expect(actions[1]).to.have.nested.property('data.content', 'file content');
       });
   });
 
@@ -52,7 +52,7 @@ describe('home/redux/fetchFileContent', () => {
         const actions = store.getActions();
         expect(actions[0]).to.have.property('type', HOME_FETCH_FILE_CONTENT_BEGIN);
         expect(actions[1]).to.have.property('type', HOME_FETCH_FILE_CONTENT_FAILURE);
-        expect(actions[1]).to.have.deep.property('data.error');
+        expect(actions[1]).to.have.nested.property('data.error');
       });
   });
 

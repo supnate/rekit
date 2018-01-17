@@ -14,9 +14,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "redux-saga": "^0.14.3",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "redux-saga": "^0.16.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

@@ -10,7 +10,7 @@ describe('common/SearchInput', () => {
     );
 
     expect(
-      renderedComponent.find('.common-search-input').node
+      renderedComponent.find('.common-search-input').getElement()
     ).to.exist;
   });
 });

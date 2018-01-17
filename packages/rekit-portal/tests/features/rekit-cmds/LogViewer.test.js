@@ -10,7 +10,7 @@ describe('rekit-cmds/LogViewer', () => {
     );
 
     expect(
-      renderedComponent.find('.rekit-cmds-log-viewer').node
+      renderedComponent.find('.rekit-cmds-log-viewer').getElement()
     ).to.exist;
   });
 });

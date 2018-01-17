@@ -14,7 +14,7 @@ describe('rekit-cmds/DialogPlace', () => {
     );
 
     expect(
-      renderedComponent.find('.rekit-cmds-dialog-place').node
+      renderedComponent.find('.rekit-cmds-dialog-place').getElement()
     ).to.exist;
   });
 });

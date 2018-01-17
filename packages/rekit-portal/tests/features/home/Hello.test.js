@@ -10,7 +10,7 @@ describe('features/home/Hello', () => {
     );
 
     expect(
-      renderedComponent.find('.home-hello').node
+      renderedComponent.find('.home-hello').getElement()
     ).to.exist;
   });
 });

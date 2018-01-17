@@ -10,7 +10,7 @@ describe('home/AddDialog', () => {
     );
 
     expect(
-      renderedComponent.find('.home-add-dialog').node
+      renderedComponent.find('.home-add-dialog').getElement()
     ).to.exist;
   });
 });

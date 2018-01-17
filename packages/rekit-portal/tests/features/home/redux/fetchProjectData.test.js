@@ -49,7 +49,7 @@ describe('home/redux/fetchProjectData', () => {
         const actions = store.getActions();
         expect(actions[0]).to.have.property('type', HOME_FETCH_PROJECT_DATA_BEGIN);
         expect(actions[1]).to.have.property('type', HOME_FETCH_PROJECT_DATA_FAILURE);
-        expect(actions[1]).to.have.deep.property('data.error');
+        expect(actions[1]).to.have.nested.property('data.error');
       });
   });
 

@@ -10,7 +10,7 @@ describe('home/RekitSteps', () => {
     );
 
     expect(
-      renderedComponent.find('.home-rekit-steps').node
+      renderedComponent.find('.home-rekit-steps').getElement()
     ).to.exist;
   });
 });

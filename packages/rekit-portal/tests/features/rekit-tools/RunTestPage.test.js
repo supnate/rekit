@@ -20,7 +20,7 @@ describe('rekit-tools/RunTestPage', () => {
     );
 
     expect(
-      renderedComponent.find('.rekit-tools-run-test-page').node
+      renderedComponent.find('.rekit-tools-run-test-page').getElement()
     ).to.exist;
   });
 });

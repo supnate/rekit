@@ -20,17 +20,17 @@ export default class LogViewer extends PureComponent {
     logs: [],
   };
 
-  renderDiffLine(line, i) {
+  renderDiffLine(line) {
     if (line.added) {
       return line.value.split('\n').filter(l => !!l).map(text => (
-        <li key={Math.random()}>
+        <li key={text}>
           <span style={{ color: 'green' }}>+++</span>
           <span style={{ marginLeft: 5 }}>{text}</span>
         </li>
       ));
     } else if (line.removed) {
       return line.value.split('\n').filter(l => !!l).map(text => (
-        <li key={Math.random()}>
+        <li key={text}>
           <span style={{ color: 'red' }}>---</span>
           <span style={{ marginLeft: 5 }}>{text}</span>
         </li>
@@ -43,7 +43,7 @@ export default class LogViewer extends PureComponent {
     return (
       <ul style={{ color: COLORS.diff, marginLeft: 15 }}>
         {
-          diff.map((line, i) => this.renderDiffLine(line, i))
+          diff.map(line => this.renderDiffLine(line))
         }
       </ul>
     );

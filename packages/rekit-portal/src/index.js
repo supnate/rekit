@@ -58,22 +58,20 @@ if (!root) {
   document.body.appendChild(root);
 }
 
-render(
-  <AppContainer>
-    <Root store={store} routeConfig={routeConfig} />
-  </AppContainer>,
-  root
-);
+function renderApp(app) {
+  render(
+    <AppContainer>
+      {app}
+    </AppContainer>,
+    root,
+  );
+}
 
-// Hot Module Replacement API
+renderApp(<Root store={store} routeConfig={routeConfig} />);
+
 if (module.hot) {
-  module.hot.accept('./Root', () => {
-    const NextRoot = require('./Root').default; // eslint-disable-line
-    render(
-      <AppContainer>
-        <NextRoot store={store} />
-      </AppContainer>,
-      root
-    );
+  module.hot.accept('./common/routeConfig', () => {
+    const nextRouteConfig = require('./common/routeConfig').default; // eslint-disable-line
+    renderApp(<Root store={store} routeConfig={nextRouteConfig} />);
   });
 }

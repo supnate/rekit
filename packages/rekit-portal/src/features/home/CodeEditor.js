@@ -110,7 +110,9 @@ export class CodeEditor extends Component {
   handleSave = () => {}
   handleCancel = () => {
     Modal.confirm({
-      title: 'Are you sure to cancel your changes?',
+      title: 'Are you sure to discard your changes?',
+      okText: 'Yes',
+      cancelText: 'No',
       onOk: () => {
         this.setState({
           currentContent: this.getFileContent(),

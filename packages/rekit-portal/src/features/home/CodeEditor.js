@@ -99,8 +99,11 @@ export class CodeEditor extends Component {
     this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
   }
 
-  handleEditorDidMount = (editor) => {
+  handleEditorDidMount = (editor) => {console.log(editor);
     editor.focus();
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
+      console.log('SAVE pressed!');
+    });
   }
 
   handleRunTest = () => {

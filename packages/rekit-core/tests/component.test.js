@@ -37,7 +37,7 @@ describe('component', function() { // eslint-disable-line
       'TestComponent.less',
     ].map(mapFeatureFile));
     expectLines(mapFeatureFile('style.less'), [
-      '@import \'./TestComponent.less\';'
+      '@import \'./TestComponent\';'
     ]);
     expectLines(mapFeatureFile('index.js'), [
       'export { default as TestComponent } from \'./TestComponent\';',
@@ -93,7 +93,7 @@ describe('component', function() { // eslint-disable-line
       'RenamedComponent.less',
     ].map(mapFeatureFile));
     expectLines(mapFeatureFile('style.less'), [
-      '@import \'./RenamedComponent.less\';'
+      '@import \'./RenamedComponent\';'
     ]);
     expectLines(mapFeatureFile('index.js'), [
       'export { default as RenamedComponent } from \'./RenamedComponent\';',
@@ -147,7 +147,7 @@ describe('component', function() { // eslint-disable-line
       'RenamedComponent2.less',
     ].map(mapFeatureFile2));
     expectLines(mapFeatureFile2('style.less'), [
-      '@import \'./RenamedComponent2.less\';'
+      '@import \'./RenamedComponent2\';'
     ]);
     expectLines(mapFeatureFile2('index.js'), [
       'export { default as RenamedComponent2 } from \'./RenamedComponent2\';',

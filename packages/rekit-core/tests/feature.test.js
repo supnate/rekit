@@ -58,7 +58,7 @@ describe('feature', function() { // eslint-disable-line
       `  ${CAMEL_TEST_FEATURE_NAME}Route,`,
     ]);
     expectLines(mapSrcFile('styles/index.less'), [
-      `@import '../features/${TEST_FEATURE_NAME}/style.less';`,
+      `@import '../features/${TEST_FEATURE_NAME}/style';`,
     ]);
     expectFiles([
       'redux/reducer.test.js',
@@ -86,7 +86,7 @@ describe('feature', function() { // eslint-disable-line
       `  ${CAMEL_TEST_FEATURE_NAME_2}Route,`,
     ]);
     expectLines(mapSrcFile('styles/index.less'), [
-      `@import '../features/${TEST_FEATURE_NAME_2}/style.less';`,
+      `@import '../features/${TEST_FEATURE_NAME_2}/style';`,
     ]);
 
     expectLines(mapFeatureFile2('DefaultPage.js'), [
@@ -119,7 +119,7 @@ describe('feature', function() { // eslint-disable-line
       `${TEST_FEATURE_NAME_2}Route`,
     ]);
     expectNoLines(mapSrcFile('styles/index.less'), [
-      `@import '../features/${TEST_FEATURE_NAME_2}/style.less';`,
+      `@import '../features/${TEST_FEATURE_NAME_2}/style';`,
     ]);
   });
 });

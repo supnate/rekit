@@ -224,35 +224,35 @@ module.exports = {
 
   addToStyle(feature, name) {
     const targetPath = utils.mapFeatureFile(feature, 'style.' + utils.getCssExt());
-    refactor.addStyleImport(targetPath, `./${name}.${utils.getCssExt()}`);
+    refactor.addStyleImport(targetPath, `./${name}`);
   },
 
   removeFromStyle(feature, name) {
     const targetPath = utils.mapFeatureFile(feature, 'style.' + utils.getCssExt());
-    refactor.removeStyleImport(targetPath, `./${name}.${utils.getCssExt()}`);
+    refactor.removeStyleImport(targetPath, `./${name}`);
   },
 
   renameInStyle(feature, oldName, newName) {
     const targetPath = utils.mapFeatureFile(feature, 'style.' + utils.getCssExt());
-    refactor.renameStyleImport(targetPath, `./${oldName}.${utils.getCssExt()}`, `./${newName}.${utils.getCssExt()}`);
+    refactor.renameStyleImport(targetPath, `./${oldName}`, `./${newName}`);
   },
 
   addToRootStyle(feature) {
     const targetPath = utils.mapSrcFile('styles/index.' + utils.getCssExt());
-    refactor.addStyleImport(targetPath, `../features/${_.kebabCase(feature)}/style.${utils.getCssExt()}`);
+    refactor.addStyleImport(targetPath, `../features/${_.kebabCase(feature)}/style`);
   },
 
   removeFromRootStyle(feature) {
     const targetPath = utils.mapSrcFile('styles/index.' + utils.getCssExt());
-    refactor.removeStyleImport(targetPath, `../features/${_.kebabCase(feature)}/style.${utils.getCssExt()}`);
+    refactor.removeStyleImport(targetPath, `../features/${_.kebabCase(feature)}/style`);
   },
 
   renameInRootStyle(oldFeature, newFeature) {
     const targetPath = utils.mapSrcFile('styles/index.' + utils.getCssExt());
     refactor.renameStyleImport(
       targetPath,
-      `../features/${_.kebabCase(oldFeature)}/style.${utils.getCssExt()}`,
-      `../features/${_.kebabCase(newFeature)}/style.${utils.getCssExt()}`
+      `../features/${_.kebabCase(oldFeature)}/style`,
+      `../features/${_.kebabCase(newFeature)}/style`
     );
   },
 };

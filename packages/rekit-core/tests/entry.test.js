@@ -224,24 +224,24 @@ export default routes;
     it('addToStyle should add style import correctly', () => {
       entry.addToStyle(TEST_FEATURE_NAME, 'TestEntry');
       expectLines(targetPath, [
-        "@import './TestEntry.less';",
+        "@import './TestEntry';",
       ]);
     });
 
     it('renameInStyle should rename style import correctly', () => {
       entry.renameInStyle(TEST_FEATURE_NAME, 'TestEntry', 'newName');
       expectNoLines(targetPath, [
-        "@import './TestEntry.less';",
+        "@import './TestEntry';",
       ]);
       expectLines(targetPath, [
-        "@import './newName.less';",
+        "@import './newName';",
       ]);
     });
 
     it('removeFromStyle should remove style import correctly', () => {
       entry.removeFromStyle(TEST_FEATURE_NAME, 'newName');
       expectNoLines(targetPath, [
-        "@import './newName.less';",
+        "@import './newName';",
       ]);
     });
   });
@@ -250,32 +250,32 @@ export default routes;
     const targetPath = utils.mapSrcFile('styles/index.less');
     vio.put(targetPath, `
 @import './reset.css';
-@import './global.less';
-@import '../containers/style.less';
-@import '../features/home/style.less';
-@import '../features/common/style.less';
+@import './global';
+@import '../containers/style';
+@import '../features/home/style';
+@import '../features/common/style';
     `);
     it('addToRootStyle should add style import correctly', () => {
       entry.addToRootStyle('new-feature');
       expectLines(targetPath, [
-        "@import '../features/new-feature/style.less';",
+        "@import '../features/new-feature/style';",
       ]);
     });
 
     it('renameInRootStyle should rename style import correctly', () => {
       entry.renameInRootStyle('new-feature', 'renamed-new-feature');
       expectNoLines(targetPath, [
-        "@import '../features/new-feature/style.less';",
+        "@import '../features/new-feature/style';",
       ]);
       expectLines(targetPath, [
-        "@import '../features/renamed-new-feature/style.less';",
+        "@import '../features/renamed-new-feature/style';",
       ]);
     });
 
     it('removeFromRootStyle should remove style import correctly', () => {
       entry.removeFromRootStyle('renamed-new-feature');
       expectNoLines(targetPath, [
-        "@import '../features/renamed-new-feature/style.less';",
+        "@import '../features/renamed-new-feature/style';",
       ]);
     });
   });

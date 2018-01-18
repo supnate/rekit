@@ -36,11 +36,11 @@ function addStyleImport(lines, moduleSource) {
 }
 
 function removeStyleImport(lines, moduleSource) {
-  linesManager.removeLines(lines, new RegExp(`@import '${_.escapeRegExp(moduleSource)}'`));
+  linesManager.removeLines(lines, new RegExp(`@import '${_.escapeRegExp(moduleSource)}(\.less|\.scss)?'`));
 }
 
 function renameStyleImport(lines, oldMoudleSource, newModuleSource) {
-  const i = linesManager.lineIndex(lines, new RegExp(`@import '${_.escapeRegExp(oldMoudleSource)}'`));
+  const i = linesManager.lineIndex(lines, new RegExp(`@import '${_.escapeRegExp(oldMoudleSource)}(\.less|\.scss)?'`));
   lines[i] = `@import '${newModuleSource}';`;
 }
 

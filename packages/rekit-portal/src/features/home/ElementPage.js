@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
-import { Alert, Button, Icon, Tabs } from 'antd';
+import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
-import { CodeView } from './';
+import { CodeEditor } from './';
 
-const TabPane = Tabs.TabPane;
+const { TabPane } = Tabs;
 
 export class ElementPage extends Component {
   static propTypes = {
@@ -18,12 +18,15 @@ export class ElementPage extends Component {
   };
 
   static defaultProps = {
-    match: {},
+  };
+
+  state = {
+    codeChanged: false,
   };
 
   getElementData() {
     const { elementById, projectRoot } = this.props.home;
-    let file = this.props.match.params.file;
+    let { file } = this.props.match.params;
     if (!file) return null;
     file = decodeURIComponent(file);
     const fullPath = projectRoot + file;
@@ -45,6 +48,12 @@ export class ElementPage extends Component {
 
   getPageContainer() {
     return document.getElementById('page-container');
+  }
+
+  handleCodeChange = (args) => {
+    this.setState({
+      codeChanged: args.hasChange,
+    });
   }
 
   @autobind
@@ -72,7 +81,7 @@ export class ElementPage extends Component {
   renderMarks() {
     const data = this.getElementData();
     if (!data.feature) return null;
-    const featureById = this.props.home.featureById;
+    const { featureById } = this.props.home;
     const markDescription = {
       a: 'Async action',
       c: 'Connected to Redux store',
@@ -140,6 +149,7 @@ export class ElementPage extends Component {
     const ext = arr.length > 1 ? arr.pop() : null;
 
     // const title = data.feature ? `${data.feature} / ${data.name}` : data.file;
+    const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-element-page">
         <div className="page-title">
@@ -150,22 +160,20 @@ export class ElementPage extends Component {
           </h2>
         </div>
         {data.isPic &&
-          <div className="pic-wrapper">
-            <img src={`/${codeFile}`} alt={codeFile} />
-          </div>
-        }
-        {!onlyCode && data.hasCode && !data.isPic && <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
-          {data.hasDiagram && <TabPane tab="Diagram" key="diagram">
+        <div className="pic-wrapper">
+          <img src={`/${codeFile}`} alt={codeFile} />
+        </div>}
+        {!onlyCode && data.hasCode && !data.isPic &&
+        <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
+          {data.hasDiagram &&
+          <TabPane tab="Diagram" key="diagram">
             <ElementDiagram homeStore={this.props.home} elementId={data.file} />
           </TabPane>}
-          {data.hasCode && <TabPane tab="Code" key="code" />}
-          {(data.type === 'component' && data.feature) && <TabPane tab="Style" key="style" />}
-          {data.hasTest && <TabPane tab="Test" key="test" />}
+          {data.hasCode && <TabPane tab={`Code${tabKey === 'code' ? codeChangeMark : ''}`} key="code" />}
+          {(data.type === 'component' && data.feature) && <TabPane tab={`Style${tabKey === 'style' ? codeChangeMark : ''}`} key="style" />}
+          {data.hasTest && <TabPane tab={`Test${tabKey === 'test' ? codeChangeMark : ''}`} key="test" />}
         </Tabs>}
-        {data.hasTest && tabKey === 'test' && <Button type="primary" style={{ marginBottom: 10 }} onClick={this.handleRunTest}>
-          <Icon type="play-circle-o" /> Run test
-        </Button>}
-        {tabKey !== 'diagram' && data.hasCode && <CodeView file={codeFile} />}
+        {tabKey !== 'diagram' && data.hasCode && <CodeEditor file={codeFile} onStateChange={this.handleCodeChange} onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null} />}
         {!data.hasCode && !data.isPic && <Alert type="info" showIcon message={`".${ext}" is not supported to be displayed.`} />}
       </div>
     );

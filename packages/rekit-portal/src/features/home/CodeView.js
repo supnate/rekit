@@ -47,7 +47,7 @@ export class CodeView extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const props = this.props;
+    const { props } = this;
     if (this.props.file !== nextProps.file || props.home.fileContentById[props.file] !== nextProps.home.fileContentById[nextProps.file]) {
       this.fetchFileContent(nextProps);
     }
@@ -71,7 +71,7 @@ export class CodeView extends PureComponent {
   }
 
   fetchFileContent(props, force = false) {
-    const home = props.home;
+    const { home } = props;
     if (
       (force || !_.has(home.fileContentById, props.file))
       && !home.fetchFileContentPending

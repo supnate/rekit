@@ -3,12 +3,14 @@ import { reducer as fetchProjectData } from './fetchProjectData';
 import { reducer as fetchFileContent } from './fetchFileContent';
 import { reducer as showDemoAlertReducer } from './showDemoAlert';
 import { reducer as hideDemoAlertReducer } from './hideDemoAlert';
+import { reducer as saveCodeReducer } from './saveCode';
 
 const reducers = [
   fetchProjectData,
   fetchFileContent,
   showDemoAlertReducer,
   hideDemoAlertReducer,
+  saveCodeReducer,
 ];
 
 export default function reducer(state = initialState, action) {

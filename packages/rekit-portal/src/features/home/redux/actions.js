@@ -4,3 +4,4 @@ export { fetchProjectData, dismissFetchProjectDataError } from './fetchProjectDa
 export { fetchFileContent, dismissFetchFileContentError } from './fetchFileContent';
 export { showDemoAlert } from './showDemoAlert';
 export { hideDemoAlert } from './hideDemoAlert';
+export { saveCode, dismissSaveCodeError } from './saveCode';

@@ -34,42 +34,63 @@ export class CodeEditor extends Component {
   async componentWillMount() {
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize);
-    await this.fetchFileContent(this.props);
+    await this.checkAndFetchFileContent(this.props);
     this.setState({ // eslint-disable-line
       currentContent: this.getFileContent(),
     });
-    this.props.onStateChange({ hasChange: false });    
+    this.props.onStateChange({ hasChange: false });
   }
 
   async componentWillReceiveProps(nextProps) {
     const { props } = this;
-    if (props.file !== nextProps.file || props.home.fileContentById[props.file] !== nextProps.home.fileContentById[nextProps.file]) {
-      // File changed or file content changed.
-      await this.fetchFileContent(nextProps);
-      this.setState({
-        currentContent: this.getFileContent(),
-      });
-      this.props.onStateChange({ hasChange: false });
+    // const fileContentChanged = props.home.fileContentById[props.file] !== nextProps.home.fileContentById[nextProps.file];
+
+    if (props.file !== nextProps.file || nextProps.home.fileContentNeedReload[nextProps.file]) {
+      // File changed or file content changed, the check and reload.
+      const oldContent = this.getFileContent();
+      const hasChange = this.hasChange();
+      await this.checkAndFetchFileContent(nextProps);
+      const newContent = this.getFileContent();
+      if (hasChange && oldContent !== newContent) {
+        Modal.confirm({
+          title: 'The file has changed on disk.',
+          content: 'Do you want to reload it?',
+          okText: 'Yes',
+          cancelText: 'No',
+          onOk: this.reloadContent,
+        });
+      } else {
+        this.reloadContent();
+      }
     }
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize);
   }
+
   getFileContent() {
     return this.props.home.fileContentById[this.props.file];
   }
 
+  reloadContent = () => {
+    // Reload content from Redux store to internal state(editor).
+    this.setState({
+      currentContent: this.getFileContent(),
+    });
+    this.props.onStateChange({ hasChange: false });
+  }
+
   hasChange() {
+    // Whether the editor content is different from which in store.
     return this.state.currentContent !== this.getFileContent();
   }
 
-  fetchFileContent(props, force = false) {
-    const { home } = props;
-    if (
-      (force || !_.has(home.fileContentById, props.file))
-      && !home.fetchFileContentPending
-    ) {
+  checkAndFetchFileContent(props) {
+    // Check if content exists or need reload, if yes then fetch it.
+    const { home, file } = props;
+    const { fileContentById, fileContentNeedReload, fetchFileContentPending } = home;
+    if ((!_.has(fileContentById, file) || fileContentNeedReload[file]) && !fetchFileContentPending) {
       return this.props.actions.fetchFileContent(props.file).then(() => {
         this.setState({ notFound: false });
       }).catch((e) => {
@@ -79,14 +100,15 @@ export class CodeEditor extends Component {
           this.props.onError(404);
         }
       });
+    } else {
+      this.setState({ notFound: false });
+      return Promise.resolve();
     }
-    this.setState({ notFound: false });
-    return Promise.resolve();
   }
 
   handleWindowResize = () => {
     // Todo: bounce resize event to improve performance when resizing.
-    let editorHeight = document.body.offsetHeight - 215;
+    let editorHeight = document.body.offsetHeight - 250;
     const editorWidth = document.body.offsetWidth - 380;
     if (editorHeight < 100) editorHeight = 100;
     this.setState({ editorWidth, editorHeight });
@@ -99,7 +121,7 @@ export class CodeEditor extends Component {
     this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
   }
 
-  handleEditorDidMount = (editor) => {console.log(editor);
+  handleEditorDidMount = (editor) => {
     editor.focus();
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
       console.log('SAVE pressed!');
@@ -113,7 +135,7 @@ export class CodeEditor extends Component {
   handleSave = () => {}
   handleCancel = () => {
     Modal.confirm({
-      title: 'Are you sure to discard your changes?',
+      title: 'Are you sure to cancel your changes?',
       okText: 'Yes',
       cancelText: 'No',
       onOk: () => {

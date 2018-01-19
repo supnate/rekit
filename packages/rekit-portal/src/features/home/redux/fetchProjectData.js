@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import axios from 'axios';
 
 import {
@@ -71,7 +72,7 @@ export function reducer(state, action) {
       });
 
       action.data.srcFiles.forEach(setElementById);
-
+      const fileContentNeedReload = _.mapValues(state.fileContentById, () => true);
       return {
         ...state,
         // projectData: action.data,
@@ -84,7 +85,9 @@ export function reducer(state, action) {
         projectRoot: action.data.projectRoot,
         cssExt: action.data.cssExt,
         rekit: action.data.rekit,
-        fileContentById: {},
+        // fileContentById: {},
+        fileContentNeedReload,
+        oldFileContentById: state.fileContentById,
         features: action.data.features.map(f => f.key),
         projectDataNeedReload: false,
         fetchProjectDataPending: false,

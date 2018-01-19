@@ -49,16 +49,20 @@ export function reducer(state, action) {
         fetchFileContentError: null,
       };
 
-    case HOME_FETCH_FILE_CONTENT_SUCCESS:
+    case HOME_FETCH_FILE_CONTENT_SUCCESS: {
+      const fileContentNeedReload = { ...state.fileContentNeedReload };
+      delete fileContentNeedReload[action.data.file];
       return {
         ...state,
         fileContentById: {
           ...state.fileContentById,
           [action.data.file]: action.data.content,
         },
+        fileContentNeedReload,
         fetchFileContentPending: false,
         fetchFileContentError: null,
       };
+    }
 
     case HOME_FETCH_FILE_CONTENT_FAILURE:
       return {

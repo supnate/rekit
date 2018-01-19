@@ -3,6 +3,7 @@ const initialState = {
   redditReactjsList: [],
   elementById: {},
   fileContentById: {},
+  oldFileContentById: {},
   features: null,
   projectDataNeedReload: false,
   projectFileChanged: false,

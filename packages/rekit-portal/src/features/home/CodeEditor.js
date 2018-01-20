@@ -7,7 +7,7 @@ import { Prompt } from 'react-router';
 import { Button, Icon, message, Modal } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
 import { fetchFileContent } from './redux/actions';
-const a = 21;
+
 export class CodeEditor extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,

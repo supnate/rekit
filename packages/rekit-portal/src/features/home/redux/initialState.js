@@ -16,8 +16,8 @@ const initialState = {
   //   originalContent: null, // Content before save
   // },
   demoAlertVisible: false,
-  saveCodePending: false,
-  saveCodeError: null,
+  saveFilePending: false,
+  saveFileError: null,
 };
 
 export default initialState;

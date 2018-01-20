@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
 import { Button, Icon, message, Modal } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
-import { fetchFileContent } from './redux/actions';
+import { fetchFileContent, saveFile } from './redux/actions';
 
 export class CodeEditor extends Component {
   static propTypes = {
@@ -51,7 +51,7 @@ export class CodeEditor extends Component {
       const hasChange = this.hasChange();
       await this.checkAndFetchFileContent(nextProps);
       const newContent = this.getFileContent();
-      if (hasChange && oldContent !== newContent) {
+      if (hasChange && oldContent !== newContent && newContent !== this.state.currentContent) {
         Modal.confirm({
           title: 'The file has changed on disk.',
           content: 'Do you want to reload it?',
@@ -109,8 +109,9 @@ export class CodeEditor extends Component {
   handleWindowResize = () => {
     // Todo: bounce resize event to improve performance when resizing.
     let editorHeight = document.body.offsetHeight - 250;
-    const editorWidth = document.body.offsetWidth - 380;
+    let editorWidth = document.body.offsetWidth - 380;
     if (editorHeight < 100) editorHeight = 100;
+    if (editorWidth < 300) editorWidth = 300;
     this.setState({ editorWidth, editorHeight });
   }
 
@@ -124,7 +125,7 @@ export class CodeEditor extends Component {
   handleEditorDidMount = (editor) => {
     editor.focus();
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
-      console.log('SAVE pressed!');
+      if (this.hasChange()) this.handleSave();
     });
   }
 
@@ -132,7 +133,17 @@ export class CodeEditor extends Component {
     this.props.onRunTest();
   }
 
-  handleSave = () => {}
+  handleSave = () => {
+    this.props.actions.saveFile(this.props.file, this.state.currentContent)
+      .then(() => this.props.onStateChange({ hasChange: false }))
+      .catch(() => {
+        Modal.error({
+          title: 'Failed to save.',
+          content: 'Please retry or use other text editor.',
+        });
+      });
+  }
+
   handleCancel = () => {
     Modal.confirm({
       title: 'Are you sure to cancel your changes?',
@@ -167,6 +178,7 @@ export class CodeEditor extends Component {
       md: 'markdown',
     }[ext] || ext;
     const hasChange = this.hasChange();
+    const { saveFilePending } = this.props.home;
     return (
       <div className="home-code-editor">
         <Prompt when={hasChange} message="The change is not saved, are you sure to leave? Unsaved change will be discarded." />
@@ -177,8 +189,11 @@ export class CodeEditor extends Component {
             <Button type="primary" onClick={this.handleRunTest} size="small">
               <Icon type="play-circle-o" /> Run test
             </Button>}
-            {hasChange && <Button type="primary" size="small" onClick={this.handleSave}>Save</Button>}
-            {hasChange && <Button size="small" onClick={this.handleCancel}>Cancel</Button>}
+            {hasChange &&
+            <Button type="primary" size="small" loading={saveFilePending} disabled={saveFilePending} onClick={this.handleSave}>
+              {saveFilePending ? 'Saving...' : 'Save'}
+            </Button>}
+            {hasChange && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>Cancel</Button>}
           </div>
         </div>
         <MonacoEditor
@@ -207,7 +222,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent }, dispatch)
+    actions: bindActionCreators({ fetchFileContent, saveFile }, dispatch)
   };
 }
 

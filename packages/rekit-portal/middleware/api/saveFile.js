@@ -1,7 +1,9 @@
 'use strict';
 
-function saveFile(req) {
-  reutnr {};
+const fs = require('fs');
+
+function saveFile(filePath, content) {
+  fs.writeFileSync(filePath, content);
 }
 
 module.exports = saveFile;

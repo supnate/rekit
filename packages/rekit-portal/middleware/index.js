@@ -10,6 +10,7 @@ const Watchpack = require('watchpack');
 const rekitCore = require('rekit-core');
 const fetchProjectData = require('./api/fetchProjectData');
 const getFileContent = require('./api/getFileContent');
+const saveFile = require('./api/saveFile');
 const runBuild = require('./api/runBuild');
 const runTest = require('./api/runTest');
 
@@ -114,7 +115,28 @@ module.exports = function() { // eslint-disable-line
             res.end();
             break;
           }
-          case '/api/file-content':{
+          case '/api/save-file': {
+            const absPath = utils.joinPath(prjRoot, req.body.file);
+            if (!_.startsWith(absPath, prjRoot)) {
+              // prevent ../.. in req.query.file
+              res.statusCode = 403;
+              res.write('Forbidden: not allowed to access file out of the project.');
+              res.end();
+              break;
+            }
+
+            if (!fs.existsSync(absPath)) {
+              res.statusCode = 404;
+              res.write(JSON.stringify({ error: 'Not found.' }));
+              res.end();
+            } else {
+              saveFile(absPath, req.body.content);
+              res.write({ success: true });
+              res.end();
+            }
+            break;
+          }
+          case '/api/file-content': {
             const absPath = utils.joinPath(prjRoot, req.query.file);
             if (!_.startsWith(absPath, prjRoot)) {
               // prevent ../.. in req.query.file

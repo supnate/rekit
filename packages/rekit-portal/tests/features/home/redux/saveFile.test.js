@@ -25,6 +25,9 @@ describe('home/redux/saveFile', () => {
   });
 
   it('dispatches success action when saveFile succeeds', () => {
+    nock('http://localhost')
+      .post('/rekit/api/save-file')
+      .reply(200, { success: true });
     const store = mockStore({});
 
     return store.dispatch(saveFile())
@@ -36,9 +39,12 @@ describe('home/redux/saveFile', () => {
   });
 
   it('dispatches failure action when saveFile fails', () => {
+    nock('http://localhost')
+      .post('/rekit/api/save-file')
+      .reply(200, { error: 'failed' });
     const store = mockStore({});
 
-    return store.dispatch(saveFile({ error: true }))
+    return store.dispatch(saveFile())
       .catch(() => {
         const actions = store.getActions();
         expect(actions[0]).to.have.property('type', HOME_SAVE_FILE_BEGIN);
@@ -55,43 +61,43 @@ describe('home/redux/saveFile', () => {
   });
 
   it('handles action type HOME_SAVE_FILE_BEGIN correctly', () => {
-    const prevState = { saveCodePending: false };
+    const prevState = { saveFilePending: false };
     const state = reducer(
       prevState,
       { type: HOME_SAVE_FILE_BEGIN }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.saveCodePending).to.be.true;
+    expect(state.saveFilePending).to.be.true;
   });
 
   it('handles action type HOME_SAVE_FILE_SUCCESS correctly', () => {
-    const prevState = { saveCodePending: true };
+    const prevState = { saveFilePending: true };
     const state = reducer(
       prevState,
       { type: HOME_SAVE_FILE_SUCCESS, data: {} }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.saveCodePending).to.be.false;
+    expect(state.saveFilePending).to.be.false;
   });
 
   it('handles action type HOME_SAVE_FILE_FAILURE correctly', () => {
-    const prevState = { saveCodePending: true };
+    const prevState = { saveFilePending: true };
     const state = reducer(
       prevState,
       { type: HOME_SAVE_FILE_FAILURE, data: { error: new Error('some error') } }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.saveCodePending).to.be.false;
-    expect(state.saveCodeError).to.exist;
+    expect(state.saveFilePending).to.be.false;
+    expect(state.saveFileError).to.exist;
   });
 
   it('handles action type HOME_SAVE_FILE_DISMISS_ERROR correctly', () => {
-    const prevState = { saveCodeError: new Error('some error') };
+    const prevState = { saveFileError: new Error('some error') };
     const state = reducer(
       prevState,
       { type: HOME_SAVE_FILE_DISMISS_ERROR }
     );
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.saveCodeError).to.be.null;
+    expect(state.saveFileError).to.be.null;
   });
 });

@@ -9,7 +9,7 @@ import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
 import { CodeEditor } from './';
 
-const { TabPane } = Tabs;
+const TabPane = Tabs.TabPane;
 
 export class ElementPage extends Component {
   static propTypes = {
@@ -109,7 +109,6 @@ export class ElementPage extends Component {
   }
 
   render() {
-    // throw new Error('test');
     const data = this.getElementData();
     if (!data) {
       return this.renderNotFound();

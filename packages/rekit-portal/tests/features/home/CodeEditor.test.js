@@ -6,8 +6,13 @@ import { CodeEditor } from 'src/features/home/CodeEditor';
 describe('home/CodeEditor', () => {
   it('renders node with correct class name', () => {
     const props = {
-      home: {},
-      actions: {},
+      home: {
+        fileContentById: {},
+      },
+      actions: {
+        saveFile() {},
+      },
+      file: 'abc',
     };
     const renderedComponent = shallow(
       <CodeEditor {...props} />

@@ -130,8 +130,12 @@ module.exports = function() { // eslint-disable-line
               res.write(JSON.stringify({ error: 'Not found.' }));
               res.end();
             } else {
-              saveFile(absPath, req.body.content);
-              res.write({ success: true });
+              try {
+                saveFile(absPath, req.body.content);
+                res.write({ success: true });
+              } catch (err) {
+                res.write({ error: err });
+              }
               res.end();
             }
             break;

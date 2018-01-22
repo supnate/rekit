@@ -5,13 +5,17 @@ import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
-import { CodeView } from './';
+import { CodeEditor } from './';
 
 const TabPane = Tabs.TabPane;
 export class RoutesPage extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
     home: PropTypes.object.isRequired,
+  };
+
+  state = {
+    codeChanged: false,
   };
 
   @autobind
@@ -27,6 +31,12 @@ export class RoutesPage extends Component {
       default:
         break;
     }
+  }
+
+  handleCodeChange = (args) => {
+    this.setState({
+      codeChanged: args.hasChange,
+    });
   }
 
   renderNotFound(fid) {
@@ -50,6 +60,7 @@ export class RoutesPage extends Component {
     const devPort = this.props.home.rekit.devPort;
 
     const codeFile = `src/features/${fid}/route.js`;
+    const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-routes-page">
         <h2><Icon type="share-alt" /> &nbsp;{fid} / routes</h2>
@@ -79,8 +90,8 @@ export class RoutesPage extends Component {
                 </tbody>
               </table>}
           </TabPane>
-          <TabPane tab="Code" key="code">
-            <CodeView file={codeFile} />
+          <TabPane tab={`Code${codeChangeMark}`} key="code">
+            <CodeEditor file={codeFile} onStateChange={this.handleCodeChange} />
           </TabPane>
         </Tabs>
       </div>

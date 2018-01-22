@@ -1,13 +1,14 @@
 {
-  'globals': {
-    'describe': true,
-    'it': true,
-    'before': true,
-    'after': true,
-    'afterEach': true
+  "globals": {
+    "describe": true,
+    "it": true,
+    "before": true,
+    "after": true,
+    "afterEach": true
   },
-  'rules': {
-    'no-unused-expressions': 0,
-    'import/no-extraneous-dependencies': 0
+  "rules": {
+    "no-unused-expressions": 0,
+    "function-paren-newline": 0,
+    "import/no-extraneous-dependencies": 0
   }
 }

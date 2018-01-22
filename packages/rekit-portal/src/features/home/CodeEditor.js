@@ -43,7 +43,6 @@ export class CodeEditor extends Component {
 
   async componentWillReceiveProps(nextProps) {
     const { props } = this;
-    // const fileContentChanged = props.home.fileContentById[props.file] !== nextProps.home.fileContentById[nextProps.file];
 
     if (props.file !== nextProps.file || nextProps.home.fileContentNeedReload[nextProps.file]) {
       // File changed or file content changed, the check and reload.

@@ -41,9 +41,9 @@ This will install a global command `rekit` to the system. Rekit is developed and
 ## Usage
 Create a new application
 ```
-rekit create <app-name> [--sass]
+rekit create <app-name> [--sass] [--clean]
 ```
-This will create a new app named `app-name` in the current directory. The `--sass` flag allows to use [sass](https://sass-lang.com/) instead of default [less](http://lesscss.org/) as the CSS transpiler. After creating the app, you need to install dependencies and start the dev server:
+This will create a new app named `app-name` in the current directory. The `--sass` flag allows to use [sass](https://sass-lang.com/) instead of default [less](http://lesscss.org/) as the CSS transpiler. The `--clean` flag is used to create a clean app without any sample code. After creating the app, you need to install dependencies and start the dev server:
 ```
 cd app-name
 npm install

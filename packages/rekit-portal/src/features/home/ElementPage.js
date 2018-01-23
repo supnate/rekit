@@ -7,7 +7,7 @@ import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
-import { CodeEditor } from './';
+import { CodeEditor, ElementTabs } from './';
 
 const TabPane = Tabs.TabPane;
 
@@ -156,13 +156,8 @@ export class ElementPage extends Component {
     const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-element-page">
-        <div className="page-title">
-          <h2>
-            <Icon type={iconTypes[data.type] || 'file'} style={{ color: colors[data.type] }} />&nbsp;
-            {data.feature ? `${data.feature} / ${data.name}` : data.file}
-            {this.renderMarks()}
-          </h2>
-        </div>
+        <ElementTabs />
+        
         {data.isPic &&
         <div className="pic-wrapper">
           <img src={`/${codeFile}`} alt={codeFile} />

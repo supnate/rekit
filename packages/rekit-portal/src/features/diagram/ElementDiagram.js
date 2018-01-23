@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import * as d3 from 'd3';
+import 'd3-zoom';
+import 'd3-drag';
+import 'd3-selection';
 import { Checkbox, Col, Icon, Popover, Row } from 'antd';
 import history from '../../common/history';
 import { getElementDiagramData } from './selectors/getElementDiagramData';
@@ -82,7 +85,7 @@ export default class ElementDiagram extends PureComponent {
   }
 
   @autobind
-  dragstarted(d) {
+  dragstarted(d) {console.log('drag start');
     if (!d3.event.active) this.sim.alphaTarget(0.3).restart();
     d.fx = d.x;
     d.fy = d.y;

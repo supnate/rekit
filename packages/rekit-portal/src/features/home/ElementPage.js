@@ -50,21 +50,26 @@ export class ElementPage extends Component {
     return document.getElementById('page-container');
   }
 
+  componentDidMount() {
+    document.getElementById('page-container').className = 'page-container full-screen';
+  }
+  componentWillUnmount() {
+    document.getElementById('page-container').className = 'page-container';
+  }
+
   handleCodeChange = (args) => {
     this.setState({
       codeChanged: args.hasChange,
     });
   }
 
-  @autobind
-  handleTabChange(tabKey) {
+  handleTabChange = (tabKey) => {
     // const data = this.getElementData();
     history.push(`/element/${encodeURIComponent(this.props.match.params.file)}/${tabKey}`);
     // history.push(`/element/${data.feature}/${encodeURIComponent(this.props.match.params.file)}/${tabKey}`);
   }
 
-  @autobind
-  handleRunTest() {
+  handleRunTest = () => {
     const { file } = this.props.match.params;
     history.push(`/tools/tests/${encodeURIComponent(file)}`);
     // history.push(`/tools/tests/src%2Ffeatures%2F${feature}%2F${encodeURIComponent(file)}`);

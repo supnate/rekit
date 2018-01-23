@@ -107,8 +107,8 @@ export class CodeEditor extends Component {
 
   handleWindowResize = () => {
     // Todo: bounce resize event to improve performance when resizing.
-    let editorHeight = document.body.offsetHeight - 250;
-    let editorWidth = document.body.offsetWidth - 380;
+    let editorHeight = document.body.offsetHeight - 125;
+    let editorWidth = document.body.offsetWidth - 302;
     if (editorHeight < 100) editorHeight = 100;
     if (editorWidth < 300) editorWidth = 300;
     this.setState({ editorWidth, editorHeight });

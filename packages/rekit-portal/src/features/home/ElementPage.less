@@ -2,11 +2,16 @@
 
 .home-element-page {
   h2 {
-    line-height: 60px;
+    margin-bottom: 0;
+    line-height: 44px;
     font-weight: normal;
+    color: #ccc;
+    font-size: 16px;
   }
 
   .page-title {
+    padding-left: 20px;
+    background-color: #333;
     .mark {
       display: inline-block;
       padding: 0;
@@ -35,6 +40,20 @@
   }
 
   .ant-tabs-bar {
-    background-color: #fff;
+    margin-bottom: 0;
+    border-bottom: 1px solid #000;
   }
+
+  .ant-tabs-tab {
+    color: #ccc;
+    &-active {
+      background-color: #444;
+    }
+  }
+}
+
+.home-app .page-container.full-screen {
+  padding: 0;
+  border-left: 1px solid #000;
+  background-color: #1e1e1e;
 }

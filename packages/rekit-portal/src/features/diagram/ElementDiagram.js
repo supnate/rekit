@@ -1,11 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { autobind } from 'core-decorators';
 import * as d3 from 'd3';
-import 'd3-zoom';
-import 'd3-drag';
-import 'd3-selection';
 import { Checkbox, Col, Icon, Popover, Row } from 'antd';
 import history from '../../common/history';
 import { getElementDiagramData } from './selectors/getElementDiagramData';
@@ -54,6 +50,7 @@ export default class ElementDiagram extends PureComponent {
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
       .attr('class', d => `triangle-marker ${d}`)
+      .attr('fill', '#ddd')
       .attr('orient', 'auto')
       .append('svg:path')
       .attr('d', 'M0,-5L10,0L0,5')
@@ -84,21 +81,18 @@ export default class ElementDiagram extends PureComponent {
     }
   }
 
-  @autobind
-  dragstarted(d) {console.log('drag start');
+  dragstarted = (d) => {
     if (!d3.event.active) this.sim.alphaTarget(0.3).restart();
     d.fx = d.x;
     d.fy = d.y;
   }
 
-  @autobind
-  dragged(d) {
+  dragged = (d) => {
     d.fx = d3.event.x;
     d.fy = d3.event.y;
   }
 
-  @autobind
-  dragended(d) {
+  dragended = (d) => {
     if (!d3.event.active) this.sim.alphaTarget(0);
     d.fx = null;
     d.fy = null;
@@ -114,9 +108,9 @@ export default class ElementDiagram extends PureComponent {
     const drawBgNode = d3Selection => d3Selection
       .attr('r', d => d.r + 3)
       .attr('stroke-width', 1)
-      .attr('stroke', '#555')
+      .attr('stroke', '#ccc')
       .attr('cursor', 'pointer')
-      .attr('fill', '#fff')
+      .attr('fill', '#222')
       .on('click', this.handleNodeClick)
       .call(d3.drag()
         .on('start', this.dragstarted)
@@ -132,7 +126,7 @@ export default class ElementDiagram extends PureComponent {
     const drawNode = d3Selection => d3Selection
       .attr('r', d => d.r)
       .attr('stroke-width', d => (d.type === 'feature' ? 1 : 0))
-      .attr('stroke', '#555')
+      .attr('stroke', '#eee')
       .attr('cursor', 'pointer')
       .attr('fill', d => colors[d.type])
       .on('click', this.handleNodeClick)
@@ -149,7 +143,7 @@ export default class ElementDiagram extends PureComponent {
 
     const drawLink = d3Selection => d3Selection
       .attr('class', 'line')
-      .attr('stroke', '#555')
+      .attr('stroke', '#ddd')
       .attr('stroke-dasharray', d => (d.target === elementId ? '3, 3' : ''))
       .attr('marker-end', l => (l.type === 'dep' ? `url(#${l.source === elementId ? 'dep-on' : 'dep-by'})` : ''))
     ;
@@ -192,8 +186,7 @@ export default class ElementDiagram extends PureComponent {
     this.sim.alpha(1).restart();
   }
 
-  @autobind
-  handleOnTick() {
+  handleOnTick = () => {
     this.nodes
       .attr('cx', d => d.x)
       .attr('cy', d => d.y)
@@ -217,8 +210,7 @@ export default class ElementDiagram extends PureComponent {
     ;
   }
 
-  @autobind
-  handleNodeClick(node) {
+  handleNodeClick = (node) => {
     const home = this.props.homeStore;
     const ele = home.elementById[node.id];
     if (ele.type !== 'feature') {
@@ -226,8 +218,7 @@ export default class ElementDiagram extends PureComponent {
     }
   }
 
-  @autobind
-  handleToggleText(evt) {
+  handleToggleText = (evt) => {
     this.setState({
       showText: evt.target.checked,
     });

@@ -164,7 +164,7 @@ export class CodeEditor extends Component {
           <div className="code-editor-toolbar" style={{ width: `${this.state.editorWidth}px` }}>
             <div className="file-path">{this.props.file}</div>
           </div>
-          <div style={{ color: 'red', marginTop: 10 }}>File not found.</div>
+          <div style={{ color: 'red', marginTop: '10px', marginLeft: '15px' }}>File not found.</div>
         </div>
       );
     }

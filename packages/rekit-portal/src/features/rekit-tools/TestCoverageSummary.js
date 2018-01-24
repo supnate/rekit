@@ -75,10 +75,12 @@ export class TestCoverageSummary extends PureComponent {
       const file = row.cells[0].firstChild.innerHTML;
       if (/src\/features\/([^/]+)/i.test(file)) {
         const fid = RegExp.$1;
-        const ss = row.cells[3].innerHTML;
-        const arr = ss.split('/').map(n => parseInt(n, 10));
-        coverage[fid].tested += arr[0];
-        coverage[fid].total += arr[1];
+        if (fid && coverage[fid]) {
+          const ss = row.cells[3].innerHTML;
+          const arr = ss.split('/').map(n => parseInt(n, 10));
+          coverage[fid].tested += arr[0];
+          coverage[fid].total += arr[1];
+        }
       }
     });
     _.keys(coverage).forEach((k) => {

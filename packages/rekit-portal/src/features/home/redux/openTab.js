@@ -4,7 +4,6 @@ import {
 } from './constants';
 
 export function openTab(elementKey, tabType) {
-  console.log('open tab: ', elementKey);
   return {
     type: HOME_OPEN_TAB,
     data: { file: elementKey, tabType }

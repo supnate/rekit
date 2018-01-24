@@ -8,6 +8,9 @@ import { Button, Icon, message, Modal } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
 import { fetchFileContent, saveFile } from './redux/actions';
 
+const editorStateMap = {};
+let lastStateSavedFile = null;
+
 export class CodeEditor extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
@@ -66,6 +69,8 @@ export class CodeEditor extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize);
+    this.editor.onDidChangeCursorPosition(null);
+    this.editor.onDidScrollChange(null);
   }
 
   getFileContent() {
@@ -78,6 +83,23 @@ export class CodeEditor extends Component {
       currentContent: this.getFileContent(),
     });
     this.props.onStateChange({ hasChange: false });
+    this.recoverEditorState();
+  }
+
+  recoverEditorState = () => {
+    if (!this.editor) return;
+    const { file } = this.props;
+    lastStateSavedFile = file;
+    const editorState = editorStateMap[file] || {
+      scrollLeft: 0,
+      scrollTop: 0,
+      position: new monaco.Position(0, 0),
+    };
+    console.log('recover editor state: ', file, editorState);
+    this.editor.focus();
+    this.editor.setScrollLeft(editorState.scrollLeft);
+    this.editor.setScrollTop(editorState.scrollTop);
+    this.editor.setPosition(editorState.position);
   }
 
   hasChange() {
@@ -122,10 +144,27 @@ export class CodeEditor extends Component {
   }
 
   handleEditorDidMount = (editor) => {
+    this.editor = editor;
     editor.focus();
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
       if (this.hasChange()) this.handleSave();
     });
+    editor.onDidChangeCursorPosition(this.handleEditorCursorScrollerChange);
+    editor.onDidScrollChange(this.handleEditorCursorScrollerChange);
+    this.recoverEditorState();
+  }
+
+  handleEditorCursorScrollerChange = () => {
+    const { file } = this.props;
+    // BIG magic here, don't ask WHY!!!
+    if (lastStateSavedFile && lastStateSavedFile !== file) return;
+    editorStateMap[file] = {
+      scrollLeft: this.editor.getScrollLeft(),
+      scrollTop: this.editor.getScrollTop(),
+      position: this.editor.getPosition(),
+    };
+    lastStateSavedFile = file;
+    console.log('Save editor state: ', file, editorStateMap[file]);
   }
 
   handleRunTest = () => {
@@ -169,7 +208,8 @@ export class CodeEditor extends Component {
       );
     }
     const options = {
-      selectOnLineNumbers: true
+      selectOnLineNumbers: true,
+      renderWhitespace: 'boundary',
     };
     const ext = this.props.file.split('.').pop();
     const lang = {

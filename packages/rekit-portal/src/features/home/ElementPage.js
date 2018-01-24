@@ -71,17 +71,14 @@ export class ElementPage extends Component {
   }
 
   handleTabChange = (tabKey) => {
-    // const data = this.getElementData();
     const file = decodeURIComponent(this.props.match.params.file);
     history.push(`/element/${encodeURIComponent(file)}/${tabKey}`);
     this.props.actions.switchTypeTab(file, tabKey);
-    // history.push(`/element/${data.feature}/${encodeURIComponent(this.props.match.params.file)}/${tabKey}`);
   }
 
   handleRunTest = () => {
     const { file } = this.props.match.params;
     history.push(`/tools/tests/${encodeURIComponent(file)}`);
-    // history.push(`/tools/tests/src%2Ffeatures%2F${feature}%2F${encodeURIComponent(file)}`);
   }
 
   renderNotFound() {

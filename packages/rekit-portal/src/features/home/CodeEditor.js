@@ -7,8 +7,8 @@ import { Prompt } from 'react-router';
 import { Button, Icon, message, Modal } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
 import { fetchFileContent, saveFile } from './redux/actions';
+import editorStateMap from './editorStateMap';
 
-const editorStateMap = {};
 let lastStateSavedFile = null;
 
 export class CodeEditor extends Component {
@@ -95,7 +95,7 @@ export class CodeEditor extends Component {
       scrollTop: 0,
       position: new monaco.Position(0, 0),
     };
-    console.log('recover editor state: ', file, editorState);
+
     this.editor.focus();
     this.editor.setScrollLeft(editorState.scrollLeft);
     this.editor.setScrollTop(editorState.scrollTop);
@@ -164,7 +164,6 @@ export class CodeEditor extends Component {
       position: this.editor.getPosition(),
     };
     lastStateSavedFile = file;
-    console.log('Save editor state: ', file, editorStateMap[file]);
   }
 
   handleRunTest = () => {

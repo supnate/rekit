@@ -7,6 +7,7 @@ import { Icon } from 'antd';
 import classnames from 'classnames';
 import history from '../../common/history';
 import { openTab, closeTab } from './redux/actions';
+import editorStateMap from './editorStateMap';
 
 export class ElementTabs extends Component {
   static propTypes = {
@@ -14,6 +15,26 @@ export class ElementTabs extends Component {
     actions: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
   };
+
+  getElementData(file) {
+    const { elementById, projectRoot } = this.props.home;
+    if (!file) return null;
+    file = decodeURIComponent(file);
+    const fullPath = projectRoot + file;
+    const arr = fullPath.split('.');
+    const ext = arr.length > 1 ? arr.pop() : null;
+    const ele = elementById[file];
+
+    if (!ele) return null;
+
+    return {
+      ...ele,
+      hasDiagram: /^(js|jsx)$/.test(ext),
+      hasTest: ele.feature && /^(js|jsx)$/.test(ext),
+      hasCode: /^(js|jsx|html|css|less|scss|txt|json|sass|md|log|pl|py|sh|cmd)$/.test(ext),
+      isPic: /^(jpe?g|png|gif|bmp)$/.test(ext),
+    };
+  }
 
   handleTabClick = (tab) => {
     const path = `/element/${encodeURIComponent(tab.file)}/${tab.tab}`;
@@ -26,7 +47,18 @@ export class ElementTabs extends Component {
   handleClose = (evt, tab) => {
     evt.stopPropagation();
     this.props.actions.closeTab(tab.file);
-    const { openTabs, historyTabs } = this.props.home;
+    const { openTabs, historyTabs, cssExt } = this.props.home;
+    const ele = this.getElementData(tab.file);
+    if (ele) {
+      const codeFile = ele.file;
+      const styleFile = `src/features/${ele.feature}/${ele.name}.${cssExt}`;
+      const testFile = `tests/${ele.file.replace(/^src\//, '').replace('.js', '')}.test.js`;
+
+      delete editorStateMap[codeFile];
+      delete editorStateMap[styleFile];
+      delete editorStateMap[testFile];
+    }
+    
     const currentFile = decodeURIComponent(this.props.match.params.file);
 
     if (historyTabs.length === 1) {

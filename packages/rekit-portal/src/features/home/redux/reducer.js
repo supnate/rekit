@@ -4,6 +4,10 @@ import { reducer as fetchFileContent } from './fetchFileContent';
 import { reducer as showDemoAlertReducer } from './showDemoAlert';
 import { reducer as hideDemoAlertReducer } from './hideDemoAlert';
 import { reducer as saveFileReducer } from './saveFile';
+import { reducer as closeTabReducer } from './closeTab';
+import { reducer as openTabReducer } from './openTab';
+import { reducer as moveTabReducer } from './moveTab';
+import { reducer as switchTypeTabReducer } from './switchTypeTab';
 
 const reducers = [
   fetchProjectData,
@@ -11,6 +15,10 @@ const reducers = [
   showDemoAlertReducer,
   hideDemoAlertReducer,
   saveFileReducer,
+  closeTabReducer,
+  openTabReducer,
+  moveTabReducer,
+  switchTypeTabReducer,
 ];
 
 export default function reducer(state = initialState, action) {

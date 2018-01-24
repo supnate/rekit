@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { autobind } from 'core-decorators';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
 import { CodeEditor, ElementTabs } from './';
+import { openTab, switchTypeTab } from './redux/actions';
 
 const TabPane = Tabs.TabPane;
 
@@ -50,6 +51,12 @@ export class ElementPage extends Component {
     return document.getElementById('page-container');
   }
 
+  componentWillMount() {
+    // Ensure the tab is opened.
+    const ele = this.getElementData();
+    this.props.actions.openTab(ele.file, this.props.match.params.type);
+  }
+
   componentDidMount() {
     document.getElementById('page-container').className = 'page-container full-screen';
   }
@@ -65,7 +72,9 @@ export class ElementPage extends Component {
 
   handleTabChange = (tabKey) => {
     // const data = this.getElementData();
-    history.push(`/element/${encodeURIComponent(this.props.match.params.file)}/${tabKey}`);
+    const file = decodeURIComponent(this.props.match.params.file);
+    history.push(`/element/${encodeURIComponent(file)}/${tabKey}`);
+    this.props.actions.switchTypeTab(file, tabKey);
     // history.push(`/element/${data.feature}/${encodeURIComponent(this.props.match.params.file)}/${tabKey}`);
   }
 
@@ -156,7 +165,7 @@ export class ElementPage extends Component {
     const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-element-page">
-        <ElementTabs />
+        <ElementTabs match={this.props.match} />
         
         {data.isPic &&
         <div className="pic-wrapper">
@@ -186,6 +195,14 @@ function mapStateToProps(state) {
   };
 }
 
+/* istanbul ignore next */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ openTab, switchTypeTab }, dispatch)
+  };
+}
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps
 )(ElementPage);

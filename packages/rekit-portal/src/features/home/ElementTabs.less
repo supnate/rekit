@@ -5,18 +5,36 @@
   line-height: 44px;
   color: #aaa;
   background-color: #333;
+  white-space: nowrap;
+  overflow: auto;
+  // overflow-x: hidden;
+  // overflow-y: hidden;
+  // &::-webkit-scrollbar {
+  //   height: 4px;
+  // }
+  // &::-webkit-scrollbar-track {
+  //   background-color: red;
+  // }
+  // &::-webkit-scrollbar-thumb {
+  //   height: 2px;
+  //   background-color: #f90;
+  // }
   span.tab {
     position: relative;
     display: inline-block;
     padding: 0 30px 0 10px;
     border-right: 1px solid #1a1a1a;
     cursor: pointer;
+    user-select: none;
+    label {
+      cursor: pointer;
+    }
 
-    .anticon-close {
+    .anticon-close, .anticon-dot {
       position: absolute;
       font-weight: bold;
       font-size: 13px;
-      top: 16px;
+      top: 17px;
       right: 3px;
       visibility: hidden;
       color: #ddd;
@@ -33,6 +51,10 @@
       }
     }
 
+    &-has-change {
+
+    }
+
     .anticon {
       font-size: 12px;
       margin-right: 6px;
@@ -40,6 +62,22 @@
 
     .anticon-appstore-o {
       color: #F08036;
+    }
+
+    .anticon-notification {
+      color: #ec407a;
+    }
+
+    .anticon-dot {
+      visibility: visible;
+      &::before {
+        content: ' ';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: #aaa;
+      }
     }
 
     

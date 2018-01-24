@@ -4,11 +4,10 @@ import _ from 'lodash';
 import Cookies from 'js-cookie';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { autobind } from 'core-decorators';
 import { Dropdown, Icon, Menu, message, Modal, Tree, Spin } from 'antd';
 import history from '../../common/history';
 import cmdSuccessNotification from '../rekit-cmds/cmdSuccessNotification';
-import * as actions from './redux/actions';
+import { openTab } from './redux/actions';
 import { execCmd, showCmdDialog, dismissExecCmdError } from '../rekit-cmds/redux/actions';
 import { getExpandedKeys, getFilteredExplorerTreeData } from './selectors/explorerTreeData';
 
@@ -140,8 +139,7 @@ export class ProjectExplorer extends Component {
     }
   }
 
-  @autobind
-  handleSelect(selected, evt) {
+  handleSelect = (selected, evt) => {
     const key = evt.node.props.eventKey;
 
     const hasChildren = !!_.get(evt, 'node.props.children');
@@ -175,6 +173,7 @@ export class ProjectExplorer extends Component {
         }
 
         history.push(`/element/${encodeURIComponent(key)}${tab}`);
+        this.props.actions.openTab(key, tab.slice(1))
         // history.push(`/element/?file=${key}`);
         // history.push(`/element/${ele.feature || '_src_'}/${encodeURIComponent(file)}${tab}`);
       }
@@ -187,8 +186,7 @@ export class ProjectExplorer extends Component {
     });
   }
 
-  @autobind
-  handleExpand(expanded, evt) {
+  handleExpand = (expanded, evt) => {
     const key = evt.node.props.eventKey;
     const keysInCookie = Cookies.getJSON('explorerExpandedKeys');
 
@@ -205,8 +203,7 @@ export class ProjectExplorer extends Component {
     });
   }
 
-  @autobind
-  handleContextMenu(evt) {
+  handleContextMenu = (evt) => {
     const menus = this.getMenuItems(evt.node);
     if (!menus.length) return;
 
@@ -230,15 +227,13 @@ export class ProjectExplorer extends Component {
     this.contextMenuArchor.dispatchEvent(clickEvent);
   }
 
-  @autobind
-  handleContextMenuVisibleChange(visible) {
+  handleContextMenuVisibleChange = (visible) => {
     if (!visible) {
       this.contextMenuArchor.style.display = 'none';
     }
   }
 
-  @autobind
-  handleMenuClick(evt) {
+  handleMenuClick = (evt) => {
     const cmdContext = this.cmdContext;
     const prjRoot = this.props.home.projectRoot;
     switch (evt.key) {
@@ -380,8 +375,7 @@ export class ProjectExplorer extends Component {
     );
   }
 
-  @autobind
-  renderTreeNode(nodeData) {
+  renderTreeNode = (nodeData) => {
     return (
       <TreeNode
         key={nodeData.key}
@@ -439,7 +433,7 @@ function mapStateToProps(state, props) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions, execCmd, showCmdDialog, dismissExecCmdError }, dispatch)
+    actions: bindActionCreators({ openTab, execCmd, showCmdDialog, dismissExecCmdError }, dispatch)
   };
 }
 

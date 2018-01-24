@@ -11,6 +11,9 @@ const initialState = {
   fetchProjectDataError: null,
   fetchFileContentPending: false,
   fetchFileContentError: null,
+
+  openTabs: [],
+  historyTabs: [],
   // editingFile: {
   //   file: null, // File path
   //   originalContent: null, // Content before save

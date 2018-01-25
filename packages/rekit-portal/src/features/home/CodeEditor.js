@@ -9,8 +9,6 @@ import MonacoEditor from 'react-monaco-editor';
 import { fetchFileContent, saveFile } from './redux/actions';
 import editorStateMap from './editorStateMap';
 
-let lastStateSavedFile = null;
-
 export class CodeEditor extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
@@ -26,6 +24,15 @@ export class CodeEditor extends Component {
     onStateChange() {},
     onRunTest: null,
   };
+
+  constructor(props) {
+    super(props);
+    // BIG magic here! When open/switch a new file, it will trigger cursor change first
+    // which causes to save status. So if the file is new open, should not save its state
+    // before recover the state. So when file is changed set this flag to true. After recover
+    // the status, set it to false so that state could be saved.
+    this.preventSaveEditorState = true;
+  }
 
   state = {
     notFound: false,
@@ -46,7 +53,9 @@ export class CodeEditor extends Component {
 
   async componentWillReceiveProps(nextProps) {
     const { props } = this;
-
+    if (props.file !== nextProps.file) {
+      this.preventSaveEditorState = true;
+    }
     if (props.file !== nextProps.file || nextProps.home.fileContentNeedReload[nextProps.file]) {
       // File changed or file content changed, the check and reload.
       const oldContent = this.getFileContent();
@@ -89,13 +98,12 @@ export class CodeEditor extends Component {
   recoverEditorState = () => {
     if (!this.editor) return;
     const { file } = this.props;
-    lastStateSavedFile = file;
+    this.preventSaveEditorState = false;
     const editorState = editorStateMap[file] || {
       scrollLeft: 0,
       scrollTop: 0,
       position: new monaco.Position(0, 0),
     };
-
     this.editor.focus();
     this.editor.setScrollLeft(editorState.scrollLeft);
     this.editor.setScrollTop(editorState.scrollTop);
@@ -151,19 +159,20 @@ export class CodeEditor extends Component {
     });
     editor.onDidChangeCursorPosition(this.handleEditorCursorScrollerChange);
     editor.onDidScrollChange(this.handleEditorCursorScrollerChange);
-    this.recoverEditorState();
+
+    // It needs some time for editor to load its content
+    setTimeout(this.recoverEditorState, 30);
   }
 
   handleEditorCursorScrollerChange = () => {
+    if (this.preventSaveEditorState) return;
     const { file } = this.props;
-    // BIG magic here, don't ask WHY!!!
-    if (lastStateSavedFile && lastStateSavedFile !== file) return;
+
     editorStateMap[file] = {
       scrollLeft: this.editor.getScrollLeft(),
       scrollTop: this.editor.getScrollTop(),
       position: this.editor.getPosition(),
     };
-    lastStateSavedFile = file;
   }
 
   handleRunTest = () => {

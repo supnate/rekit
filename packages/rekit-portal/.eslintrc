@@ -5,6 +5,7 @@
     "document": true,
     "Prism": true,
     "window": true,
+    "monaco": true,
     "d3": true
   },
   "settings": {

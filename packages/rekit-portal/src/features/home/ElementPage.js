@@ -21,8 +21,14 @@ export class ElementPage extends Component {
   static defaultProps = {
   };
 
+  constructor(props) {
+    super(props);
+    this.state.editAreaSize = this.getEditAreaSize();
+  }
+
   state = {
     codeChanged: false,
+    editAreaSize: null,
   };
 
   getElementData() {
@@ -55,13 +61,29 @@ export class ElementPage extends Component {
     // Ensure the tab is opened.
     const ele = this.getElementData();
     this.props.actions.openTab(ele.file, this.props.match.params.type);
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
   componentDidMount() {
     document.getElementById('page-container').className = 'page-container full-screen';
   }
+
   componentWillUnmount() {
     document.getElementById('page-container').className = 'page-container';
+    window.removeEventListener('resize', this.handleWindowResize);
+  }
+
+  getEditAreaSize() {
+    return {
+      width: document.body.offsetWidth,
+      height: document.body.offsetHeight,
+    }
+  }
+
+  handleWindowResize = () => {
+    this.setState({
+      editAreaSize: this.getEditAreaSize(),
+    });
   }
 
   handleCodeChange = (args) => {
@@ -172,7 +194,7 @@ export class ElementPage extends Component {
         <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
           {data.hasDiagram &&
           <TabPane tab="Diagram" key="diagram">
-            <ElementDiagram homeStore={this.props.home} elementId={data.file} />
+            <ElementDiagram homeStore={this.props.home} elementId={data.file} size={this.state.editAreaSize} />
           </TabPane>}
           {data.hasCode && <TabPane tab={`Code${tabKey === 'code' ? codeChangeMark : ''}`} key="code" />}
           {(data.type === 'component' && data.feature) && <TabPane tab={`Style${tabKey === 'style' ? codeChangeMark : ''}`} key="style" />}

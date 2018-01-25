@@ -6,13 +6,14 @@ import history from '../../common/history';
 import { getElementDiagramData } from './selectors/getElementDiagramData';
 import { colors } from '../common';
 
-let chartWidth = 600;
-let chartHeight = 500;
+// let chartWidth = 600;
+// let chartHeight = 500;
 
 export default class ElementDiagram extends PureComponent {
   static propTypes = {
     homeStore: PropTypes.object.isRequired,
     elementId: PropTypes.string.isRequired, // eslint-disable-line
+    size: PropTypes.object.isRequired,
   };
 
   state = {
@@ -20,17 +21,18 @@ export default class ElementDiagram extends PureComponent {
   };
 
   componentDidMount() {
-    const pageContainer = document.querySelector('.page-container');
-    chartHeight = pageContainer.offsetHeight - 250; // 250 is header height and paddings
-    chartWidth = pageContainer.offsetWidth - 80; // 80 is paddings
-    if (chartHeight < 400) chartHeight = 400;
-    if (chartWidth < 400) chartWidth = 400;
+    // const pageContainer = document.querySelector('.page-container');
+    // chartHeight = pageContainer.offsetHeight - 250; // 250 is header height and paddings
+    // chartWidth = pageContainer.offsetWidth - 80; // 80 is paddings
+    // if (chartHeight < 400) chartHeight = 400;
+    // if (chartWidth < 400) chartWidth = 400;
 
+    const size = this.getChartSize();
     this.svg = d3
       .select(this.d3Node)
       .append('svg')
-      .attr('width', chartWidth)
-      .attr('height', chartHeight)
+      .attr('width', size.width)
+      .attr('height', size.height)
     ;
 
     // TODO: Why not equal to r?
@@ -60,7 +62,7 @@ export default class ElementDiagram extends PureComponent {
       .force('link', d3.forceLink().id(d => d.id))
       .force('collide', d3.forceCollide(d => d.r + 15).strength(1).iterations(16))
       .force('charge', d3.forceManyBody())
-      .force('center', d3.forceCenter(300, 250))
+      .force('center', d3.forceCenter(size.width / 2, size.height / 2))
       // .alphaTarget(1)
       .on('tick', this.handleOnTick)
     ;
@@ -75,9 +77,16 @@ export default class ElementDiagram extends PureComponent {
 
   componentDidUpdate(prevProps) {
     const props = this.props;
-    if (prevProps.homeStore !== props.homeStore || prevProps.elementId !== props.elementId) {
+    if (prevProps.homeStore !== props.homeStore || prevProps.elementId !== props.elementId || prevProps.size !== props.size) {
       this.updateDiagram();
     }
+  }
+
+  getChartSize() {
+    return {
+      width: Math.max(this.props.size.width - 360, 400),
+      height: Math.max(this.props.size.height - 180, 400),
+    };
   }
 
   dragstarted = (d) => {
@@ -101,8 +110,14 @@ export default class ElementDiagram extends PureComponent {
     const { homeStore, elementId } = this.props;
     const diagramData = getElementDiagramData(homeStore, elementId);
     const dataNodes = diagramData.nodes;
-    // d3.forceLayout will alter links data, so clone it so that the data could be re-used.
     const dataLinks = _.cloneDeep(diagramData.links);
+
+    const size = this.getChartSize();
+    this.svg
+      .attr('width', size.width)
+      .attr('height', size.height)
+    ;
+    this.sim.force('center', d3.forceCenter(size.width / 2, size.height / 2));
 
     const drawBgNode = d3Selection => d3Selection
       .attr('r', d => d.r + 3)

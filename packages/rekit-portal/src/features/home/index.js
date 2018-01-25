@@ -1,4 +1,3 @@
-export { default as Hello } from './Hello';
 export { default as ProjectExplorer } from './ProjectExplorer';
 export { default as AddDialog } from './AddDialog';
 export { default as AddActionForm } from './AddActionForm';

@@ -8,14 +8,15 @@ import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
 import { CodeEditor, ElementTabs } from './';
-import { openTab, switchTypeTab } from './redux/actions';
 
 const TabPane = Tabs.TabPane;
 
 export class ElementPage extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -30,6 +31,30 @@ export class ElementPage extends Component {
     codeChanged: false,
     editAreaSize: null,
   };
+
+  componentWillMount() {
+    // Ensure the tab is opened.
+    window.addEventListener('resize', this.handleWindowResize);
+
+    // This is used to show tab when refresh the element page.
+    this.props.dispatch({
+      type: '@@router/LOCATION_CHANGE',
+      payload: this.props.router.location,
+    });
+  }
+
+  componentDidMount() {
+    document.getElementById('page-container').className = 'page-container full-screen';
+  }
+
+  componentWillUnmount() {
+    document.getElementById('page-container').className = 'page-container';
+    window.removeEventListener('resize', this.handleWindowResize);
+  }
+
+  getPageContainer() {
+    return document.getElementById('page-container');
+  }
 
   getElementData() {
     const { elementById, projectRoot } = this.props.home;
@@ -53,31 +78,11 @@ export class ElementPage extends Component {
     // return _.find(featureById[feature].components, { name: ele.name });
   }
 
-  getPageContainer() {
-    return document.getElementById('page-container');
-  }
-
-  componentWillMount() {
-    // Ensure the tab is opened.
-    const ele = this.getElementData();
-    this.props.actions.openTab(ele.file, this.props.match.params.type);
-    window.addEventListener('resize', this.handleWindowResize);
-  }
-
-  componentDidMount() {
-    document.getElementById('page-container').className = 'page-container full-screen';
-  }
-
-  componentWillUnmount() {
-    document.getElementById('page-container').className = 'page-container';
-    window.removeEventListener('resize', this.handleWindowResize);
-  }
-
   getEditAreaSize() {
     return {
       width: document.body.offsetWidth,
       height: document.body.offsetHeight,
-    }
+    };
   }
 
   handleWindowResize = () => {
@@ -95,7 +100,6 @@ export class ElementPage extends Component {
   handleTabChange = (tabKey) => {
     const file = decodeURIComponent(this.props.match.params.file);
     history.push(`/element/${encodeURIComponent(file)}/${tabKey}`);
-    this.props.actions.switchTypeTab(file, tabKey);
   }
 
   handleRunTest = () => {
@@ -211,13 +215,15 @@ export class ElementPage extends Component {
 function mapStateToProps(state) {
   return {
     home: state.home,
+    router: state.router,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ openTab, switchTypeTab }, dispatch)
+    dispatch,
+    actions: bindActionCreators({ }, dispatch)
   };
 }
 

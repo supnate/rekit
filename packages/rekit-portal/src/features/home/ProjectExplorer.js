@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu, message, Modal, Tree, Spin } from 'antd';
 import history from '../../common/history';
 import cmdSuccessNotification from '../rekit-cmds/cmdSuccessNotification';
-import { openTab } from './redux/actions';
 import { execCmd, showCmdDialog, dismissExecCmdError } from '../rekit-cmds/redux/actions';
 import { getExpandedKeys, getFilteredExplorerTreeData } from './selectors/explorerTreeData';
 
@@ -174,7 +173,6 @@ export class ProjectExplorer extends Component {
         const tab = tabItem ? tabItem.tab : 'code';
 
         history.push(`/element/${encodeURIComponent(key)}/${tab}`);
-        this.props.actions.openTab(key, tab);
         // history.push(`/element/?file=${key}`);
         // history.push(`/element/${ele.feature || '_src_'}/${encodeURIComponent(file)}${tab}`);
       }
@@ -434,7 +432,7 @@ function mapStateToProps(state, props) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ openTab, execCmd, showCmdDialog, dismissExecCmdError }, dispatch)
+    actions: bindActionCreators({ execCmd, showCmdDialog, dismissExecCmdError }, dispatch)
   };
 }
 

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'antd';
 import classnames from 'classnames';
 import history from '../../common/history';
-import { openTab, closeTab } from './redux/actions';
+import { closeTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
 
 export class ElementTabs extends Component {
@@ -36,10 +36,11 @@ export class ElementTabs extends Component {
     };
   }
 
-  handleTabClick = (tab) => {
-    const path = `/element/${encodeURIComponent(tab.file)}/${tab.tab}`;
-    if (document.location.pathname !== tab) {
-      this.props.actions.openTab(tab.file, tab.tab);
+  handleTabClick = (file) => {
+    const tab = _.find(this.props.home.openTabs, { file });
+    const path = `/element/${encodeURIComponent(file)}/${tab.tab}`;
+    if (document.location.pathname !== path) {
+      // this.props.actions.openTab(tab.file, tab.tab);
       history.push(path);
     }
   }
@@ -58,7 +59,7 @@ export class ElementTabs extends Component {
       delete editorStateMap[styleFile];
       delete editorStateMap[testFile];
     }
-    
+
     const currentFile = decodeURIComponent(this.props.match.params.file);
 
     if (historyTabs.length === 1) {
@@ -83,7 +84,7 @@ export class ElementTabs extends Component {
         {openTabs.map(tab => (
           <span
             key={tab.file}
-            onClick={() => this.handleTabClick(tab)}
+            onClick={() => this.handleTabClick(tab.file)}
             className={classnames('tab', { 'tab-active': tab.file === file })}
           >
             <Icon type={iconTypeMap[tab.type] || 'file'} />
@@ -106,7 +107,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ openTab, closeTab }, dispatch)
+    actions: bindActionCreators({ closeTab }, dispatch)
   };
 }
 

@@ -6,6 +6,4 @@ export { showDemoAlert } from './showDemoAlert';
 export { hideDemoAlert } from './hideDemoAlert';
 export { saveFile, dismissSaveFileError } from './saveFile';
 export { closeTab } from './closeTab';
-export { openTab } from './openTab';
 export { moveTab } from './moveTab';
-export { switchTypeTab } from './switchTypeTab';

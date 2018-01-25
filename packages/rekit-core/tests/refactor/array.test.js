@@ -35,6 +35,11 @@ const arr6 = [
     def: 2,
   },
 ];
+const arr7 = [
+  abc,
+  def,
+  ghi,
+];
     `;
 
   it(`addToArrayByNode`, () => {
@@ -136,6 +141,10 @@ const arr6 = [
     refactor.removeFromArray(V_FILE, 'arr1', 'x');
     refactor.removeFromArray(V_FILE, 'arr2', 'y');
     refactor.removeFromArray(V_FILE, 'arr5', 'z');
+    refactor.removeFromArray(V_FILE, 'arr7', 'abc');
+    expectNoLines(V_FILE, [
+      'const arr7 = [,',
+    ]);
     expectLines(V_FILE, [
       'const arr1 = [];',
       'const arr2 = [a, b, 1];',

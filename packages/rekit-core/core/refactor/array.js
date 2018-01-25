@@ -111,14 +111,16 @@ function removeFromArrayByNode(node, eleNode) {
 
   const content = vio.getContent(node._filePath);
   let startPos = nearestCharBefore(',', content, eleNode.start);
+  let isFirstElement = false;
   if (startPos < 0) {
     // it's the first element
-    startPos = node.start + 1;
+    isFirstElement = true;
+    startPos = node.start + 1; // start from the char just after the '['
   }
 
   let endPos = eleNode.end;
 
-  if (elements.length === 1) {
+  if (elements.length === 1 || isFirstElement) {
     // if the element is the only element, try to remove the trailing comma if exists
     const nextComma = nearestCharAfter(',', content, endPos - 1);
     if (nextComma >= 0) endPos = nextComma + 1;

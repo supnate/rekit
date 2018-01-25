@@ -4,11 +4,12 @@ import _ from 'lodash';
 import { autobind } from 'core-decorators';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import { Checkbox, Col, Icon, Popover, Row, Tooltip } from 'antd';
 import history from '../../common/history';
 import { getOverviewChordDiagramData } from './selectors/getOverviewChordDiagramData';
+
+d3.tip = d3Tip;
 
 let uidSeed = 0;
 const uidHash = {};
@@ -145,7 +146,7 @@ export class OverviewChordDiagram extends PureComponent {
     this.elementNodesGroup = this.svg.append('svg:g');
     this.fileNodesGroup = this.svg.append('svg:g');
 
-    this.tooltip = d3Tip()
+    this.tooltip = d3.tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(d => this.props.home.elementById[d.id].name)
@@ -212,6 +213,7 @@ export class OverviewChordDiagram extends PureComponent {
       return cssClass;
     };
 
+    const self = this;
     const drawNode = (d3Selection) => {
       d3Selection
         .attr('id', d => `group-${d.type}-${uid(d.id)}`)
@@ -226,7 +228,7 @@ export class OverviewChordDiagram extends PureComponent {
           d3Path.arc(d.x, d.y, d.radius, d.startAngle, d.endAngle);
           return d3Path;
         })
-        .on('mouseover', this.handleGroupMouseover)
+        .on('mouseover', function(d){ self.handleGroupMouseover(d, this); })
         .on('mouseout', this.handleGroupMouseout)
         .on('click', this.handleGroupClick)
       ;
@@ -323,8 +325,8 @@ export class OverviewChordDiagram extends PureComponent {
   }
 
   @autobind
-  handleGroupMouseover(d) {
-    if (d.type === 'file') this.tooltip.show(d);
+  handleGroupMouseover(d, target) {
+    if (d.type === 'file') this.tooltip.show(d, target);
     this.setState({
       highlightedGroup: d,
     });

@@ -112,6 +112,10 @@ module.exports = (type) => { // eslint-disable-line
         {
           from: '../../../node_modules/monaco-editor/min/vs',
           to: 'vs',
+        },
+        {
+          from: './libs',
+          to: 'libs',
         }
       ]),
       new webpack.DefinePlugin({

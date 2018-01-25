@@ -110,7 +110,7 @@ export class ElementPage extends Component {
   renderNotFound() {
     return (
       <div className="home-element-page">
-        <span style={{ color: 'red' }}>Element not found, please check the URL or if element exists.</span>
+        <div style={{ color: 'red', padding: '30px' }}>Element not found, please check the URL or if element exists.</div>
       </div>
     );
   }

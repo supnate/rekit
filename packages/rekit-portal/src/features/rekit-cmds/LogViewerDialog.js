@@ -22,7 +22,8 @@ export class LogViewerDialog extends Component {
         visible
         maskClosable={false}
         footer=""
-        onClose={this.props.onClose}
+        closable={false}
+        onCancel={this.props.onClose}
         wrapClassName="rekit-cmds-log-viewer-dialog"
         {...this.props}
       >

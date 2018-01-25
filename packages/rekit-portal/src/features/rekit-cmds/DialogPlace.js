@@ -40,7 +40,7 @@ export class DialogPlace extends Component {
             footer=""
             wrapClassName="rekit-cmds-cmd-dialog"
             title={displayName(rekitCmds.cmdArgs.type)}
-            onClose={() => hideCmdDialog('cmd')}
+            onCancel={() => hideCmdDialog('cmd')}
             {...this.props}
           >
             <CmdForm

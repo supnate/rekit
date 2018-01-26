@@ -64,10 +64,10 @@ export class RoutesPage extends Component {
     return (
       <div className="home-routes-page">
         <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
-          <TabPane tab="Rules" key="rules">
+          <TabPane tab="Rules" key="rules" className="rules-view">
             <p>This is a rough overview of routing config defined in a feature. </p>
             <p>If a route rule isIndex === true and also has a path property then there will be two rules.</p>
-            <p>For more detailed information, please look into the <Link to={`/${fid}/routes/code`}>code</Link>.</p>
+            <p>To edit the rules, please modify the config <Link to={`/${fid}/routes/code`}>code</Link> directly.</p>
             <p>NOTE: if route path has parameters, you need to alter the link address with correct values after click the route link. </p>
             {routes.length === 0
               ? <Alert type="info" message="No routing rules defined." showIcon />

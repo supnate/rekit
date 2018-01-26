@@ -1,7 +1,9 @@
 @import '../../styles/mixins.less';
 
 .home-routes-page {
+  background-color: #1e1e1e;
   min-width: 720px;
+  height: 100%;
   h2 {
     i { color: #26a69a; }
     line-height: 60px;
@@ -20,6 +22,37 @@
 
   .ant-alert {
     margin-top: 20px;
+    background-color: #222;
+    color: #ccc;
+  }
+
+  .ant-tabs {
+    height: 100%;
+    .ant-tabs-content {
+      height: 100%;
+    }
+  }
+
+  .ant-tabs-bar {
+    margin-bottom: 0;
+    border-bottom: 1px solid #000;
+    background-color: #222;
+  }
+
+  .ant-tabs-tab {
+    margin-left: 20px!important;
+    padding: 8px 12px!important;
+    color: #ccc;
+    &-active {
+      background-color: #444;
+    }
+  }
+
+  .rules-view {
+    padding: 40px;
+    height: 100%;
+    color: #ccc;
+    background-color: #333;
   }
 
   table {
@@ -29,12 +62,13 @@
       min-width: 400px;
       text-align: left;
       border: 1px solid #ddd;
+      color: #ccc;
       &:nth-child(2) {
         min-width: 300px;
       }
     }
     thead {
-      background-color: #eee;
+      background-color: #444;
       font-weight: bold;
     }
 

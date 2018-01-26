@@ -20,7 +20,7 @@ export default class DemoAlert extends Component {
         title=""
         footer=""
         width="700px"
-        onClose={this.props.onClose}
+        onCancel={this.props.onClose}
       >
         <div className="home-demo-alert">
           <Alert

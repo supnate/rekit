@@ -112,7 +112,7 @@ export class SidePanel extends Component {
             title=""
             footer=""
             width={process.env.REKIT_ENV === 'demo' ? '760px' : '360px'}
-            onClose={this.hideAbout}
+            onCancel={this.hideAbout}
             style={{ top: '50px' }}
           >
             <About />

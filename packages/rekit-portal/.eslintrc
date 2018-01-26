@@ -16,6 +16,8 @@
   "rules": {
     "strict": 0,
     "guard-for-in": 0,
+    "prefer-destructuring": 0,
+    "object-curly-newline": 0,
     "semi-style": 0,
     "function-paren-newline": 0,
     "max-len": 0,

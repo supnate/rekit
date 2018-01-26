@@ -4,19 +4,19 @@ import {
   HOME_CLOSE_TAB,
 } from './constants';
 
-export function closeTab(file) {
+export function closeTab(key) {
   return {
     type: HOME_CLOSE_TAB,
-    data: { file },
+    data: { key },
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
     case HOME_CLOSE_TAB: {
-      const toClose = { file: action.data.file };
+      const toClose = { key: action.data.key };
       const index1 = _.findIndex(state.openTabs, toClose);
-      const index2 = _.indexOf(state.historyTabs, toClose.file);
+      const index2 = _.indexOf(state.historyTabs, toClose.key);
 
       return update(state, {
         openTabs: { $splice: [[index1, 1]] },

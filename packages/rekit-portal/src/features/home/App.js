@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import enUS from 'antd/lib/locale-provider/en_US';
 import { LocaleProvider, message, Modal, Spin } from 'antd';
 import { ErrorBoundary } from '../common';
-import { SidePanel } from './';
+import { TabsBar, SidePanel } from './';
 import DialogPlace from '../rekit-cmds/DialogPlace';
 import { fetchProjectData } from './redux/actions';
 
@@ -35,11 +35,11 @@ export class App extends Component {
     if (nextProps.home.projectDataNeedReload && !nextProps.home.fetchProjectDataError && !nextProps.home.fetchProjectDataPending) {
       const hide = message.loading('Reloading project data...');
       this.props.actions.fetchProjectData()
-      .then(hide)
-      .catch((e) => {
-        console.log('failed to fetch project data: ', e);
-        message.error('Failed to refresh project data');
-      });
+        .then(hide)
+        .catch((e) => {
+          console.log('failed to fetch project data: ', e);
+          message.error('Failed to refresh project data');
+        });
     }
   }
 
@@ -61,9 +61,10 @@ export class App extends Component {
       <LocaleProvider locale={enUS}>
         <div className="home-app">
           <SidePanel />
+          <TabsBar />
           <div id="page-container" className="page-container">
             <ErrorBoundary>
-            {this.props.children}
+              {this.props.children}
             </ErrorBoundary>
           </div>
           <DialogPlace />

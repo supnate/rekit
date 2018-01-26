@@ -63,7 +63,6 @@ export class RoutesPage extends Component {
     const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-routes-page">
-        <h2><Icon type="share-alt" /> &nbsp;{fid} / routes</h2>
         <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
           <TabPane tab="Rules" key="rules">
             <p>This is a rough overview of routing config defined in a feature. </p>

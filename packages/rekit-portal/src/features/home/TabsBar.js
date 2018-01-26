@@ -9,7 +9,7 @@ import history from '../../common/history';
 import { closeTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
 
-export class ElementTabs extends Component {
+export class TabsBar extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
@@ -17,6 +17,7 @@ export class ElementTabs extends Component {
   };
 
   getCurrentFile() {
+    // only for element page
     const { pathname } = this.props.router.location;
     const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
     if (arr[0] === 'element') return arr[1];
@@ -43,9 +44,36 @@ export class ElementTabs extends Component {
     };
   }
 
-  handleTabClick = (file) => {
-    const tab = _.find(this.props.home.openTabs, { file });
-    const path = `/element/${encodeURIComponent(file)}/${tab.tab}`;
+  isCurrentTab(tab) {
+    switch (tab.type) {
+      case 'home':
+        return document.location.pathname === '/';
+      case 'element':
+        return tab.key === this.getCurrentFile();
+      case 'routes':
+        return document.location.pathname.indexOf(`/${tab.key}`) === 0;
+      default:
+        return false;
+    }
+  }
+
+  handleTabClick = (key) => {
+    const tab = _.find(this.props.home.openTabs, { key });
+    let path;
+    switch (tab.type) {
+      case 'home':
+        path = '/';
+        break;
+      case 'element':
+        path = `/element/${encodeURIComponent(key)}/${tab.subTab}`;
+        break;
+      case 'routes':
+        path = `/${tab.key}/${tab.subTab || ''}`;
+        break;
+      default:
+        console.error('unknown tab type: ', tab);
+        break;
+    }
     if (document.location.pathname !== path) {
       // this.props.actions.openTab(tab.file, tab.tab);
       history.push(path);
@@ -54,9 +82,9 @@ export class ElementTabs extends Component {
 
   handleClose = (evt, tab) => {
     evt.stopPropagation();
-    this.props.actions.closeTab(tab.file);
+    this.props.actions.closeTab(tab.key);
     const { openTabs, historyTabs, cssExt } = this.props.home;
-    const ele = this.getElementData(tab.file);
+    const ele = this.getElementData(tab.key);
     if (ele) {
       const codeFile = ele.file;
       const styleFile = `src/features/${ele.feature}/${ele.name}.${cssExt}`;
@@ -67,34 +95,38 @@ export class ElementTabs extends Component {
       delete editorStateMap[testFile];
     }
 
-    const currentFile = this.getCurrentFile();
-
     if (historyTabs.length === 1) {
-      history.push('/');
-    } else if (tab.file === currentFile) {
+      history.push('/blank');
+    } else if (this.isCurrentTab(tab)) {
       // Close the current one
-      const nextFile = historyTabs[1]; // at this point the props has not been updated.
-      const nextTab = _.find(openTabs, { file: nextFile });
-      history.push(`/element/${encodeURIComponent(nextTab.file)}/${nextTab.tab}`);
+      const nextKey = historyTabs[1]; // at this point the props has not been updated.
+      const nextTab = _.find(openTabs, { key: nextKey });
+      let path = '';
+      switch (nextTab.type) {
+        case 'home':
+          path = '/';
+          break;
+        case 'element':
+          path = `/element/${encodeURIComponent(nextTab.key)}/${nextTab.subTab}`;
+          break;
+        default:
+          break;
+      }
+      history.push(path);
     }
   }
 
   render() {
     const { openTabs } = this.props.home;
-    const file = this.getCurrentFile();
-    const iconTypeMap = {
-      component: 'appstore-o',
-      action: 'notification',
-    };
     return (
-      <div className="home-element-tabs">
+      <div className="home-tabs-bar">
         {openTabs.map(tab => (
           <span
-            key={tab.file}
-            onClick={() => this.handleTabClick(tab.file)}
-            className={classnames('tab', { 'tab-active': tab.file === file })}
+            key={tab.key}
+            onClick={() => this.handleTabClick(tab.key)}
+            className={classnames('tab', { 'tab-active': this.isCurrentTab(tab) })}
           >
-            <Icon type={iconTypeMap[tab.type] || 'file'} />
+            <Icon type={tab.icon || 'file'} />
             <label title={`${tab.feature}/${tab.name}`}>{tab.name}</label>
             <Icon type="close" onClick={(evt) => this.handleClose(evt, tab)} />
           </span>
@@ -122,4 +154,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ElementTabs);
+)(TabsBar);

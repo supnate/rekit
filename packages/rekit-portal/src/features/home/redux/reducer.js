@@ -34,53 +34,67 @@ export default function reducer(state = initialState, action) {
       // Open tab or switch tab type while url changes.
       const { pathname } = action.payload;
       const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
-      const { elementById } = state;
+      // const { elementById } = state;
       let { openTabs, historyTabs } = state;
+      // let tabItem = null;
+      let key, type, name, icon; // eslint-disable-line
 
-      if (arr[0] === 'element') {
-        // This is an element page
-        const file = arr[1];
-        const tabType = arr[2] || 'code';
-        const ele = elementById[file];
-        if (!ele) return state; // Should only happens when after refreshing the page when project data is not fetched.
+      if (arr.length === 0) {
+        key = '#home';
+        type = 'home';
+        name = 'Home';
+        icon = 'home';
+      } else if (arr[1] === 'routes') {
+        key = `${arr[0]}/routes`;
+        type = 'routes';
+        name = _.capitalize(arr[0]);
+        icon = 'share-alt';
+      } else if (arr[0] === 'element') {
+        key = arr[1];
+        const ele = state.elementById[key];
+        if (!ele) {
+          newState = state; // Should only happens when after refreshing the page when project data is not fetched.
+          break;
+        }
+        type = 'element';
+        name = ele.name;
+        icon = {
+          component: 'appstore-o',
+          action: 'notification',
+          misc: 'file',
+        }[ele.type] || 'file';
+      } else {
+        // No tabs for other pages like '/blank'
+        newState = state;
+        break;
+      }
 
-        const foundTab = _.find(openTabs, { file });
-        if (!foundTab) {
-          // If not find the tab, open it.
-          const item = {
-            ..._.pick(ele, ['file', 'name', 'type', 'feature']),
-            tab: tabType,
-          };
-          openTabs = [...openTabs, item];
-          historyTabs = [item.file, ...historyTabs];
-          return {
-            ...state,
-            openTabs,
-            historyTabs,
-          };
-        } else {
-          // Tab already open
-          if (foundTab.tab !== tabType) {
+      const foundTab = _.find(openTabs, { key });
+      if (!foundTab) {
+        const tabItem = { key, type, name, icon };
+        if (type === 'element') {
+          tabItem.subTab = arr[2] || '';
+        }
+        openTabs = [...openTabs, tabItem];
+        historyTabs = [key, ...historyTabs];
+      } else {
+        // Tab has been open, move it to top of history
+        historyTabs = [key, ..._.without(historyTabs, key)];
+
+        if (type === 'element') {
+          const subTab = arr[2] || '';
+          // Check sub tab change for element page
+          if (foundTab.subTab !== subTab) {
             // Tab type is changed.
-            const index = _.findIndex(openTabs, { file });
+            const index = _.findIndex(openTabs, { key });
             openTabs = update(openTabs, {
-              [index]: { tab: { $set: tabType } }
+              [index]: { subTab: { $set: subTab } }
             });
           }
-
-          // Move the tab to top in history
-          if (historyTabs[0] !== file) {
-            historyTabs = [file, ..._.without(historyTabs, file)];
-          }
-
-          return {
-            ...state,
-            openTabs,
-            historyTabs,
-          };
         }
       }
-      return state;
+      newState = { ...state, openTabs, historyTabs };
+      break;
     }
     default:
       newState = state;

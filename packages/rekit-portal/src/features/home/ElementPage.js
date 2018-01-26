@@ -188,7 +188,6 @@ export class ElementPage extends Component {
     const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-element-page">
-        <ElementTabs match={this.props.match} />
         {data.isPic &&
         <div className="pic-wrapper">
           <img src={`/${codeFile}`} alt={codeFile} />

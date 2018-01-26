@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import enUS from 'antd/lib/locale-provider/en_US';
 import { LocaleProvider, message, Modal, Spin } from 'antd';
+import { ErrorBoundary } from '../common';
 import { SidePanel } from './';
 import DialogPlace from '../rekit-cmds/DialogPlace';
 import { fetchProjectData } from './redux/actions';
@@ -61,7 +62,9 @@ export class App extends Component {
         <div className="home-app">
           <SidePanel />
           <div id="page-container" className="page-container">
+            <ErrorBoundary>
             {this.props.children}
+            </ErrorBoundary>
           </div>
           <DialogPlace />
         </div>

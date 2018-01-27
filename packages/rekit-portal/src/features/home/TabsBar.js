@@ -45,13 +45,16 @@ export class TabsBar extends Component {
   }
 
   isCurrentTab(tab) {
+    const { pathname } = document.location;
     switch (tab.type) {
       case 'home':
-        return document.location.pathname === '/';
+        return pathname === '/';
       case 'element':
         return tab.key === this.getCurrentFile();
       case 'routes':
-        return document.location.pathname.indexOf(`/${tab.key}`) === 0;
+        return pathname.indexOf(`/${tab.key}`) === 0;
+      case 'tests':
+        return _.startsWith(pathname, '/tools/tests');
       default:
         return false;
     }
@@ -69,6 +72,9 @@ export class TabsBar extends Component {
         break;
       case 'routes':
         path = `/${tab.key}/${tab.subTab || ''}`;
+        break;
+      case 'tests':
+        path = tab.pathname;
         break;
       default:
         console.error('unknown tab type: ', tab);

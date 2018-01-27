@@ -63,6 +63,11 @@ export default function reducer(state = initialState, action) {
           action: 'notification',
           misc: 'file',
         }[ele.type] || 'file';
+      } else if (arr[0] === 'tools' && arr[1] === 'tests') {
+        key = '#tests';
+        name = 'Test';
+        type = 'tests';
+        icon = 'check-circle-o';
       } else {
         // No tabs for other pages like '/blank'
         newState = state;
@@ -74,6 +79,9 @@ export default function reducer(state = initialState, action) {
         const tabItem = { key, type, name, icon };
         if (type === 'element') {
           tabItem.subTab = arr[2] || '';
+        }
+        if (type === 'tests') {
+          tabItem.pathname = pathname;
         }
         openTabs = [...openTabs, tabItem];
         historyTabs = [key, ...historyTabs];
@@ -91,6 +99,13 @@ export default function reducer(state = initialState, action) {
               [index]: { subTab: { $set: subTab } }
             });
           }
+        }
+
+        if (type === 'tests' && foundTab.pathname !== pathname) {
+          const index = _.findIndex(openTabs, { key });
+          openTabs = update(openTabs, {
+            [index]: { pathname: { $set: pathname } }
+          });
         }
       }
       newState = { ...state, openTabs, historyTabs };

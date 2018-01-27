@@ -66,22 +66,14 @@ export class RunTestPage extends Component {
     const testFile = this.props.match.params.testFile;
     return (
       <div className="rekit-tools-run-test-page">
-        <h2><label>Run tests: </label>tests/{getTestFilePattern(testFile ? decodeURIComponent(testFile) : '')}</h2>
-        <Row>
-          <Col span="16">
-            <Button type="primary" disabled={runTestRunning} onClick={this.handleTestButtonClick}>
-              {runTestRunning ? 'Running tests...' : 'Run tests'}
-            </Button>
-          </Col>
-          <Col span="8" style={{ textAlign: 'right' }}>
-            {!this.props.match.params.testFile && this.props.home.testCoverage &&
-              <Button type="ghost" disabled={runTestRunning || runTestPending} onClick={this.handleTestCoverageClick}>
-                <Icon type="pie-chart" />Test coverage
-              </Button>}
-          </Col>
-        </Row>
-        <hr />
-        {!runTestRunning && !output.length && <div style={{ marginTop: 20 }}>Click run tests button to start the tests.</div>}
+        <h2>
+          <Button type="primary" size="small" disabled={runTestRunning} onClick={this.handleTestButtonClick}>
+            {runTestRunning ? 'Running tests...' : 'Run tests'}
+          </Button>
+          &nbsp; &nbsp; tests/{getTestFilePattern(testFile ? decodeURIComponent(testFile) : '')}
+        </h2>
+
+        {!runTestRunning && !output.length && <div style={{ marginTop: 20, color: '#ccc', marginLeft: 20 }}>Click run tests button to start the tests.</div>}
         {output.length > 0 &&
           <div className="output-container">
             <ul>

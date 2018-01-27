@@ -1,25 +1,29 @@
 @import '../../styles/mixins.less';
 
 .rekit-tools-run-test-page {
+  height: 100%;
+  overflow: auto;
+  background-color: #333;
   h2 {
-    margin-bottom: 20px;
-    font-size: 18px;
+    padding: 6px 15px;
+    margin: 0;
+    background-color: #444;
+    color: #ddd;
+    font-size: 14px;
     font-weight: normal;
     label {
       font-weight: bold;
-      font-size: 18px;
+      font-size: 14px;
     }
   }
-  hr {
-    height: 0px;
-    border: none;
-    margin-top: 15px;
-    border-top: 1px solid #ddd;
+  .run-tests-bar {
+    padding: 5px 10px;
+    background-color: #333;
   }
-
   .output-container {
-    margin-top: 15px;
-    padding: 10px;
+    margin-top: 0px;
+    padding: 20px;
+    height: ~"calc(100% - 36px)";
     background-color: #333;
     color: #fff;
     overflow: auto;

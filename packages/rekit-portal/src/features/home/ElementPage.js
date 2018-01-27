@@ -203,7 +203,7 @@ export class ElementPage extends Component {
           {data.hasTest && <TabPane tab={`Test${tabKey === 'test' ? codeChangeMark : ''}`} key="test" />}
         </Tabs>}
         {tabKey !== 'diagram' && data.hasCode && <CodeEditor file={codeFile} onStateChange={this.handleCodeChange} onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null} />}
-        {!data.hasCode && !data.isPic && <Alert type="info" showIcon message={`".${ext}" is not supported to be displayed.`} />}
+        {!data.hasCode && !data.isPic && <Alert type="error" showIcon message={`The file with extension ".${ext}" will not be displayed because it is either binary, very large or uses an unsupported text encoding.`} />}
       </div>
     );
   }

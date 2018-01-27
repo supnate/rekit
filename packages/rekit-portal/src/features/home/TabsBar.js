@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Icon } from 'antd';
+import { Dropdown, Icon, Menu } from 'antd';
 import classnames from 'classnames';
 import history from '../../common/history';
 import { closeTab } from './redux/actions';
@@ -97,9 +97,9 @@ export class TabsBar extends Component {
   }
 
   handleClose = (evt, tab) => {
-    evt.stopPropagation();
+    if (evt && evt.stopPropagation) evt.stopPropagation();
     this.props.actions.closeTab(tab.key);
-    const { openTabs, historyTabs, cssExt } = this.props.home;
+    const { historyTabs, cssExt } = this.props.home;
     const ele = this.getElementData(tab.key);
     if (ele) {
       const codeFile = ele.file;
@@ -120,20 +120,46 @@ export class TabsBar extends Component {
     }
   }
 
+  handleMenuClick = (tab, menuKey) => {
+    const { openTabs } = this.props.home;
+    switch (menuKey) {
+      case 'close-others':
+        openTabs.filter(t => t.key !== tab.key).forEach(t => this.handleClose({}, t));
+        break;
+      case 'close-right':
+        openTabs.slice(_.findIndex(openTabs, { key: tab.key }) + 1).forEach(t => this.handleClose({}, t));
+        break;
+      case 'close-self':
+        this.handleClose({}, tab);
+        break;
+      default:
+        break;
+    }
+  }
+
   render() {
     const { openTabs } = this.props.home;
+    const getMenu = tab => (
+      <Menu onClick={args => this.handleMenuClick(tab, args.key)}>
+        <Menu.Item key="close-others">Close others</Menu.Item>
+        <Menu.Item key="close-right">Close to the right</Menu.Item>
+        <Menu.Item key="close-self">Close</Menu.Item>
+      </Menu>
+    );
     return (
       <div className="home-tabs-bar">
         {openTabs.map(tab => (
-          <span
-            key={tab.key}
-            onClick={() => this.openTab(tab.key)}
-            className={classnames('tab', { 'tab-active': this.isCurrentTab(tab) })}
-          >
-            <Icon type={tab.icon || 'file'} />
-            <label title={this.getTabTooltip(tab)}>{tab.name}</label>
-            <Icon type="close" onClick={(evt) => this.handleClose(evt, tab)} />
-          </span>
+          <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
+            <span
+              key={tab.key}
+              onClick={() => this.openTab(tab.key)}
+              className={classnames('tab', { 'tab-active': this.isCurrentTab(tab) })}
+            >
+              <Icon type={tab.icon || 'file'} />
+              <label title={this.getTabTooltip(tab)}>{tab.name}</label>
+              <Icon type="close" onClick={(evt) => this.handleClose(evt, tab)} />
+            </span>
+          </Dropdown>
         ))}       
       </div>
     );

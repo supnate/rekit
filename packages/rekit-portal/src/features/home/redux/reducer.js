@@ -68,6 +68,11 @@ export default function reducer(state = initialState, action) {
         name = 'Test';
         type = 'tests';
         icon = 'check-circle-o';
+      } else if (arr[0] === 'tools' && arr[1] === 'coverage') {
+        key = '#coverage';
+        name = 'Test Coverage';
+        type = 'coverage';
+        icon = 'pie-chart';
       } else {
         // No tabs for other pages like '/blank'
         newState = state;
@@ -76,12 +81,9 @@ export default function reducer(state = initialState, action) {
 
       const foundTab = _.find(openTabs, { key });
       if (!foundTab) {
-        const tabItem = { key, type, name, icon };
+        const tabItem = { key, type, name, icon, pathname };
         if (type === 'element') {
           tabItem.subTab = arr[2] || '';
-        }
-        if (type === 'tests') {
-          tabItem.pathname = pathname;
         }
         openTabs = [...openTabs, tabItem];
         historyTabs = [key, ...historyTabs];

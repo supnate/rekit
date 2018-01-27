@@ -55,12 +55,14 @@ export class TabsBar extends Component {
         return pathname.indexOf(`/${tab.key}`) === 0;
       case 'tests':
         return _.startsWith(pathname, '/tools/tests');
+      case 'coverage':
+        return _.startsWith(pathname, '/tools/coverage');
       default:
         return false;
     }
   }
 
-  handleTabClick = (key) => {
+  openTab = (key) => {
     const tab = _.find(this.props.home.openTabs, { key });
     let path;
     switch (tab.type) {
@@ -74,6 +76,7 @@ export class TabsBar extends Component {
         path = `/${tab.key}/${tab.subTab || ''}`;
         break;
       case 'tests':
+      case 'coverage':
         path = tab.pathname;
         break;
       default:
@@ -81,7 +84,6 @@ export class TabsBar extends Component {
         break;
     }
     if (document.location.pathname !== path) {
-      // this.props.actions.openTab(tab.file, tab.tab);
       history.push(path);
     }
   }
@@ -106,19 +108,7 @@ export class TabsBar extends Component {
     } else if (this.isCurrentTab(tab)) {
       // Close the current one
       const nextKey = historyTabs[1]; // at this point the props has not been updated.
-      const nextTab = _.find(openTabs, { key: nextKey });
-      let path = '';
-      switch (nextTab.type) {
-        case 'home':
-          path = '/';
-          break;
-        case 'element':
-          path = `/element/${encodeURIComponent(nextTab.key)}/${nextTab.subTab}`;
-          break;
-        default:
-          break;
-      }
-      history.push(path);
+      this.openTab(nextKey);
     }
   }
 
@@ -129,7 +119,7 @@ export class TabsBar extends Component {
         {openTabs.map(tab => (
           <span
             key={tab.key}
-            onClick={() => this.handleTabClick(tab.key)}
+            onClick={() => this.openTab(tab.key)}
             className={classnames('tab', { 'tab-active': this.isCurrentTab(tab) })}
           >
             <Icon type={tab.icon || 'file'} />

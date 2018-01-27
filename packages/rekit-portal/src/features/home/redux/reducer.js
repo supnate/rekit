@@ -73,6 +73,11 @@ export default function reducer(state = initialState, action) {
         name = 'Test Coverage';
         type = 'coverage';
         icon = 'pie-chart';
+      } else if (arr[0] === 'tools' && arr[1] === 'build') {
+        key = '#build';
+        name = 'Build';
+        type = 'build';
+        icon = 'play-circle-o';
       } else {
         // No tabs for other pages like '/blank'
         newState = state;

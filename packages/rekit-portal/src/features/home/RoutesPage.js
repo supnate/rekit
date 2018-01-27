@@ -68,7 +68,7 @@ export class RoutesPage extends Component {
             <p>This is a rough overview of routing config defined in a feature. </p>
             <p>If a route rule isIndex === true and also has a path property then there will be two rules.</p>
             <p>To edit the rules, please modify the config <Link to={`/${fid}/routes/code`}>code</Link> directly.</p>
-            <p>NOTE: if route path has parameters, you need to alter the link address with correct values after click the route link. </p>
+            <p>NOTE: if route path has parameters, you need to modify the link address with correct values after click the route link. </p>
             {routes.length === 0
               ? <Alert type="info" message="No routing rules defined." showIcon />
               :

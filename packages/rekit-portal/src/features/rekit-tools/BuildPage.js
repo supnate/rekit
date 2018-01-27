@@ -18,8 +18,7 @@ export class BuildPage extends Component {
     actions: PropTypes.object.isRequired,
   };
 
-  @autobind
-  handleBuildButtonClick() {
+  handleBuildButtonClick = () => {
     this.props.actions.runBuild().catch((e) => {
       console.error('Failed to run build: ', e);
       if (process.env.REKIT_ENV === 'demo') {
@@ -45,23 +44,20 @@ export class BuildPage extends Component {
 
     return (
       <div className="rekit-tools-build-page">
-        <Row>
-          <Col span="23">
-            <Button type="primary" disabled={runBuildRunning || runBuildPending} onClick={this.handleBuildButtonClick}>
-              {runBuildRunning ? 'Building...' : 'Run build'}
-            </Button>
-            <div className="build-result-link">
-              The build result is running at:&nbsp;
-              <a href={`http://localhost:${this.props.home.rekit.buildPort}`} target="_blank">
-                http://localhost:{this.props.home.rekit.buildPort}
-              </a>
-            </div>
-          </Col>
-          <Col span="1" style={{ textAlign: 'right' }} />
-        </Row>
-        <hr />
+        <div className="toolbar">
+          <Button type="primary" size="small" disabled={runBuildRunning || runBuildPending} onClick={this.handleBuildButtonClick}>
+            {runBuildRunning ? 'Building...' : 'Run build'}
+          </Button>
+          <div className="build-result-link">
+            The build result is running at:&nbsp;
+            <a href={`http://localhost:${this.props.home.rekit.buildPort}`} target="_blank">
+              http://localhost:{this.props.home.rekit.buildPort}
+            </a>
+          </div>
+        </div>
+
         { (runBuildRunning || percent === 100) && <Progress percent={percent} />}
-        {!runBuildRunning && !output.length && <div style={{ marginTop: 20 }}>Click run build button to start the build.</div>}
+        {!runBuildRunning && !output.length && <div style={{ marginTop: 20, color: '#ccc', marginLeft: 20 }}>Click run build button to start the build.</div>}
         {output.length > 0 &&
           <div className="output-container">
             <ul>

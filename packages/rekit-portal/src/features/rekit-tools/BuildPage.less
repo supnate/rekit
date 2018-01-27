@@ -1,26 +1,36 @@
 @import '../../styles/mixins.less';
 
 .rekit-tools-build-page {
-  .build-result-link {
-    margin-top: 10px;
-    color: #999;
+  height: 100%;
+  overflow: auto;
+  background-color: #333;
+  .toolbar {
+    background-color: #222;
+    padding: 6px 15px;
   }
-  hr {
-    height: 0px;
-    border: none;
-    margin-top: 15px;
-    border-top: 1px solid #ddd;
+  .build-result-link {
+    margin-left: 15px;
+    display: inline-block;
+    color: #ddd;
   }
 
   .ant-progress {
-    margin-top: 15px;
+    margin: 0 15px 0 15px;
+    width: ~"calc(100% - 40px)";
+    .ant-progress-inner {
+      background-color: #666;
+    }
+    .ant-progress-text {
+      color: #ccc;
+    }
   }
 
   .output-container {
-    margin-top: 15px;
-    padding: 10px;
+    margin-top: 0;
+    padding: 5px 20px 20px;
+    height: ~"calc(100% - 56px)";
     background-color: #333;
-    color: #fff;
+    color: #ccc;
     overflow: auto;
 
     font-family: 'Andale Mono', Arial;

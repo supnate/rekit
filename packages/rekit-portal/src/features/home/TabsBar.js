@@ -57,6 +57,8 @@ export class TabsBar extends Component {
         return _.startsWith(pathname, '/tools/tests');
       case 'coverage':
         return _.startsWith(pathname, '/tools/coverage');
+      case 'build':
+        return _.startsWith(pathname, '/tools/build');
       default:
         return false;
     }
@@ -77,6 +79,7 @@ export class TabsBar extends Component {
         break;
       case 'tests':
       case 'coverage':
+      case 'build':
         path = tab.pathname;
         break;
       default:

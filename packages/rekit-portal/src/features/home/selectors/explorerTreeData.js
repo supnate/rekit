@@ -68,7 +68,6 @@ function getActionsTreeData(feature) {
 }
 
 function getChildData(child) {
-  console.log('child file: ', child.file);
   if (_.endsWith(child.file, '/redux/initialState.js')) return null;
   return {
     key: child.file,
@@ -81,7 +80,7 @@ function getChildData(child) {
 }
 
 function getMiscTreeData(feature) {
-  const misc = feature.misc; // .filter(item => console.log(item.file) || item.file !== `src/features/${feature.key}/redux/initialState.js`);
+  const misc = feature.misc;
   return {
     key: `${feature.key}-misc`,
     className: 'misc',

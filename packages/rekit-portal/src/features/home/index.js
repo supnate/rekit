@@ -12,4 +12,4 @@ export { default as RekitSteps } from './RekitSteps';
 export { default as CodeEditor } from './CodeEditor';
 export { default as ElementTabs } from './ElementTabs';
 export { default as TabsBar } from './TabsBar';
-export { default as BlankPage } from './BlankPage';
+export { default as WelcomePage } from './WelcomePage';

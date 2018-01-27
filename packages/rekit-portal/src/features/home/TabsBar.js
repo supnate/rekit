@@ -112,7 +112,7 @@ export class TabsBar extends Component {
     }
 
     if (historyTabs.length === 1) {
-      history.push('/blank');
+      history.push('/welcome');
     } else if (this.isCurrentTab(tab)) {
       // Close the current one
       const nextKey = historyTabs[1]; // at this point the props has not been updated.

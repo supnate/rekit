@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { BlankPage } from 'src/features/home';
+import { WelcomePage } from 'src/features/home';
 
-describe('home/BlankPage', () => {
+describe('home/WelcomePage', () => {
   it('renders node with correct class name', () => {
     const renderedComponent = shallow(
-      <BlankPage />
+      <WelcomePage />
     );
 
     expect(
-      renderedComponent.find('.home-blank-page').getElement()
+      renderedComponent.find('.home-welcome-page').getElement()
     ).to.exist;
   });
 });

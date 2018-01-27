@@ -6,9 +6,9 @@ export default class ErrorBoundary extends Component {
     this.state = { hasError: false };
   }
 
-  // componentWillReceiveProps() {
-  //   this.setState({ hasError: false });
-  // }
+  componentWillReceiveProps() {
+    this.setState({ hasError: false });
+  }
 
   componentDidCatch(error, info) {
     // Display fallback UI

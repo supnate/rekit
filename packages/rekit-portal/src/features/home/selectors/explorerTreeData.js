@@ -50,30 +50,38 @@ function getActionsTreeData(feature) {
     label: 'Actions',
     icon: 'notification',
     count: actions.length,
-    children: actions.map(action => ({
+    children: [{
+      key: `src/features/${feature.key}/redux/initialState.js`,
+      className: 'action initial-state',
+      label: 'initialState',
+      icon: 'star',
+      searchable: true,
+    }, ...actions.map(action => ({
       key: action.file,
       className: 'action',
       label: action.name,
       icon: 'notification',
       searchable: true,
       marks: getMarks(feature, action),
-    })),
+    }))],
   };
 }
 
 function getChildData(child) {
+  console.log('child file: ', child.file);
+  if (_.endsWith(child.file, '/redux/initialState.js')) return null;
   return {
     key: child.file,
     className: child.children ? 'misc-folder' : 'misc-file',
     label: child.name,
     icon: child.children ? 'folder' : 'file',
     searchable: !child.children,
-    children: child.children ? child.children.map(getChildData) : null,
+    children: child.children ? _.compact(child.children.map(getChildData)) : null,
   };
 }
 
 function getMiscTreeData(feature) {
-  const misc = feature.misc;
+  const misc = feature.misc; // .filter(item => console.log(item.file) || item.file !== `src/features/${feature.key}/redux/initialState.js`);
   return {
     key: `${feature.key}-misc`,
     className: 'misc',

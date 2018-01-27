@@ -42,7 +42,7 @@ export default function reducer(state = initialState, action) {
       if (arr.length === 0) {
         key = '#home';
         type = 'home';
-        name = 'Home';
+        name = 'Dashboard';
         icon = 'home';
       } else if (arr[1] === 'routes') {
         key = `${arr[0]}/routes`;

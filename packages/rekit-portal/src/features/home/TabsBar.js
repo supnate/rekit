@@ -44,6 +44,11 @@ export class TabsBar extends Component {
     };
   }
 
+  getTabTooltip(tab) {
+    if (tab.type === 'element') return `${tab.feature}/${tab.name}`;
+    return tab.name;
+  }
+
   isCurrentTab(tab) {
     const { pathname } = document.location;
     switch (tab.type) {
@@ -126,7 +131,7 @@ export class TabsBar extends Component {
             className={classnames('tab', { 'tab-active': this.isCurrentTab(tab) })}
           >
             <Icon type={tab.icon || 'file'} />
-            <label title={`${tab.feature}/${tab.name}`}>{tab.name}</label>
+            <label title={this.getTabTooltip(tab)}>{tab.name}</label>
             <Icon type="close" onClick={(evt) => this.handleClose(evt, tab)} />
           </span>
         ))}       

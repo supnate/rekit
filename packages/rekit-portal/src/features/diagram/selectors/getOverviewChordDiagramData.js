@@ -129,17 +129,22 @@ export const getOverviewChordDiagramData = createSelector(
       const allElements = [...f.components, ...f.actions, ...flattenMiscFiles(f.misc).filter(ele => /\.js$/.test(ele.file))];
 
       allElements.forEach((ele) => {
-        if (!ele.deps) return;
-        if (/^src\/features\/[^/]+\/index\.js$/.test(ele.file)) {
+        // if (!ele.deps) return;
+        if (/^src\/features\/[^/]+\/(index|route)\.js$/.test(ele.file)) {
           return;
         }
-        const allDeps = [
+
+        if (/^src\/features\/[^/]+\/redux\/(reducer|constants|initialState|actions)\.js$/.test(ele.file)) {
+          return;
+        }
+
+        const allDeps = ele.deps ? [
           ...ele.deps.actions,
           ...ele.deps.components,
           ...ele.deps.misc,
-        ].filter(e => selectedFeatures.includes(e.feature)); // the dependencies should also in selected features
+        ].filter(e => selectedFeatures.includes(e.feature)) : []; // the dependencies should also in selected features
 
-        if (!allDeps.length) return;
+        // if (!allDeps.length) return;
 
         connectedFiles[ele.file] = ele;
         allDeps.forEach((dep) => {

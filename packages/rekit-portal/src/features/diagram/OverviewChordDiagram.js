@@ -112,7 +112,7 @@ export class OverviewChordDiagram extends PureComponent {
   }
 
   state = {
-    sameFeatureDepsVisible: false,
+    sameFeatureDepsVisible: true,
     selectedFeatures: [],
     highlightedGroup: null,
   };

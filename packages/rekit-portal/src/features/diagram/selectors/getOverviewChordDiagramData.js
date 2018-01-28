@@ -130,7 +130,7 @@ export const getOverviewChordDiagramData = createSelector(
 
       allElements.forEach((ele) => {
         // if (!ele.deps) return;
-        if (/^src\/features\/[^/]+\/(index|route)\.js$/.test(ele.file)) {
+        if (/^src\/features\/[^/]+\/index\.js$/.test(ele.file)) {
           return;
         }
 

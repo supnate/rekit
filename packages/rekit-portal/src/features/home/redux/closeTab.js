@@ -18,10 +18,13 @@ export function reducer(state, action) {
       const index1 = _.findIndex(state.openTabs, toClose);
       const index2 = _.indexOf(state.historyTabs, toClose.key);
 
-      return update(state, {
+      const newState = update(state, {
         openTabs: { $splice: [[index1, 1]] },
         historyTabs: { $splice: [[index2, 1]] },
       });
+      sessionStorage.setItem('openTabs', JSON.stringify(newState.openTabs));
+      sessionStorage.setItem('historyTabs', JSON.stringify(newState.historyTabs));
+      return newState;
     }
 
     default:

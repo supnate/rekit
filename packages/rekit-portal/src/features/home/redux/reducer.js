@@ -34,9 +34,7 @@ export default function reducer(state = initialState, action) {
       // Open tab or switch tab type while url changes.
       const { pathname } = action.payload;
       const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
-      // const { elementById } = state;
       let { openTabs, historyTabs } = state;
-      // let tabItem = null;
       let key, type, name, icon; // eslint-disable-line
 
       if (arr.length === 0) {
@@ -116,6 +114,8 @@ export default function reducer(state = initialState, action) {
         }
       }
       newState = { ...state, openTabs, historyTabs };
+      sessionStorage.setItem('openTabs', JSON.stringify(openTabs));
+      sessionStorage.setItem('historyTabs', JSON.stringify(historyTabs));
       break;
     }
     default:

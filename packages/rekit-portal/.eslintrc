@@ -6,6 +6,7 @@
     "Prism": true,
     "window": true,
     "monaco": true,
+    "localStorage": true,
     "d3": true
   },
   "settings": {

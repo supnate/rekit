@@ -12,12 +12,10 @@ const initialState = {
   fetchFileContentPending: false,
   fetchFileContentError: null,
 
-  openTabs: [],
-  historyTabs: [],
-  // editingFile: {
-  //   file: null, // File path
-  //   originalContent: null, // Content before save
-  // },
+  // Resotre open tabs and history tabs from local storage
+  openTabs: JSON.parse(sessionStorage.getItem('openTabs') || '[]'),
+  historyTabs: JSON.parse(sessionStorage.getItem('historyTabs') || '[]'),
+
   demoAlertVisible: false,
   saveFilePending: false,
   saveFileError: null,

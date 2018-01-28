@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
-import { Button, Icon, message, Modal } from 'antd';
+import { Button, Icon, message, Modal, Spin } from 'antd';
 import MonacoEditor from 'react-monaco-editor';
 import { fetchFileContent, saveFile } from './redux/actions';
 import editorStateMap from './editorStateMap';
@@ -39,14 +39,19 @@ export class CodeEditor extends Component {
     currentContent: '',
     editorWidth: 1,
     editorHeight: 1,
+    loading: false,
   };
 
   async componentWillMount() {
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize);
+    this.setState({
+      loading: true,
+    });
     await this.checkAndFetchFileContent(this.props);
     this.setState({ // eslint-disable-line
       currentContent: this.getFileContent(),
+      loading: false,
     });
     this.props.onStateChange({ hasChange: false });
   }
@@ -54,13 +59,23 @@ export class CodeEditor extends Component {
   async componentWillReceiveProps(nextProps) {
     const { props } = this;
     if (props.file !== nextProps.file) {
+      // When file is changed, prevent saving before its state is restored.
       this.preventSaveEditorState = true;
     }
     if (props.file !== nextProps.file || nextProps.home.fileContentNeedReload[nextProps.file]) {
       // File changed or file content changed, the check and reload.
       const oldContent = this.getFileContent();
       const hasChange = this.hasChange();
+      if (props.file !== nextProps.file) {
+        this.setState({
+          loading: true,
+          currentContent: '',
+        });
+      }
       await this.checkAndFetchFileContent(nextProps);
+      this.setState({
+        loading: false,
+      });
       const newContent = this.getFileContent();
       if (hasChange && oldContent !== newContent && newContent !== this.state.currentContent) {
         Modal.confirm({
@@ -112,7 +127,7 @@ export class CodeEditor extends Component {
 
   hasChange() {
     // Whether the editor content is different from which in store.
-    return this.state.currentContent !== this.getFileContent();
+    return this.state.currentContent != this.getFileContent();
   }
 
   checkAndFetchFileContent(props) {
@@ -236,13 +251,17 @@ export class CodeEditor extends Component {
             <Button type="primary" onClick={this.handleRunTest} size="small">
               <Icon type="play-circle-o" /> Run test
             </Button>}
-            {hasChange &&
+            {hasChange && !this.state.loading &&
             <Button type="primary" size="small" loading={saveFilePending} disabled={saveFilePending} onClick={this.handleSave}>
               {saveFilePending ? 'Saving...' : 'Save'}
             </Button>}
-            {hasChange && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>Cancel</Button>}
+            {hasChange && !this.state.loading && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>Cancel</Button>}
           </div>
         </div>
+        {this.state.loading &&
+        <div className="loading-container">
+          <Spin size="large" />
+        </div>}
         <MonacoEditor
           key={`${this.state.editorWidth}-${this.state.editorHeight}`}
           width={this.state.editorWidth}

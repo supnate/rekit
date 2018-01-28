@@ -2,6 +2,22 @@
 
 .home-code-editor {
   overflow: hidden; // To get rid of overflowingContentWidgets height from monaco editor
+  position: relative;
+  .loading-container {
+    position: absolute;
+    z-index: 999;
+    top: 32px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    .ant-spin {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
   .code-editor-toolbar {
     background-color: #444;
 

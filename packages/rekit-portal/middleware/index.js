@@ -44,7 +44,7 @@ module.exports = function() { // eslint-disable-line
 
   // Watchpack.prototype.watch(string[] files, string[] directories, [number startTime])
   // Watch src files change only
-  wp.watch([], [path.join(rekitCore.utils.getProjectRoot(), 'src')], Date.now() - 10);
+  wp.watch([], [path.join(rekitCore.utils.getProjectRoot(), 'src'), path.join(rekitCore.utils.getProjectRoot(), 'coverage')], Date.now() - 10);
   // starts watching these files and directories
   // calling this again will override the files and directories
 

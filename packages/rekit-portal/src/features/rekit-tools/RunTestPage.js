@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { autobind } from 'core-decorators';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Col, Icon, Modal, Row } from 'antd';
@@ -21,15 +20,15 @@ export class RunTestPage extends Component {
     match: PropTypes.object.isRequired,
   };
 
-  // componentDidMount() {
-  //   this.checkAndRunTests(this.props);
-  // }
+  componentDidMount() {
+    // this.checkAndRunTests(this.props);
+  }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.match.params.testFile !== this.props.match.params.testFile) {
-  //     this.checkAndRunTests(nextProps);
-  //   }
-  // }
+//   componentWillReceiveProps(nextProps) {
+//     if (nextProps.match.params.testFile !== this.props.match.params.testFile) {
+//       this.checkAndRunTests(nextProps);
+//     }
+//   }
 
   // checkAndRunTests(props) {
   //   const rekitTools = this.props.rekitTools;
@@ -38,8 +37,7 @@ export class RunTestPage extends Component {
   //   }
   // }
 
-  @autobind
-  handleRunTestError(e) {
+  handleRunTestError = (e) => {
     if (process.env.REKIT_ENV === 'demo' && _.get(e, 'response.status') === 403) {
       this.props.actions.showDemoAlert();
     } else {
@@ -50,13 +48,13 @@ export class RunTestPage extends Component {
     }
   }
 
-  @autobind
-  handleTestButtonClick() {
+
+  handleTestButtonClick = () => {
     const testFile = this.props.match.params.testFile;
     this.props.actions.runTest(testFile ? decodeURIComponent(testFile) : '').catch(this.handleRunTestError);
   }
-  @autobind
-  handleTestCoverageClick() {
+
+  handleTestCoverageClick = () => {
     history.push('/tools/coverage');
   }
 

@@ -4,13 +4,9 @@ import { expect } from 'chai';
 import { ErrorBoundary } from 'src/features/common';
 
 describe('common/ErrorBoundary', () => {
-  it('renders node with correct class name', () => {
+  it('renders without error', () => {
     const renderedComponent = shallow(
       <ErrorBoundary />
     );
-
-    expect(
-      renderedComponent.find('.common-error-boundary').getElement()
-    ).to.exist;
   });
 });

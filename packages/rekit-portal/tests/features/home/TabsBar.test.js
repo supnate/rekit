@@ -6,7 +6,7 @@ import { TabsBar } from 'src/features/home/TabsBar';
 describe('home/TabsBar', () => {
   it('renders node with correct class name', () => {
     const props = {
-      home: {},
+      home: { openTabs: [], historyTabs: [] },
       actions: {},
     };
     const renderedComponent = shallow(

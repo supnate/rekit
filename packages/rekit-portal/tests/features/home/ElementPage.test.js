@@ -20,7 +20,9 @@ describe('home/ElementPage', () => {
           },
         },
       },
+      router: { location: {} },
       actions: {},
+      dispatch() {},
       match: {
         params: {
           type: 'code',

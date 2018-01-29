@@ -6,3 +6,5 @@ const JSDOM = require('jsdom').JSDOM;
 global.window = new JSDOM('<!DOCTYPE html><div id="react-root"></div>').window;
 global.document = window.document;
 global.navigator = window.navigator;
+global.d3 = {};
+global.sessionStorage = { getItem() {}, setItem() {} };

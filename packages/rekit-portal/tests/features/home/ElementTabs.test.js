@@ -6,8 +6,9 @@ import { ElementTabs } from 'src/features/home/ElementTabs';
 describe('home/ElementTabs', () => {
   it('renders node with correct class name', () => {
     const props = {
-      home: {},
+      home: { openTabs: [], historyTabs: [] },
       actions: {},
+      router: { location: { pathname: 'pathname' } },
     };
     const renderedComponent = shallow(
       <ElementTabs {...props} />

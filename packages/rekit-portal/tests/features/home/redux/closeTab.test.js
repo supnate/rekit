@@ -15,10 +15,13 @@ describe('home/redux/closeTab', () => {
   });
 
   it('handles action type HOME_CLOSE_TAB correctly', () => {
-    const prevState = {};
+    const prevState = {
+      openTabs: [],
+      historyTabs: [],
+    };
     const state = reducer(
       prevState,
-      { type: HOME_CLOSE_TAB }
+      { type: HOME_CLOSE_TAB, data: { key: 'key' } }
     );
     expect(state).to.not.equal(prevState); // should be immutable
     expect(state).to.deep.equal(prevState); // TODO: replace this line with real case.

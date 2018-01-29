@@ -4,11 +4,19 @@
   margin-left: @side-panel-width;
   height: 44px;
   line-height: 44px;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   color: #aaa;
   background-color: #333;
   white-space: nowrap;
   border-left: 1px solid #000;
+  &::-webkit-scrollbar {
+    height: 3px;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
   span.tab {
     position: relative;
     display: inline-block;

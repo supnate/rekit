@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 function noop() {}
+let editorInstance = null; // Only one global monaco editor.
+const getEditorNode = () => editorInstance.getDomNode().parentNode;
 
 export default class MonacoEditor extends Component {
   static propTypes = {
@@ -26,8 +28,14 @@ export default class MonacoEditor extends Component {
     onChange: noop,
   };
 
+  constructor(props) {
+    super(props);
+    this.monacoListeners = [];
+  }
+
   componentDidMount() {
     this.afterViewInit();
+    window.addEventListener('resize', this.handleWindowResize);
   }
 
   componentDidUpdate(prevProps) {
@@ -44,25 +52,25 @@ export default class MonacoEditor extends Component {
     if (prevProps.language !== this.props.language) {
       monaco.editor.setModelLanguage(this.editor.getModel(), this.props.language);
     }
-    if (prevProps.theme !== this.props.theme) {
-      monaco.editor.setTheme(this.props.theme);
-    }
   }
 
   componentWillUnmount() {
+    // editorInstance.onDidChangeModelContent();
+    this.containerElement.removeChild(getEditorNode());
+    this.editor = null;
+    this.monacoListeners.forEach(lis => lis.dispose());
     window.removeEventListener('resize', this.handleWindowResize);
-    this.destroyMonaco();
   }
 
   editorWillMount(monaco) {
-    window.addEventListener('resize', this.handleWindowResize);
     const { editorWillMount } = this.props;
     editorWillMount(monaco);
   }
 
-  editorDidMount(editor, monaco) {
+  editorDidMount(editor, monaco) {window.editor = editor;
     this.props.editorDidMount(editor, monaco);
-    editor.onDidChangeModelContent((event) => {
+    this.handleWindowResize();
+    this.monacoListeners.push(editor.onDidChangeModelContent((event) => {
       const value = editor.getValue();
 
       // Always refer to the latest value
@@ -72,7 +80,7 @@ export default class MonacoEditor extends Component {
       if (!this.__prevent_trigger_change_event) {
         this.props.onChange(value, event);
       }
-    });
+    }));
   }
 
   afterViewInit() {
@@ -128,23 +136,23 @@ export default class MonacoEditor extends Component {
   initMonaco() {
     const { theme, options, language, value } = this.props;
     // const context = this.props.context || window;
-    if (this.containerElement && typeof window.monaco !== 'undefined') {
-      // Before initializing monaco editor
-      this.editorWillMount(monaco);
-      this.editor = monaco.editor.create(this.containerElement, {
+    // Before initializing monaco editor
+    this.editorWillMount(monaco);
+    if (!editorInstance) {
+      const domNode = document.createElement('div');
+      domNode.className = 'monaco-editor-node';
+      this.containerElement.appendChild(domNode);
+      editorInstance = monaco.editor.create(domNode, {
         language,
         value,
         ...options,
       });
       monaco.editor.setTheme(theme);
-      this.editorDidMount(this.editor, monaco);
+    } else {
+      this.containerElement.appendChild(getEditorNode());
     }
-  }
-
-  destroyMonaco() {
-    if (typeof this.editor !== 'undefined') {
-      this.editor.dispose();
-    }
+    this.editor = editorInstance;
+    this.editorDidMount(this.editor, monaco);
   }
 
   assignRef = (component) => {
@@ -152,6 +160,9 @@ export default class MonacoEditor extends Component {
   }
 
   handleWindowResize = () => {
+    // const { style } = getEditorNode();
+    // style.width = `${this.containerElement.offsetWidth}px`;
+    // style.height = `${this.containerElement.offsetHeight}px`;
     this.editor.layout();
   }
 

@@ -36,19 +36,17 @@ export class CodeEditor extends Component {
     // before recover the state. So when file is changed set this flag to true. After recover
     // the status, set it to false so that state could be saved.
     this.preventSaveEditorState = true;
+
+    this.monacoListeners = [];
   }
 
   state = {
     notFound: false,
     currentContent: '',
-    editorWidth: 1,
-    editorHeight: 1,
     loading: false,
   };
 
   async componentWillMount() {
-    this.handleWindowResize();
-    window.addEventListener('resize', this.handleWindowResize);
     this.setState({
       loading: true,
     });
@@ -96,9 +94,7 @@ export class CodeEditor extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowResize);
-    this.editor.onDidChangeCursorPosition(null);
-    this.editor.onDidScrollChange(null);
+    this.monacoListeners.forEach(lis => lis.dispose());
   }
 
   getFileContent() {
@@ -153,15 +149,6 @@ export class CodeEditor extends Component {
     }
   }
 
-  handleWindowResize = () => {
-    // Todo: bounce resize event to improve performance when resizing.
-    let editorHeight = document.body.offsetHeight - 112;
-    let editorWidth = document.body.offsetWidth - 302;
-    if (editorHeight < 100) editorHeight = 100;
-    if (editorWidth < 300) editorWidth = 300;
-    this.setState({ editorWidth, editorHeight });
-  }
-
   handleEditorChange = (newValue) => {
     this.setState({
       currentContent: newValue,
@@ -169,16 +156,20 @@ export class CodeEditor extends Component {
     this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
   }
 
-  handleEditorDidMount = (editor) => {window.editor = editor;console.log('editor did mount');
+  handleEditorDidMount = (editor) => {
     this.editor = editor;
     editor.focus();
+
+    // This seems to be able to add multiple times.
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
       if (this.hasChange()) this.handleSave();
     });
-    editor.onDidChangeCursorPosition(this.handleEditorCursorScrollerChange);
-    editor.onDidScrollChange(this.handleEditorCursorScrollerChange);
+    this.monacoListeners.push(
+      editor.onDidChangeCursorPosition(this.handleEditorCursorScrollerChange),
+      editor.onDidScrollChange(this.handleEditorCursorScrollerChange)
+    );
 
-    // It needs some time for editor to load its content
+    // // It needs some time for editor to load its content
     setTimeout(this.recoverEditorState, 30);
   }
 
@@ -267,10 +258,7 @@ export class CodeEditor extends Component {
           <Spin size="large" />
         </div>}
         <MonacoEditor
-          width={this.state.editorWidth}
-          height={this.state.editorHeight}
           language={lang}
-          theme="vs-dark"
           value={this.state.currentContent}
           options={options}
           onChange={this.handleEditorChange}

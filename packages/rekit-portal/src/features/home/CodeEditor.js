@@ -5,13 +5,17 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
 import { Button, Icon, message, Modal, Spin } from 'antd';
-import MonacoEditor from 'react-monaco-editor';
+import { MonacoEditor } from '../common';
 import { fetchFileContent, saveFile } from './redux/actions';
 import editorStateMap from './editorStateMap';
 
 export class CodeEditor extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
+    // home: PropTypes.object.isRequired,
+    fileContentById: PropTypes.object.isRequired,
+    fileContentNeedReload: PropTypes.object.isRequired,
+    fetchFileContentPending: PropTypes.bool.isRequired, // eslint-disable-line
+    saveFilePending: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     file: PropTypes.string.isRequired,
     onError: PropTypes.func,
@@ -62,7 +66,7 @@ export class CodeEditor extends Component {
       // When file is changed, prevent saving before its state is restored.
       this.preventSaveEditorState = true;
     }
-    if (props.file !== nextProps.file || nextProps.home.fileContentNeedReload[nextProps.file]) {
+    if (props.file !== nextProps.file || nextProps.fileContentNeedReload[nextProps.file]) {
       // File changed or file content changed, the check and reload.
       const oldContent = this.getFileContent();
       const hasChange = this.hasChange();
@@ -98,7 +102,7 @@ export class CodeEditor extends Component {
   }
 
   getFileContent() {
-    return this.props.home.fileContentById[this.props.file];
+    return this.props.fileContentById[this.props.file];
   }
 
   reloadContent = () => {
@@ -127,13 +131,12 @@ export class CodeEditor extends Component {
 
   hasChange() {
     // Whether the editor content is different from which in store.
-    return this.state.currentContent != this.getFileContent();
+    return this.state.currentContent !== this.getFileContent();
   }
 
   checkAndFetchFileContent(props) {
     // Check if content exists or need reload, if yes then fetch it.
-    const { home, file } = props;
-    const { fileContentById, fileContentNeedReload, fetchFileContentPending } = home;
+    const { fileContentById, fileContentNeedReload, fetchFileContentPending, file } = props;
     if ((!_.has(fileContentById, file) || fileContentNeedReload[file]) && !fetchFileContentPending) {
       return this.props.actions.fetchFileContent(props.file).then(() => {
         this.setState({ notFound: false });
@@ -166,7 +169,7 @@ export class CodeEditor extends Component {
     this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
   }
 
-  handleEditorDidMount = (editor) => {
+  handleEditorDidMount = (editor) => {window.editor = editor;console.log('editor did mount');
     this.editor = editor;
     editor.focus();
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
@@ -239,8 +242,9 @@ export class CodeEditor extends Component {
       js: 'javascript',
       md: 'markdown',
     }[ext] || ext;
+    console.log('lang', lang);
     const hasChange = this.hasChange();
-    const { saveFilePending } = this.props.home;
+    const { saveFilePending } = this.props;
     return (
       <div className="home-code-editor">
         <Prompt when={hasChange} message="The change is not saved, are you sure to leave? Unsaved change will be discarded." />
@@ -263,7 +267,6 @@ export class CodeEditor extends Component {
           <Spin size="large" />
         </div>}
         <MonacoEditor
-          key={`${this.state.editorWidth}-${this.state.editorHeight}`}
           width={this.state.editorWidth}
           height={this.state.editorHeight}
           language={lang}
@@ -281,7 +284,11 @@ export class CodeEditor extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    home: state.home,
+    // home: state.home,
+    fileContentById: state.home.fileContentById,
+    fileContentNeedReload: state.home.fileContentNeedReload,
+    fetchFileContentPending: state.home.fetchFileContentPending,
+    saveFilePending: state.home.saveFilePending,
   };
 }
 

@@ -1,6 +1,7 @@
 @import '../../styles/mixins';
 
 .home-code-editor {
+  height: ~"calc(100% - 36px)";
   overflow: hidden; // To get rid of overflowingContentWidgets height from monaco editor
   position: relative;
   .loading-container {
@@ -34,5 +35,8 @@
         transform: translateY(-1px);
       }
     }
+  }
+  .common-monaco-editor {
+    height: ~"calc(100% - 31px)";
   }
 }

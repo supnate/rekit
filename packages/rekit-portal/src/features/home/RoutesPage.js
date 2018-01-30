@@ -64,7 +64,7 @@ export class RoutesPage extends Component {
     return (
       <div className="home-routes-page">
         <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
-          <TabPane tab="Rules" key="rules" className="rules-view">
+          <TabPane tab="Rules" key="rules" className="rules-view" style={{ overflow: 'auto' }}>
             <p>This is a rough overview of routing config defined in a feature. </p>
             <p>If a route rule isIndex === true and also has a path property then there will be two rules.</p>
             <p>To edit the rules, please modify the config <Link to={`/${fid}/routes/code`}>code</Link> directly.</p>
@@ -89,7 +89,7 @@ export class RoutesPage extends Component {
                 </tbody>
               </table>}
           </TabPane>
-          <TabPane tab={`Code${codeChangeMark}`} key="code">
+          <TabPane tab={`Code${codeChangeMark}`} key="code" style={{ height: '100%' }}>
             <CodeEditor file={codeFile} onStateChange={this.handleCodeChange} />
           </TabPane>
         </Tabs>

@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu } from 'antd';
 import classnames from 'classnames';
+import scrollIntoView from 'dom-scroll-into-view';
 import history from '../../common/history';
 import { closeTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
@@ -96,6 +97,27 @@ export class TabsBar extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.delayScroll) clearTimeout(this.delayScroll);
+    this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
+  }
+
+  scrollActiveTabIntoView = () => {
+    delete this.delayScroll;
+    if (!this.rootNode) return;
+    scrollIntoView(
+      this.rootNode.querySelector('.tab-active'),
+      this.rootNode,
+      {
+        allowHorizontalScroll: true,
+        onlyScrollIfNeeded: true,
+        offsetRight: 100,
+        offsetLeft: 100,
+      }
+    );
+    this.rootNode.scrollTop = 0;  // Prevent vertical offset when switching tabs.
+  }
+
   handleClose = (evt, tab) => {
     if (evt && evt.stopPropagation) evt.stopPropagation();
     this.props.actions.closeTab(tab.key);
@@ -137,6 +159,10 @@ export class TabsBar extends Component {
     }
   }
 
+  assignRef = (node) => {
+    this.rootNode = node;
+  }
+
   render() {
     const { openTabs } = this.props.home;
     const getMenu = tab => (
@@ -147,7 +173,7 @@ export class TabsBar extends Component {
       </Menu>
     );
     return (
-      <div className="home-tabs-bar">
+      <div className="home-tabs-bar" ref={this.assignRef}>
         {openTabs.map(tab => (
           <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
             <span

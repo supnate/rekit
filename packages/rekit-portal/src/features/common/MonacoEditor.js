@@ -67,7 +67,7 @@ export default class MonacoEditor extends Component {
     editorWillMount(monaco);
   }
 
-  editorDidMount(editor, monaco) {window.editor = editor;
+  editorDidMount(editor, monaco) {
     this.props.editorDidMount(editor, monaco);
     this.handleWindowResize();
     this.monacoListeners.push(editor.onDidChangeModelContent((event) => {

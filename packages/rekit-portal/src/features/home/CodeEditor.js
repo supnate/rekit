@@ -114,15 +114,9 @@ export class CodeEditor extends Component {
     if (!this.editor) return;
     const { file } = this.props;
     this.preventSaveEditorState = false;
-    const editorState = editorStateMap[file] || {
-      scrollLeft: 0,
-      scrollTop: 0,
-      position: new monaco.Position(0, 0),
-    };
+    const editorState = editorStateMap[file] || null;
+    this.editor.restoreViewState(editorState);
     this.editor.focus();
-    this.editor.setScrollLeft(editorState.scrollLeft);
-    this.editor.setScrollTop(editorState.scrollTop);
-    this.editor.setPosition(editorState.position);
   }
 
   hasChange() {
@@ -177,11 +171,7 @@ export class CodeEditor extends Component {
     if (this.preventSaveEditorState) return;
     const { file } = this.props;
 
-    editorStateMap[file] = {
-      scrollLeft: this.editor.getScrollLeft(),
-      scrollTop: this.editor.getScrollTop(),
-      position: this.editor.getPosition(),
-    };
+    editorStateMap[file] = this.editor.saveViewState();
   }
 
   handleRunTest = () => {
@@ -233,7 +223,6 @@ export class CodeEditor extends Component {
       js: 'javascript',
       md: 'markdown',
     }[ext] || ext;
-    console.log('lang', lang);
     const hasChange = this.hasChange();
     const { saveFilePending } = this.props;
     return (

@@ -35,7 +35,7 @@ export default function reducer(state = initialState, action) {
       const { pathname } = action.payload;
       const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
       let { openTabs, historyTabs } = state;
-      let key, type, name, icon; // eslint-disable-line
+      let key, type, name, icon, feature; // eslint-disable-line
 
       if (arr.length === 0) {
         key = '#home';
@@ -56,6 +56,7 @@ export default function reducer(state = initialState, action) {
         }
         type = 'element';
         name = ele.name;
+        feature = ele.feature;
         icon = {
           component: 'appstore-o',
           action: 'notification',
@@ -63,7 +64,7 @@ export default function reducer(state = initialState, action) {
         }[ele.type] || 'file';
       } else if (arr[0] === 'tools' && arr[1] === 'tests') {
         key = '#tests';
-        name = 'Test';
+        name = 'Run Tests';
         type = 'tests';
         icon = 'check-circle-o';
       } else if (arr[0] === 'tools' && arr[1] === 'coverage') {
@@ -87,6 +88,7 @@ export default function reducer(state = initialState, action) {
         const tabItem = { key, type, name, icon, pathname };
         if (type === 'element') {
           tabItem.subTab = arr[2] || '';
+          tabItem.feature = feature;
         }
         openTabs = [...openTabs, tabItem];
         historyTabs = [key, ...historyTabs];

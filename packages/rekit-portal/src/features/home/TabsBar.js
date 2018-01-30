@@ -46,7 +46,7 @@ export class TabsBar extends Component {
   }
 
   getTabTooltip(tab) {
-    if (tab.type === 'element') return `${tab.feature}/${tab.name}`;
+    if (!_.startsWith(tab.key, '#')) return tab.key;
     return tab.name;
   }
 

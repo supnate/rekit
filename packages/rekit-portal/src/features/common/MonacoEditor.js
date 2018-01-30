@@ -147,10 +147,11 @@ export default class MonacoEditor extends Component {
         value,
         ...options,
       });
-      monaco.editor.setTheme(theme);
     } else {
+      monaco.editor.setModelLanguage(editorInstance.getModel(), language);
       this.containerElement.appendChild(getEditorNode());
     }
+    monaco.editor.setTheme(theme);
     this.editor = editorInstance;
     this.editorDidMount(this.editor, monaco);
   }

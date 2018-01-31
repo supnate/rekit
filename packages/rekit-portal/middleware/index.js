@@ -116,6 +116,7 @@ module.exports = function() { // eslint-disable-line
             break;
           }
           case '/api/save-file': {
+            if (args.readonly) { reply403(res); break; }
             const absPath = utils.joinPath(prjRoot, req.body.file);
             if (!_.startsWith(absPath, prjRoot)) {
               // prevent ../.. in req.query.file

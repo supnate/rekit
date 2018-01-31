@@ -243,14 +243,14 @@ export class CodeEditor extends Component {
             <Button type="primary" onClick={this.handleRunTest} size="small">
               <Icon type="play-circle-o" /> Run test
             </Button>}
-            {hasChange && !this.state.loading &&
+            {hasChange && !this.state.loadingFile &&
             <Button type="primary" size="small" loading={saveFilePending} disabled={saveFilePending} onClick={this.handleSave}>
               {saveFilePending ? 'Saving...' : 'Save'}
             </Button>}
-            {hasChange && !this.state.loading && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>Cancel</Button>}
+            {hasChange && !this.state.loadingFile && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>Cancel</Button>}
           </div>
         </div>
-        {(this.state.loading || this.state.loadingEditor) &&
+        {(this.state.loadingFile || this.state.loadingEditor) &&
         <div className="loading-container">
           <Spin size="large" />
         </div>}

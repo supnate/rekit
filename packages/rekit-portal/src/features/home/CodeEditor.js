@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
 import { Button, Icon, message, Modal, Spin } from 'antd';
 import { MonacoEditor } from '../common';
-import { fetchFileContent, saveFile } from './redux/actions';
+import { fetchFileContent, saveFile, showDemoAlert } from './redux/actions';
 import editorStateMap from './editorStateMap';
 
 export class CodeEditor extends Component {
@@ -186,6 +186,10 @@ export class CodeEditor extends Component {
     this.props.actions.saveFile(this.props.file, this.state.currentContent)
       .then(() => this.props.onStateChange({ hasChange: false }))
       .catch(() => {
+        if (process.env.REKIT_ENV === 'demo') {
+          this.props.actions.showDemoAlert();
+          return;
+        }
         Modal.error({
           title: 'Failed to save.',
           content: 'Please retry or use other text editor.',
@@ -276,7 +280,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent, saveFile }, dispatch)
+    actions: bindActionCreators({ fetchFileContent, saveFile, showDemoAlert }, dispatch)
   };
 }
 

@@ -43,17 +43,18 @@ export class CodeEditor extends Component {
   state = {
     notFound: false,
     currentContent: '',
-    loading: false,
+    loadingFile: false,
+    loadingEditor: true,
   };
 
   async componentWillMount() {
     this.setState({
-      loading: true,
+      loadingFile: true,
     });
     await this.checkAndFetchFileContent(this.props);
     this.setState({ // eslint-disable-line
       currentContent: this.getFileContent(),
-      loading: false,
+      loadingFile: false,
     });
     this.props.onStateChange({ hasChange: false });
   }
@@ -70,13 +71,13 @@ export class CodeEditor extends Component {
       const hasChange = this.hasChange();
       if (props.file !== nextProps.file) {
         this.setState({
-          loading: true,
+          loadingFile: true,
           currentContent: '',
         });
       }
       await this.checkAndFetchFileContent(nextProps);
       this.setState({
-        loading: false,
+        loadingFile: false,
       });
       const newContent = this.getFileContent();
       if (hasChange && oldContent !== newContent && newContent !== this.state.currentContent) {
@@ -151,6 +152,9 @@ export class CodeEditor extends Component {
   }
 
   handleEditorDidMount = (editor) => {
+    this.setState({
+      loadingEditor: false,
+    });
     this.editor = editor;
     editor.focus();
 
@@ -242,7 +246,7 @@ export class CodeEditor extends Component {
             {hasChange && !this.state.loading && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>Cancel</Button>}
           </div>
         </div>
-        {this.state.loading &&
+        {(this.state.loading || this.state.loadingEditor) &&
         <div className="loading-container">
           <Spin size="large" />
         </div>}

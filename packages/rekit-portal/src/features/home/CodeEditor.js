@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
 import { Button, Icon, message, Modal, Spin } from 'antd';
-import { MonacoEditor } from '../common';
+import { MonacoEditor, UnloadComponent } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert } from './redux/actions';
 import editorStateMap from './editorStateMap';
 
@@ -236,6 +236,7 @@ export class CodeEditor extends Component {
     return (
       <div className="home-code-editor">
         <Prompt when={hasChange} message="The change is not saved, are you sure to leave? Unsaved change will be discarded." />
+        {hasChange && <UnloadComponent />}
         <div className="code-editor-toolbar" style={{ width: `${this.state.editorWidth}px` }}>
           <div className="file-path">{this.props.file}</div>
           <div style={{ float: 'right' }}>

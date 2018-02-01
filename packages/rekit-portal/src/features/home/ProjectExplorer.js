@@ -164,15 +164,16 @@ export class ProjectExplorer extends Component {
         // const prjRoot = this.props.home.projectRoot;
         // const ele = this.props.home.elementById[key];
         // const file = key.replace(`${prjRoot}/src/features/${ele.feature}/`, '');
-        const tabItem = _.find(this.props.home.openTabs, { file: key });
+        const tabItem = _.find(this.props.home.openTabs, { key });
         // let tab = '';
         // if (/element\/[^/]+\/(code|diagram|style|test)$/.test(document.location.pathname)) {
         //   // remember the current tab
         //   tab = `/${RegExp.$1}`;
         // }
-        const tab = tabItem ? tabItem.tab : 'code';
 
-        history.push(`/element/${encodeURIComponent(key)}/${tab}`);
+        const subTab = tabItem ? tabItem.subTab : 'code';
+
+        history.push(`/element/${encodeURIComponent(key)}/${subTab}`);
         // history.push(`/element/?file=${key}`);
         // history.push(`/element/${ele.feature || '_src_'}/${encodeURIComponent(file)}${tab}`);
       }

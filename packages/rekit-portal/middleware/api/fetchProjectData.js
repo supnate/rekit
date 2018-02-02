@@ -9,7 +9,12 @@ const utils = rekitCore.utils;
 
 function mapRelPathForDepsByArr(arr) {
   arr.forEach((item) => {
-    if (item.file) item.file = utils.getRelativePath(item.file);
+    // Check if it has test
+    if (item.file) {
+      item.file = utils.getRelativePath(item.file);
+      const testFile = item.file.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js');
+      item.hasTest = /^src\//.test(item.file) && /\.js$/.test(item.file) && fs.existsSync(testFile);
+    }
     if (item.children) mapRelPathForDepsByArr(item.children);
     if (item.deps) {
       mapRelPathForDepsByArr([].concat(

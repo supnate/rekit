@@ -63,18 +63,20 @@ export class CodeEditor extends Component {
     const { props } = this;
     if (props.file !== nextProps.file) {
       // When file is changed, prevent saving before its state is restored.
+      this.props.onStateChange({ hasChange: false });
       this.preventSaveEditorState = true;
-    }
-    if (props.file !== nextProps.file || nextProps.fileContentNeedReload[nextProps.file]) {
-      // File changed or file content changed, the check and reload.
+      this.setState({
+        loadingFile: true,
+        currentContent: '',
+      });
+      await this.checkAndFetchFileContent(nextProps);
+      this.setState({
+        loadingFile: false,
+      });
+      this.reloadContent();
+    } else if (nextProps.fileContentNeedReload[nextProps.file]) {
       const oldContent = this.getFileContent();
-      const hasChange = this.hasChange();
-      if (props.file !== nextProps.file) {
-        this.setState({
-          loadingFile: true,
-          currentContent: '',
-        });
-      }
+      const hasChange = this.hasChange(); // has changed
       await this.checkAndFetchFileContent(nextProps);
       this.setState({
         loadingFile: false,

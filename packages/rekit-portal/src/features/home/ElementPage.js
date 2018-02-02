@@ -71,7 +71,7 @@ export class ElementPage extends Component {
     return {
       ...ele,
       hasDiagram: /^(js|jsx)$/.test(ext),
-      hasTest: ele.feature && /^(js|jsx)$/.test(ext),
+      hasTest: ele.hasTest,
       hasCode: /^(js|jsx|html|css|less|scss|txt|json|sass|md|log|pl|py|sh|cmd)$/.test(ext),
       isPic: /^(jpe?g|png|gif|bmp)$/.test(ext),
     };

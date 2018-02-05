@@ -7,6 +7,7 @@ const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const Watchpack = require('watchpack');
+const prettier = require('prettier');
 const rekitCore = require('rekit-core');
 const fetchProjectData = require('./api/fetchProjectData');
 const getFileContent = require('./api/getFileContent');
@@ -115,6 +116,22 @@ module.exports = function() { // eslint-disable-line
             res.end();
             break;
           }
+          case '/api/format-code': {
+            const content = req.body.content;
+            const ext = req.body.ext;
+            const options = {
+              singleQuote: true,
+              trailingComma: 'es5',
+            };
+            if (ext === 'less' || ext === 'scss') options.parser = ext;
+            try {
+              res.write(JSON.stringify({ content: prettier.format(content, options) }));
+            } catch (err) {
+              res.write(JSON.stringify({ content, error: err }));
+            }
+            res.end();
+            break;
+          }
           case '/api/save-file': {
             if (args.readonly) { reply403(res); break; }
             const absPath = utils.joinPath(prjRoot, req.body.file);
@@ -133,9 +150,9 @@ module.exports = function() { // eslint-disable-line
             } else {
               try {
                 saveFile(absPath, req.body.content);
-                res.write({ success: true });
+                res.write(JSON.stringify({ success: true }));
               } catch (err) {
-                res.write({ error: err });
+                res.write(JSON.stringify({ error: err }));
               }
               res.end();
             }

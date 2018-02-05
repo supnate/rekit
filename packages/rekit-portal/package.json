@@ -89,6 +89,7 @@
     "body-parser": "^1.17.1",
     "dom-scroll-into-view": "^1.2.1",
     "history": "^4.6.1",
+    "prettier": "^1.10.2",
     "socket.io": "^2.0.1",
     "watchpack": "^1.3.1"
   },
@@ -147,7 +148,6 @@
     "nock": "^9.1.6",
     "npm-run": "^4.1.2",
     "nyc": "^11.4.1",
-    "prettier": "^1.10.2",
     "prop-types": "^15.5.10",
     "react": "^16.2.0",
     "react-addons-test-utils": "^15.5.1",

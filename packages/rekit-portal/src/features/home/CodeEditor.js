@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
+import axios from 'axios';
 import { Button, Icon, message, Modal, Spin } from 'antd';
 import { MonacoEditor, UnloadComponent } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert } from './redux/actions';
@@ -102,6 +103,26 @@ export class CodeEditor extends Component {
 
   getFileContent() {
     return this.props.fileContentById[this.props.file];
+  }
+
+  formatCode = () => {
+    this.setState({ loadingFile: true });
+    const ext = this.props.file.split('.').pop();    
+    axios.post('/rekit/api/format-code', {
+      content: this.state.currentContent,
+      ext,
+    }).then((res) => {
+      console.log('new code', res);
+      this.editor.executeEdits('format', [{ range: new monaco.Range(1, 1, 100000, 1), text: res.data.content, forceMoveMarkers: true }]);
+      this.setState({
+        loadingFile: false,
+        currentContent: res.data.content,
+      }, () => this.props.onStateChange({ hasChange: this.hasChange() }));
+    }).catch(() => {
+      this.setState({
+        loadingFile: false,
+      });
+    });
   }
 
   reloadContent = () => {
@@ -242,15 +263,16 @@ export class CodeEditor extends Component {
         <div className="code-editor-toolbar" style={{ width: `${this.state.editorWidth}px` }}>
           <div className="file-path">{this.props.file}</div>
           <div style={{ float: 'right' }}>
+            <Button onClick={this.formatCode} size="small"><Icon type="menu-fold" /> Format</Button>
             {this.props.onRunTest &&
             <Button type="primary" onClick={this.handleRunTest} size="small">
-              <Icon type="play-circle-o" /> Run test
+              <Icon type="play-circle-o" /> Run tests
             </Button>}
             {hasChange && !this.state.loadingFile &&
             <Button type="primary" size="small" loading={saveFilePending} disabled={saveFilePending} onClick={this.handleSave}>
-              {saveFilePending ? 'Saving...' : 'Save'}
+              <Icon type="save" /> {saveFilePending ? 'Saving...' : 'Save'}
             </Button>}
-            {hasChange && !this.state.loadingFile && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>Cancel</Button>}
+            {hasChange && !this.state.loadingFile && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}><Icon type="close-circle" />Cancel</Button>}
           </div>
         </div>
         {(this.state.loadingFile || this.state.loadingEditor) &&

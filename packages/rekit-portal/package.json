@@ -1,6 +1,6 @@
 {
   "name": "rekit-portal",
-  "version": "2.1.10",
+  "version": "2.1.11",
   "description": "Web app created with Rekit for managing a Rekit project.",
   "keywords": [
     "rekit",
@@ -89,7 +89,7 @@
     "body-parser": "^1.17.1",
     "dom-scroll-into-view": "^1.2.1",
     "history": "^4.6.1",
-    "prettier": "^1.10.2",
+    "prettier": "1.10.2",
     "socket.io": "^2.0.1",
     "watchpack": "^1.3.1"
   },

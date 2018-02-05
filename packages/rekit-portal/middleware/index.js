@@ -122,6 +122,7 @@ module.exports = function() { // eslint-disable-line
             const options = {
               singleQuote: true,
               trailingComma: 'es5',
+              printWidth: 120,
             };
             if (ext === 'less' || ext === 'scss') options.parser = ext;
             try {

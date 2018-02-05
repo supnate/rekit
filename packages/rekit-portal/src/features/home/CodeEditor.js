@@ -46,6 +46,10 @@ export class CodeEditor extends Component {
     currentContent: '',
     loadingFile: false,
     loadingEditor: true,
+    cursorPos: {
+      lineNumber: 1,
+      column: 1,
+    },
   };
 
   async componentWillMount() {
@@ -112,7 +116,6 @@ export class CodeEditor extends Component {
       content: this.state.currentContent,
       ext,
     }).then((res) => {
-      console.log('new code', res);
       this.editor.executeEdits('format', [{ range: new monaco.Range(1, 1, 100000, 1), text: res.data.content, forceMoveMarkers: true }]);
       this.setState({
         loadingFile: false,
@@ -186,6 +189,7 @@ export class CodeEditor extends Component {
       if (this.hasChange()) this.handleSave();
     });
     this.monacoListeners.push(
+      editor.onDidChangeCursorPosition(() => this.setState({ cursorPos: editor.getPosition() })),
       editor.onDidChangeCursorPosition(this.handleEditorCursorScrollerChange),
       editor.onDidScrollChange(this.handleEditorCursorScrollerChange)
     );
@@ -263,6 +267,7 @@ export class CodeEditor extends Component {
         <div className="code-editor-toolbar" style={{ width: `${this.state.editorWidth}px` }}>
           <div className="file-path">{this.props.file}</div>
           <div style={{ float: 'right' }}>
+            {this.state.cursorPos.column && <span className="cursor-pos">Ln {this.state.cursorPos.lineNumber}, Col {this.state.cursorPos.column}</span>}
             <Button onClick={this.formatCode} size="small"><Icon type="menu-fold" /> Format</Button>
             {this.props.onRunTest &&
             <Button type="primary" onClick={this.handleRunTest} size="small">

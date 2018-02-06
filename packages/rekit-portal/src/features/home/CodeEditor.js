@@ -57,7 +57,8 @@ export class CodeEditor extends Component {
       loadingFile: true,
     });
     await this.checkAndFetchFileContent(this.props);
-    this.setState({ // eslint-disable-line
+    this.setState({
+      // eslint-disable-line
       currentContent: this.getFileContent(),
       loadingFile: false,
     });
@@ -111,22 +112,30 @@ export class CodeEditor extends Component {
 
   formatCode = () => {
     this.setState({ loadingFile: true });
-    const ext = this.props.file.split('.').pop();    
-    axios.post('/rekit/api/format-code', {
-      content: this.state.currentContent,
-      ext,
-    }).then((res) => {
-      this.editor.executeEdits('format', [{ range: new monaco.Range(1, 1, 100000, 1), text: res.data.content, forceMoveMarkers: true }]);
-      this.setState({
-        loadingFile: false,
-        currentContent: res.data.content,
-      }, () => this.props.onStateChange({ hasChange: this.hasChange() }));
-    }).catch(() => {
-      this.setState({
-        loadingFile: false,
+    const ext = this.props.file.split('.').pop();
+    axios
+      .post('/rekit/api/format-code', {
+        content: this.state.currentContent,
+        ext,
+      })
+      .then(res => {
+        this.editor.executeEdits('format', [
+          { range: new monaco.Range(1, 1, 100000, 1), text: res.data.content, forceMoveMarkers: true },
+        ]);
+        this.setState(
+          {
+            loadingFile: false,
+            currentContent: res.data.content,
+          },
+          () => this.props.onStateChange({ hasChange: this.hasChange() })
+        );
+      })
+      .catch(() => {
+        this.setState({
+          loadingFile: false,
+        });
       });
-    });
-  }
+  };
 
   reloadContent = () => {
     // Reload content from Redux store to internal state(editor).
@@ -135,7 +144,7 @@ export class CodeEditor extends Component {
     });
     this.props.onStateChange({ hasChange: false });
     this.recoverEditorState();
-  }
+  };
 
   recoverEditorState = () => {
     if (!this.editor) return;
@@ -144,7 +153,7 @@ export class CodeEditor extends Component {
     const editorState = editorStateMap[file] || null;
     this.editor.restoreViewState(editorState);
     this.editor.focus();
-  }
+  };
 
   hasChange() {
     // Whether the editor content is different from which in store.
@@ -155,29 +164,32 @@ export class CodeEditor extends Component {
     // Check if content exists or need reload, if yes then fetch it.
     const { fileContentById, fileContentNeedReload, fetchFileContentPending, file } = props;
     if ((!_.has(fileContentById, file) || fileContentNeedReload[file]) && !fetchFileContentPending) {
-      return this.props.actions.fetchFileContent(props.file).then(() => {
-        this.setState({ notFound: false });
-      }).catch((e) => {
-        message.error(`Failed to load file: ${e.toString()}`);
-        if (_.get(e, 'response.status') === 404) {
-          this.setState({ notFound: true });
-          this.props.onError(404);
-        }
-      });
+      return this.props.actions
+        .fetchFileContent(props.file)
+        .then(() => {
+          this.setState({ notFound: false });
+        })
+        .catch(e => {
+          message.error(`Failed to load file: ${e.toString()}`);
+          if (_.get(e, 'response.status') === 404) {
+            this.setState({ notFound: true });
+            this.props.onError(404);
+          }
+        });
     } else {
       this.setState({ notFound: false });
       return Promise.resolve();
     }
   }
 
-  handleEditorChange = (newValue) => {
+  handleEditorChange = newValue => {
     this.setState({
       currentContent: newValue,
     });
     this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
-  }
+  };
 
-  handleEditorDidMount = (editor) => {
+  handleEditorDidMount = editor => {
     this.setState({
       loadingEditor: false,
     });
@@ -185,8 +197,13 @@ export class CodeEditor extends Component {
     editor.focus();
 
     // This seems to be able to add multiple times.
-    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => {
+      // eslint-disable-line
       if (this.hasChange()) this.handleSave();
+    });
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_B], () => {
+      // eslint-disable-line
+      this.formatCode();
     });
     this.monacoListeners.push(
       editor.onDidChangeCursorPosition(() => this.setState({ cursorPos: editor.getPosition() })),
@@ -196,21 +213,22 @@ export class CodeEditor extends Component {
 
     // // It needs some time for editor to load its content
     setTimeout(this.recoverEditorState, 30);
-  }
+  };
 
   handleEditorCursorScrollerChange = () => {
     if (this.preventSaveEditorState) return;
     const { file } = this.props;
 
     editorStateMap[file] = this.editor.saveViewState();
-  }
+  };
 
   handleRunTest = () => {
     this.props.onRunTest();
-  }
+  };
 
   handleSave = () => {
-    this.props.actions.saveFile(this.props.file, this.state.currentContent)
+    this.props.actions
+      .saveFile(this.props.file, this.state.currentContent)
       .then(() => this.props.onStateChange({ hasChange: false }))
       .catch(() => {
         if (process.env.REKIT_ENV === 'demo') {
@@ -222,21 +240,21 @@ export class CodeEditor extends Component {
           content: 'Please retry or use other text editor.',
         });
       });
-  }
+  };
 
   handleCancel = () => {
     Modal.confirm({
-      title: 'Are you sure to cancel your changes?',
-      okText: 'Yes',
+      content: 'Are you sure to discard your changes?',
+      okText: 'Discard',
       cancelText: 'No',
       onOk: () => {
         this.setState({
           currentContent: this.getFileContent(),
         });
         this.props.onStateChange({ hasChange: false });
-      }
+      },
     });
-  }
+  };
 
   render() {
     if (this.state.notFound) {
@@ -254,36 +272,67 @@ export class CodeEditor extends Component {
       renderWhitespace: 'boundary',
     };
     const ext = this.props.file.split('.').pop();
-    const lang = {
-      js: 'javascript',
-      md: 'markdown',
-    }[ext] || ext;
+    const lang =
+      {
+        js: 'javascript',
+        md: 'markdown',
+      }[ext] || ext;
     const hasChange = this.hasChange();
     const { saveFilePending } = this.props;
     return (
       <div className="home-code-editor">
-        <Prompt when={hasChange} message="The change is not saved, are you sure to leave? Unsaved change will be discarded." />
+        <Prompt
+          when={hasChange}
+          message="The change is not saved, are you sure to leave? Unsaved change will be discarded."
+        />
         {hasChange && <UnloadComponent />}
         <div className="code-editor-toolbar" style={{ width: `${this.state.editorWidth}px` }}>
           <div className="file-path">{this.props.file}</div>
           <div style={{ float: 'right' }}>
-            {this.state.cursorPos.column && <span className="cursor-pos">Ln {this.state.cursorPos.lineNumber}, Col {this.state.cursorPos.column}</span>}
-            <Button onClick={this.formatCode} size="small"><Icon type="menu-fold" /> Format</Button>
-            {this.props.onRunTest &&
-            <Button type="primary" onClick={this.handleRunTest} size="small">
-              <Icon type="play-circle-o" /> Run tests
-            </Button>}
-            {hasChange && !this.state.loadingFile &&
-            <Button type="primary" size="small" loading={saveFilePending} disabled={saveFilePending} onClick={this.handleSave}>
-              <Icon type="save" /> {saveFilePending ? 'Saving...' : 'Save'}
-            </Button>}
-            {hasChange && !this.state.loadingFile && <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}><Icon type="close-circle" />Cancel</Button>}
+            {this.state.cursorPos.column && (
+              <span className="cursor-pos">
+                Ln {this.state.cursorPos.lineNumber}, Col {this.state.cursorPos.column}
+              </span>
+            )}
+            <Button onClick={this.formatCode} size="small" title="Beautify your code using prettier.">
+              <Icon type="menu-fold" /> Format&nbsp;<span style={{ fontSize: '12px', color: '#888' }}>
+                ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+B)
+              </span>
+            </Button>
+            {this.props.onRunTest && (
+              <Button type="primary" onClick={this.handleRunTest} size="small">
+                <Icon type="play-circle-o" /> Run tests
+              </Button>
+            )}
+            {hasChange &&
+              !this.state.loadingFile && (
+                <Button
+                  type="primary"
+                  size="small"
+                  loading={saveFilePending}
+                  disabled={saveFilePending}
+                  onClick={this.handleSave}
+                >
+                  <Icon type="save" /> {saveFilePending ? 'Saving...' : 'Save'}&nbsp;<span
+                    style={{ fontSize: '12px', color: '#888' }}
+                  >
+                    ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+S)
+                  </span>
+                </Button>
+              )}
+            {hasChange &&
+              !this.state.loadingFile && (
+                <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>
+                  <Icon type="close-circle" />Cancel
+                </Button>
+              )}
           </div>
         </div>
-        {(this.state.loadingFile || this.state.loadingEditor) &&
-        <div className="loading-container">
-          <Spin size="large" />
-        </div>}
+        {(this.state.loadingFile || this.state.loadingEditor) && (
+          <div className="loading-container">
+            <Spin size="large" />
+          </div>
+        )}
         <MonacoEditor
           language={lang}
           value={this.state.currentContent}
@@ -310,11 +359,8 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent, saveFile, showDemoAlert }, dispatch)
+    actions: bindActionCreators({ fetchFileContent, saveFile, showDemoAlert }, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CodeEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(CodeEditor);

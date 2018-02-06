@@ -1,7 +1,7 @@
 @import '../../styles/mixins';
 
 .home-code-editor {
-  height: ~"calc(100% - 36px)";
+  height: ~'calc(100% - 36px)';
   overflow: hidden; // To get rid of overflowingContentWidgets height from monaco editor
   position: relative;
   .loading-container {
@@ -21,17 +21,24 @@
   }
   .code-editor-toolbar {
     background-color: #444;
-
+    white-space: nowrap;
+    position: relative;
+    height: 32px;
+    text-align: right;
     .file-path {
       display: inline-block;
+      position: absolute;
+      left: 0px;
+      top: 0px;
       padding: 5px 15px;
       color: #aaa;
+      cursor: default;
     }
 
     .cursor-pos {
       color: #aaa;
       font-size: 12px;
-      margin-right:20px;
+      margin-right: 20px;
     }
 
     .ant-btn {
@@ -49,6 +56,10 @@
     }
   }
   .common-monaco-editor {
-    height: ~"calc(100% - 31px)";
+    height: ~'calc(100% - 31px)';
   }
+}
+
+.tooltip-no-arrow .ant-tooltip-arrow {
+  display: none;
 }

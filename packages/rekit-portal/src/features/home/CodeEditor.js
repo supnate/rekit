@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
 import axios from 'axios';
-import { Button, Icon, message, Modal, Spin } from 'antd';
+import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import { MonacoEditor, UnloadComponent } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert } from './redux/actions';
 import editorStateMap from './editorStateMap';
@@ -260,8 +260,10 @@ export class CodeEditor extends Component {
     if (this.state.notFound) {
       return (
         <div className="home-code-editor">
-          <div className="code-editor-toolbar" style={{ width: `${this.state.editorWidth}px` }}>
-            <div className="file-path">{this.props.file}</div>
+          <div className="code-editor-toolbar">
+            <div className="file-path" title={this.props.file}>
+              {this.props.file}
+            </div>
           </div>
           <div style={{ color: 'red', marginTop: '10px', marginLeft: '15px' }}>File not found.</div>
         </div>
@@ -286,45 +288,64 @@ export class CodeEditor extends Component {
           message="The change is not saved, are you sure to leave? Unsaved change will be discarded."
         />
         {hasChange && <UnloadComponent />}
-        <div className="code-editor-toolbar" style={{ width: `${this.state.editorWidth}px` }}>
+        <div className="code-editor-toolbar">
           <div className="file-path">{this.props.file}</div>
-          <div style={{ float: 'right' }}>
+          <div>
             {this.state.cursorPos.column && (
               <span className="cursor-pos">
                 Ln {this.state.cursorPos.lineNumber}, Col {this.state.cursorPos.column}
               </span>
             )}
-            <Button onClick={this.formatCode} size="small" title="Beautify your code using prettier.">
-              <Icon type="menu-fold" /> Format&nbsp;<span style={{ fontSize: '12px', color: '#888' }}>
-                ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+B)
-              </span>
-            </Button>
+            <Tooltip
+              overlayClassName="tooltip-no-arrow"
+              title={
+                <label>
+                  Beautify your code using prettier{' '}
+                  <span style={{ color: '#888', fontSize: '12px' }}>
+                    ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+B)
+                  </span>
+                </label>
+              }
+            >
+              <Button onClick={this.formatCode} size="small">
+                <Icon type="menu-fold" />
+              </Button>
+            </Tooltip>
             {this.props.onRunTest && (
               <Button type="primary" onClick={this.handleRunTest} size="small">
-                <Icon type="play-circle-o" /> Run tests
+                <Icon type="play-circle-o" /> Run test
               </Button>
             )}
             {hasChange &&
               !this.state.loadingFile && (
-                <Button
-                  type="primary"
-                  size="small"
-                  loading={saveFilePending}
-                  disabled={saveFilePending}
-                  onClick={this.handleSave}
+                <Tooltip
+                  title={
+                    <label>
+                      Save{' '}
+                      <span style={{ color: '#888', fontSize: '12px' }}>
+                        ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+S)
+                      </span>
+                    </label>
+                  }
                 >
-                  <Icon type="save" /> {saveFilePending ? 'Saving...' : 'Save'}&nbsp;<span
-                    style={{ fontSize: '12px', color: '#888' }}
+                  <Button
+                    type="primary"
+                    size="small"
+                    loading={saveFilePending}
+                    disabled={saveFilePending}
+                    onClick={this.handleSave}
                   >
-                    ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+S)
-                  </span>
-                </Button>
+                    <Icon type="save" />
+                  </Button>
+                </Tooltip>
               )}
             {hasChange &&
               !this.state.loadingFile && (
-                <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>
-                  <Icon type="close-circle" />Cancel
-                </Button>
+                <Tooltip title="Discard changes">
+                  <Button size="small" onClick={this.handleCancel} disabled={saveFilePending}>
+                    <Icon type="close-circle" />
+                  </Button>
+                </Tooltip>
               )}
           </div>
         </div>

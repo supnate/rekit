@@ -8,6 +8,7 @@ import { reducer as hideDemoAlertReducer } from './hideDemoAlert';
 import { reducer as saveFileReducer } from './saveFile';
 import { reducer as closeTabReducer } from './closeTab';
 import { reducer as moveTabReducer } from './moveTab';
+import { reducer as setSidePanelWidthReducer } from './setSidePanelWidth';
 
 const reducers = [
   fetchProjectData,
@@ -17,6 +18,7 @@ const reducers = [
   saveFileReducer,
   closeTabReducer,
   moveTabReducer,
+  setSidePanelWidthReducer,
 ];
 
 export default function reducer(state = initialState, action) {

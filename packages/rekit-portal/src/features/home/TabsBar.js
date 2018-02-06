@@ -70,7 +70,7 @@ export class TabsBar extends Component {
     }
   }
 
-  openTab = (key) => {
+  openTab = key => {
     const tab = _.find(this.props.home.openTabs, { key });
     let path;
     switch (tab.type) {
@@ -95,7 +95,7 @@ export class TabsBar extends Component {
     if (document.location.pathname !== path) {
       history.push(path);
     }
-  }
+  };
 
   componentDidUpdate(prevProps) {
     if (this.delayScroll) clearTimeout(this.delayScroll);
@@ -105,18 +105,14 @@ export class TabsBar extends Component {
   scrollActiveTabIntoView = () => {
     delete this.delayScroll;
     if (!this.rootNode) return;
-    scrollIntoView(
-      this.rootNode.querySelector('.tab-active'),
-      this.rootNode,
-      {
-        allowHorizontalScroll: true,
-        onlyScrollIfNeeded: true,
-        offsetRight: 100,
-        offsetLeft: 100,
-      }
-    );
-    this.rootNode.scrollTop = 0;  // Prevent vertical offset when switching tabs.
-  }
+    scrollIntoView(this.rootNode.querySelector('.tab-active'), this.rootNode, {
+      allowHorizontalScroll: true,
+      onlyScrollIfNeeded: true,
+      offsetRight: 100,
+      offsetLeft: 100,
+    });
+    this.rootNode.scrollTop = 0; // Prevent vertical offset when switching tabs.
+  };
 
   handleClose = (evt, tab) => {
     if (evt && evt.stopPropagation) evt.stopPropagation();
@@ -140,7 +136,7 @@ export class TabsBar extends Component {
       const nextKey = historyTabs[1]; // at this point the props has not been updated.
       this.openTab(nextKey);
     }
-  }
+  };
 
   handleMenuClick = (tab, menuKey) => {
     const { openTabs } = this.props.home;
@@ -157,14 +153,14 @@ export class TabsBar extends Component {
       default:
         break;
     }
-  }
+  };
 
-  assignRef = (node) => {
+  assignRef = node => {
     this.rootNode = node;
-  }
+  };
 
   render() {
-    const { openTabs } = this.props.home;
+    const { openTabs, sidePanelWidth } = this.props.home;
     const getMenu = tab => (
       <Menu onClick={args => this.handleMenuClick(tab, args.key)}>
         <Menu.Item key="close-others">Close others</Menu.Item>
@@ -173,7 +169,7 @@ export class TabsBar extends Component {
       </Menu>
     );
     return (
-      <div className="home-tabs-bar" ref={this.assignRef}>
+      <div className="home-tabs-bar" ref={this.assignRef} style={{ marginLeft: `${sidePanelWidth}px` }}>
         {openTabs.map(tab => (
           <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
             <span
@@ -183,10 +179,10 @@ export class TabsBar extends Component {
             >
               <Icon type={tab.icon || 'file'} />
               <label title={this.getTabTooltip(tab)}>{tab.name}</label>
-              <Icon type="close" onClick={(evt) => this.handleClose(evt, tab)} />
+              <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
             </span>
           </Dropdown>
-        ))}       
+        ))}
       </div>
     );
   }
@@ -203,11 +199,8 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ closeTab }, dispatch)
+    actions: bindActionCreators({ closeTab }, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TabsBar);
+export default connect(mapStateToProps, mapDispatchToProps)(TabsBar);

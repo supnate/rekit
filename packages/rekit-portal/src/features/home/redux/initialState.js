@@ -1,6 +1,5 @@
 const initialState = {
-  count: 0,
-  redditReactjsList: [],
+  sidePanelWidth: parseInt(localStorage.getItem('sidePanelWidth') || 220, 10),
   elementById: {},
   fileContentById: {},
   oldFileContentById: {},

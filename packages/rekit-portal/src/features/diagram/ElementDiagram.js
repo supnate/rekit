@@ -84,8 +84,8 @@ export default class ElementDiagram extends PureComponent {
 
   getChartSize() {
     return {
-      width: Math.max(this.props.size.width - 360, 400),
-      height: Math.max(this.props.size.height - 180, 400),
+      width: Math.max(this.props.size.width - 60, 400),
+      height: Math.max(this.props.size.height - 100, 400),
     };
   }
 

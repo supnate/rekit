@@ -75,13 +75,27 @@ export class SidePanel extends Component {
   renderAddMenu() {
     return (
       <Menu onClick={this.handleAddMenuClick}>
-        <Menu.Item key="add-feature"><Icon type="book" style={{ color: '#29b6f6' }} /> &nbsp;Add feature</Menu.Item>
-        <Menu.Item key="add-action"><Icon type="notification" style={{ color: '#ec407a' }} /> &nbsp;Add action</Menu.Item>
-        <Menu.Item key="add-component"><Icon type="appstore-o" style={{ color: '#F08036' }} /> &nbsp;Add component</Menu.Item>
-        <Menu.Item key="tests"><Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Run tests</Menu.Item>
-        <Menu.Item key="test-coverage"><Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Test coverage</Menu.Item>
-        <Menu.Item key="build"><Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Build</Menu.Item>
-        <Menu.Item key="about"><Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;About</Menu.Item>
+        <Menu.Item key="add-feature">
+          <Icon type="book" style={{ color: '#29b6f6' }} /> &nbsp;Add feature
+        </Menu.Item>
+        <Menu.Item key="add-action">
+          <Icon type="notification" style={{ color: '#ec407a' }} /> &nbsp;Add action
+        </Menu.Item>
+        <Menu.Item key="add-component">
+          <Icon type="appstore-o" style={{ color: '#F08036' }} /> &nbsp;Add component
+        </Menu.Item>
+        <Menu.Item key="tests">
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Run tests
+        </Menu.Item>
+        <Menu.Item key="test-coverage">
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Test coverage
+        </Menu.Item>
+        <Menu.Item key="build">
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Build
+        </Menu.Item>
+        <Menu.Item key="about">
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;About
+        </Menu.Item>
       </Menu>
     );
   }
@@ -90,10 +104,12 @@ export class SidePanel extends Component {
     const { home } = this.props;
     const prjName = home.projectName || home.projectRoot.split('/').pop();
     return (
-      <div className="home-side-panel dark-theme">
+      <div className="home-side-panel dark-theme" style={{ width: `${home.sidePanelWidth}px` }}>
         <div className="header">
           <Link className="home-link" to="/" title={this.props.home.projectRoot}>
-            <h5><Icon type="home" /> {prjName}</h5>
+            <h5>
+              <Icon type="home" /> {prjName}
+            </h5>
           </Link>
           <Dropdown overlay={this.renderAddMenu()}>
             <label>
@@ -105,7 +121,7 @@ export class SidePanel extends Component {
           <SearchInput onSearch={this.handleSearch} />
         </div>
         <ProjectExplorer searchKey={this.state.searchKey} />
-        {this.state.aboutDialogVisible &&
+        {this.state.aboutDialogVisible && (
           <Modal
             visible
             maskClosable
@@ -117,7 +133,7 @@ export class SidePanel extends Component {
           >
             <About />
           </Modal>
-        }
+        )}
         {home.demoAlertVisible && <DemoAlert onClose={this.props.actions.hideDemoAlert} />}
       </div>
     );
@@ -134,11 +150,8 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions, showCmdDialog }, dispatch)
+    actions: bindActionCreators({ ...actions, showCmdDialog }, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SidePanel);
+export default connect(mapStateToProps, mapDispatchToProps)(SidePanel);

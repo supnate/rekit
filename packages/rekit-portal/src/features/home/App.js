@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import enUS from 'antd/lib/locale-provider/en_US';
 import { LocaleProvider, message, Modal, Spin } from 'antd';
 import { ErrorBoundary } from '../common';
-import { TabsBar, SidePanel } from './';
+import { TabsBar, SidePanel, SidePanelResizer } from './';
 import DialogPlace from '../rekit-cmds/DialogPlace';
 import { fetchProjectData } from './redux/actions';
 
@@ -23,7 +23,7 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.fetchProjectData().catch((err) => {
+    this.props.actions.fetchProjectData().catch(err => {
       Modal.error({
         title: 'Failed to load project data',
         content: err && (err.message || err.toString()),
@@ -32,11 +32,16 @@ export class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.home.projectDataNeedReload && !nextProps.home.fetchProjectDataError && !nextProps.home.fetchProjectDataPending) {
+    if (
+      nextProps.home.projectDataNeedReload &&
+      !nextProps.home.fetchProjectDataError &&
+      !nextProps.home.fetchProjectDataPending
+    ) {
       const hide = message.loading('Reloading project data...');
-      this.props.actions.fetchProjectData()
+      this.props.actions
+        .fetchProjectData()
         .then(hide)
-        .catch((e) => {
+        .catch(e => {
           console.log('failed to fetch project data: ', e);
           message.error('Failed to refresh project data');
         });
@@ -62,10 +67,9 @@ export class App extends Component {
         <div className="home-app">
           <SidePanel />
           <TabsBar />
-          <div id="page-container" className="page-container">
-            <ErrorBoundary>
-              {this.props.children}
-            </ErrorBoundary>
+          <SidePanelResizer />
+          <div id="page-container" className="page-container" style={{ left: `${this.props.home.sidePanelWidth}px` }}>
+            <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           <DialogPlace />
         </div>
@@ -82,11 +86,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchProjectData }, dispatch)
+    actions: bindActionCreators({ fetchProjectData }, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

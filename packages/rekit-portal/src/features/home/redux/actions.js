@@ -7,3 +7,4 @@ export { hideDemoAlert } from './hideDemoAlert';
 export { saveFile, dismissSaveFileError } from './saveFile';
 export { closeTab } from './closeTab';
 export { moveTab } from './moveTab';
+export { setSidePanelWidth } from './setSidePanelWidth';

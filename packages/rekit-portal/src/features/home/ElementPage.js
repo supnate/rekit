@@ -80,8 +80,8 @@ export class ElementPage extends Component {
 
   getEditAreaSize() {
     return {
-      width: document.body.offsetWidth,
-      height: document.body.offsetHeight,
+      width: document.body.offsetWidth - this.props.home.sidePanelWidth,
+      height: document.body.offsetHeight - 80,
     };
   }
 

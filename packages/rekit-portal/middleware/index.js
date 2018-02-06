@@ -123,11 +123,12 @@ module.exports = function() { // eslint-disable-line
               singleQuote: true,
               trailingComma: 'es5',
               printWidth: 120,
+              filepath: `foo.${ext}`,
             };
-            if (ext === 'less' || ext === 'scss') options.parser = ext;
             try {
               res.write(JSON.stringify({ content: prettier.format(content, options) }));
             } catch (err) {
+              console.log('Failed to format code: ', err);
               res.write(JSON.stringify({ content, error: err }));
             }
             res.end();

@@ -10,12 +10,8 @@ describe('home/ProjectExplorer', () => {
       actions: {},
       treeData: {},
     };
-    const renderedComponent = shallow(
-      <ProjectExplorer {...props} />
-    );
+    const renderedComponent = shallow(<ProjectExplorer {...props} />);
 
-    expect(
-      renderedComponent.find('.home-project-explorer').getElement()
-    ).to.exist;
+    expect(renderedComponent.find('.home-project-explorer').getElement()).to.exist;
   });
 });

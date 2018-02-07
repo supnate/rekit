@@ -1,0 +1,82 @@
+@import '../../styles/mixins.less';
+
+.home-routes-page {
+  background-color: #1e1e1e;
+  min-width: 720px;
+  height: 100%;
+  h2 {
+    i { color: #26a69a; }
+    line-height: 60px;
+    font-weight: normal;
+  }
+
+  h3 {
+    margin-top: 30px;
+  }
+
+  .highlight-label {
+    padding: 0 2px;
+    border-radius: 2px;
+    background-color: #eee;
+  }
+
+  .ant-alert {
+    margin-top: 20px;
+    background-color: #222;
+    color: #ccc;
+  }
+
+  .ant-tabs {
+    height: 100%;
+    .ant-tabs-content {
+      height: 100%;
+    }
+  }
+
+  .ant-tabs-bar {
+    margin-bottom: 0;
+    border-bottom: 1px solid #000;
+    background-color: #222;
+  }
+
+  .ant-tabs-tab {
+    margin-left: 20px!important;
+    padding: 8px 12px!important;
+    color: #ccc;
+    &-active {
+      background-color: #444;
+    }
+  }
+
+  .rules-view {
+    padding: 30px;
+    height: 100%;
+    color: #ccc;
+    background-color: #333;
+  }
+
+  table {
+    margin-top: 20px;
+    th, td {
+      padding: 10px;
+      min-width: 400px;
+      text-align: left;
+      border: 1px solid #666;
+      color: #ccc;
+      &:nth-child(2) {
+        min-width: 300px;
+      }
+    }
+    thead {
+      background-color: #444;
+      font-weight: bold;
+    }
+
+    tbody {
+      tr:hover {
+        // background-color: lighten(#e0f2f1, 5%);
+      }
+    }
+
+  }
+}

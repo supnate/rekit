@@ -1,0 +1,132 @@
+@import '../../styles/mixins.less';
+
+@link-line-color: #999;
+
+.diagram-overview-chord-diagram {
+  // svg { background-color: #f7f7f7; }
+  background-color: #2a2d33;
+  padding: 10px;
+  .group-feature {
+    stroke: #2ba8d5;
+  }
+  .group-actions {
+    stroke: @action-color;
+  }
+  .group-components {
+    stroke: @component-color;
+  }
+  .group-misc {
+    stroke: @misc-color;
+  }
+  .group-file {
+    stroke: #fff;
+    cursor: pointer;
+    // &:hover {
+    //   opacity: 1!important;
+    // }
+  }
+
+  .file-of-type-actions {
+    stroke: darken(@action-color, 10%);
+  }
+  .file-of-type-components {
+    stroke: darken(@component-color, 10%);
+  }
+  .file-of-type-misc {
+    stroke: darken(@misc-color, 15%);
+  }
+
+  .group-node {
+    fill: none;
+  }
+
+  .ant-checkbox-wrapper {
+    color: #aaa;
+  }
+  .feature-filter {
+    color: #aaa;
+  }
+  .svg-container {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  svg {
+    // transform: rotate(-180deg);
+    .same-feature-dep {
+      display: none;
+      stroke-dasharray: 1, 1;
+    }
+
+    .triangle-marker {
+      fill: @link-line-color;
+    }
+    .link-line {
+      stroke: @link-line-color;
+      stroke-width: 1px;
+      fill: none;
+    }
+
+    .pie-bg {
+      stroke: rgba(255, 255, 255, 0.1);
+      fill: none;
+    }
+  }
+
+  // .d3-tip {
+  //   background-color: #444;
+  //   color: #fff;
+  // }
+
+  // svg.highlight {
+  //   .link-line, .group-node {
+  //     opacity: 0.2;
+  //   }
+
+  //   .group-node:hover {
+  //     opacity: 1;
+  //   }
+  // }
+
+  .same-feature-deps-visible svg {
+    .same-feature-dep {
+      display: block;
+    }
+  }
+}
+
+.diagram-overview-chord-diagram-feature-select {
+  li {
+    padding: 5px 0;
+    max-width: 300px;
+  }
+}
+
+.d3-tip {
+  line-height: 1;
+  font-size: 10px;
+  padding: 3px 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 8px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.6);
+  content: '\25BC';
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -2px 0 0 0;
+  top: 100%;
+  left: 0;
+}

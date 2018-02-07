@@ -1,0 +1,86 @@
+@import '../../styles/mixins';
+
+.home-tabs-bar {
+  margin-left: @side-panel-width;
+  height: 44px;
+  line-height: 44px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: #aaa;
+  background-color: #333;
+  white-space: nowrap;
+  border-left: 1px solid #000;
+  &::-webkit-scrollbar {
+    height: 3px;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  span.tab {
+    position: relative;
+    display: inline-block;
+    padding: 0 30px 0 10px;
+    border-right: 1px solid #1a1a1a;
+    cursor: pointer;
+    user-select: none;
+    label {
+      cursor: pointer;
+    }
+
+    .anticon-close, .anticon-dot {
+      position: absolute;
+      font-weight: bold;
+      font-size: 13px;
+      top: 17px;
+      right: 3px;
+      visibility: hidden;
+      color: #ddd;
+    }
+    &:hover .anticon-close {
+      visibility: visible;
+    }
+
+    &-active {
+      color: #ddd;
+      background-color: #1a1a1a;
+      .anticon-close {
+        visibility: visible;
+      }
+    }
+
+    .anticon {
+      min-width: 12px;
+      font-size: 12px;
+      margin-right: 6px;
+    }
+
+    .anticon-appstore-o {
+      color: #F08036;
+    }
+
+    .anticon-notification {
+      color: #ec407a;
+    }
+
+    .anticon-home {
+      color: #33CDFF;
+      font-size: 14px;
+    }
+    .anticon-share-alt { color: #26a69a; }
+    .anticon-check-circle-o { color: #8BC34A; }
+    .anticon-pie-chart { color: #FDD835; }
+    .anticon-play-circle-o { color: #66BB6A; }
+    .anticon-dot {
+      visibility: visible;
+      &::before {
+        content: ' ';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: #aaa;
+      }
+    }
+  }
+}

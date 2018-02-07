@@ -1,0 +1,129 @@
+@import '../../styles/mixins.less';
+
+.home-project-explorer {
+  position: absolute;
+  top: 98px;
+  left: 10px;
+  right: 0px;
+  bottom: 0px;
+  user-select: none;
+  overflow: auto;
+
+  .no-results {
+    text-align: center;
+    margin-top: 15px;
+    color: #777;
+  }
+
+  .ant-tree {
+    margin-top: -10px;
+  }
+  .ant-tree-node-content-wrapper {
+    padding-left: 0;
+    vertical-align: top;
+    transform: translate(-7px, 2px);
+    label {
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+      font-weight: lighter;
+    }
+  }
+  .ant-tree-title {
+    cursor: pointer;
+    i {
+      padding-left: 3px;
+      margin-right: 5px;
+    }
+
+    img {
+      width: 15px;
+      margin: 0 5px 0 3px;
+      transform: translateY(-2px);
+    }
+
+    .search-highlight {
+      background-color: yellow;
+    }
+  }
+
+  li.feature {
+    i {
+      color: #0277bd;
+    }
+  }
+
+  li.actions {
+    i {
+      color: #ec407a;
+    }
+    > ul > li i {
+      color: #888;
+    }
+    i.anticon-star {
+      color: #ec407a;
+    }
+  }
+  li.constants {
+    i {
+      color: #536dfe;
+    }
+  }
+  li.routes {
+    i {
+      color: #26a69a;
+    }
+  }
+  li.components {
+    i {
+      color: #f08036;
+    }
+
+    > ul > li i {
+      color: #888;
+    }
+  }
+  li.misc {
+    i {
+      color: #8d6e63;
+    }
+    > ul > li i {
+      color: #888;
+    }
+  }
+
+  .mark {
+    display: inline-block;
+    padding: 0;
+    width: 10px;
+    margin-left: 3px;
+    line-height: 12px;
+    border-radius: 2px;
+    font-size: 8px;
+    text-align: center;
+    transform: translateY(-2px);
+    color: #fff;
+
+    &-c {
+      background-color: #42bd41;
+    }
+    &-r {
+      background-color: #ffb300;
+    }
+    &-a {
+      background-color: #4fc3f7;
+    }
+  }
+
+  .context-menu-archor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: none;
+    cursor: default;
+    font-size: 1px;
+    width: 1px;
+    height: 1px;
+  }
+}

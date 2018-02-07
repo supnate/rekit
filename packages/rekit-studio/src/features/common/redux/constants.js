@@ -1,0 +1,1 @@
+export const COMMON_TEST_ACTION = 'COMMON_TEST_ACTION';

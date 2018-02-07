@@ -1,0 +1,93 @@
+@import "../../styles/mixins.less";
+
+.home-about {
+  text-align: center;
+  .header {
+    position: relative;
+    padding-left: 150px;
+    padding-top: 20px;
+    height: 110px;
+    text-align: left;
+    img.logo {
+      width: 100px;
+      position: absolute;
+      left: 40px;
+      top: 0px;
+    }
+  }
+
+  .version {
+    font-size: 13px;
+  }
+
+  .versions {
+    margin-top: 20px;
+
+    h5 {
+      margin-bottom: 10px;
+    }
+    label {
+      display: inline-block;
+      width: 180px;
+      text-align: right;
+    }
+
+    span {
+      margin-left: 5px;
+      display: inline-block;
+      width: 120px;
+      text-align: left;
+    }
+  }
+
+  .feedback {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 5px 0;
+
+    &:before {
+      content: " ";
+      display: block;
+      border-top: 1px solid #e0e0e0;
+      width: 100px;
+      margin-left: 110px;
+      margin-bottom: 20px;
+    }
+  }
+
+  &.demo-version {
+    text-align: left;
+    padding: 40px;
+    overflow: auto;
+    margin-right: -18px;
+    padding-right: 58px;
+    // max-height: 600px;
+    .header {
+      margin-left: -40px;
+      margin-top: -20px;
+    }
+
+    h3 {
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-top: 15px;
+    }
+
+    .features-list {
+      list-style: decimal;
+      margin: 15px 0 15px 30px;
+
+      li {
+        margin-top: 5px;
+      }
+    }
+
+    .learn-more-list {
+      list-style: disc;
+      margin-left: 30px;
+    }
+  }
+}

@@ -1,0 +1,102 @@
+@import '../../styles/mixins.less';
+
+.home-home-page {
+  padding: 30px;
+  min-height: 100%;
+  background-color: #1e1e1e;
+  color: #ddd;
+  .top-badges {
+    min-width: 800px;
+    margin-right: -15px;
+  }
+
+  .top-badge {
+    position: relative;
+    margin-right: 15px;
+    height: 100px;
+    background-color: #2a2d33;
+
+    &.feature .anticon { color: darken(@feature-color, 10%); }
+    &.action .anticon { color: darken(@action-color, 10%); }
+    &.component .anticon { color: darken(@component-color, 10%); }
+    &.misc .anticon { color: darken(@misc-color, 10%); }
+    &.route .anticon { color: darken(@route-color, 10%); }
+
+    .anticon {
+      position: absolute;
+      left: 10px;
+      top: 18px;
+      font-size: 28px;
+      font-weight: normal;
+      opacity: 1;
+      opacity: 0.7;
+    }
+
+    .count {
+      position: absolute;
+      right: 20px;
+      top: 0px;
+      font-size: 42px;
+      color: #ddd;
+      opacity: 0.9;
+      font-weight: 200;
+    }
+
+    .type {
+      position: absolute;
+      padding-top: 5px;
+      padding-right: 20px;
+      left: 0;
+      right: 0px;
+      bottom: 10px;
+      text-align: right;
+      color: #bbb;
+      font-size: 18px;
+      opacity: 0.8;
+    }
+  }
+
+  h3 {
+    color: #ccc;
+    font-weight: normal;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    padding-bottom: 10px;
+  }
+  .diagram-container {
+    padding-right: 30px;
+  }
+
+  &-overview-diagram-help, &-test-coverage-summary-help {
+    width: 260px;
+    padding-bottom: 15px;
+
+    ul {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+
+      li {
+        padding: 5px 0;
+        display: inline-block;
+        width: 50%;
+        span {
+          display: inline-block;
+          width: 16px;
+          height: 10px;
+          box-sizing: border-box;
+
+          background-color: red;
+
+          &.feature { background-color: @feature-color; }
+          &.component { background-color: @component-color; }
+          &.action { background-color: @action-color; }
+          &.misc { background-color: @misc-color; }
+        }
+      }
+    }
+
+    p {
+      margin-top: 10px;
+    }
+  }
+}

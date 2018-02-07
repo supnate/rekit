@@ -6,20 +6,14 @@ import { CodeEditor } from 'src/features/home/CodeEditor';
 describe('home/CodeEditor', () => {
   it('renders node with correct class name', () => {
     const props = {
-      home: {
-        fileContentById: {},
-      },
+      fileContentById: {},
       actions: {
         saveFile() {},
       },
       file: 'abc',
     };
-    const renderedComponent = shallow(
-      <CodeEditor {...props} />
-    );
+    const renderedComponent = shallow(<CodeEditor {...props} />);
 
-    expect(
-      renderedComponent.find('.home-code-editor').getElement()
-    ).to.exist;
+    expect(renderedComponent.find('.home-code-editor').getElement()).to.exist;
   });
 });

@@ -1,13 +1,8 @@
 import { expect } from 'chai';
 
-import {
-  HOME_SET_SIDE_PANEL_WIDTH,
-} from 'src/features/home/redux/constants';
+import { HOME_SET_SIDE_PANEL_WIDTH } from 'src/features/home/redux/constants';
 
-import {
-  setSidePanelWidth,
-  reducer,
-} from 'src/features/home/redux/setSidePanelWidth';
+import { setSidePanelWidth, reducer } from 'src/features/home/redux/setSidePanelWidth';
 
 describe('home/redux/setSidePanelWidth', () => {
   it('returns correct action by setSidePanelWidth', () => {
@@ -16,11 +11,8 @@ describe('home/redux/setSidePanelWidth', () => {
 
   it('handles action type HOME_SET_SIDE_PANEL_WIDTH correctly', () => {
     const prevState = {};
-    const state = reducer(
-      prevState,
-      { type: HOME_SET_SIDE_PANEL_WIDTH }
-    );
+    const state = reducer(prevState, { type: HOME_SET_SIDE_PANEL_WIDTH, payload: { width: 100 } });
     expect(state).to.not.equal(prevState); // should be immutable
-    expect(state).to.deep.equal(prevState); // TODO: replace this line with real case.
+    expect(state).to.have.property('sidePanelWidth', 100); // TODO: replace this line with real case.
   });
 });

@@ -19,8 +19,7 @@ export class ElementPage extends Component {
     dispatch: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-  };
+  static defaultProps = {};
 
   constructor(props) {
     super(props);
@@ -89,28 +88,30 @@ export class ElementPage extends Component {
     this.setState({
       editAreaSize: this.getEditAreaSize(),
     });
-  }
+  };
 
-  handleCodeChange = (args) => {
+  handleCodeChange = args => {
     this.setState({
       codeChanged: args.hasChange,
     });
-  }
+  };
 
-  handleTabChange = (tabKey) => {
+  handleTabChange = tabKey => {
     const file = decodeURIComponent(this.props.match.params.file);
     history.push(`/element/${encodeURIComponent(file)}/${tabKey}`);
-  }
+  };
 
   handleRunTest = () => {
     const { file } = this.props.match.params;
     history.push(`/tools/tests/${encodeURIComponent(file)}`);
-  }
+  };
 
   renderNotFound() {
     return (
       <div className="home-element-page">
-        <div style={{ color: 'red', padding: '30px' }}>Element not found, please check the URL or if element exists.</div>
+        <div style={{ color: 'red', padding: '30px' }}>
+          Element not found, please check the URL or if element exists.
+        </div>
       </div>
     );
   }
@@ -137,11 +138,9 @@ export class ElementPage extends Component {
         break;
     }
     return marks.map(mark => (
-      <span
-        key={mark}
-        title={markDescription[mark.toLowerCase()]}
-        className={`mark mark-${mark.toLowerCase()}`}
-      >{mark}</span>
+      <span key={mark} title={markDescription[mark.toLowerCase()]} className={`mark mark-${mark.toLowerCase()}`}>
+        {mark}
+      </span>
     ));
   }
 
@@ -168,7 +167,9 @@ export class ElementPage extends Component {
         codeFile = `src/features/${data.feature}/${data.name}.${home.cssExt}`;
         break;
       case 'test':
-        codeFile = `tests/${decodeURIComponent(this.props.match.params.file).replace(/^src\//, '').replace('.js', '')}.test.js`;
+        codeFile = `tests/${decodeURIComponent(this.props.match.params.file)
+          .replace(/^src\//, '')
+          .replace('.js', '')}.test.js`;
         break;
       default:
         codeFile = data.file;
@@ -188,22 +189,42 @@ export class ElementPage extends Component {
     const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-element-page">
-        {data.isPic &&
-        <div className="pic-wrapper">
-          <img src={`/${codeFile}`} alt={codeFile} />
-        </div>}
-        {!onlyCode && data.hasCode && !data.isPic &&
-        <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
-          {data.hasDiagram &&
-          <TabPane tab="Diagram" key="diagram">
-            <ElementDiagram homeStore={this.props.home} elementId={data.file} size={this.state.editAreaSize} />
-          </TabPane>}
-          {data.hasCode && <TabPane tab={`Code${tabKey === 'code' ? codeChangeMark : ''}`} key="code" />}
-          {(data.type === 'component' && data.feature) && <TabPane tab={`Style${tabKey === 'style' ? codeChangeMark : ''}`} key="style" />}
-          {data.hasTest && <TabPane tab={`Test${tabKey === 'test' ? codeChangeMark : ''}`} key="test" />}
-        </Tabs>}
-        {tabKey !== 'diagram' && data.hasCode && <CodeEditor file={codeFile} onStateChange={this.handleCodeChange} onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null} />}
-        {!data.hasCode && !data.isPic && <Alert type="error" showIcon message={`The file with extension ".${ext}" will not be displayed because it is either binary, very large or uses an unsupported text encoding.`} />}
+        {data.isPic && (
+          <div className="pic-wrapper">
+            <img src={`/${codeFile}`} alt={codeFile} />
+          </div>
+        )}
+        {!onlyCode &&
+          data.hasCode &&
+          !data.isPic && (
+            <Tabs activeKey={tabKey} animated={false} onChange={this.handleTabChange}>
+              {data.hasDiagram && (
+                <TabPane tab="Diagram" key="diagram">
+                  <ElementDiagram homeStore={this.props.home} elementId={data.file} size={this.state.editAreaSize} />
+                </TabPane>
+              )}
+              {data.hasCode && <TabPane tab={`Code${tabKey === 'code' ? codeChangeMark : ''}`} key="code" />}
+              {data.type === 'component' &&
+                data.feature && <TabPane tab={`Style${tabKey === 'style' ? codeChangeMark : ''}`} key="style" />}
+              {data.hasTest && <TabPane tab={`Test${tabKey === 'test' ? codeChangeMark : ''}`} key="test" />}
+            </Tabs>
+          )}
+        {tabKey !== 'diagram' &&
+          data.hasCode && (
+            <CodeEditor
+              file={codeFile}
+              onStateChange={this.handleCodeChange}
+              onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null}
+            />
+          )}
+        {!data.hasCode &&
+          !data.isPic && (
+            <Alert
+              type="error"
+              showIcon
+              message={`The file with extension ".${ext}" will not be displayed because it is either binary, very large or uses an unsupported text encoding.`}
+            />
+          )}
       </div>
     );
   }
@@ -221,11 +242,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    actions: bindActionCreators({ }, dispatch)
+    actions: bindActionCreators({}, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ElementPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ElementPage);

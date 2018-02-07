@@ -8,9 +8,5 @@ describe('common/UnloadComponent', () => {
     const renderedComponent = shallow(
       <UnloadComponent />
     );
-
-    expect(
-      renderedComponent.find('.common-unload-component').getElement()
-    ).to.exist;
   });
 });

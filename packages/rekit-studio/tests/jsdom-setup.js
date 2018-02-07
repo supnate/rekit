@@ -8,3 +8,4 @@ global.document = window.document;
 global.navigator = window.navigator;
 global.d3 = {};
 global.sessionStorage = { getItem() {}, setItem() {} };
+global.localStorage = { getItem() {}, setItem() {} };

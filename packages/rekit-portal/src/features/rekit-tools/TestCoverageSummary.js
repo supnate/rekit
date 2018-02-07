@@ -51,10 +51,10 @@ export class TestCoverageSummary extends PureComponent {
   }
 
   renderReport() {
-    const color = d3.scaleLinear()
+    const color = d3
+      .scaleLinear()
       .domain([0, 90])
-      .range(['#ef5350', '#81C784'])
-    ;
+      .range(['#ef5350', '#81C784']);
     // let arr = [];
     // for (let i = 5; i < 100; i += 20)arr.push(i);
     // arr = _.shuffle(arr);
@@ -63,27 +63,32 @@ export class TestCoverageSummary extends PureComponent {
     // const trs = /<tr>.+<\/tr>/mig.exec(this.state.reportData.replace(/\r|\n/g, ''));
 
     // statements coverage
-    const coverage = features.reduce((c, fid) => { c[fid] = { tested: 0, total: 0 }; return c; }, {});
+    const coverage = features.reduce((c, fid) => {
+      c[fid] = { tested: 0, total: 0 };
+      return c;
+    }, {});
     const html = this.state.reportData.replace(/[\r\n]/g, '');
     /<span class="strong">([\d.]+)% <\/span>/.test(html);
     const overallCoverage = parseFloat(RegExp.$1);
-    const res = /<table class="coverage-summary">.+<\/table>/ig.exec(html);
+    const res = /<table class="coverage-summary">.+<\/table>/gi.exec(html);
     const node = document.createElement('div');
     node.innerHTML = res[0];
     const table = node.firstChild;
-    _.toArray(table.rows).slice(1).forEach((row) => {
-      const file = row.cells[0].firstChild.innerHTML;
-      if (/src\/features\/([^/]+)/i.test(file)) {
-        const fid = RegExp.$1;
-        if (fid && coverage[fid]) {
-          const ss = row.cells[3].innerHTML;
-          const arr = ss.split('/').map(n => parseInt(n, 10));
-          coverage[fid].tested += arr[0];
-          coverage[fid].total += arr[1];
+    _.toArray(table.rows)
+      .slice(1)
+      .forEach(row => {
+        const file = row.cells[0].firstChild.innerHTML;
+        if (/src\/features\/([^/]+)/i.test(file)) {
+          const fid = RegExp.$1;
+          if (fid && coverage[fid]) {
+            const ss = row.cells[3].innerHTML;
+            const arr = ss.split('/').map(n => parseInt(n, 10));
+            coverage[fid].tested += arr[0];
+            coverage[fid].total += arr[1];
+          }
         }
-      }
-    });
-    _.keys(coverage).forEach((k) => {
+      });
+    _.keys(coverage).forEach(k => {
       coverage[k].percentage = Math.round(coverage[k].tested / (coverage[k].total || 1) * 10000) / 100;
     });
 
@@ -92,12 +97,17 @@ export class TestCoverageSummary extends PureComponent {
         <li>
           <h4>Overall coverage: {overallCoverage}%</h4>
           <div className="coverage-percent">
-            <div className="percent-inner" style={{ width: `${overallCoverage}%`, backgroundColor: color(overallCoverage) }} />
+            <div
+              className="percent-inner"
+              style={{ width: `${overallCoverage}%`, backgroundColor: color(overallCoverage) }}
+            />
           </div>
         </li>
 
-        <li><h4>Coverage by feature:</h4></li>
-        {features.map((fid) => {
+        <li>
+          <h4>Coverage by feature:</h4>
+        </li>
+        {features.map(fid => {
           const p = coverage[fid].percentage;
           const name = featureById[fid].name;
           if (p === 0) {
@@ -110,27 +120,25 @@ export class TestCoverageSummary extends PureComponent {
                   </Tooltip>
                 </label>
                 <div className="coverage-percent">
-                  <div
-                    className="percent-inner"
-                    style={{ width: `${0}%`, backgroundColor: color(0) }}
-                  />
+                  <div className="percent-inner" style={{ width: `${0}%`, backgroundColor: color(0) }} />
                 </div>
               </li>
             );
           }
           return (
             <li key={fid} className="feature-coverage">
-              <label>{name}: {p}%</label>
+              <label>
+                {name}: {p}%
+              </label>
               <div className="coverage-percent">
-                <div
-                  className="percent-inner"
-                  style={{ width: `${p}%`, backgroundColor: color(p) }}
-                />
+                <div className="percent-inner" style={{ width: `${p}%`, backgroundColor: color(p) }} />
               </div>
             </li>
           );
         })}
-        <li><Link to="/tools/coverage">See more...</Link></li>
+        <li>
+          <Link to="/tools/coverage">See more...</Link>
+        </li>
       </ul>
     );
   }
@@ -139,15 +147,18 @@ export class TestCoverageSummary extends PureComponent {
     if (this.state.loading) return this.renderLoading();
     return (
       <div className="rekit-tools-test-coverage-summary">
-
-        {this.state.error && <Alert message={`Failed to request test coverage data: ${this.state.error}`} type="error" showIcon />}
-        {this.state.noData &&
+        {this.state.error && (
+          <Alert message={`Failed to request test coverage data: ${this.state.error}`} type="error" showIcon />
+        )}
+        {this.state.noData && (
           <div>
             <Alert message="No coverage data found. Need to run tests first." type="info" showIcon />
-            <Button type="primary" onClick={this.handleRunTests}>Run tests now</Button>
-          </div>}
+            <Button type="primary" onClick={this.handleRunTests}>
+              Run tests now
+            </Button>
+          </div>
+        )}
         {this.state.reportData && this.renderReport()}
-
       </div>
     );
   }
@@ -160,6 +171,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-)(TestCoverageSummary);
+export default connect(mapStateToProps)(TestCoverageSummary);

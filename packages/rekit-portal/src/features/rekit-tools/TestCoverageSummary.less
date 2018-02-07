@@ -1,6 +1,7 @@
 @import '../../styles/mixins.less';
 
 .rekit-tools-test-coverage-summary {
+  background-color: #2a2d33;
   .ant-alert {  margin-top: 15px; }
   .ant-btn { margin-top: 20px;}
 
@@ -11,16 +12,18 @@
 
       h4 {
         font-size: 14px;
+        color: #ccc;
       }
 
       &.feature-coverage {
         margin-left: 0px;
+        label {color:#aaa;}
       }
     }
   }
 
   .coverage-percent {
-    background-color: #f7f7f7;
+    background-color: rgba(255, 255, 255, 0.2);
     height: 10px;
     width: 100%;
     margin-top: 5px;

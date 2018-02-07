@@ -25,7 +25,7 @@ function uid(key) {
 function drawPieBg(d3Selection) {
   d3Selection
     .attr('class', 'pie-bg')
-    .style('stroke-width', d => d.radius)
+    .style('stroke-width', d => d.radius -16)
     // .transition() // start a transition to bring the new value into view
     // .duration(300)
     // .ease(d3.easeLinear)
@@ -82,7 +82,7 @@ function drawLink(d3Selection) {
 function drawFeatureNameText(d3Selection) {
   d3Selection
     .style('font-size', 12)
-    .style('fill', '#777')
+    .style('fill', '#999')
     .style('overflow', 'hidden')
     .style('text-overflow', 'ellipsis')
     .style('cursor', 'default')
@@ -255,7 +255,7 @@ export class OverviewChordDiagram extends PureComponent {
     const { elementById } = this.props.home;
     if (this.state.highlightedGroup) {
       const d = this.state.highlightedGroup;
-      this.svg.selectAll('.group-node, .link-line, .text-node').style('opacity', 0.15);
+      this.svg.selectAll('.group-node, .link-line, .text-node').style('opacity', 0.1);
       this.svg.selectAll('.link-line').style('stroke-dasharray', '').style('stroke', '#ccc');
       const highlighted = [];
       const lighlightedLines = [];
@@ -306,7 +306,7 @@ export class OverviewChordDiagram extends PureComponent {
       if (dashed.length) this.svg.selectAll(dashed.join(',')).style('stroke-dasharray', '3, 3');
     } else {
       this.svg.selectAll('.group-node, .link-line, .text-node').style('opacity', 1);
-      this.svg.selectAll('.link-line').style('stroke-dasharray', '').style('stroke', '#ccc');
+      this.svg.selectAll('.link-line').style('stroke-dasharray', '').style('stroke', '#888');
     }
   }
 
@@ -408,7 +408,7 @@ export class OverviewChordDiagram extends PureComponent {
           </Col>
           <Col span="12" style={{ textAlign: 'right' }}>
             <Popover placement="bottomRight" content={this.renderFeaturesSelect()}>
-              <span style={{ cursor: 'default' }}>{featureSelectLabel} </span><Icon type="caret-down" style={{ fontSize: 10 }} />
+              <span style={{ cursor: 'default' }} className="feature-filter">{featureSelectLabel} </span><Icon type="caret-down" style={{ fontSize: 10 }} />
             </Popover>
           </Col>
         </Row>

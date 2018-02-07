@@ -27,8 +27,7 @@ export class HomePage extends Component {
     window.removeEventListener('resize', this.handleWindowResize, false);
   }
 
-  @autobind
-  handleWindowResize() {
+  handleWindowResize = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
     // TODO: fix magic numbers for the diagram.
@@ -36,10 +35,10 @@ export class HomePage extends Component {
     // 320: side panel width
     // 80: page container paddings
     // 2/3: antd col/row
-    // 40: diagram container Col right-padding
+    // 30: diagram container Col right-padding
     // 60: diagram margins
-    const minWidth = 800 * 2 / 3 - 40 - 60;
-    let size = Math.min(height - 310, (width - 300 - 80) * 2 / 3 - 40 - 60);
+    const minWidth = 800 * 2 / 3 - 30 - 20;
+    let size = Math.min(height - 336, (width - this.props.home.sidePanelWidth - 60) * 2 / 3 - 30 - 20);
     if (size < minWidth) size = minWidth;
     this.setState({
       svgSize: size,
@@ -50,17 +49,26 @@ export class HomePage extends Component {
     return (
       <div className="home-home-page-overview-diagram-help">
         <ul>
-          <li><span className="feature" /> Feature</li>
-          <li><span className="action" /> Action</li>
-          <li><span className="component" /> Component</li>
-          <li><span className="misc" /> Misc</li>
+          <li>
+            <span className="feature" /> Feature
+          </li>
+          <li>
+            <span className="action" /> Action
+          </li>
+          <li>
+            <span className="component" /> Component
+          </li>
+          <li>
+            <span className="misc" /> Misc
+          </li>
         </ul>
         <p>
-          The gragh provides an interactive overview of the project architecture.
-          You could also choose which features to show and choose whether to show internal deps.
+          The gragh provides an interactive overview of the project architecture. You could also choose which features
+          to show and choose whether to show internal deps.
         </p>
         <p>
-          It helps to quickly understand the project by features rather than be lost in massive dependencies among es modules.
+          It helps to quickly understand the project by features rather than be lost in massive dependencies among es
+          modules.
         </p>
       </div>
     );
@@ -71,12 +79,10 @@ export class HomePage extends Component {
       <div className="home-home-page-test-coverage-summary-help">
         <p>
           Rekit uses <a href="https://github.com/gotwarlost/istanbul">istanbul</a> to generate test coverage report.
-          After running all tests against the project, the test coverage will be available.
-          Running a single test or tests of a folder does not generate coverage report.
+          After running all tests against the project, the test coverage will be available. Running a single test or
+          tests of a folder does not generate coverage report.
         </p>
-        <p>
-          Note that if some tests failed, the report data may be incomplete.
-        </p>
+        <p>Note that if some tests failed, the report data may be incomplete.</p>
       </div>
     );
   }
@@ -118,15 +124,29 @@ export class HomePage extends Component {
         </Row>
         <Row style={{ minWidth: 800 }}>
           <Col span="16" className="diagram-container">
-            <Popover placement="leftTop" title={<p style={{ fontSize: 18 }}>Overview diagram</p>} content={this.renderOverviewDiagramHelp()}>
-              <Icon style={{ color: '#108ee9', fontSize: 16, float: 'right', marginTop: 38 }} type="question-circle-o" />
+            <Popover
+              placement="leftTop"
+              title={<p style={{ fontSize: 18 }}>Overview diagram</p>}
+              content={this.renderOverviewDiagramHelp()}
+            >
+              <Icon
+                style={{ color: '#108ee9', fontSize: 16, float: 'right', marginTop: 38 }}
+                type="question-circle-o"
+              />
             </Popover>
             <h3>Overview diagram</h3>
             <OverviewChordDiagram size={this.state.svgSize} />
           </Col>
           <Col span="8" className="test-coverage-container">
-            <Popover placement="leftTop" title={<p style={{ fontSize: 18 }}>Test coverage</p>} content={this.renderTestCoverageHelp()}>
-              <Icon style={{ color: '#108ee9', fontSize: 16, float: 'right', marginTop: 38 }} type="question-circle-o" />
+            <Popover
+              placement="leftTop"
+              title={<p style={{ fontSize: 18 }}>Test coverage</p>}
+              content={this.renderTestCoverageHelp()}
+            >
+              <Icon
+                style={{ color: '#108ee9', fontSize: 16, float: 'right', marginTop: 38 }}
+                type="question-circle-o"
+              />
             </Popover>
             <h3>Test coverage</h3>
             <TestCoverageSummary />
@@ -143,6 +163,4 @@ function mapStateToProps(state) {
     home: state.home,
   };
 }
-export default connect(
-  mapStateToProps,
-)(HomePage);
+export default connect(mapStateToProps)(HomePage);

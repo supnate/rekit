@@ -25,7 +25,7 @@ function uid(key) {
 function drawPieBg(d3Selection) {
   d3Selection
     .attr('class', 'pie-bg')
-    .style('stroke-width', d => d.radius -16)
+    .style('stroke-width', d => d.radius)
     // .transition() // start a transition to bring the new value into view
     // .duration(300)
     // .ease(d3.easeLinear)

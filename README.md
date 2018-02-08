@@ -18,7 +18,7 @@ Rekit creates apps using an opinionated folder and code structure. It's designed
 
 Besides creating apps, Rekit provides powerful tools for managing the project:
 
- 1. [Rekit Studio](https://github.com/supnate/rekit-studio): the real IDE for React, Redux development, see a full introduction at:
+ 1. [Rekit Studio](https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542): the real IDE for React, Redux development.
  2. [Command line tools](http://rekit.js.org/docs/cli.html): besides Rekit Studio, you can use command line tools to create/rename/move/delete project elements like components, actions etc. It has better support for Rekit plugin system.
 
 Below is a quick demo video of how Rekit works:

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Routing · GitBook</title>
+        <title>Routing · Rekit</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -17,7 +17,7 @@
     
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism.css">
                 
             
                 
@@ -336,74 +336,74 @@
 <p>With Rekit, when you create a component with some url path, it will also create a rule for React Router to map the url to the component.</p>
 <h3 id="route-configuration">Route configuration</h3>
 <p>Since Rekit use feature oriented folder structure, so does route configuration. That is all feature related route config is also defined in the feature folder. Each feature has a <code>route.js</code> file where you define the route rules. Below is a sample configuration:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> {
-  EditPage,
-  ListPage,
-  ViewPage,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./index&apos;</span>;
+<pre class="language-"><code class="lang-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span>
+  EditPage<span class="token punctuation">,</span>
+  ListPage<span class="token punctuation">,</span>
+  ViewPage<span class="token punctuation">,</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;./index&apos;</span><span class="token punctuation">;</span>
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
-  path: <span class="hljs-string">&apos;&apos;</span>,
-  name: <span class="hljs-string">&apos;&apos;</span>,
-  childRoutes: [
-    { path: <span class="hljs-string">&apos;&apos;</span>, component: ListPage, name: <span class="hljs-string">&apos;Topic List&apos;</span>, isIndex: <span class="hljs-literal">true</span> },
-    { path: <span class="hljs-string">&apos;topic/add&apos;</span>, component: EditPage, name: <span class="hljs-string">&apos;New Topic&apos;</span> },
-    { path: <span class="hljs-string">&apos;topic/:topicId&apos;</span>, component: ViewPage },
-  ],
-};
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  path<span class="token punctuation">:</span> <span class="token string">&apos;&apos;</span><span class="token punctuation">,</span>
+  name<span class="token punctuation">:</span> <span class="token string">&apos;&apos;</span><span class="token punctuation">,</span>
+  childRoutes<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> ListPage<span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">&apos;Topic List&apos;</span><span class="token punctuation">,</span> isIndex<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;topic/add&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> EditPage<span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">&apos;New Topic&apos;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;topic/:topicId&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> ViewPage <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
 <h4 id="using-javascript-to-define-route-rules">Using JavaScript to define route rules</h4>
 <p>From above example, we can see route config uses JavaScript. Actually React router supports <a href="https://github.com/ReactTraining/react-router/blob/master/docs/guides/RouteConfiguration.md" target="_blank">Json for configuration</a>. Rekit takes use of it so that it&apos;s easy to seperates different routing config into different features. Below is a Json routes config example from the React router official doc:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> routes = {
-  path: <span class="hljs-string">&apos;/&apos;</span>,
-  component: App,
-  indexRoute: { component: Dashboard },
-  childRoutes: [
-    { path: <span class="hljs-string">&apos;about&apos;</span>, component: About },
-    {
-      component: Inbox,
-      childRoutes: [{
-        path: <span class="hljs-string">&apos;messages/:id&apos;</span>, component: Message
-      }]
-    }
-  ]
-}
+<pre class="language-"><code class="lang-javascript"><span class="token keyword">const</span> routes <span class="token operator">=</span> <span class="token punctuation">{</span>
+  path<span class="token punctuation">:</span> <span class="token string">&apos;/&apos;</span><span class="token punctuation">,</span>
+  component<span class="token punctuation">:</span> App<span class="token punctuation">,</span>
+  indexRoute<span class="token punctuation">:</span> <span class="token punctuation">{</span> component<span class="token punctuation">:</span> Dashboard <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  childRoutes<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;about&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> About <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      component<span class="token punctuation">:</span> Inbox<span class="token punctuation">,</span>
+      childRoutes<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+        path<span class="token punctuation">:</span> <span class="token string">&apos;messages/:id&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> Message
+      <span class="token punctuation">}</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>Below is the pattern used by Rekit so that different routes config could be defined in their features:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> topicRoute <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../features/topic/route&apos;</span>;
-<span class="hljs-keyword">import</span> commentRoute <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../features/comment/route&apos;</span>;
+<pre class="language-"><code class="lang-javascript"><span class="token keyword">import</span> topicRoute <span class="token keyword">from</span> <span class="token string">&apos;../features/topic/route&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> commentRoute <span class="token keyword">from</span> <span class="token string">&apos;../features/comment/route&apos;</span><span class="token punctuation">;</span>
 
-<span class="hljs-keyword">const</span> routes = [{
-  path: <span class="hljs-string">&apos;/rekit-example&apos;</span>,
-  component: App,
-  childRoutes: [
-    topicRoute,
-    commentRoute,
-    { path: <span class="hljs-string">&apos;*&apos;</span>, name: <span class="hljs-string">&apos;Page not found&apos;</span>, component: PageNotFound },
-  ],
-}];
+<span class="token keyword">const</span> routes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+  path<span class="token punctuation">:</span> <span class="token string">&apos;/rekit-example&apos;</span><span class="token punctuation">,</span>
+  component<span class="token punctuation">:</span> App<span class="token punctuation">,</span>
+  childRoutes<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    topicRoute<span class="token punctuation">,</span>
+    commentRoute<span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;*&apos;</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">&apos;Page not found&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> PageNotFound <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 </code></pre>
 <p>It shows how to import and use routes config from features <code>topic</code> and <code>comment</code>.</p>
 <blockquote>
 <p>Note that you don&apos;t need to maintain the file <code>src/common/routeConfig.js</code> manually, Rekit will auto add and remove the rule when adding/removing a feature.</p>
 </blockquote>
 <h4 id="using-isindex-property-instead-of-indexroute">Using <code>isIndex</code> property instead of indexRoute</h4>
-<p>Unlink the JSX way to define route config with <code>&lt;IndexRoute ...&gt;</code> tag, the official <code>indexRoute</code> config for JavaScript API is a difficult part for Rekit because it prevents defining all necessary incofmation in different features. So Rekit adds the support by using <code>isIndex</code> property. A routing rule with <code>isIndex: true</code> will become the index route for the parent. Below code is the route config for the auto created <code>home</code> feature:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> {
-  DefaultPage,
-  TestPage1,
-  TestPage2,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./index&apos;</span>;
+<p>Unlink the JSX way to define route config with <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>IndexRoute</span> <span class="token attr-name">...</span><span class="token punctuation">&gt;</span></span></code> tag, the official <code>indexRoute</code> config for JavaScript API is a difficult part for Rekit because it prevents defining all necessary incofmation in different features. So Rekit adds the support by using <code>isIndex</code> property. A routing rule with <code>isIndex: true</code> will become the index route for the parent. Below code is the route config for the auto created <code>home</code> feature:</p>
+<pre class="language-"><code class="lang-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span>
+  DefaultPage<span class="token punctuation">,</span>
+  TestPage1<span class="token punctuation">,</span>
+  TestPage2<span class="token punctuation">,</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;./index&apos;</span><span class="token punctuation">;</span>
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
-  path: <span class="hljs-string">&apos;&apos;</span>,
-  name: <span class="hljs-string">&apos;home&apos;</span>,
-  childRoutes: [
-    { path: <span class="hljs-string">&apos;default-page&apos;</span>, component: DefaultPage, isIndex: <span class="hljs-literal">true</span> },
-    { path: <span class="hljs-string">&apos;test-page-1&apos;</span>, component: TestPage1 },
-    { path: <span class="hljs-string">&apos;test-page-2&apos;</span>, component: TestPage2 },
-  ],
-};
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  path<span class="token punctuation">:</span> <span class="token string">&apos;&apos;</span><span class="token punctuation">,</span>
+  name<span class="token punctuation">:</span> <span class="token string">&apos;home&apos;</span><span class="token punctuation">,</span>
+  childRoutes<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;default-page&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> DefaultPage<span class="token punctuation">,</span> isIndex<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;test-page-1&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> TestPage1 <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> path<span class="token punctuation">:</span> <span class="token string">&apos;test-page-2&apos;</span><span class="token punctuation">,</span> component<span class="token punctuation">:</span> TestPage2 <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
 <p>The <code>DefaultPage</code> then becomes the index route for the root path.</p>
 <h4 id="the-name-property">The <code>name</code> property</h4>
@@ -452,7 +452,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Routing","level":"1.11","depth":1,"next":{"title":"Styling","level":"1.12","depth":1,"path":"docs/styling.md","ref":"docs/styling.md","articles":[]},"previous":{"title":"Plugin","level":"1.10","depth":1,"path":"docs/plugin.md","ref":"docs/plugin.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/routing.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T06:06:06.775Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Routing","level":"1.11","depth":1,"next":{"title":"Styling","level":"1.12","depth":1,"path":"docs/styling.md","ref":"docs/styling.md","articles":[]},"previous":{"title":"Plugin","level":"1.10","depth":1,"path":"docs/plugin.md","ref":"docs/plugin.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/routing.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T06:12:47.825Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -460,6 +460,22 @@
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>

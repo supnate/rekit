@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>One Action One File · GitBook</title>
+        <title>One Action One File · Rekit</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -17,7 +17,7 @@
     
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism.css">
                 
             
                 
@@ -334,28 +334,28 @@
 <p>Also you can read the introduction at: <a href="https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da" target="_blank">https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da</a> .</p>
 <p>This idea comes from the pain of regular Redux development: it almost always needs to write the reducer just after creating a new action.</p>
 <p>Take a counter component for example, after creating a new action COUNTER_PLUS_ONE, we immediately need to handle it in the reducer, the official way is to write code in actions.js and reducers.js separately. By the new approach, we create a new file named <code>counterPlusOne.js</code> and put below code in it:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> {
-  COUNTER_PLUS_ONE,
-} <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./constants&apos;</span>;
+<pre class="language-"><code class="lang-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span>
+  COUNTER_PLUS_ONE<span class="token punctuation">,</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;./constants&apos;</span><span class="token punctuation">;</span>
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">counterPlusOne</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">return</span> {
-    type: COUNTER_PLUS_ONE,
-  };
-}
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">counterPlusOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    type<span class="token punctuation">:</span> COUNTER_PLUS_ONE<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reducer</span>(<span class="hljs-params">state, action</span>) </span>{
-  <span class="hljs-keyword">switch</span> (action.type) {
-    <span class="hljs-keyword">case</span> COUNTER_PLUS_ONE:
-      <span class="hljs-keyword">return</span> {
-        ...state,
-        count: state.count + <span class="hljs-number">1</span>,
-      };
+<span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">reducer</span><span class="token punctuation">(</span>state<span class="token punctuation">,</span> action<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> COUNTER_PLUS_ONE<span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token operator">...</span>state<span class="token punctuation">,</span>
+        count<span class="token punctuation">:</span> state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-    <span class="hljs-keyword">default</span>:
-      <span class="hljs-keyword">return</span> state;
-  }
-}
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>In my experience, most reducers are bound to corresponding actions. The are rarely used globally. So putting them into one file is reasonable and it makes the development easier.</p>
 <p>The reducer here is not a standard Redux reducer because it doesn&apos;t have an initial state. It&apos;s only used by the root reducer of the feature. And it is always named <code>reducer</code> so that the root reducer could auto load it from the action module.</p>
@@ -365,31 +365,31 @@
 <ul>
 <li>If chatting box is open, display it.</li>
 <li>If not, show a notification icon/message.
-The <code>NEW_MESSAGE</code> action needs to be processed by different UI components. So there is a root reducer for each feature: <code>&lt;feature-name&gt;/redux/reducer.js</code> in which you write cross-topic reducers.</li>
+The <code>NEW_MESSAGE</code> action needs to be processed by different UI components. So there is a root reducer for each feature: <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>feature-name</span><span class="token punctuation">&gt;</span></span>/redux/reducer.js</code> in which you write cross-topic reducers.</li>
 </ul>
 <h4 id="how-root-reducer-of-a-feature-works">How root reducer of a feature works?</h4>
 <p>Although reducers for different actions are separated into different files, they operate the same state, that is the same branch of the Redux store. So a feature reducer has the below code pattern:</p>
-<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> initialState <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./initialState&apos;</span>;
-<span class="hljs-keyword">import</span> { reducer <span class="hljs-keyword">as</span> counterPlusOne } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./counterPlusOne&apos;</span>;
-<span class="hljs-keyword">import</span> { reducer <span class="hljs-keyword">as</span> counterMinusOne } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./counterMinusOne&apos;</span>;
-<span class="hljs-keyword">import</span> { reducer <span class="hljs-keyword">as</span> resetCounter } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./resetCounter&apos;</span>;
+<pre class="language-"><code class="lang-javascript"><span class="token keyword">import</span> initialState <span class="token keyword">from</span> <span class="token string">&apos;./initialState&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> reducer <span class="token keyword">as</span> counterPlusOne <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;./counterPlusOne&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> reducer <span class="token keyword">as</span> counterMinusOne <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;./counterMinusOne&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> reducer <span class="token keyword">as</span> resetCounter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&apos;./resetCounter&apos;</span><span class="token punctuation">;</span>
 
-<span class="hljs-keyword">const</span> reducers = [
-  counterPlusOne,
-  counterMinusOne,
-  resetCounter,
-];
+<span class="token keyword">const</span> reducers <span class="token operator">=</span> <span class="token punctuation">[</span>
+  counterPlusOne<span class="token punctuation">,</span>
+  counterMinusOne<span class="token punctuation">,</span>
+  resetCounter<span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reducer</span>(<span class="hljs-params">state = initialState, action</span>) </span>{
-  <span class="hljs-keyword">let</span> newState;
-  <span class="hljs-keyword">switch</span> (action.type) {
-    <span class="hljs-comment">// Put global reducers here</span>
-    <span class="hljs-keyword">default</span>:
-      newState = state;
-      <span class="hljs-keyword">break</span>;
-  }
-  <span class="hljs-keyword">return</span> reducers.reduce((s, r) =&gt; r(s, action), newState);
-}
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">reducer</span><span class="token punctuation">(</span>state <span class="token operator">=</span> initialState<span class="token punctuation">,</span> action<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> newState<span class="token punctuation">;</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>action<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Put global reducers here</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      newState <span class="token operator">=</span> state<span class="token punctuation">;</span>
+      <span class="token keyword">break</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> reducers<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> r<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token function">r</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> action<span class="token punctuation">)</span><span class="token punctuation">,</span> newState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>By using Rekit to create actions, you don&apos;t need to manually maintain this file because the Rekit will auto update it to add or remove the reducer import.</p>
 <h4 id="benefits">Benefits</h4>
@@ -444,7 +444,7 @@ The <code>NEW_MESSAGE</code> action needs to be processed by different UI compon
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"One Action One File","level":"1.5","depth":1,"next":{"title":"Namings","level":"1.6","depth":1,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},"previous":{"title":"Concepts","level":"1.4","depth":1,"path":"docs/concepts.md","ref":"docs/concepts.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/one-action-one-file.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T06:06:06.775Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"One Action One File","level":"1.5","depth":1,"next":{"title":"Namings","level":"1.6","depth":1,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},"previous":{"title":"Concepts","level":"1.4","depth":1,"path":"docs/concepts.md","ref":"docs/concepts.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/one-action-one-file.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T06:12:47.825Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -452,6 +452,22 @@ The <code>NEW_MESSAGE</code> action needs to be processed by different UI compon
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Testing · GitBook</title>
+        <title>Testing · Rekit</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -17,7 +17,7 @@
     
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism.css">
                 
             
                 
@@ -346,34 +346,34 @@
 <li>It ensures reducer is immutable by checking equality of the previous and new states.</li>
 </ol>
 <p>For example, when creating a new page, it generates below test case:</p>
-<pre><code class="lang-javascript">it(<span class="hljs-string">&apos;renders node with correct class name&apos;</span>, () =&gt; {
-  <span class="hljs-keyword">const</span> pageProps = {
-    home: {},
-    actions: {},
-  };
-  <span class="hljs-keyword">const</span> renderedComponent = shallow(
-    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">TestPage1</span> {<span class="hljs-attr">...pageProps</span>} /&gt;</span>
-  );
+<pre class="language-"><code class="lang-javascript"><span class="token function">it</span><span class="token punctuation">(</span><span class="token string">&apos;renders node with correct class name&apos;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> pageProps <span class="token operator">=</span> <span class="token punctuation">{</span>
+    home<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    actions<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> renderedComponent <span class="token operator">=</span> <span class="token function">shallow</span><span class="token punctuation">(</span>
+    <span class="token operator">&lt;</span>TestPage1 <span class="token punctuation">{</span><span class="token operator">...</span>pageProps<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  expect(
-    renderedComponent.find(&apos;.home-test-page-1&apos;).node
-  ).to.exist;
-});
-</span></code></pre>
+  <span class="token function">expect</span><span class="token punctuation">(</span>
+    renderedComponent<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">&apos;.home-test-page-1&apos;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>node
+  <span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>exist<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
 <p>When creating an action, it generates below reducer test case:</p>
-<pre><code class="lang-javascript">it(<span class="hljs-string">&apos;reducer should handle MY_ACTION&apos;</span>, () =&gt; {
-  <span class="hljs-keyword">const</span> prevState = {};
-  <span class="hljs-keyword">const</span> state = reducer(
-    prevState,
-    { type: MY_ACTION }
-  );
-  expect(state).to.not.equal(prevState); <span class="hljs-comment">// should be immutable</span>
-  expect(state).to.deep.equal(prevState); <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> replace this line with real case.</span>
-});
+<pre class="language-"><code class="lang-javascript"><span class="token function">it</span><span class="token punctuation">(</span><span class="token string">&apos;reducer should handle MY_ACTION&apos;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> prevState <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token function">reducer</span><span class="token punctuation">(</span>
+    prevState<span class="token punctuation">,</span>
+    <span class="token punctuation">{</span> type<span class="token punctuation">:</span> MY_ACTION <span class="token punctuation">}</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">expect</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>not<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span>prevState<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// should be immutable</span>
+  <span class="token function">expect</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>deep<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span>prevState<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// TODO: replace this line with real case.</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <h4 id="run-tests">Run tests</h4>
 <p>As you may have noticed, test cases also need to be built with webpack, then Mocha could run the test cases. So running a single test case file also needs the build. So <code>tools/run_test.js</code> is created to simplify this process. You can run any test case file just by the <code>run_test.js</code> tool. It&apos;s also exported as <code>npm test</code>. All arguments to it is just passed to the <code>run_test.js</code> script. The usage is as below:</p>
-<pre><code>npm test  // run all tests of the project
+<pre class="language-"><code>npm test  // run all tests of the project
 npm test features/home // run tests under the `home` feature
 npm test **/List.test.js // run all tests named list.test.js under app folder
 </code></pre><p>The script is under your project, so you can edit it for free to meet your own requirements.</p>
@@ -428,7 +428,7 @@ npm test **/List.test.js // run all tests named list.test.js under app folder
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.13","depth":1,"next":{"title":"Bundling","level":"1.14","depth":1,"path":"docs/webpack.md","ref":"docs/webpack.md","articles":[]},"previous":{"title":"Styling","level":"1.12","depth":1,"path":"docs/styling.md","ref":"docs/styling.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/testing.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T06:06:06.775Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.13","depth":1,"next":{"title":"Bundling","level":"1.14","depth":1,"path":"docs/webpack.md","ref":"docs/webpack.md","articles":[]},"previous":{"title":"Styling","level":"1.12","depth":1,"path":"docs/styling.md","ref":"docs/styling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/testing.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T06:12:47.825Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -436,6 +436,22 @@ npm test **/List.test.js // run all tests named list.test.js under app folder
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>

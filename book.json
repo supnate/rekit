@@ -1,0 +1,21 @@
+{
+    "gitbook": "3.x.x",
+    "title": "Rekit",
+    "plugins": ["edit-link", "prism", "-highlight", "github", "anchorjs"],
+    "pluginsConfig": {
+      "edit-link": {
+        "base": "https://github.com/supnate/rekit/tree/master",
+        "label": "Edit This Page"
+      },
+      "github": {
+        "url": "https://github.com/supnate/rekit/"
+      },
+      "theme-default": {
+        "showLevel": false,
+        "styles": {
+          "website": "build/gitbook.css"
+        }
+      }
+    }
+  }
+  

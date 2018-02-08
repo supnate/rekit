@@ -4,6 +4,12 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "docs:prepare": "gitbook install",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:build": "gitbook build",
+    "docs:publish": "npm run docs:prepare && rm -rf _book && gitbook build"
+  },
   "devDependencies": {
     "gitbook-cli": "^2.3.0"
   }

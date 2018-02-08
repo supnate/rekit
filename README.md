@@ -1,6 +1,6 @@
 # <img src="/images/logo_text.png?raw=true" width="260">
 
-> 🎉🎉🎉  [Introducing Rekit Studio: a real IDE for React and Redux development](https://medium.com/@nate_wang/rekit-2-0-next-generation-react-development-ce8bbba51e94)
+> 🎉🎉🎉  [Introducing Rekit Studio: a real IDE for React and Redux development](https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542)
 
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router. It's an all-in-one solution for creating modern React apps.
 

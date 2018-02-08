@@ -1,6 +1,8 @@
 ## One Action One File
 This may be the most opinionate part of the Rekit approach. That is: one action one file, and put the corresponding reducer into the same file.
 
+Also you can read the introduction at: https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da .
+
 This idea comes from the pain of regular Redux development: it almost always needs to write the reducer just after creating a new action.
 
 Take a counter component for example, after creating a new action COUNTER_PLUS_ONE, we immediately need to handle it in the reducer, the official way is to write code in actions.js and reducers.js separately. By the new approach, we create a new file named `counterPlusOne.js` and put below code in it:

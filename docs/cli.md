@@ -1,5 +1,5 @@
 ## Command Line Tools
-Rekit provides a set of command line tools to manage components, actions and routing rules for Rekit projects. They are implemented as JavaScript modules in the package [rekit-core](https://github.com/supnate/rekit-core). Then Rekit just wraps them as command line tools. Actually `rekit-core` is also used by [Rekit Portal](https://github.com/supnate/rekit-portal).
+Rekit provides a set of command line tools to manage components, actions and routing rules for Rekit projects. They are implemented as JavaScript modules in the package [rekit-core](https://github.com/supnate/rekit/tree/master/packages/rekit-core). Then Rekit just wraps them as command line tools. Actually `rekit-core` is also used by [Rekit Studio](https://github.com/supnate/rekit/tree/master/packages/rekit-studio).
 
 
 ### Create an app
@@ -32,7 +32,7 @@ This will execute `install.js` script of the plugin to do the initialization and
 Rekit tools are pure scripts shipped with created applications. They are put in the `tools` folder of your app and are supposed to be edited to meet additional requirements of your project.
 
 ##### tools/server.js
-This script is used to start dev servers, by default it starts all 3 servers include webpack dev server, Rekit portal and the build result server. You can only start some of servers by arguments.
+This script is used to start dev servers, by default it starts all 3 servers include webpack dev server, Rekit Studio and the build result server. You can only start some of servers by arguments.
 
 Usage:
 ```
@@ -41,9 +41,9 @@ node tools/server.js [-m, --mode] [--readonly]
 
 - `mode`: if not provided, all 3 dev servers are started. Otherwise only the specified dev server is started. It could be:
   - `dev`: webpack dev server
-  - `portal`: Rekit portal
+  - `sutdio`: Rekit Studio
   - `build`: start a static express server for build folder.
-- `readonly`: start the Rekit portal on readonly mode. It's useful to start a portal server only for explore the project structure. For example, the Rekit portal [live demo](https://rekit-portal.herokuapp.com) is running on readonly mode.
+- `readonly`: start the Rekit Studio on readonly mode. It's useful to start a studio server only for explore the project structure. For example, the Rekit Studio [live demo](http://demo.rekit.org) is running on readonly mode.
 
 It's also available as the npm script: `npm start`. 
 

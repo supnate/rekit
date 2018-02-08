@@ -1,13 +1,15 @@
 ## Routing
 
-Rekit uses [React router](https://github.com/ReactTraining/react-router) as the routing solution. It's almost the standard way for React web applications. With [React-router-redux](https://github.com/reactjs/react-router-redux) you can easily sync the routing state with the Redux store.
+Rekit uses [React Router V4](https://github.com/ReactTraining/react-router) as the routing solution. It's almost the standard way for React web applications. With [React-router-redux](https://github.com/reactjs/react-router-redux) you can easily sync the routing state with the Redux store.
+
+Though React Router V4 provides very powerful features Rekit just use the very basic functionality to do "page" level routing. If you want to use it for very detailed routing like tab switch. Just use it as usual.
 
 Routing is very important even for a simple application. Just like a traditional web application needs different URLs for different page, a sigle page application also needs it to group different logic into different UI parts, which is the Page concept of Rekit.
 
-With Rekit, Page is usually the element to associated with a URL path. Whenever creating a Page by Rekit, it auto defines the mapping rule in the routes config.
+With Rekit, when you create a component with some url path, it will also create a rule for React Router to map the url to the component.
 
 ### Route configuration
-Since Rekit use feature-oriented folder structure, so does route configuration. That is all feature related route config is also defined in the feature folder. Each feature has a `route.js` file where you define the route rules. Below is a sample configuration:
+Since Rekit use feature oriented folder structure, so does route configuration. That is all feature related route config is also defined in the feature folder. Each feature has a `route.js` file where you define the route rules. Below is a sample configuration:
 ```javascript
 import {
   EditPage,

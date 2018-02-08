@@ -37,16 +37,12 @@ By the sample you can quickly see how component, actions and reducers work toget
 **3. A demo to fetch latest topics of `reactjs` channel from Reddit**
 This is just the same example from the official Redux site: [https://redux.js.org/docs/advanced/ExampleRedditAPI.html](https://redux.js.org/docs/advanced/ExampleRedditAPI.html). It demostrates the [async actions](/docs/concepts#async-action) for a Redux application. But the Rekit version uses [one action one file pattern](/docs/one-action-one-file.md), and it adds error handling which is a common requirement for real-world apps.
 
-### Try Rekit Portal
-Rekit portal is a new dev tool shipped with Rekit 2.0. When a Rekit app is started, the Rekit portal is also auto started at: [http://localhost:6076](http://localhost:6076) by default:
+### Using Rekit Studio
+Rekit Studio is the IDE for Rekit projects. When a Rekit app is started, Rekit Studio is also auto started at: [http://localhost:6076](http://localhost:6076) by default:
 
-<img src="/images/portal-local.png" width="700" alt="Rekit Portal"/>
+<img src="/images/rekit-studio.png" width="700" alt="Rekit Studio"/>
 
-It not only provides web UIs for creating/renaming/moving/deleting elements of a Rekit app, but also provides tools for analyzing/building/testing a Rekit application.
-
-From the dashboard, you find test coverage report have not been generated. Don't hesitate to click the run tests button and get a quick view about how Rekit portal helps to do such tasks in a super easy way!
-
-You can learn more from the [Rekit portal](/docs/portal.md) page.
+See a full introduction at: https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542
 
 ### Where to start
 Rekit creates a single page application by default. You may need to edit the root container first to define your own container layout. The source file is at `src/features/home/App.js`.

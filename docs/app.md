@@ -3,6 +3,8 @@ You can create a React app by Rekit with one command line with no configuration 
 
 One of the key concepts of Rekit is dividing a large app into small pieces called features. A feature is some capability of an application. It's small and well decoupled, so it's easy to understand and maintain.
 
+You can also read the introduction at: https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0 .
+
 A React app already naturally constructs UI by component tree. Actually by combining Redux reducers, defining child routes of React router config, we can also divide the overall application store, routing configuration into small pieces. By doing this we can manage the application complexity into orderred pieces. See below picture for the overall Rekit app architecture:
 
 <img src="/images/app-architecture.png" width="600" alt="rekit-app-architecture" />

@@ -4,10 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Plugin · Rekit</title>
+        <title>Plugin · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -17,7 +17,7 @@
     
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
                 
             
                 
@@ -102,26 +102,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../README-2.0.md">
-            
-                <span>
-            
-                    
-                    Introduction
-            
-                </a>
-            
-
-            
-            <ul class="articles">
-                
-    
-        <li class="chapter " data-level="1.2.1" data-path="get-started.html">
+        <li class="chapter " data-level="1.2" data-path="get-started.html">
             
                 <a href="get-started.html">
             
                     
-                    Get started
+                    Get Started
             
                 </a>
             
@@ -129,7 +115,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.2" data-path="app.html">
+        <li class="chapter " data-level="1.3" data-path="app.html">
             
                 <a href="app.html">
             
@@ -142,7 +128,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.3" data-path="concepts.html">
+        <li class="chapter " data-level="1.4" data-path="concepts.html">
             
                 <a href="concepts.html">
             
@@ -155,12 +141,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.4" data-path="one-action-one-file.html">
+        <li class="chapter " data-level="1.5" data-path="one-action-one-file.html">
             
                 <a href="one-action-one-file.html">
             
                     
-                    One action one file
+                    One Action One File
             
                 </a>
             
@@ -168,7 +154,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.5" data-path="namings.html">
+        <li class="chapter " data-level="1.6" data-path="namings.html">
             
                 <a href="namings.html">
             
@@ -181,30 +167,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2.6" data-path="examples.html">
-            
-                <a href="examples.html">
-            
-                    
-                    Examples
-            
-                </a>
-            
-
-            
-        </li>
-    
-
-            </ul>
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3" data-path="core.html">
+        <li class="chapter " data-level="1.7" data-path="core.html">
             
                 <a href="core.html">
             
                     
-                    Rekit core
+                    Rekit Core
             
                 </a>
             
@@ -212,12 +180,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="portal.html">
+        <li class="chapter " data-level="1.8" >
             
-                <a href="portal.html">
+                <a target="_blank" href="https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542">
             
                     
-                    Rekit portal
+                    Rekit Studio
             
                 </a>
             
@@ -225,12 +193,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="cli.html">
+        <li class="chapter " data-level="1.9" data-path="cli.html">
             
                 <a href="cli.html">
             
                     
-                    Command line tools
+                    Command Line Tools
             
                 </a>
             
@@ -238,7 +206,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.6" data-path="plugin.html">
+        <li class="chapter active" data-level="1.10" data-path="plugin.html">
             
                 <a href="plugin.html">
             
@@ -251,7 +219,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="routing.html">
+        <li class="chapter " data-level="1.11" data-path="routing.html">
             
                 <a href="routing.html">
             
@@ -264,7 +232,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.8" data-path="styling.html">
+        <li class="chapter " data-level="1.12" data-path="styling.html">
             
                 <a href="styling.html">
             
@@ -277,7 +245,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.9" data-path="testing.html">
+        <li class="chapter " data-level="1.13" data-path="testing.html">
             
                 <a href="testing.html">
             
@@ -290,7 +258,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.10" data-path="webpack.html">
+        <li class="chapter " data-level="1.14" data-path="webpack.html">
             
                 <a href="webpack.html">
             
@@ -303,7 +271,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.11" data-path="eslint.html">
+        <li class="chapter " data-level="1.15" data-path="eslint.html">
             
                 <a href="eslint.html">
             
@@ -364,53 +332,53 @@
                                 <h2 id="plugin">Plugin</h2>
 <p>Rekit 2.0 introduced a new plugin mechanism for extending the capability of Rekit.</p>
 <p>If you&apos;ve tried Rekit command line tools, you may have been familiar with its pattern:</p>
-<pre class="language-"><code>rekit <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>add|rm|mv</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>element-type</span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>feature</span><span class="token punctuation">&gt;</span></span>/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>element-name</span><span class="token punctuation">&gt;</span></span>
+<pre><code>rekit &lt;add|rm|mv&gt; &lt;element-type&gt; &lt;feature&gt;/&lt;/element-name&gt;
 </code></pre><p>Internally Rekit supports 3 element types: <code>feature</code>, <code>component</code> and <code>action</code> and defines how to <code>add/rm/mv</code> them.</p>
 <p>Now you can create a Rekit plugin to alter the default behavior like how Rekit creates an async action or let Rekit support a new element type like <code>selector</code> based on <a href="https://github.com/reactjs/reselect" target="_blank">reselect</a>.</p>
 <p>Actually, there have been such two plugins available:</p>
 <ol>
-<li><a href="https://github.com/supnate/rekit-plugin-redux-saga" target="_blank">rekit-plugin-redux-saga</a>: allows Rekit to uses <code>redux-saga</code> rather than <code>redux-thunk</code> when creating async actions.</li>
-<li><a href="https://github.com/supnate/rekit-plugin" target="_blank">rekit-plugin-reselect</a>: adds a new element type named <code>selector</code> based on <a href="https://github.com/reactjs/reselect" target="_blank">reselect</a> to Rekit. So that you can manage selectors by Rekit for your project.</li>
+<li><a href="https://github.com/supnate/rekit/tree/master/packages/rekit-plugin-redux-saga" target="_blank">rekit-plugin-redux-saga</a>: allows Rekit to uses <code>redux-saga</code> rather than <code>redux-thunk</code> when creating async actions.</li>
+<li><a href="https://github.com/supnate/rekit/tree/master/packages/rekit-plugin-selector" target="_blank">rekit-plugin-selector</a>: adds a new element type named <code>selector</code> based on <a href="https://github.com/reactjs/reselect" target="_blank">reselect</a> to Rekit. So that you can manage selectors by Rekit for your project.</li>
 </ol>
 <p>The two plugins are not only productable but also reference about how to create Rekit plugins.</p>
 <p>There are two types of plugins:</p>
 <ol>
 <li><strong>Public plugins</strong>: plugins published on npm so that all people could use it. When installed, it&apos;s under <code>node_modules</code> folder. In development time, you can use <a href="https://docs.npmjs.com/cli/link" target="_blank">npm link</a> to test a public plugin.</li>
-<li><strong>Local plugins</strong>: plugins only meet the requirements for your own project. They are placed under <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>your-prjroot</span><span class="token punctuation">&gt;</span></span>/tools/plugins</code> folder.</li>
+<li><strong>Local plugins</strong>: plugins only meet the requirements for your own project. They are placed under <code>&lt;your-prjroot&gt;/tools/plugins</code> folder.</li>
 </ol>
 <p>There are no difference of the two types of plugins themselves.</p>
 <h2 id="create-a-plugin">Create a plugin</h2>
 <p>To create a plugin, use below command:</p>
-<pre class="language-"><code>rekit create-plugin <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin-name</span><span class="token punctuation">&gt;</span></span>
+<pre><code>rekit create-plugin &lt;plugin-name&gt;
 </code></pre><p>It will create a local plugin if the current directory is in a Rekit project, otherwise create a public plugin.</p>
 <h2 id="plugin-structure">Plugin structure</h2>
 <p>After creating a plugin, you can look into the folder structure. There could be some special files under the plugin folder:</p>
 <h3 id="configjs">config.js</h3>
 <p>The only mandotory file of a plugin, it defines element types it could handle and defines the command arguments if necessary. For example:</p>
-<pre class="language-"><code class="lang-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
-  accept<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">&apos;action&apos;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token function">defineArgs</span><span class="token punctuation">(</span>addCmd<span class="token punctuation">,</span> mvCmd<span class="token punctuation">,</span> rmCmd<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// eslint-disable-line</span>
-    addCmd<span class="token punctuation">.</span><span class="token function">addArgument</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">&apos;--thunk&apos;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
-      help<span class="token punctuation">:</span> <span class="token string">&apos;Use redux-thunk for async actions.&apos;</span><span class="token punctuation">,</span>
-      action<span class="token punctuation">:</span> <span class="token string">&apos;storeTrue&apos;</span><span class="token punctuation">,</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
+  accept: [<span class="hljs-string">&apos;action&apos;</span>],
+  defineArgs(addCmd, mvCmd, rmCmd) { <span class="hljs-comment">// eslint-disable-line</span>
+    addCmd.addArgument([<span class="hljs-string">&apos;--thunk&apos;</span>], {
+      help: <span class="hljs-string">&apos;Use redux-thunk for async actions.&apos;</span>,
+      action: <span class="hljs-string">&apos;storeTrue&apos;</span>,
+    });
+  },
+};
 </code></pre>
 <p>There are two parts:</p>
 <h4 id="1-accept">1. accept</h4>
 <p>It&apos;s an array of element types that the plugin could handle. Here it&apos;s <code>action</code>, it will override the default behavior how Rekit handles <code>action</code>. Whenever an element type is defined here, there should be a module named <code>${elementType}.js</code> where defines <code>add</code>, <code>remove</code>, <code>move</code> method to manage those elements. For example, element type <code>action</code> is defined, there should be a module <code>action.js</code> in the plugin folder:</p>
-<pre class="language-"><code class="lang-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
-  <span class="token function">add</span><span class="token punctuation">(</span>feature<span class="token punctuation">,</span> name<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token function">remove</span><span class="token punctuation">(</span>feature<span class="token punctuation">,</span> name<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token function">move</span><span class="token punctuation">(</span>source<span class="token punctuation">,</span> target<span class="token punctuation">,</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<pre><code class="lang-javascript"><span class="hljs-built_in">module</span>.exports = {
+  add(feature, name, args) {},
+  remove(feature, name, args) {},
+  move(source, target, args) {},
+};
 </code></pre>
 <p>You can export just some of <code>add</code>, <code>remove</code>, <code>move</code> if needed. For example, if you only defines <code>add</code> command, then when executes <code>rekit mv action ...</code> it will fallback to the default behavior of how Rekit <code>mv</code> actions.</p>
 <p>You can also create 3 plugins handle <code>add</code>, <code>remove</code>, <code>move</code> sepearately, they accept the same element type. Though seems useless.</p>
 <h4 id="2-defineargsaddcmd-mvcmd-rmcmd">2. defineArgs(addCmd, mvCmd, rmCmd)</h4>
 <p>Rekit uses <a href="https://www.npmjs.com/package/argparse" target="_blank">argparse</a> to parse command arguments. This methods allows to define custom arguments for command line tools. Here <code>addCmd</code>, <code>mvCmd</code> and <code>rmCmd</code> are all sub-commands of the global <code>rekit</code> command. According to the docs of argparse, you can add more options to sub-commands to meet your requirements. For example: <code>redux-saga</code> plugin defines a new option <code>--thunk</code> that allows to use <code>redux-thunk</code> for async actions while redux-saga is used by default. Then you could use:</p>
-<pre class="language-"><code>rekit add action home/my-action -a --thunk
+<pre><code>rekit add action home/my-action -a --thunk
 </code></pre><h3 id="hooksjs">hooks.js</h3>
 <p>This file is only necessary when you want to hook to some operations. i.e., do something after a feature is created or removed. Each element type has two kind of hook points: <code>before</code> and <code>after</code>, they are combined with operation types to form multiple hook points. For example, <code>feature</code> element type has below hook points:</p>
 <ul>
@@ -424,69 +392,167 @@
 <p>The arguments just inherit from the hook target. That is, whatever arguments passed to addFeature are also passed to beforeAddFeature.</p>
 <p>Note that not only internal element types have hook points, each element type supported by plugins all have such hook points.</p>
 <p>For example, <code>redux-saga</code> plugins uses hooks to do initialization and uninitialization when adding or removing features.</p>
-<pre class="language-"><code class="lang-javascript"><span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;fs&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> _ <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;lodash&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> rekitCore <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&apos;rekit-core&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre><code class="lang-javascript">
+<span class="hljs-comment">// Summary:</span>
+<span class="hljs-comment">//  This plugin allows to use redux-saga for redux async actions rather than</span>
+<span class="hljs-comment">//  redux-thunk by default. It overrides the action management provided by rekit-core.</span>
+<span class="hljs-comment">//  And it delegates action mgmt to rekit-core if it&apos;s sync.</span>
 
-<span class="token keyword">const</span> utils <span class="token operator">=</span> rekitCore<span class="token punctuation">.</span>utils<span class="token punctuation">;</span>
-<span class="token keyword">const</span> refactor <span class="token operator">=</span> rekitCore<span class="token punctuation">.</span>refactor<span class="token punctuation">;</span>
-<span class="token keyword">const</span> vio <span class="token operator">=</span> rekitCore<span class="token punctuation">.</span>vio<span class="token punctuation">;</span>
+<span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;fs&apos;</span>);
+<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;path&apos;</span>);
+<span class="hljs-keyword">const</span> _ = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;lodash&apos;</span>);
 
-<span class="token keyword">function</span> <span class="token function">afterAddFeature</span><span class="token punctuation">(</span>featureName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// Summary:</span>
-  <span class="token comment" spellcheck="true">//  Called after a feature is added. Add sagas.js and add entry in rootSaga.js</span>
-  <span class="token keyword">const</span> rootSaga <span class="token operator">=</span> utils<span class="token punctuation">.</span><span class="token function">mapSrcFile</span><span class="token punctuation">(</span><span class="token string">&apos;common/rootSaga.js&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  refactor<span class="token punctuation">.</span><span class="token function">updateFile</span><span class="token punctuation">(</span>rootSaga<span class="token punctuation">,</span> ast <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>
-    refactor<span class="token punctuation">.</span><span class="token function">addImportFrom</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`../features/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">kebabCase</span><span class="token punctuation">(</span>featureName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/redux/sagas`</span></span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">camelCase</span><span class="token punctuation">(</span>featureName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">Sagas`</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    refactor<span class="token punctuation">.</span><span class="token function">addToArray</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> <span class="token string">&apos;featureSagas&apos;</span><span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">camelCase</span><span class="token punctuation">(</span>featureName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">Sagas`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+_.pascalCase = _.flow(_.camelCase, _.upperFirst);
+_.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
 
-  <span class="token keyword">const</span> featureSagas <span class="token operator">=</span> utils<span class="token punctuation">.</span><span class="token function">mapFeatureFile</span><span class="token punctuation">(</span>featureName<span class="token punctuation">,</span> <span class="token string">&apos;redux/sagas.js&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token comment" spellcheck="true">// create sagas.js entry file for the feature</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>fs<span class="token punctuation">.</span><span class="token function">existsSync</span><span class="token punctuation">(</span>featureSagas<span class="token punctuation">)</span><span class="token punctuation">)</span> vio<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>featureSagas<span class="token punctuation">,</span> <span class="token string">&apos;&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">rekitCore</span>) </span>{
+  <span class="hljs-keyword">const</span> app = rekitCore.app;
+  <span class="hljs-keyword">const</span> utils = rekitCore.utils;
+  <span class="hljs-keyword">const</span> refactor = rekitCore.refactor;
+  <span class="hljs-keyword">const</span> test = rekitCore.test;
+  <span class="hljs-keyword">const</span> action = rekitCore.action;
+  <span class="hljs-keyword">const</span> vio = rekitCore.vio;
 
-<span class="token keyword">function</span> <span class="token function">afterRemoveFeature</span><span class="token punctuation">(</span>featureName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// Summary:</span>
-  <span class="token comment" spellcheck="true">//  Called after a feature is removed. Remove entry from rootSaga.js</span>
-  <span class="token keyword">const</span> rootSaga <span class="token operator">=</span> utils<span class="token punctuation">.</span><span class="token function">mapSrcFile</span><span class="token punctuation">(</span><span class="token string">&apos;common/rootSaga.js&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  refactor<span class="token punctuation">.</span><span class="token function">updateFile</span><span class="token punctuation">(</span>rootSaga<span class="token punctuation">,</span> ast <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>
-    refactor<span class="token punctuation">.</span><span class="token function">removeImportBySource</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`../features/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">kebabCase</span><span class="token punctuation">(</span>featureName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/redux/sagas`</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    refactor<span class="token punctuation">.</span><span class="token function">removeFromArray</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> <span class="token string">&apos;featureSagas&apos;</span><span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">camelCase</span><span class="token punctuation">(</span>featureName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">Sagas`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+  <span class="hljs-keyword">const</span> afterAddFeature = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;./hooks&apos;</span>)(rekitCore).afterAddFeature;
 
-<span class="token keyword">function</span> <span class="token function">afterMoveFeature</span><span class="token punctuation">(</span>oldName<span class="token punctuation">,</span> newName<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token comment" spellcheck="true">// Summary:</span>
-  <span class="token comment" spellcheck="true">//  Called after a feature is renamed. Rename entry in rootSaga.js</span>
-  <span class="token keyword">const</span> rootSaga <span class="token operator">=</span> utils<span class="token punctuation">.</span><span class="token function">mapSrcFile</span><span class="token punctuation">(</span><span class="token string">&apos;common/rootSaga.js&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  refactor<span class="token punctuation">.</span><span class="token function">updateFile</span><span class="token punctuation">(</span>rootSaga<span class="token punctuation">,</span> ast <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>
-    refactor<span class="token punctuation">.</span><span class="token function">renameModuleSource</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`../features/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">kebabCase</span><span class="token punctuation">(</span>oldName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/redux/sagas`</span></span><span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`../features/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">kebabCase</span><span class="token punctuation">(</span>newName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/redux/sagas`</span></span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    refactor<span class="token punctuation">.</span><span class="token function">renameImportSpecifier</span><span class="token punctuation">(</span>ast<span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">camelCase</span><span class="token punctuation">(</span>oldName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">Sagas`</span></span><span class="token punctuation">,</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>_<span class="token punctuation">.</span><span class="token function">camelCase</span><span class="token punctuation">(</span>newName<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">Sagas`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ensureInit</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-comment">// Summary</span>
+    <span class="hljs-comment">//  Init the project to be ready for redux-saga</span>
+    <span class="hljs-keyword">const</span> rootSagaPath = utils.mapSrcFile(<span class="hljs-string">&apos;common/rootSaga.js&apos;</span>);
 
-module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
-  afterAddFeature<span class="token punctuation">,</span>
-  afterRemoveFeature<span class="token punctuation">,</span>
-  afterMoveFeature<span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="hljs-comment">// Check if saga plugin is already installed</span>
+    <span class="hljs-keyword">if</span> (fs.existsSync(rootSagaPath)) {
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-comment">// Create src/common/rootSaga.js</span>
+    <span class="hljs-keyword">const</span> content = vio.getContent(path.join(__dirname, <span class="hljs-string">&apos;templates/rootSaga.js&apos;</span>));
+    vio.save(rootSagaPath, content);
+
+    <span class="hljs-comment">// Apply redux-saga middleware</span>
+    <span class="hljs-keyword">const</span> configStorePath = utils.mapSrcFile(<span class="hljs-string">&apos;common/configStore.js&apos;</span>);
+
+    <span class="hljs-comment">// Import saga modulesinit</span>
+    refactor.updateFile(configStorePath, ast =&gt; [].concat(
+      refactor.addImportFrom(ast, <span class="hljs-string">&apos;redux-saga&apos;</span>, <span class="hljs-string">&apos;createSagaMiddleware&apos;</span>),
+      refactor.addImportFrom(ast, <span class="hljs-string">&apos;./rootSaga&apos;</span>, <span class="hljs-string">&apos;rootSaga&apos;</span>),
+      refactor.addToArray(ast, <span class="hljs-string">&apos;middlewares&apos;</span>, <span class="hljs-string">&apos;sagaMiddleware&apos;</span>)
+    ));
+
+    <span class="hljs-comment">// Add const sagaMiddleWare = createSagaMiddleware();</span>
+    <span class="hljs-keyword">const</span> lines = vio.getLines(configStorePath);
+    <span class="hljs-keyword">let</span> i = refactor.lastLineIndex(lines, <span class="hljs-regexp">/^import/</span>);
+    lines.splice(i + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-string">&apos;&apos;</span>, <span class="hljs-string">&apos;const sagaMiddleware = createSagaMiddleware();&apos;</span>);
+
+    <span class="hljs-comment">// Add sagaMiddleWare.run(rootSaga);</span>
+    i = refactor.lineIndex(lines, <span class="hljs-string">&apos;return store;&apos;</span>);
+    lines.splice(i, <span class="hljs-number">0</span>, <span class="hljs-string">&apos;  sagaMiddleware.run(rootSaga);&apos;</span>);
+
+    <span class="hljs-comment">// Init existing features</span>
+    <span class="hljs-built_in">console</span>.log(app.getFeatures().forEach);
+    app.getFeatures().forEach(afterAddFeature);
+
+    vio.save(configStorePath, lines);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">feature, name, args</span>) </span>{
+    ensureInit();
+    feature = _.kebabCase(feature);
+    name = _.camelCase(name);
+
+    args = args || {};
+    <span class="hljs-keyword">if</span> (!args.async || args.thunk) {
+      <span class="hljs-comment">// Use default behavior if it&apos;s a sync action or asyn action with thunk by default.</span>
+      rekitCore.addAction(feature, name, args);
+      <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-comment">// Saga action is similar with async action except the template.</span>
+    action.addAsync(feature, name, {
+      templateFile: path.join(__dirname, <span class="hljs-string">&apos;templates/async_action_saga.js&apos;</span>),
+    });
+
+    <span class="hljs-comment">// Add to redux/sagas.js</span>
+    <span class="hljs-keyword">const</span> sagasEntry = utils.mapFeatureFile(feature, <span class="hljs-string">&apos;redux/sagas.js&apos;</span>);
+    refactor.addExportFrom(sagasEntry, <span class="hljs-string">`./<span class="hljs-subst">${name}</span>`</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">`watch<span class="hljs-subst">${_.pascalCase(name)}</span>`</span>);
+
+    <span class="hljs-comment">// Add saga test</span>
+    test.addAction(feature, name, {
+      templateFile: path.join(__dirname, <span class="hljs-string">&apos;templates/async_action_saga.test.js&apos;</span>),
+      isAsync: <span class="hljs-literal">true</span>,
+    });
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span>(<span class="hljs-params">feature, name</span>) </span>{
+    ensureInit();
+    feature = _.kebabCase(feature);
+    name = _.camelCase(name);
+
+    <span class="hljs-comment">// Saga action is similar with default async action except the template.</span>
+    rekitCore.removeAction(feature, name);
+
+    <span class="hljs-comment">// Remove from sagas.js</span>
+    <span class="hljs-keyword">const</span> sagasEntry = utils.mapFeatureFile(feature, <span class="hljs-string">&apos;redux/sagas.js&apos;</span>);
+    refactor.removeImportBySource(sagasEntry, <span class="hljs-string">`./<span class="hljs-subst">${name}</span>`</span>);
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">move</span>(<span class="hljs-params">source, target</span>) </span>{
+    ensureInit();
+    rekitCore.moveAction(source, target);
+
+    source.feature = _.kebabCase(source.feature);
+    source.name = _.camelCase(source.name);
+    target.feature = _.kebabCase(target.feature);
+    target.name = _.camelCase(target.name);
+
+    <span class="hljs-keyword">let</span> targetPath;
+    <span class="hljs-comment">// rename saga function name</span>
+    targetPath = utils.mapFeatureFile(target.feature, <span class="hljs-string">`redux/<span class="hljs-subst">${target.name}</span>.js`</span>);
+    refactor.updateFile(targetPath, ast =&gt; [].concat(
+      refactor.renameFunctionName(ast, <span class="hljs-string">`do<span class="hljs-subst">${_.pascalCase(source.name)}</span>`</span>, <span class="hljs-string">`do<span class="hljs-subst">${_.pascalCase(target.name)}</span>`</span>),
+      refactor.renameFunctionName(ast, <span class="hljs-string">`watch<span class="hljs-subst">${_.pascalCase(source.name)}</span>`</span>, <span class="hljs-string">`watch<span class="hljs-subst">${_.pascalCase(target.name)}</span>`</span>)
+    ));
+
+    <span class="hljs-comment">// rename saga function name in test.js</span>
+    targetPath = utils.mapTestFile(target.feature, <span class="hljs-string">`redux/<span class="hljs-subst">${target.name}</span>.test.js`</span>);
+    refactor.renameImportSpecifier(targetPath, <span class="hljs-string">`do<span class="hljs-subst">${_.pascalCase(source.name)}</span>`</span>, <span class="hljs-string">`do<span class="hljs-subst">${_.pascalCase(target.name)}</span>`</span>);
+
+    <span class="hljs-keyword">if</span> (source.feature === target.feature) {
+      targetPath = utils.mapFeatureFile(target.feature, <span class="hljs-string">&apos;redux/sagas.js&apos;</span>);
+      refactor.updateFile(targetPath, ast =&gt; [].concat(
+        refactor.renameExportSpecifier(ast, <span class="hljs-string">`watch<span class="hljs-subst">${_.pascalCase(source.name)}</span>`</span>, <span class="hljs-string">`watch<span class="hljs-subst">${_.pascalCase(target.name)}</span>`</span>),
+        refactor.renameModuleSource(ast, <span class="hljs-string">`./<span class="hljs-subst">${source.name}</span>`</span>, <span class="hljs-string">`./<span class="hljs-subst">${target.name}</span>`</span>)
+      ));
+    } <span class="hljs-keyword">else</span> {
+      targetPath = utils.mapFeatureFile(source.feature, <span class="hljs-string">&apos;redux/sagas.js&apos;</span>);
+      refactor.removeImportBySource(targetPath, <span class="hljs-string">`./<span class="hljs-subst">${source.name}</span>`</span>);
+      targetPath = utils.mapFeatureFile(target.feature, <span class="hljs-string">&apos;redux/sagas.js&apos;</span>);
+      refactor.addExportFrom(targetPath, <span class="hljs-string">`./<span class="hljs-subst">${target.name}</span>`</span>, <span class="hljs-literal">null</span>, <span class="hljs-string">`watch<span class="hljs-subst">${_.pascalCase(target.name)}</span>`</span>);
+    }
+  }
+
+  <span class="hljs-keyword">return</span> {
+    add,
+    remove,
+    move,
+  };
+}
 </code></pre>
 <h2 id="using-a-plugin">Using a plugin</h2>
 <p>For local plugins, you don&apos;t need to do anything else besides creating it. And it has highest priority for handling element types if there are conflicts.</p>
 <p>For public plugins, that is installed from npm. You need to register it in <code>rekit</code> section of <code>package.json</code>:</p>
-<pre class="language-"><code class="lang-json"><span class="token punctuation">{</span>
-...<span class="token punctuation">,</span>
-<span class="token property">&quot;rekit&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-  <span class="token property">&quot;plugins&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">&quot;redux-saga&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;apollo&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> 
-<span class="token punctuation">}</span><span class="token punctuation">,</span>
-...<span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
+<pre><code class="lang-json">{
+...,
+<span class="hljs-string">&quot;rekit&quot;</span>: {
+  <span class="hljs-string">&quot;plugins&quot;</span>: [<span class="hljs-string">&quot;redux-saga&quot;</span>, <span class="hljs-string">&quot;apollo&quot;</span>], 
+},
+...,
+}
 </code></pre>
 <p>Here you should only define public plugins in the <code>plugins</code> property so that they are loaded by Rekit. Local plugins will be always loaded by Rekit. Note that the order of plugin names matters while they accept same element types, the eariers have higher priority.</p>
 <p>While there are conflicts that multiple plugins accept the same element type, the priority from high to low is: local plugins &lt; public plugins &lt; Rekit default behavior.</p>
 <blockquote>
-<p>NOTE: plugins which support more element types could only be used via command line tools for now.</p>
+<p>NOTE: plugins which support more element types could only be used via command line tools but not Rekit Studio for now.</p>
 </blockquote>
 <h2 id="plugin-development">Plugin development</h2>
 <p>For most cases, a plugin just creates bolierplate code based on some template; refactors code when moving, deleting source files. Rekit-core exports many useful APIs for accerlarating plugin development. You may just need to compose those APIs to meet your requirement.</p>
@@ -519,7 +585,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 
             
                 
-                <a href="cli.html" class="navigation navigation-prev " aria-label="Previous page: Command line tools">
+                <a href="cli.html" class="navigation navigation-prev " aria-label="Previous page: Command Line Tools">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -535,7 +601,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Plugin","level":"1.6","depth":1,"next":{"title":"Routing","level":"1.7","depth":1,"path":"docs/routing.md","ref":"docs/routing.md","articles":[]},"previous":{"title":"Command line tools","level":"1.5","depth":1,"path":"docs/cli.md","ref":"docs/cli.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/plugin.md","mtime":"2017-07-08T16:12:32.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-07-13T09:32:52.569Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Plugin","level":"1.10","depth":1,"next":{"title":"Routing","level":"1.11","depth":1,"path":"docs/routing.md","ref":"docs/routing.md","articles":[]},"previous":{"title":"Command Line Tools","level":"1.9","depth":1,"path":"docs/cli.md","ref":"docs/cli.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"docs/plugin.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T05:55:27.084Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -543,22 +609,6 @@ module<span class="token punctuation">.</span>exports <span class="token operato
         
     <script src="../gitbook/gitbook.js"></script>
     <script src="../gitbook/theme.js"></script>
-    
-        
-        <script src="../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
-        
-    
-        
-        <script src="../gitbook/gitbook-plugin-github/plugin.js"></script>
-        
-    
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
-        
-    
-        
-        <script src="../gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
-        
     
         
         <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>

@@ -19,7 +19,7 @@ To have a quick view on how Rekit Studio works, you can look at the [live demo](
 5. Integrated test coverage report.
 
 ### Installation
-You don't need to install Rekit Studio manually. When a new Rekit app is created, the `rekit-portal` is auto dependent as a npm module. You should be able to access Rekit Studio at [http://localhost:6076](http://localhost:6076) by default.
+You don't need to install Rekit Studio manually. When a new Rekit app is created, the `rekit-studio` is auto dependent as a npm module. You should be able to access Rekit Studio at [http://localhost:6076](http://localhost:6076) by default.
 
 ### Project explorer
 The project explorer provides a more meaningful view of the project folder structure by grouping source files by `features`, `actions`, `components`. You can easily see the functionality structure rather than just folder structure. You can see it at the left side of Rekit Studio:

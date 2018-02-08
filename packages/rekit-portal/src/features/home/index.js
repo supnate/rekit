@@ -16,3 +16,4 @@ export { default as WelcomePage } from './WelcomePage';
 export { default as AllRoutesPage } from './AllRoutesPage';
 export { default as QuickOpen } from './QuickOpen';
 export { default as SidePanelResizer } from './SidePanelResizer';
+export { default as PromptToStudio } from './PromptToStudio';

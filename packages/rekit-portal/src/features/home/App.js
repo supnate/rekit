@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import enUS from 'antd/lib/locale-provider/en_US';
 import { LocaleProvider, message, Modal, Spin } from 'antd';
 import { ErrorBoundary } from '../common';
-import { TabsBar, SidePanel, SidePanelResizer } from './';
+import { PromptToStudio, TabsBar, SidePanel, SidePanelResizer } from './';
 import DialogPlace from '../rekit-cmds/DialogPlace';
 import { fetchProjectData } from './redux/actions';
 
@@ -65,6 +65,7 @@ export class App extends Component {
     return (
       <LocaleProvider locale={enUS}>
         <div className="home-app">
+          <PromptToStudio />
           <SidePanel />
           <TabsBar />
           <SidePanelResizer />

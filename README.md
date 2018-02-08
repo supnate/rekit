@@ -25,14 +25,13 @@ Below is a quick demo video of how Rekit works:
 
 [<img src="/images/rekit-studio-youtube.png" width="500" alt="Rekit Demo"/>](https://youtu.be/i53XffYtWMc "Rekit Demo")
 
-The demo contains two parts, which are official examples in Redux's website:
+The demo contains two parts, which are examples in Redux's official website:
 
 1. Create a simple counter in 1 minute!
 2. Show the latest reactjs topics on Reddit using async actions.
 
 ## Live Demo
 You can also see the live demo at: http://demo.rekit.org
-
 
 ## Installation
 ```

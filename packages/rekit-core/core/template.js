@@ -23,7 +23,14 @@ _.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
  * @alias module:template.readTemplate
 **/
 function readTemplate(file) {
-  file = path.isAbsolute(file) ? file : utils.joinPath(__dirname, '../templates', file);
+  if (!path.isAbsolute(file)) {
+    const customTemplate = path.join(utils.getProjectRoot(), 'tools/templates', file);
+    if (!shell.test('-e', customTemplate)) {
+      file = utils.joinPath(__dirname, '../templates', file);
+    } else {
+      file = customTemplate;
+    }
+  }
   if (!shell.test('-e', file) && !vio.fileExists(file)) {
     utils.fatalError('Template file does\'t exist: ', file);
   }

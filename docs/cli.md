@@ -41,7 +41,7 @@ node tools/server.js [-m, --mode] [--readonly]
 
 - `mode`: if not provided, all 3 dev servers are started. Otherwise only the specified dev server is started. It could be:
   - `dev`: webpack dev server
-  - `sutdio`: Rekit Studio
+  - `studio`: Rekit Studio
   - `build`: start a static express server for build folder.
 - `readonly`: start the Rekit Studio on readonly mode. It's useful to start a studio server only for explore the project structure. For example, the Rekit Studio [live demo](http://demo.rekit.org) is running on readonly mode.
 
@@ -81,7 +81,7 @@ This is the key part of daily Rekit development. You will use below commands to 
 
 > Note: though all commands are put under the `rekit` command, i.e. `rekit add component home/comp1`. Actually Rekit will find the local `rekit-core` package in your app to finish the operation. So execute `rekit` commands under different Rekit apps may have different behaviors if those apps depends on different versions of `rekit-core`.
 
-All such commands have silimar patterns:
+All such commands have similar patterns:
 
 - `rekit add <type>`: add an element of the type.
 - `rekit mv <type>`: move/rename an element of the type.

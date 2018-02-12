@@ -13,16 +13,17 @@ import { getExpandedKeys, getFilteredExplorerTreeData } from './selectors/explor
 const TreeNode = Tree.TreeNode;
 
 const menuItems = {
-  addAction: { name: 'Add action', key: 'add-action' },
-  addComponent: { name: 'Add component', key: 'add-component' },
-  addFeature: { name: 'Add feature', key: 'add-feature' },
+  addAction: { name: 'Add Action', key: 'add-action' },
+  addComponent: { name: 'Add Component', key: 'add-component' },
+  addFeature: { name: 'Add Feature', key: 'add-feature' },
   del: { name: 'Delete', key: 'del' },
   move: { name: 'Move', key: 'move' },
   rename: { name: 'Rename', key: 'rename' },
-  showTest: { name: 'Unit test', key: 'show-test' },
-  runTest: { name: 'Run test', key: 'run-test' },
-  runTests: { name: 'Run tests', key: 'run-tests' },
+  showTest: { name: 'Unit Test', key: 'show-test' },
+  runTest: { name: 'Run Test', key: 'run-test' },
+  runTests: { name: 'Run Tests', key: 'run-tests' },
   showStyle: { name: 'Style', key: 'show-style' },
+  newFile: { name: 'New File', key: 'new-file' },
 };
 
 export class ProjectExplorer extends Component {

@@ -22,22 +22,19 @@ export class SidePanel extends Component {
     aboutDialogVisible: process.env.REKIT_ENV === 'demo',
   };
 
-  @autobind
-  showAbout() {
+  showAbout = () => {
     this.setState({
       aboutDialogVisible: true,
     });
   }
 
-  @autobind
-  hideAbout() {
+  hideAbout = () => {
     this.setState({
       aboutDialogVisible: false,
     });
   }
 
-  @autobind
-  handleAddMenuClick(evt) {
+  handleAddMenuClick = (evt) => {
     switch (evt.key) {
       case 'add-feature':
       case 'add-component':
@@ -64,31 +61,29 @@ export class SidePanel extends Component {
     }
   }
 
-  @autobind
-  handleSearch(key) {
+  handleSearch = (key) => {
     this.setState({
       searchKey: key,
     });
   }
 
-  @autobind
-  renderAddMenu() {
+  renderAddMenu = () => {
     return (
       <Menu onClick={this.handleAddMenuClick}>
         <Menu.Item key="add-feature">
-          <Icon type="book" style={{ color: '#29b6f6' }} /> &nbsp;Add feature
+          <Icon type="book" style={{ color: '#29b6f6' }} /> &nbsp;Add Feature
         </Menu.Item>
         <Menu.Item key="add-action">
-          <Icon type="notification" style={{ color: '#ec407a' }} /> &nbsp;Add action
+          <Icon type="notification" style={{ color: '#ec407a' }} /> &nbsp;Add Action
         </Menu.Item>
         <Menu.Item key="add-component">
-          <Icon type="appstore-o" style={{ color: '#F08036' }} /> &nbsp;Add component
+          <Icon type="appstore-o" style={{ color: '#F08036' }} /> &nbsp;Add Component
         </Menu.Item>
         <Menu.Item key="tests">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Run tests
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Run Tests
         </Menu.Item>
         <Menu.Item key="test-coverage">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Test coverage
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Test Coverage
         </Menu.Item>
         <Menu.Item key="build">
           <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Build
@@ -98,7 +93,7 @@ export class SidePanel extends Component {
         </Menu.Item>
       </Menu>
     );
-  }
+  };
 
   render() {
     const { home } = this.props;

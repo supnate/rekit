@@ -126,7 +126,7 @@ export class HomePage extends Component {
           <Col span="16" className="diagram-container">
             <Popover
               placement="leftTop"
-              title={<p style={{ fontSize: 18 }}>Overview diagram</p>}
+              title={<span style={{ fontSize: 18, lineHeight: '40px' }}>Overview diagram</span>}
               content={this.renderOverviewDiagramHelp()}
             >
               <Icon
@@ -140,7 +140,7 @@ export class HomePage extends Component {
           <Col span="8" className="test-coverage-container">
             <Popover
               placement="leftTop"
-              title={<p style={{ fontSize: 18 }}>Test coverage</p>}
+              title={<span style={{ fontSize: 18, lineHeight: '40px' }}>Test coverage</span>}
               content={this.renderTestCoverageHelp()}
             >
               <Icon

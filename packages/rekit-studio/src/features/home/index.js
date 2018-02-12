@@ -1,6 +1,4 @@
 export { default as ProjectExplorer } from './ProjectExplorer';
-export { default as AddDialog } from './AddDialog';
-export { default as AddActionForm } from './AddActionForm';
 export { default as SidePanel } from './SidePanel';
 export { default as ElementPage } from './ElementPage';
 export { default as App } from './App';
@@ -10,7 +8,6 @@ export { default as About } from './About';
 export { default as DemoAlert } from './DemoAlert';
 export { default as RekitSteps } from './RekitSteps';
 export { default as CodeEditor } from './CodeEditor';
-export { default as ElementTabs } from './ElementTabs';
 export { default as TabsBar } from './TabsBar';
 export { default as WelcomePage } from './WelcomePage';
 export { default as AllRoutesPage } from './AllRoutesPage';

@@ -7,7 +7,7 @@ import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
-import { CodeEditor, ElementTabs } from './';
+import { CodeEditor } from './';
 
 const TabPane = Tabs.TabPane;
 

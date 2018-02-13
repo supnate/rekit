@@ -4,13 +4,13 @@ Feature oriented web application architecture (in React)
 
 Feature is a very nature concept for people to understand a system. It's also used to describe user requirements for software development. But when a feature comes to programmers side it's usually immediately converted to technical artifacts such as components, actions, models etc. This convention adds the difficulty for new comers or developers themselves serval weeks later to understand the system. So if we organize an software project by features rather than technique categories (like components, actions, models) it will help us always manage the project under control when the project grows because we construct the system with bigger units.
 
-This arcitecture is also the key concept of [Rekit](https://github.com/supnate), a toolkit for building web applications with React, Redux and React router.)
+This architecture is also the key concept of [Rekit](https://github.com/supnate), a toolkit for building web applications with React, Redux and React router.)
 
 Unlike backend system, frontend web application is the direct interface for user to understand the capabilities of an application. So it's more suitable to be organized by features.
 
 At first let's define what a feature means: a feature is some capability of a system. That is a feature always adds some functionality to a system. For example, For a content management system, a new supported content type is a feature, for an IDE the capability to run tests is a feature.
 
-For a complex web application, it's usually hard to understand how different parts work together. Original developers need to draw architectures, write documents to describe the system so that other could understand. But maintaining them is very hard because when the project evolves docs don't evolve themselves. People need to update them in time so that they won't mislead while they don't help. So how if the project itself is self-describle? A feature oriented architecture is helpful for this.
+For a complex web application, it's usually hard to understand how different parts work together. Original developers need to draw architectures, write documents to describe the system so that other could understand. But maintaining them is very hard because when the project evolves docs don't evolve themselves. People need to update them in time so that they won't mislead while they don't help. So how if the project itself is self-describe? A feature oriented architecture is helpful for this.
 
 Because we've grouped components, actions, stores into features, we don't need to think about how these small parts work together but we only consider how features work together to construct the whole application. Features are much bigger units than pure technical artifacts like components, actions or models. By analyzing dependencies between features the system could auto generate understandable and accurate diagrams for developers to learn or review the project. Let's compare below two diagrams, one contains relationship between small artifacts and the other only contains relationship between features. It's obvious the left one is too complicated to understand. In fact, we usually don't need to care about the complexity inside a feature because it's small and it doesn't prevent from understanding the whole application.
 
@@ -22,18 +22,15 @@ Since features need to work together, we can't avoid dependencies among features
 
 When feature A is based on feature B, that is B will not work without A. We say the dependency from B to A is a hard dependency.
 
-For example, diagram feature provides visualizationof the project, it uses data from home feature, if no home feature then diagram doesn't work. Then we say diagram hardly depends on home.
+For example, diagram feature provides visualization of the project, it uses data from home feature, if no home feature then diagram doesn't work. Then we say diagram hardly depends on home.
 
 When feature A uses some artifacts from B (depends on B) to provide new capabilities, but if without B, A still works by simply remove related code. Then we say the dependency from A to B is a soft dependency.
 
 For example, in Rekit portal application, Rekit-cmds feature provides the ability to manage Rekit elements, but home feature needs to provide menu items as entries. Then we say home softly depends on Rekit-cmds feature. Soft dependencies usually could be dismissed by designing some extension mechanism. For example, if home feature allows other features to register menu items then there will be no dependencies from home to Rekit-cmds. However an extension architecture always adds much complexity to the system, if not heavily needed, we prefer soft dependencies so that the system is easier to understand or debug.
 
-In Rekit portal diagrams, we can easily find hard in solid lines, and soft dependencies in dashed lines. See below, when mouse over home feature, we can see the hard and soft depdencies.
+In Rekit portal diagrams, we can easily find hard in solid lines, and soft dependencies in dashed lines. See below, when mouse over home feature, we can see the hard and soft dependencies.
 
 [pic 3]
 
 ## Conclusion
 This article describes an thought of building an application by features. All small technique artifacts should be grouped by features so that the whole system is scalable and maintainable.
-
-
-

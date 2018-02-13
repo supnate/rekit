@@ -4,7 +4,7 @@ Rekit uses [React Router V4](https://github.com/ReactTraining/react-router) as t
 
 Though React Router V4 provides very powerful features Rekit just use the very basic functionality to do "page" level routing. If you want to use it for very detailed routing like tab switch. Just use it as usual.
 
-Routing is very important even for a simple application. Just like a traditional web application needs different URLs for different page, a sigle page application also needs it to group different logic into different UI parts, which is the Page concept of Rekit.
+Routing is very important even for a simple application. Just like a traditional web application needs different URLs for different page, a single page application also needs it to group different logic into different UI parts, which is the Page concept of Rekit.
 
 With Rekit, when you create a component with some url path, it will also create a rule for React Router to map the url to the component.
 
@@ -29,7 +29,7 @@ export default {
 ```
 
 #### Using JavaScript to define route rules
-From above example, we can see route config uses JavaScript. Actually React router supports [Json for configuration](https://github.com/ReactTraining/react-router/blob/master/docs/guides/RouteConfiguration.md). Rekit takes use of it so that it's easy to seperates different routing config into different features. Below is a Json routes config example from the React router official doc:
+From above example, we can see route config uses JavaScript. Actually React router supports [Json for configuration](https://github.com/ReactTraining/react-router/blob/master/docs/guides/RouteConfiguration.md). Rekit takes use of it so that it's easy to separate different routing config into different features. Below is a Json routes config example from the React router official doc:
 ```javascript
 const routes = {
   path: '/',
@@ -66,7 +66,7 @@ It shows how to import and use routes config from features `topic` and `comment`
 > Note that you don't need to maintain the file `src/common/routeConfig.js` manually, Rekit will auto add and remove the rule when adding/removing a feature.
 
 #### Using `isIndex` property instead of indexRoute
-Unlink the JSX way to define route config with `<IndexRoute ...>` tag, the official `indexRoute` config for JavaScript API is a difficult part for Rekit because it prevents defining all necessary incofmation in different features. So Rekit adds the support by using `isIndex` property. A routing rule with `isIndex: true` will become the index route for the parent. Below code is the route config for the auto created `home` feature:
+Unlink the JSX way to define route config with `<IndexRoute ...>` tag, the official `indexRoute` config for JavaScript API is a difficult part for Rekit because it prevents defining all necessary information in different features. So Rekit adds the support by using `isIndex` property. A routing rule with `isIndex: true` will become the index route for the parent. Below code is the route config for the auto created `home` feature:
 ```javascript
 import {
   DefaultPage,
@@ -90,4 +90,3 @@ The `DefaultPage` then becomes the index route for the root path.
 You may have noticed there is a `name` property for the route config rule. Actually it's only used by the `SimpleNav` component. It's only a handy component for displaying links from the route config in dev time. You have seen in the welcome page. It may be useless for a real world application.
 
 All other usage of route config API is just the same with the official way, you can refer to the [React-router official docs](https://github.com/ReactTraining/react-router/blob/master/docs/guides/RouteConfiguration.md).
-

@@ -4,7 +4,7 @@ Rekit 2.0 introduced a new plugin mechanism for extending the capability of Reki
 If you've tried Rekit command line tools, you may have been familiar with its pattern:
 ```
 rekit <add|rm|mv> <element-type> <feature>/</element-name>
-``` 
+```
 
 Internally Rekit supports 3 element types: `feature`, `component` and `action` and defines how to `add/rm/mv` them.
 
@@ -67,7 +67,7 @@ module.exports = {
 
 You can export just some of `add`, `remove`, `move` if needed. For example, if you only defines `add` command, then when executes `rekit mv action ...` it will fallback to the default behavior of how Rekit `mv` actions.
 
-You can also create 3 plugins handle `add`, `remove`, `move` sepearately, they accept the same element type. Though seems useless.
+You can also create 3 plugins handle `add`, `remove`, `move` separately, they accept the same element type. Though seems useless.
 
 #### 2. defineArgs(addCmd, mvCmd, rmCmd)
 Rekit uses [argparse](https://www.npmjs.com/package/argparse) to parse command arguments. This methods allows to define custom arguments for command line tools. Here `addCmd`, `mvCmd` and `rmCmd` are all sub-commands of the global `rekit` command. According to the docs of argparse, you can add more options to sub-commands to meet your requirements. For example: `redux-saga` plugin defines a new option `--thunk` that allows to use `redux-thunk` for async actions while redux-saga is used by default. Then you could use:
@@ -250,7 +250,7 @@ For public plugins, that is installed from npm. You need to register it in `reki
 {
 ...,
 "rekit": {
-  "plugins": ["redux-saga", "apollo"], 
+  "plugins": ["redux-saga", "apollo"],
 },
 ...,
 }
@@ -263,7 +263,7 @@ While there are conflicts that multiple plugins accept the same element type, th
 > NOTE: plugins which support more element types could only be used via command line tools but not Rekit Studio for now.
 
 ## Plugin development
-For most cases, a plugin just creates bolierplate code based on some template; refactors code when moving, deleting source files. Rekit-core exports many useful APIs for accerlarating plugin development. You may just need to compose those APIs to meet your requirement.
+For most cases, a plugin just creates boilerplate code based on some template; refactors code when moving, deleting source files. Rekit-core exports many useful APIs for accelerating plugin development. You may just need to compose those APIs to meet your requirement.
 
 ## API reference
 See the link: [http://rekit.js.org/api/index.html](http://rekit.js.org/api/index.html)

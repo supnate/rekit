@@ -14,7 +14,7 @@ All app testing files are saved in the folder `test/app`. And the folder structu
 #### How Rekit generates testing files
 When creating a new component or action, Rekit auto creates test cases for them. Even you don't add any code to to the generated test cases, they help you avoid simple errors. Such as:
 
-1. It ensures a component is always rendered successfully by checking the existance of the root DOM node with correct css class.
+1. It ensures a component is always rendered successfully by checking the existence of the root DOM node with correct css class.
 2. It ensures reducer is immutable by checking equality of the previous and new states.
 
 For example, when creating a new page, it generates below test case:
@@ -66,4 +66,3 @@ By default it does below things:
 
 #### See the coverage report
 If tests are are run for the whole project then test coverage report will be generated at `coverage` folder.
-

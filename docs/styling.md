@@ -2,7 +2,7 @@
 
 Rekit uses [Less](http://lesscss.org) or [Scss](http://sass-lang.com/guide) as the css pre-processor. Unlike many practices import style file in a React component, Rekit recommends to just use Less/Sass itself to manage dependencies. This approach has several advantages:
 
-1. Css could be built and generated separtely.
+1. Css could be built and generated separately.
 2. Importing less from a React component is not a standard way but just a webpack loader's feature.
 3. Css-loader for webpack generates duplicate Css code for the build if the component is used more than one time.
 

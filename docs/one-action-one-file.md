@@ -1,5 +1,5 @@
 ## One Action One File
-This may be the most opinionate part of the Rekit approach. That is: one action one file, and put the corresponding reducer into the same file.
+This may be the most opinionated part of the Rekit approach. That is: one action one file, and put the corresponding reducer into the same file.
 
 Also you can read the introduction at: https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da .
 
@@ -38,7 +38,7 @@ The reducer here is not a standard Redux reducer because it doesn't have an init
 For async actions, the action file may contain multiple actions because it needs to handle errors. For a Rekit application, each feature contains a folder named `redux` where we put actions, constants and reducers.
 
 #### How about cross-topic actions?
-Although not many, there are scenarios needing cross-topic actions. For example, when receving a new message:
+Although not many, there are scenarios needing cross-topic actions. For example, when receiving a new message:
   * If chatting box is open, display it.
   * If not, show a notification icon/message.
 The `NEW_MESSAGE` action needs to be processed by different UI components. So there is a root reducer for each feature: `<feature-name>/redux/reducer.js` in which you write cross-topic reducers.
@@ -78,5 +78,4 @@ This approach has multiple advantages:
 2. Easy to maintain: action files are now small and easy to be found by file name.
 3. Easy to test: one test file corresponds to one action which also includes both action and reducer test.
 4. Easy to write tools: no need to parse code when creating a tool to generate Redux boilerplate code. A file template is enough.
-5. Easy to analyse: cross-topic actions could be easily found by static analysis
-  
+5. Easy to analyze: cross-topic actions could be easily found by static analysis

@@ -330,7 +330,7 @@
                                 <section class="normal markdown-section">
                                 
                                 <h2 id="one-action-one-file">One Action One File</h2>
-<p>This may be the most opinionate part of the Rekit approach. That is: one action one file, and put the corresponding reducer into the same file.</p>
+<p>This may be the most opinionated part of the Rekit approach. That is: one action one file, and put the corresponding reducer into the same file.</p>
 <p>Also you can read the introduction at: <a href="https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da" target="_blank">https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da</a> .</p>
 <p>This idea comes from the pain of regular Redux development: it almost always needs to write the reducer just after creating a new action.</p>
 <p>Take a counter component for example, after creating a new action COUNTER_PLUS_ONE, we immediately need to handle it in the reducer, the official way is to write code in actions.js and reducers.js separately. By the new approach, we create a new file named <code>counterPlusOne.js</code> and put below code in it:</p>
@@ -361,7 +361,7 @@
 <p>The reducer here is not a standard Redux reducer because it doesn&apos;t have an initial state. It&apos;s only used by the root reducer of the feature. And it is always named <code>reducer</code> so that the root reducer could auto load it from the action module.</p>
 <p>For async actions, the action file may contain multiple actions because it needs to handle errors. For a Rekit application, each feature contains a folder named <code>redux</code> where we put actions, constants and reducers.</p>
 <h4 id="how-about-cross-topic-actions">How about cross-topic actions?</h4>
-<p>Although not many, there are scenarios needing cross-topic actions. For example, when receving a new message:</p>
+<p>Although not many, there are scenarios needing cross-topic actions. For example, when receiving a new message:</p>
 <ul>
 <li>If chatting box is open, display it.</li>
 <li>If not, show a notification icon/message.
@@ -399,7 +399,7 @@ The <code>NEW_MESSAGE</code> action needs to be processed by different UI compon
 <li>Easy to maintain: action files are now small and easy to be found by file name.</li>
 <li>Easy to test: one test file corresponds to one action which also includes both action and reducer test.</li>
 <li>Easy to write tools: no need to parse code when creating a tool to generate Redux boilerplate code. A file template is enough.</li>
-<li>Easy to analyse: cross-topic actions could be easily found by static analysis</li>
+<li>Easy to analyze: cross-topic actions could be easily found by static analysis</li>
 </ol>
 
                                 
@@ -444,7 +444,7 @@ The <code>NEW_MESSAGE</code> action needs to be processed by different UI compon
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"One Action One File","level":"1.5","depth":1,"next":{"title":"Namings","level":"1.6","depth":1,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},"previous":{"title":"Concepts","level":"1.4","depth":1,"path":"docs/concepts.md","ref":"docs/concepts.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/one-action-one-file.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-08T06:12:47.825Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"One Action One File","level":"1.5","depth":1,"next":{"title":"Namings","level":"1.6","depth":1,"path":"docs/namings.md","ref":"docs/namings.md","articles":[]},"previous":{"title":"Concepts","level":"1.4","depth":1,"path":"docs/concepts.md","ref":"docs/concepts.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/one-action-one-file.md","mtime":"2018-02-14T04:37:52.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-14T04:38:32.216Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

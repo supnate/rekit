@@ -24,6 +24,7 @@ const menuItems = {
   runTests: { name: 'Run Tests', key: 'run-tests' },
   showStyle: { name: 'Style', key: 'show-style' },
   newFile: { name: 'New File', key: 'new-file' },
+  newFolder: { name: 'New Folder', key: 'new-folder' },
 };
 
 export class ProjectExplorer extends Component {
@@ -66,47 +67,26 @@ export class ProjectExplorer extends Component {
     }
     switch (ele.type) {
       case 'features':
-        return [
-          menuItems.addFeature,
-          menuItems.runTests,
-        ];
+        return [menuItems.addFeature, menuItems.runTests];
       case 'feature':
-        return [
-          menuItems.addComponent,
-          menuItems.addAction,
-          menuItems.rename,
-          menuItems.runTests,
-          menuItems.del,
-        ];
+        return [menuItems.addComponent, menuItems.addAction, menuItems.rename, menuItems.runTests, menuItems.del];
       case 'routes':
         break;
       case 'actions':
-        return [
-          menuItems.addAction,
-          menuItems.runTests,
-        ];
+        return [menuItems.addAction, menuItems.runTests];
       case 'action':
-        return [
-          menuItems.rename,
-          menuItems.move,
-          menuItems.runTest,
-          menuItems.del,
-        ];
+        return [menuItems.rename, menuItems.move, menuItems.runTest, menuItems.del];
       case 'components':
-        return [
-          menuItems.addComponent,
-          menuItems.runTests,
-        ];
+        return [menuItems.addComponent, menuItems.runTests];
       case 'component':
-        return [
-          menuItems.rename,
-          menuItems.move,
-          menuItems.runTest,
-          menuItems.del,
-        ];
+        return [menuItems.rename, menuItems.move, menuItems.runTest, menuItems.del];
       case 'misc':
+        return [menuItems.newFile, menuItems.newFolder];
+      case 'misc-folder':
+        return [menuItems.newFile, menuItems.newFolder, menuItems.rename, menuItems.del];
         break;
       case 'misc-file':
+        return [menuItems.rename, menuItems.del];
         break;
       default:
         break;
@@ -185,7 +165,7 @@ export class ProjectExplorer extends Component {
       selectedKey,
       expandedKeys,
     });
-  }
+  };
 
   handleExpand = (expanded, evt) => {
     const key = evt.node.props.eventKey;
@@ -202,9 +182,9 @@ export class ProjectExplorer extends Component {
     this.setState({
       expandedKeys,
     });
-  }
+  };
 
-  handleContextMenu = (evt) => {
+  handleContextMenu = evt => {
     const menus = this.getMenuItems(evt.node);
     if (!menus.length) return;
 
@@ -226,15 +206,15 @@ export class ProjectExplorer extends Component {
     const clickEvent = document.createEvent('HTMLEvents');
     clickEvent.initEvent('click', true, true);
     this.contextMenuArchor.dispatchEvent(clickEvent);
-  }
+  };
 
-  handleContextMenuVisibleChange = (visible) => {
+  handleContextMenuVisibleChange = visible => {
     if (!visible) {
       this.contextMenuArchor.style.display = 'none';
     }
-  }
+  };
 
-  handleMenuClick = (evt) => {
+  handleMenuClick = evt => {
     const cmdContext = this.cmdContext;
     const prjRoot = this.props.home.projectRoot;
     switch (evt.key) {
@@ -273,39 +253,45 @@ export class ProjectExplorer extends Component {
       case 'del':
         Modal.confirm({
           title: 'Confirm',
-          content: cmdContext.elementType === 'feature'
-            ? `Delete ${cmdContext.elementType}: ${cmdContext.elementName} ? `
-            : `Delete ${cmdContext.elementType}: ${cmdContext.feature}/${cmdContext.elementName} ? `,
+          content:
+            cmdContext.elementType === 'feature'
+              ? `Delete ${cmdContext.elementType}: ${cmdContext.elementName} ? `
+              : `Delete ${cmdContext.elementType}: ${cmdContext.feature}/${cmdContext.elementName} ? `,
           onOk: () => {
             const hide = message.loading(`Deleting ${cmdContext.elementName}`, 0);
-            this.props.actions.execCmd({
-              commandName: 'remove',
-              type: cmdContext.elementType,
-              name: cmdContext.elementType === 'feature'
-                ? `${cmdContext.elementName}`
-                : `${cmdContext.feature}/${cmdContext.elementName}`,
-            })
-            .then(() => {
-              hide();
-              cmdSuccessNotification({
-                commandName: 'delete',
+            this.props.actions
+              .execCmd({
+                commandName: 'remove',
                 type: cmdContext.elementType,
-              }, this.props.actions.showCmdDialog);
-            })
-            .catch((e = 'Unknown error.') => {
-              Modal.error({
-                title: 'Failed to delete',
-                content: e.toString(),
+                name:
+                  cmdContext.elementType === 'feature'
+                    ? `${cmdContext.elementName}`
+                    : `${cmdContext.feature}/${cmdContext.elementName}`,
+              })
+              .then(() => {
+                hide();
+                cmdSuccessNotification(
+                  {
+                    commandName: 'delete',
+                    type: cmdContext.elementType,
+                  },
+                  this.props.actions.showCmdDialog
+                );
+              })
+              .catch((e = 'Unknown error.') => {
+                Modal.error({
+                  title: 'Failed to delete',
+                  content: e.toString(),
+                });
               });
-            });
-          }
+          },
         });
 
         break;
       default:
         break;
     }
-  }
+  };
 
   renderLoading() {
     return (
@@ -317,14 +303,8 @@ export class ProjectExplorer extends Component {
 
   renderContextMenu() {
     return (
-      <Menu
-        style={{ minWidth: 150 }}
-        onClick={this.handleMenuClick}
-        selectedKeys={[]}
-      >
-        {
-          this.state.contextMenu.map(menuItem => <Menu.Item key={menuItem.key}>{menuItem.name}</Menu.Item>)
-        }
+      <Menu style={{ minWidth: 150 }} onClick={this.handleMenuClick} selectedKeys={[]}>
+        {this.state.contextMenu.map(menuItem => <Menu.Item key={menuItem.key}>{menuItem.name}</Menu.Item>)}
       </Menu>
     );
   }
@@ -363,20 +343,17 @@ export class ProjectExplorer extends Component {
           {nodeData.searchable ? this.renderHighlightedTreeNodeLabel(nodeData.label) : nodeData.label}
           {_.has(nodeData, 'count') ? ` (${nodeData.count})` : ''}
         </label>
-        {
-          nodeData.marks && nodeData.marks.map(mark => (
-            <span
-              key={mark}
-              title={markDescription[mark.toLowerCase()]}
-              className={`mark mark-${mark.toLowerCase()}`}
-            >{mark}</span>
-          ))
-        }
+        {nodeData.marks &&
+          nodeData.marks.map(mark => (
+            <span key={mark} title={markDescription[mark.toLowerCase()]} className={`mark mark-${mark.toLowerCase()}`}>
+              {mark}
+            </span>
+          ))}
       </span>
     );
   }
 
-  renderTreeNode = (nodeData) => {
+  renderTreeNode = nodeData => {
     return (
       <TreeNode
         key={nodeData.key}
@@ -387,7 +364,7 @@ export class ProjectExplorer extends Component {
         {nodeData.children && nodeData.children.map(this.renderTreeNode)}
       </TreeNode>
     );
-  }
+  };
 
   render() {
     const { home, treeData, searchKey } = this.props;
@@ -403,20 +380,39 @@ export class ProjectExplorer extends Component {
     }
 
     return (
-      <div className="home-project-explorer" ref={(node) => { this.rootNode = node; }}>
-        {treeNodes.length > 0 ? <Tree
-          autoExpandParent={false}
-          selectedKeys={[this.state.selectedKey]}
-          expandedKeys={expandedKeys}
-          onRightClick={this.handleContextMenu}
-          onSelect={this.handleSelect}
-          onExpand={this.handleExpand}
+      <div
+        className="home-project-explorer"
+        ref={node => {
+          this.rootNode = node;
+        }}
+      >
+        {treeNodes.length > 0 ? (
+          <Tree
+            autoExpandParent={false}
+            selectedKeys={[this.state.selectedKey]}
+            expandedKeys={expandedKeys}
+            onRightClick={this.handleContextMenu}
+            onSelect={this.handleSelect}
+            onExpand={this.handleExpand}
+          >
+            {treeNodes}
+          </Tree>
+        ) : (
+          <div className="no-results">No results.</div>
+        )}
+        <Dropdown
+          overlay={this.renderContextMenu()}
+          trigger={['click']}
+          onVisibleChange={this.handleContextMenuVisibleChange}
         >
-          {treeNodes}
-        </Tree>
-        : <div className="no-results">No results.</div>}
-        <Dropdown overlay={this.renderContextMenu()} trigger={['click']} onVisibleChange={this.handleContextMenuVisibleChange}>
-          <span ref={(node) => { this.contextMenuArchor = node; }} className="context-menu-archor">&nbsp;</span>
+          <span
+            ref={node => {
+              this.contextMenuArchor = node;
+            }}
+            className="context-menu-archor"
+          >
+            &nbsp;
+          </span>
         </Dropdown>
       </div>
     );
@@ -434,11 +430,8 @@ function mapStateToProps(state, props) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ execCmd, showCmdDialog, dismissExecCmdError }, dispatch)
+    actions: bindActionCreators({ execCmd, showCmdDialog, dismissExecCmdError }, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectExplorer);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectExplorer);

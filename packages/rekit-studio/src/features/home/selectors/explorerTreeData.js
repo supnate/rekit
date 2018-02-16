@@ -121,6 +121,7 @@ export const getExplorerTreeData = createSelector(
       {
         key: 'others-node',
         label: 'Others',
+        className: 'others',
         icon: 'folder',
         children: srcFiles.map(getChildData),
       }

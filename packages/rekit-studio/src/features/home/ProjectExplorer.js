@@ -80,17 +80,22 @@ export class ProjectExplorer extends Component {
         return [menuItems.addComponent, menuItems.runTests];
       case 'component':
         return [menuItems.rename, menuItems.move, menuItems.runTest, menuItems.del];
-      case 'misc':
-        return [menuItems.newFile, menuItems.newFolder];
-      case 'misc-folder':
-        return [menuItems.newFile, menuItems.newFolder, menuItems.rename, menuItems.del];
-        break;
-      case 'misc-file':
-        return [menuItems.rename, menuItems.del];
-        break;
       default:
         break;
     }
+    const className = treeNode.props.className;
+    switch (className) {
+      case 'misc':
+      case 'others':
+        return [menuItems.newFile, menuItems.newFolder];
+      case 'misc-folder':
+        return [menuItems.newFile, menuItems.newFolder, menuItems.rename, menuItems.del];
+      case 'misc-file':
+        return [menuItems.rename, menuItems.del];
+      default:
+        break;
+    }
+
     return [];
   }
 

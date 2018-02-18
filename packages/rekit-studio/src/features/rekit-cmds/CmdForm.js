@@ -38,8 +38,7 @@ export class CmdForm extends Component {
     }
   }
 
-  @autobind
-  handleSubmit(evt) {
+  handleSubmit = (evt) => {
     evt.preventDefault();
     const { cmdArgs } = this.props.rekitCmds;
     this.props.form.validateFieldsAndScroll((errors, values) => {
@@ -89,8 +88,7 @@ export class CmdForm extends Component {
     }
   }
 
-  @autobind
-  renderFormItem(meta) {
+  renderFormItem = (meta) => {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 8 },

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { autobind } from 'core-decorators';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Modal } from 'antd';
@@ -16,13 +15,11 @@ export class DialogPlace extends Component {
     actions: PropTypes.object.isRequired,
   };
 
-  @autobind
-  handleCmdDialogDone(dialogType) {
+  handleCmdDialogDone = (dialogType) => {
     this.props.actions.hideDialog(dialogType);
   }
 
-  @autobind
-  handleCmdSuccess(dialogType) {
+  handleCmdSuccess = (dialogType) => {
     this.props.actions.hideCmdDialog(dialogType);
     const { args } = this.props.rekitCmds.execCmdResult;
     cmdSuccessNotification(args, this.props.actions.showCmdDialog);

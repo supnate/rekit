@@ -37,6 +37,9 @@ export function getMeta(cmdType, cmdArgs) {
         { ...baseMeta.name, autoFocus: true, initialValue: cmdArgs.elementName, key: 'newName', label: 'New name' },
       );
       break;
+    case 'new-file':
+      fields.push({ ...baseMeta.name, autoFocus: true });
+      break;
     default:
       console.log('Unknown cmd type: ', cmdType);
       break;

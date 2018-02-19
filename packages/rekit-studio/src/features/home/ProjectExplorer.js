@@ -293,6 +293,12 @@ export class ProjectExplorer extends Component {
         });
 
         break;
+      case 'new-file':
+        this.props.actions.showCmdDialog('cmd', {
+          type: evt.key,
+          ...this.cmdContext,
+        });
+        break;
       default:
         break;
     }

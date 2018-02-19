@@ -33,7 +33,7 @@ export class CmdForm extends Component {
 
   componentDidMount() {
     // auto focus the first text input
-    if (this.autoFocusNode.input) {
+    if (this.autoFocusNode && this.autoFocusNode.input) {
       window.setTimeout(() => this.autoFocusNode.input.select(), 50);
     }
   }

@@ -105,21 +105,39 @@ export class ProjectExplorer extends Component {
     const key = evt.node.props.eventKey;
     const { home } = this.props;
     const ele = home.elementById[key] || home.featureById[key];
-
     if (ele) {
       this.cmdContext = {
         feature: ele.feature,
-        elementType: ele.type,
+        elementType: ele.type === 'misc' ? 'file' : ele.type,
         elementName: ele.name,
         file: key,
+      };
+    } else if (key.includes('/')) {
+      // it's a file
+      const arr = key.split('/');
+      this.cmdContext = {
+        feature: arr[1] === 'features' ? arr[2] : null,
+        elementType: 'folder',
+        file: key,
+        elementName: _.last(arr), // element name is the file path
+      };
+    } else if (key === 'others-node') {
+      this.cmdContext = {
+        feature: null,
+        elementType: 'others-node',
+        elementName: null,
+        file: 'src',
       };
     } else {
       // for <feature>.routes, .actions, .components, .misc
       const i = key.lastIndexOf('-');
+      const feature = key.substring(0, i);
+      const elementType = key.substring(i + 1);
       this.cmdContext = {
-        feature: key.substring(0, i),
-        elementType: key.substring(i + 1),
+        feature,
+        elementType,
         elementName: null,
+        file: `src/features/${feature}`,
       };
     }
   }
@@ -294,6 +312,8 @@ export class ProjectExplorer extends Component {
 
         break;
       case 'new-file':
+      case 'new-folder':
+        console.log(this.cmdContext);
         this.props.actions.showCmdDialog('cmd', {
           type: evt.key,
           ...this.cmdContext,

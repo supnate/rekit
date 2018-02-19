@@ -11,6 +11,7 @@ const prettier = require('prettier');
 const rekitCore = require('rekit-core');
 const fetchProjectData = require('./api/fetchProjectData');
 const getFileContent = require('./api/getFileContent');
+const execCmd = require('./api/execCmd');
 const saveFile = require('./api/saveFile');
 const runBuild = require('./api/runBuild');
 const runTest = require('./api/runTest');
@@ -60,23 +61,23 @@ module.exports = function() { // eslint-disable-line
 
   const rootPath = '/rekit';
 
-  function execCmd(req, res) {
-    try {
-      const args = req.body;
-      rekitCore.handleCommand(args);
-      const logs = rekitCore.vio.flush();
-      rekitCore.vio.reset();
-      res.write(JSON.stringify({
-        args,
-        logs,
-      }));
-      res.end();
-    } catch (e) {
-      res.statusCode = 500;
-      res.write(e.toString());
-      res.end();
-    }
-  }
+  // function execCmd(req, res) {
+  //   try {
+  //     const args = req.body;
+  //     rekitCore.handleCommand(args);
+  //     const logs = rekitCore.vio.flush();
+  //     rekitCore.vio.reset();
+  //     res.write(JSON.stringify({
+  //       args,
+  //       logs,
+  //     }));
+  //     res.end();
+  //   } catch (e) {
+  //     res.statusCode = 500;
+  //     res.write(e.toString());
+  //     res.end();
+  //   }
+  // }
 
   function setupSocketIo(server) {
     io = require('socket.io')(server);

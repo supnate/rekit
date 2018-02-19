@@ -37,6 +37,7 @@ export function getMeta(cmdType, cmdArgs) {
         { ...baseMeta.name, autoFocus: true, initialValue: cmdArgs.elementName, key: 'newName', label: 'New name' },
       );
       break;
+    case 'new-folder':
     case 'new-file':
       fields.push({ ...baseMeta.name, autoFocus: true });
       break;
@@ -80,6 +81,20 @@ export function convertArgs(values, cmdArgs) {
         type: cmdArgs.elementType,
         source: cmdArgs.elementType === 'feature' ? cmdArgs.feature : `${cmdArgs.feature}/${cmdArgs.elementName}`,
         target: cmdArgs.elementType === 'feature' ? values.newName : `${values.targetFeature}/${values.newName}`,
+      };
+    case 'new-folder':
+      return {
+        commandName: 'add',
+        type: 'folder',
+        name: values.name,
+        path: cmdArgs.file,
+      };
+    case 'new-file':
+      return {
+        commandName: 'add',
+        type: 'file',
+        name: values.name,
+        path: cmdArgs.file,
       };
     default:
       console.log('Unknown cmd type: ', cmdArgs.type);

@@ -47,7 +47,7 @@ function execCmd(req, res) {
           } else if (args.type === 'folder') {
             fs.mkdirSync(filePath);
             logs = [{
-              type: 'create-folder',
+              type: 'create-dir',
               file: filePath,
             }];
           }

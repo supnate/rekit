@@ -38,11 +38,19 @@ function execCmd(req, res) {
       const filePath = utils.joinPath(utils.getProjectRoot(), args.path, args.name);
       switch (args.commandName) {
         case 'add': {
-          fs.writeFileSync(filePath, '');
-          logs = [{
-            type: 'create-file',
-            file: filePath,
-          }];
+          if (args.type === 'file') {
+            fs.writeFileSync(filePath, '');
+            logs = [{
+              type: 'create-file',
+              file: filePath,
+            }];
+          } else if (args.type === 'folder') {
+            fs.mkdirSync(filePath);
+            logs = [{
+              type: 'create-folder',
+              file: filePath,
+            }];
+          }
           break;
         }
         default:

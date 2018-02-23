@@ -7,8 +7,15 @@ const babelTypes = require('babel-types');
 const common = require('./common');
 const identifier = require('./identifier');
 
+// NOTE: comments set to false to avoid leadingComments and tailingComments be output.
+// So that comments will not be duplicated.
+// This prevents inline comment inside the import statement like:
+//   import { /* my comment */ ModuleA } from 'modules';
+// The inline comment /* my comment */ will be removed after import/export change.
+
 const babelGeneratorOptions = {
   quotes: 'single',
+  comments: false,
 };
 
 function formatMultilineImport(importCode) {
@@ -259,7 +266,6 @@ function renameImportSpecifier(ast, oldName, newName, moduleSource) {
     ImportDeclaration(path) {
       const node = path.node;
       if (moduleSource && _.get(node, 'source.value') !== moduleSource) return;
-      // console.log(_.get(node, 'source.value'), moduleSource);
       node.specifiers.forEach((specifier) => {
         if (
           (specifier.type === 'ImportDefaultSpecifier' || specifier.type === 'ImportNamespaceSpecifier')

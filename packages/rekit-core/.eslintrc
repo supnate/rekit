@@ -14,6 +14,7 @@
     "max-len": 0,
     "global-require": 0,
     "no-underscore-dangle": 0,
+    "prefer-destructuring": 0,
     "import/no-dynamic-require": 0
   }
 }

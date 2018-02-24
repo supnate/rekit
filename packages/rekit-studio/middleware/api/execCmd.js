@@ -36,6 +36,19 @@ function execCmd(req, res) {
             type: 'del-file',
             file: filePath,
           }];
+          break;
+        }
+        case 'move': {
+          const filePath = utils.joinPath(utils.getProjectRoot(), args.path);
+          const arr = args.path.split('/');
+          arr[arr.length - 1] = args.target;
+          const newPath = utils.joinPath(utils.getProjectRoot(), arr.join('/'));
+          shell.mv(filePath, newPath);
+          logs = [{
+            type: 'mv-file',
+            file: filePath,
+          }];
+          break;
         }
         default:
           break;

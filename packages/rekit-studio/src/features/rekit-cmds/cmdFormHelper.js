@@ -19,22 +19,42 @@ export function getMeta(cmdType, cmdArgs) {
       fields.push(
         { ...baseMeta.feature, initialValue: cmdArgs.feature || null },
         { ...baseMeta.name, autoFocus: true },
-        { ...baseMeta.checkbox, label: 'Async', key: 'async', tooltip: 'Whether the action is async using redux-middleware-thunk.' },
+        {
+          ...baseMeta.checkbox,
+          label: 'Async',
+          key: 'async',
+          tooltip: 'Whether the action is async using redux-middleware-thunk.',
+        }
       );
       break;
     case 'add-component':
       fields.push(
         { ...baseMeta.feature, initialValue: cmdArgs.feature || null },
         { ...baseMeta.name, autoFocus: true },
-        { ...baseMeta.checkbox, label: 'Connect to store', key: 'connect', tooltip: 'Whether to connect to Redux store using react-redux' },
-        { ...baseMeta.textbox, label: 'Url path', key: 'urlPath', tooltip: 'If provided, will create a route rule in React Router config.' },
+        {
+          ...baseMeta.checkbox,
+          label: 'Connect to store',
+          key: 'connect',
+          tooltip: 'Whether to connect to Redux store using react-redux',
+        },
+        {
+          ...baseMeta.textbox,
+          label: 'Url path',
+          key: 'urlPath',
+          tooltip: 'If provided, will create a route rule in React Router config.',
+        }
       );
       break;
     case 'rename':
     case 'move':
       fields.push(
-        cmdArgs.elementType !== 'feature' && { ...baseMeta.feature, initialValue: cmdArgs.feature, key: 'targetFeature', label: 'Target feature' },
-        { ...baseMeta.name, autoFocus: true, initialValue: cmdArgs.elementName, key: 'newName', label: 'New name' },
+        !/feature|file|folder/.test(cmdArgs.elementType) && {
+          ...baseMeta.feature,
+          initialValue: cmdArgs.feature,
+          key: 'targetFeature',
+          label: 'Target feature',
+        },
+        { ...baseMeta.name, autoFocus: true, initialValue: cmdArgs.elementName, key: 'newName', label: 'New name' }
       );
       break;
     case 'new-folder':
@@ -79,8 +99,13 @@ export function convertArgs(values, cmdArgs) {
       return {
         commandName: 'move',
         type: cmdArgs.elementType,
-        source: cmdArgs.elementType === 'feature' ? cmdArgs.feature : `${cmdArgs.feature}/${cmdArgs.elementName}`,
-        target: cmdArgs.elementType === 'feature' ? values.newName : `${values.targetFeature}/${values.newName}`,
+        path: cmdArgs.file || null,
+        source: /feature|file|folder/.test(cmdArgs.elementType)
+          ? cmdArgs.elementType === 'feature' ? cmdArgs.feature : cmdArgs.elementName
+          : `${cmdArgs.feature}/${cmdArgs.elementName}`,
+        target: /feature|file|folder/.test(cmdArgs.elementType)
+          ? values.newName
+          : `${values.targetFeature}/${values.newName}`,
       };
     case 'new-folder':
       return {

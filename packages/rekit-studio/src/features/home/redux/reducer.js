@@ -27,25 +27,11 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     // Put global reducers here
     case 'PROJECT_FILE_CHANGED':
+    case REKIT_CMDS_EXEC_CMD_SUCCESS: // For quick project reoload.
       newState = {
         ...state,
         projectDataNeedReload: true,
       };
-      break;
-
-    case REKIT_CMDS_EXEC_CMD_SUCCESS:
-      // File watcher is not triggered by creating folder, trigger reload here.
-      if (
-        _.get(action, 'data.args.type') === 'folder' &&
-        /add|move|remove/.test(_.get(action, 'data.args.commandName'))
-      ) {
-        newState = {
-          ...state,
-          projectDataNeedReload: true,
-        };
-      } else {
-        newState = state;
-      }
       break;
 
     case '@@router/LOCATION_CHANGE': {

@@ -279,7 +279,9 @@ export class ProjectExplorer extends Component {
           content:
             cmdContext.elementType === 'feature'
               ? `Delete ${cmdContext.elementType}: ${cmdContext.elementName} ? `
-              : `Delete ${cmdContext.elementType}: ${cmdContext.feature}/${cmdContext.elementName} ? `,
+              : cmdContext.feature
+                ? `Delete ${cmdContext.elementType}: ${cmdContext.feature}/${cmdContext.elementName} ? `
+                : `Delete ${cmdContext.elementType}: ${cmdContext.file} ?`,
           onOk: () => {
             const hide = message.loading(`Deleting ${cmdContext.elementName}`, 0);
             this.props.actions

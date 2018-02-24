@@ -37,10 +37,8 @@ export class App extends Component {
       !nextProps.home.fetchProjectDataError &&
       !nextProps.home.fetchProjectDataPending
     ) {
-      const hide = message.loading('Reloading project data...');
       this.props.actions
         .fetchProjectData()
-        .then(hide)
         .catch(e => {
           console.log('failed to fetch project data: ', e);
           message.error('Failed to refresh project data');

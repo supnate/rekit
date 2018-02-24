@@ -9,6 +9,7 @@ import { reducer as saveFileReducer } from './saveFile';
 import { reducer as closeTabReducer } from './closeTab';
 import { reducer as moveTabReducer } from './moveTab';
 import { reducer as setSidePanelWidthReducer } from './setSidePanelWidth';
+import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
 
 const reducers = [
   fetchProjectData,
@@ -30,6 +31,18 @@ export default function reducer(state = initialState, action) {
         ...state,
         projectDataNeedReload: true,
       };
+      break;
+
+    case REKIT_CMDS_EXEC_CMD_SUCCESS:
+      // File watcher is not triggered by creating folder, trigger reload here.
+      if (_.isMatch(action.data, { args: { type: 'folder', commandName: 'add' } })) {
+        newState = {
+          ...state,
+          projectDataNeedReload: true,
+        };
+      } else {
+        newState = state;
+      }
       break;
 
     case '@@router/LOCATION_CHANGE': {
@@ -59,11 +72,12 @@ export default function reducer(state = initialState, action) {
         type = 'element';
         name = ele.name;
         feature = ele.feature;
-        icon = {
-          component: 'appstore-o',
-          action: 'notification',
-          misc: 'file',
-        }[ele.type] || 'file';
+        icon =
+          {
+            component: 'appstore-o',
+            action: 'notification',
+            misc: 'file',
+          }[ele.type] || 'file';
       } else if (arr[0] === 'tools' && arr[1] === 'tests') {
         key = '#tests';
         name = 'Run Tests';
@@ -105,7 +119,7 @@ export default function reducer(state = initialState, action) {
             // Tab type is changed.
             const index = _.findIndex(openTabs, { key });
             openTabs = update(openTabs, {
-              [index]: { subTab: { $set: subTab } }
+              [index]: { subTab: { $set: subTab } },
             });
           }
         }
@@ -113,7 +127,7 @@ export default function reducer(state = initialState, action) {
         if (type === 'tests' && foundTab.pathname !== pathname) {
           const index = _.findIndex(openTabs, { key });
           openTabs = update(openTabs, {
-            [index]: { pathname: { $set: pathname } }
+            [index]: { pathname: { $set: pathname } },
           });
         }
       }

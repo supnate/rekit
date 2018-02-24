@@ -91,6 +91,7 @@
     "history": "^4.6.1",
     "prettier": "1.10.2",
     "socket.io": "^2.0.1",
+    "shelljs": "^0.8.0",
     "watchpack": "^1.3.1"
   },
   "devDependencies": {

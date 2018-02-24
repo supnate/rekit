@@ -1,43 +1,19 @@
 'use strict';
 
 const fs = require('fs');
+const shell = require('shelljs');
 const rekitCore = require('rekit-core');
 
 const utils = rekitCore.utils;
-
-// function execCmd(req) {return;
-//   const args = req.body;
-//   console.log('exec cmd: ', args);
-//   if (/file|folder/.test(args.type)) {
-//     const filePath = utils.joinPath(utils.getProjectRoot(), args.path, args.name);
-//     switch (args.commandName) {
-//       case 'add': {
-//         fs.writeFileSync(filePath, '');
-//         return {
-//           logs: [{
-//             type: 'create-file',
-//             file: filePath,
-//           }],
-//         };
-//       }
-//       default:
-//         break;
-//     }
-//   } else {
-//     rekitCore.handleCommand(args);
-//     const logs = rekitCore.vio.flush();
-//     return { logs };
-//   }
-// }
 
 function execCmd(req, res) {
   try {
     const args = req.body;
     let logs = null;
     if (/file|folder/.test(args.type)) {
-      const filePath = utils.joinPath(utils.getProjectRoot(), args.path, args.name);
       switch (args.commandName) {
         case 'add': {
+          const filePath = utils.joinPath(utils.getProjectRoot(), args.path, args.name);
           if (args.type === 'file') {
             fs.writeFileSync(filePath, '');
             logs = [{
@@ -52,6 +28,14 @@ function execCmd(req, res) {
             }];
           }
           break;
+        }
+        case 'remove': {
+          const filePath = utils.joinPath(utils.getProjectRoot(), args.path);
+          shell.rm('-rf', filePath);
+          logs = [{
+            type: 'del-file',
+            file: filePath,
+          }];
         }
         default:
           break;

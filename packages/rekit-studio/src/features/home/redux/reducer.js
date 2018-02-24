@@ -35,7 +35,10 @@ export default function reducer(state = initialState, action) {
 
     case REKIT_CMDS_EXEC_CMD_SUCCESS:
       // File watcher is not triggered by creating folder, trigger reload here.
-      if (_.isMatch(action.data, { args: { type: 'folder', commandName: 'add' } })) {
+      if (
+        _.get(action, 'data.args.type') === 'folder' &&
+        /add|move|remove/.test(_.get(action, 'data.args.commandName'))
+      ) {
         newState = {
           ...state,
           projectDataNeedReload: true,

@@ -113,7 +113,7 @@ export class ProjectExplorer extends Component {
         file: key,
       };
     } else if (key.includes('/')) {
-      // it's a file
+      // it's a folder because a file must be an ele
       const arr = key.split('/');
       this.cmdContext = {
         feature: arr[1] === 'features' ? arr[2] : null,
@@ -284,6 +284,7 @@ export class ProjectExplorer extends Component {
             const hide = message.loading(`Deleting ${cmdContext.elementName}`, 0);
             this.props.actions
               .execCmd({
+                path: this.cmdContext.file || null,
                 commandName: 'remove',
                 type: cmdContext.elementType,
                 name:
@@ -302,6 +303,7 @@ export class ProjectExplorer extends Component {
                 );
               })
               .catch((e = 'Unknown error.') => {
+                hide();
                 Modal.error({
                   title: 'Failed to delete',
                   content: e.toString(),

@@ -2,23 +2,30 @@ import _ from 'lodash';
 
 const baseMeta = {
   feature: { label: 'Feature', key: 'feature', type: 'string', widget: 'feature', required: true },
-  name: { label: 'Name', key: 'name', type: 'string', widget: 'textbox', required: true },
+  name: {
+    label: 'Name',
+    key: 'name',
+    type: 'string',
+    widget: 'textbox',
+    required: true,
+  },
   checkbox: { type: 'bool', widget: 'checkbox' },
   textbox: { type: 'string', widget: 'textbox' },
 };
 
 // NOTE: autoFocus only supports textbox now
+const elementNameRules = [{ pattern: /^[a-zA-Z_]/, message: 'Name should start with letter or _.' }];
 export function getMeta(cmdType, cmdArgs) {
   const meta = {};
   const fields = [];
   switch (cmdType) {
     case 'add-feature':
-      fields.push({ ...baseMeta.name, autoFocus: true });
+      fields.push({ ...baseMeta.name, autoFocus: true, rules: elementNameRules });
       break;
     case 'add-action':
       fields.push(
         { ...baseMeta.feature, initialValue: cmdArgs.feature || null },
-        { ...baseMeta.name, autoFocus: true },
+        { ...baseMeta.name, autoFocus: true, rules: elementNameRules },
         {
           ...baseMeta.checkbox,
           label: 'Async',
@@ -30,7 +37,7 @@ export function getMeta(cmdType, cmdArgs) {
     case 'add-component':
       fields.push(
         { ...baseMeta.feature, initialValue: cmdArgs.feature || null },
-        { ...baseMeta.name, autoFocus: true },
+        { ...baseMeta.name, autoFocus: true, rules: elementNameRules },
         {
           ...baseMeta.checkbox,
           label: 'Connect to store',
@@ -54,7 +61,14 @@ export function getMeta(cmdType, cmdArgs) {
           key: 'targetFeature',
           label: 'Target feature',
         },
-        { ...baseMeta.name, autoFocus: true, initialValue: cmdArgs.elementName, key: 'newName', label: 'New name' }
+        {
+          ...baseMeta.name,
+          autoFocus: true,
+          initialValue: cmdArgs.elementName,
+          key: 'newName',
+          label: 'New name',
+          rules: /action|component|feature/.test(cmdArgs.elementType) ? elementNameRules : null,
+        }
       );
       break;
     case 'new-folder':

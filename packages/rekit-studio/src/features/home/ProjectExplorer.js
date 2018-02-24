@@ -317,7 +317,6 @@ export class ProjectExplorer extends Component {
         break;
       case 'new-file':
       case 'new-folder':
-        console.log(this.cmdContext);
         this.props.actions.showCmdDialog('cmd', {
           type: evt.key,
           ...this.cmdContext,

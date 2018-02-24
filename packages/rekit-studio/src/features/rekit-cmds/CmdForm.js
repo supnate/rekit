@@ -107,13 +107,14 @@ export class CmdForm extends Component {
       label = meta.label;
     }
 
-    const rules = [];
+    const rules = [...(meta.rules || [])];
     if (meta.required) {
       rules.push({
         required: true,
         message: `${meta.label} is required.`,
       });
     }
+
     return (
       <Form.Item
         key={meta.key}

@@ -7,6 +7,7 @@ import commonReducer from '../features/common/redux/reducer';
 import rekitCmdsReducer from '../features/rekit-cmds/redux/reducer';
 import diagramReducer from '../features/diagram/redux/reducer';
 import rekitToolsReducer from '../features/rekit-tools/redux/reducer';
+import extensionReducer from '../features/extension/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -21,6 +22,7 @@ const reducerMap = {
   rekitCmds: rekitCmdsReducer,
   diagram: diagramReducer,
   rekitTools: rekitToolsReducer,
+  extension: extensionReducer,
 };
 
 export default combineReducers(reducerMap);

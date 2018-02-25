@@ -366,7 +366,7 @@ const c = obj.p1;
       refactor.addObjectProperty(V_FILE, 'obj2', 'p2', 'true');
       refactor.addObjectProperty(V_FILE, 'obj3', 'p', "'abc'");
       expectLines(V_FILE, [
-        "const obj2 = { p: 1 , p2: true };",
+        "const obj2 = { p: 1, p2: true };",
         "const obj3 = { p: 'abc' };",
       ]);
     });

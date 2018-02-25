@@ -15,6 +15,19 @@ function objExpToObj(objExp) {
   return obj;
 }
 
+function nearestCharBefore(char, str, index) {
+  // Find the nearest char index before given index. skip white space strings
+  // If not found, return -1
+  // eg: nearestCharBefore(',', '1,    2, 3', 4) => 1
+  let i = index - 1;
+  while (i >= 0) {
+    if (str.charAt(i) === char) return i;
+    if (!/\s/.test(str.charAt(i))) return -1;
+    i -= 1;
+  }
+  return -1;
+}
+
 function addObjectProperty(ast, varName, propName, propValue) {
   const changes = [];
   traverse(ast, {
@@ -30,22 +43,33 @@ function addObjectProperty(ast, varName, propName, propValue) {
         && _.get(p, 'key.name') === propName
         && !p.computed);
 
+      let insertPos = node.init.start + 1;
+      if (props.length) {
+        insertPos = _.last(props).end;
+      }
+      const code = `${propName}: ${propValue}`;
       if (!targetPropNode) {
+        let replacement;
         const targetPos = node.end - 1;
         if (multilines) {
           const indent = _.repeat(' ', node.loc.end.column - 1);
-          changes.push({
-            start: targetPos,
-            end: targetPos,
-            replacement: `${indent}  ${propName}: ${propValue},\n`,
-          });
+          replacement = `\n${indent}  ${code}`;
+          if (props.length) {
+            replacement = `,${replacement}`;
+          } else {
+            replacement = `${replacement},`;
+          }
         } else {
-          changes.push({
-            start: targetPos,
-            end: targetPos,
-            replacement: `${props.length ? ', ' : ' '}${propName}: ${propValue} `,
-          });
+          replacement = ` ${code} `;
+          if (props.length > 0) {
+            replacement = `, ${code}`;
+          }
         }
+        changes.push({
+          start: insertPos,
+          end: insertPos,
+          replacement,
+        });
       } else {
         utils.warn(`Property name '${propName}' already exists for ${varName}.`);
       }

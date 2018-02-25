@@ -11,6 +11,26 @@ describe('vio', function () {
     vio.reset();
   });
 
+  describe('getAst', function () {
+    beforeEach(() => {
+      vio.reset();
+    });
+    it('should parse code correctly', () => {
+      const code = `\
+const initialState = {
+  fetchApiSchemaPending: false,
+  fetchApiSchemaError: null,
+  apiSchema:[]
+};
+
+export default initialState;      
+`;
+      vio.put('V_FILE', code);
+      const ast = vio.getAst('V_FILE');
+      expect(ast).to.exist;
+    });
+  });
+
   describe('move dir', function () {
     beforeEach(() => {
       vio.reset();

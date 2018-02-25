@@ -23,7 +23,7 @@ import { /*abc */DefaultPage } from './'; // abc
     refactor.addImportFrom(V_FILE, './', '', 'ModuleName');
 
     expectLines(V_FILE, [
-      `import { ModuleName } from './`,
+      `import { DefaultPage, ModuleName } from './'; // abc`
     ]);
   });
 });

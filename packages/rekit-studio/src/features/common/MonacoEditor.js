@@ -2,6 +2,8 @@
 /* global monaco */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import defineCodeSandboxTheme from './monaco/defineCodeSandboxTheme';
+import configureMonacoEditor from './monaco/configureMonacoEditor';
 
 function noop() {}
 let editorInstance = null; // Only one global monaco editor.
@@ -20,7 +22,7 @@ export default class MonacoEditor extends Component {
 
   static defaultProps = {
     language: 'javascript',
-    theme: 'vs-dark',
+    theme: 'CodeSandbox',
     options: {},
     value: null,
     editorDidMount: noop,
@@ -64,6 +66,7 @@ export default class MonacoEditor extends Component {
 
   editorWillMount(monaco) {
     const { editorWillMount } = this.props;
+    defineCodeSandboxTheme(monaco);
     editorWillMount(monaco);
   }
 
@@ -81,6 +84,7 @@ export default class MonacoEditor extends Component {
         this.props.onChange(value, event);
       }
     }));
+    configureMonacoEditor(editor, monaco);
   }
 
   afterViewInit() {
@@ -143,8 +147,9 @@ export default class MonacoEditor extends Component {
       domNode.className = 'monaco-editor-node';
       this.containerElement.appendChild(domNode);
       editorInstance = monaco.editor.create(domNode, {
-        language,
+        // language,
         value,
+        model: monaco.editor.createModel(value, 'typescript', new monaco.Uri.parse('file:///main.tsx')),
         ...options,
       });
     } else {
@@ -161,9 +166,6 @@ export default class MonacoEditor extends Component {
   }
 
   handleWindowResize = () => {
-    // const { style } = getEditorNode();
-    // style.width = `${this.containerElement.offsetWidth}px`;
-    // style.height = `${this.containerElement.offsetHeight}px`;
     this.editor.layout();
   }
 

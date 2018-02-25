@@ -22,6 +22,7 @@
     "semi-style": 0,
     "function-paren-newline": 0,
     "max-len": 0,
+    "arrow-parens": 0,
     "no-nested-ternary": 0,
     "no_underscore_dangle": 0,
     "no-param-reassign": 0,

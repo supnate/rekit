@@ -276,7 +276,7 @@ export class CodeEditor extends Component {
     const ext = this.props.file.split('.').pop();
     const lang =
       {
-        js: 'javascript',
+        js: 'typescript',
         md: 'markdown',
       }[ext] || ext;
     const hasChange = this.hasChange();

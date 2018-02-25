@@ -1,3 +1,4 @@
+/* eslint self */
 self.importScripts([
   'https://cdnjs.cloudflare.com/ajax/libs/typescript/2.4.2/typescript.min.js',
 ]);

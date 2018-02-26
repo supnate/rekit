@@ -1,6 +1,7 @@
-/* eslint self */
+/* eslint no-restricted-globals: 0 */
+/* global self */
 self.importScripts([
-  'https://cdnjs.cloudflare.com/ajax/libs/typescript/2.4.2/typescript.min.js',
+  '/static/libs/typescript.min.js',
 ]);
 
 function getLineNumberAndOffset(start, lines) {

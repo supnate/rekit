@@ -1,3 +1,4 @@
+
 // Config Monaco Editor to support JSX and ESLint
 const configureMonacoEditor = (editor, monaco) => {
   const compilerDefaults = {
@@ -26,11 +27,11 @@ const configureMonacoEditor = (editor, monaco) => {
   monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
 
   monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-    noSemanticValidation: false,
+    noSemanticValidation: true,
     noSyntaxValidation: false
   });
   monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
-    noSemanticValidation: false,
+    noSemanticValidation: true,
     noSyntaxValidation: false
   });
 };

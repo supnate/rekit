@@ -7,6 +7,7 @@
     "window": true,
     "monaco": true,
     "sessionStorage": true,
+    "requestAnimationFrame": true,
     "d3": true
   },
   "settings": {

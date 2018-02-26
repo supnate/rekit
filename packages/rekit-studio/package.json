@@ -90,8 +90,8 @@
     "dom-scroll-into-view": "^1.2.1",
     "history": "^4.6.1",
     "prettier": "1.10.2",
-    "socket.io": "^2.0.1",
     "shelljs": "^0.8.0",
+    "socket.io": "^2.0.1",
     "watchpack": "^1.3.1"
   },
   "devDependencies": {
@@ -174,6 +174,7 @@
     "webpack-bundle-analyzer": "^2.9.2",
     "webpack-dev-middleware": "^2.0.4",
     "webpack-hot-middleware": "^2.21.0",
-    "webpack-node-externals": "^1.6.0"
+    "webpack-node-externals": "^1.6.0",
+    "worker-loader": "^1.1.1"
   }
 }

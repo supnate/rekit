@@ -2,6 +2,8 @@
 /* global monaco */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import SyntaxHighlightWorker from 'worker-loader?name=monaco-syntax-highlighter.[hash].worker.js!./monaco/workers/syntax-highlighter';
+
 import defineCodeSandboxTheme from './monaco/defineCodeSandboxTheme';
 import configureMonacoEditor from './monaco/configureMonacoEditor';
 
@@ -61,8 +63,72 @@ export default class MonacoEditor extends Component {
     this.containerElement.removeChild(getEditorNode());
     this.editor = null;
     this.monacoListeners.forEach(lis => lis.dispose());
+    if (this.syntaxWorker) {
+      this.syntaxWorker.terminate();
+    }
     window.removeEventListener('resize', this.handleWindowResize);
   }
+
+  setupSyntaxWorker = () => {
+    this.syntaxWorker = new SyntaxHighlightWorker();
+
+    this.syntaxWorker.addEventListener('message', event => {
+      const { classifications } = event.data;
+      requestAnimationFrame(() => {
+        // if (version === this.editor.getModel().getVersionId()) {
+        this.updateDecorations(classifications);
+        // }
+      });
+    });
+  };
+
+  setupWorkers = () => {
+    this.setupSyntaxWorker();
+
+    // if (this.props.preferences.lintEnabled) {
+    //   // Delay this one, as initialization is very heavy
+    //   setTimeout(() => {
+    //     this.setupLintWorker();
+    //   }, 5000);
+    // }
+
+    // if (this.props.preferences.autoDownloadTypes) {
+    //   this.setupTypeWorker();
+    // }
+  };
+
+  updateDecorations = (classifications) => {
+    const decorations = classifications.map(classification => ({
+      range: new this.monaco.Range(
+        classification.startLine,
+        classification.start,
+        classification.endLine,
+        classification.end
+      ),
+      options: {
+        inlineClassName: classification.kind,
+      },
+    }));
+
+    // const modelInfo = await this.getModelById(this.props.id);
+    this.editor.deltaDecorations(this.editor.getModel().getAllDecorations(), decorations);
+
+    // modelInfo.decorations = this.editor.deltaDecorations(
+    //   modelInfo.decorations || [],
+    //   decorations
+    // );
+  };
+
+  syntaxHighlight = (code, title, version) => {
+    const mode = 'typescript';
+    if (mode === 'typescript' || mode === 'javascript') {
+      this.syntaxWorker.postMessage({
+        code,
+        title,
+        version,
+      });
+    }
+  };
 
   editorWillMount(monaco) {
     const { editorWillMount } = this.props;
@@ -78,13 +144,21 @@ export default class MonacoEditor extends Component {
 
       // Always refer to the latest value
       this.__current_value = value;
-
+      this.syntaxHighlight(value, 'a.js', '1.0');
       // Only invoking when user input changed
       if (!this.__prevent_trigger_change_event) {
         this.props.onChange(value, event);
       }
     }));
     configureMonacoEditor(editor, monaco);
+    this.setupWorkers();
+    requestAnimationFrame(() => {
+      this.syntaxHighlight(
+        this.props.value,
+        'a.js',
+        '1.0'
+      );
+    }, 0);
   }
 
   afterViewInit() {
@@ -149,7 +223,7 @@ export default class MonacoEditor extends Component {
       editorInstance = monaco.editor.create(domNode, {
         // language,
         value,
-        model: monaco.editor.createModel(value, 'typescript', new monaco.Uri.parse('file:///main.tsx')),
+        model: monaco.editor.createModel(value, 'typescript', new monaco.Uri.file('./editor_name.tsx')),
         ...options,
       });
     } else {
@@ -158,6 +232,7 @@ export default class MonacoEditor extends Component {
     }
     monaco.editor.setTheme(theme);
     this.editor = editorInstance;
+    this.monaco = monaco;
     this.editorDidMount(this.editor, monaco);
   }
 

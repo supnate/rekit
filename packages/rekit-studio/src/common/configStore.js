@@ -6,7 +6,7 @@ import rootReducer from './rootReducer';
 
 const router = routerMiddleware(history);
 
-// NOTE: Do not change middleares delaration pattern since rekit plugins may register middlewares to it.
+// NOTE: Do not change middleware delaration pattern since rekit plugins may register middleware to it.
 const middlewares = [
   thunk,
   router,

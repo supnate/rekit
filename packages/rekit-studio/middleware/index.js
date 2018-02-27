@@ -87,6 +87,10 @@ module.exports = function() { // eslint-disable-line
         console.log('socket disconnected');
       });
     });
+
+    io.on('error', (err) => {
+      console.log('socket error', err);
+    });
   }
 
   function reply403(res) {

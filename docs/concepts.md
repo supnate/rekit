@@ -17,7 +17,7 @@ A feature usually always contains multiple actions, components or routing rules.
 
 There are two default features created automatically for a new Rekit application:
 
-1. **common**: it's the place you put all cross-feature elements such as components, actions, etc. In Rekit 1.0, there was a `components` folder outside of all features where you put common components. Now they are expected to be put in `common` feature in Rekit 2.0. This change reduces the number of conepts and makes the folder structure more simple and consistent.
+1. **common**: it's the place you put all cross-feature elements such as components, actions, etc. In Rekit 1.0, there was a `components` folder outside of all features where you put common components. Now they are expected to be put in `common` feature in Rekit 2.0. This change reduces the number of concepts and makes the folder structure more simple and consistent.
 2. **home**: the base feature of the project and the start point of the application. Usually the most basic functionality is put here, such as the overall layout container, fundamental application logic, etc.
 
 However this is just the way recommended by Rekit. Don't hesitate to rename or delete the default features if you want.

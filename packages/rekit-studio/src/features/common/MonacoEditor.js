@@ -99,6 +99,7 @@ export default class MonacoEditor extends Component {
 
   updateDecorations = (classifications) => {
     const decorations = classifications.map(classification => ({
+      // const decorations = classifications.filter(c => /^Jsx|^Identifier|^CallExpression|^IfKeyword/.test(c.kind)).map(classification => ({
       range: new this.monaco.Range(
         classification.startLine,
         classification.start,
@@ -152,13 +153,13 @@ export default class MonacoEditor extends Component {
     }));
     configureMonacoEditor(editor, monaco);
     this.setupWorkers();
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       this.syntaxHighlight(
         this.props.value,
         'a.js',
         '1.0'
       );
-    }, 0);
+    }, 500);
   }
 
   afterViewInit() {
@@ -223,7 +224,7 @@ export default class MonacoEditor extends Component {
       editorInstance = monaco.editor.create(domNode, {
         // language,
         value,
-        model: monaco.editor.createModel(value, 'typescript', new monaco.Uri.file('./editor_name.tsx')),
+        model: monaco.editor.createModel(value, 'javascript', new monaco.Uri.file('./editor_name.jsx')),
         ...options,
       });
     } else {

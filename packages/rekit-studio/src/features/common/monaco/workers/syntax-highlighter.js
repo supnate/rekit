@@ -33,9 +33,29 @@ function nodeToRange(node) {
 function addChildNodes(node, lines, classifications) {
   self.ts.forEachChild(node, id => {
     const [start, end] = nodeToRange(id);
-
     const { offset, line: startLine } = getLineNumberAndOffset(start, lines);
     const { line: endLine } = getLineNumberAndOffset(end, lines);
+    // if (self.ts.SyntaxKind.IfKeyword === id.kind) console.error('if');
+    if (self.ts.SyntaxKind.IfStatement === id.kind) {
+      classifications.push({
+        start: id.getStart() + 1 - offset,
+        end: id.getStart() + 3 - offset,
+        kind: self.ts.SyntaxKind[self.ts.SyntaxKind.IfKeyword],
+        node: id,
+        startLine,
+        endLine: startLine,
+      });
+    }
+    if (self.ts.SyntaxKind.ReturnStatement === id.kind) {
+      classifications.push({
+        start: id.getStart() + 1 - offset,
+        end: id.getStart() + 7 - offset,
+        kind: self.ts.SyntaxKind[self.ts.SyntaxKind.ReturnKeyword],
+        node: id,
+        startLine,
+        endLine: startLine,
+      });
+    }
     classifications.push({
       start: id.getStart() + 1 - offset,
       end: id.getEnd() + 1 - offset,
@@ -55,11 +75,12 @@ self.addEventListener('message', event => {
   try {
     const classifications = [];
     const sourceFile = self.ts.createSourceFile(
-      title,
+      'a.jsx',
       code,
-      self.ts.ScriptTarget.ES6,
+      self.ts.ScriptTarget.ES2015,
       true
     );
+    // console.log(sourceFile);
     const lines = code.split('\n').map(line => line.length);
 
     addChildNodes(sourceFile, lines, classifications);

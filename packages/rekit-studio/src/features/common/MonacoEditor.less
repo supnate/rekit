@@ -3,6 +3,7 @@
 .common-monaco-editor {
   .monaco-editor-node {
     height: 100%;
+    font-family: Menlo, "Source Code Pro", monospace!important;
   }
 
   // .mtk5 {
@@ -33,7 +34,7 @@
     color: #ec5f67 !important;
   }
   .mtk1.Identifier.JsxSelfClosingElement {
-    color: #ec5f67;
+    color: #ec5f67!important;
   }
   .mtk1.Identifier.VariableStatement.JsxClosingElement {
     color: #ec5f67 !important;
@@ -59,6 +60,9 @@
   .JsxText {
     color: #e0e0e0;
   }
+  .mtk1.Identifier.JsxAttribute {
+    color: #8ad3ff !important;
+  }
 
   .Identifier.CallExpression
     + .OpenParenToken.CallExpression
@@ -68,6 +72,14 @@
 
   .mtk9.GreaterThanToken.SyntaxList.ExpressionWithTypeArguments.SyntaxList.HeritageClause.ClassDeclaration {
     color: #dcdcdc !important;
+  }
+  .mtk9.JsxClosingElement,
+  .mtk9.JsxSelfClosingElement,
+  .mtk9.JsxOpeningElement {
+    color: #888!important
+  }
+  .mtk9.JsxAttribute {
+    color: #ddd!important
   }
   .JsxText {
     color: #d4d4d4 !important;
@@ -87,12 +99,6 @@
   .SlashToken.JsxSelfClosingElement {
     color: #6d6d6d !important;
   }
-  .JsxElement.JsxClosingElement.Identifier,
-  .JsxElement.JsxOpeningElement.Identifier,
-  .mtk1.Identifier.JsxClosingElement,
-  .mtk1.Identifier.JsxSelfClosingElement {
-    // color: #3dc1a0 !important;
-  }
   .mtk1.Identifier.SyntaxList.JsxAttribute {
     color: #8ad3ff !important;
   }
@@ -106,6 +112,7 @@
   .IfKeyword,
   .ImportKeyword,
   .ReturnKeyword,
+  .StaticKeyword,
   .TryKeyword {
     color: #b86cb4 !important;
   }
@@ -134,6 +141,11 @@
   }
   .FunctionKeyword + .FunctionDeclaration + .Identifier.FunctionDeclaration {
     color: #d4d797 !important;
+  }
+
+
+  .vs-whitespace {
+    color: rgba(227, 228, 226, 0.16) !important;
   }
 }
 

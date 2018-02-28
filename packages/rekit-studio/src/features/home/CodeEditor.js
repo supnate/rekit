@@ -172,7 +172,7 @@ export class CodeEditor extends Component {
         .catch(e => {
           message.error(`Failed to load file: ${e.toString()}`);
           if (_.get(e, 'response.status') === 404) {
-            this.setState({ notFound: true });
+            this.setState({ notFound: true, loadingFile: false });
             this.props.onError(404);
           }
         });

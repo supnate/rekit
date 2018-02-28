@@ -54,7 +54,7 @@ npm start
 
 It then starts three lightweight express servers by default:
 
- 1. Wepback dev server: [http://localhost:6075](http://localhost:6075). This is the dev server your application is running on.
+ 1. Webpack dev server: [http://localhost:6075](http://localhost:6075). This is the dev server your application is running on.
  2. Rekit Studio: [http://localhost:6076](http://localhost:6076). The IDE for Rekit projects.
  3. Build result test server: [http://localhost:6077](http://localhost:6077). This is the server for verifying the build result before deploying to production server.
 

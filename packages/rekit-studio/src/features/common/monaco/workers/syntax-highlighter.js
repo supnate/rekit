@@ -1,12 +1,13 @@
 /* eslint no-restricted-globals: 0 */
 /* global self */
-self.importScripts(["/static/libs/typescript.min.js"]);
+self.importScripts(['/static/libs/typescript.min.js']);
 
 const keywordSyntax = {
-  IfStatement: { length: 2, name: "IfKeyword" },
-  ReturnStatement: { length: 6, name: "ReturnKeyword" },
-  ImportDeclaration: { length: 6, name: "ImportKeyword" }
+  IfStatement: { length: 2, name: 'IfKeyword' },
+  ReturnStatement: { length: 6, name: 'ReturnKeyword' },
+  ImportDeclaration: { length: 6, name: 'ImportKeyword' }
 };
+
 function findKeyword(node, classifications, line, offset) {
   const s = self.ts.SyntaxKind[node.kind];
   if (keywordSyntax[s]) {
@@ -34,13 +35,13 @@ function getLineNumberAndOffset(start, lines) {
 
 function nodeToRange(node) {
   if (
-    typeof node.getStart === "function" &&
-    typeof node.getEnd === "function"
+    typeof node.getStart === 'function' &&
+    typeof node.getEnd === 'function'
   ) {
     return [node.getStart(), node.getEnd()];
   } else if (
-    typeof node.pos !== "undefined" &&
-    typeof node.end !== "undefined"
+    typeof node.pos !== 'undefined' &&
+    typeof node.end !== 'undefined'
   ) {
     return [node.pos, node.end];
   }
@@ -52,10 +53,9 @@ function addChildNodes(node, lines, classifications) {
     const [start, end] = nodeToRange(id);
     const { offset, line: startLine } = getLineNumberAndOffset(start, lines);
     const { line: endLine } = getLineNumberAndOffset(end, lines);
-    // if (self.ts.SyntaxKind.IfKeyword === id.kind) console.error('if');
     findKeyword(id, classifications, startLine, offset);
     const kind = self.ts.SyntaxKind[id.kind];
-    if (/^Jsx|^Identifier|^CallExpression|Keyword$/.test(kind)) {
+    if (/^Jsx|^Identifier|Keyword$/.test(kind)) {
       classifications.push({
         start: id.getStart() + 1 - offset,
         end: id.getEnd() + 1 - offset,
@@ -71,18 +71,18 @@ function addChildNodes(node, lines, classifications) {
 }
 
 // Respond to message from parent thread
-self.addEventListener("message", event => {
-  const { code, title, version } = event.data;
+self.addEventListener('message', event => {
+  const { code, version } = event.data;
   try {
     const classifications = [];
     const sourceFile = self.ts.createSourceFile(
-      "a.jsx",
+      'file.js',
       code,
-      self.ts.ScriptTarget.ES2015,
+      self.ts.ScriptTarget.ES2016,
       true
     );
-    // console.log(sourceFile);
-    const lines = code.split("\n").map(line => line.length);
+
+    const lines = code.split('\n').map(line => line.length);
 
     addChildNodes(sourceFile, lines, classifications);
 

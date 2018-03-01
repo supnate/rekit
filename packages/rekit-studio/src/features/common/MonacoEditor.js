@@ -2,9 +2,7 @@
 /* global monaco */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SyntaxHighlightWorker from 'worker-loader?name=monaco-syntax-highlighter.[hash].worker.js!./monaco/workers/syntax-highlighter';
-
-import defineCodeSandboxTheme from './monaco/defineCodeSandboxTheme';
+import SyntaxHighlightWorker from 'worker-loader?name=monaco-syntax-highlighter.[hash].worker.js!./monaco/workers/syntax-highlighter'; // eslint-disable-line
 import configureMonacoEditor from './monaco/configureMonacoEditor';
 
 function noop() {}
@@ -19,17 +17,17 @@ export default class MonacoEditor extends Component {
     options: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     editorDidMount: PropTypes.func,
     editorWillMount: PropTypes.func,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 
   static defaultProps = {
     language: 'javascript',
-    theme: 'CodeSandbox',
+    theme: 'vs-dark',
     options: {},
     value: null,
     editorDidMount: noop,
     editorWillMount: noop,
-    onChange: noop,
+    onChange: noop
   };
 
   constructor(props) {
@@ -54,12 +52,14 @@ export default class MonacoEditor extends Component {
       }
     }
     if (prevProps.language !== this.props.language) {
-      monaco.editor.setModelLanguage(this.editor.getModel(), this.props.language);
+      monaco.editor.setModelLanguage(
+        this.editor.getModel(),
+        this.props.language
+      );
     }
   }
 
   componentWillUnmount() {
-    // editorInstance.onDidChangeModelContent();
     this.containerElement.removeChild(getEditorNode());
     this.editor = null;
     this.monacoListeners.forEach(lis => lis.dispose());
@@ -75,31 +75,17 @@ export default class MonacoEditor extends Component {
     this.syntaxWorker.addEventListener('message', event => {
       const { classifications } = event.data;
       requestAnimationFrame(() => {
-        // if (version === this.editor.getModel().getVersionId()) {
         this.updateDecorations(classifications);
-        // }
       });
     });
   };
 
   setupWorkers = () => {
     this.setupSyntaxWorker();
-
-    // if (this.props.preferences.lintEnabled) {
-    //   // Delay this one, as initialization is very heavy
-    //   setTimeout(() => {
-    //     this.setupLintWorker();
-    //   }, 5000);
-    // }
-
-    // if (this.props.preferences.autoDownloadTypes) {
-    //   this.setupTypeWorker();
-    // }
   };
 
-  updateDecorations = (classifications) => {
+  updateDecorations = classifications => {
     const decorations = classifications.map(classification => ({
-      // const decorations = classifications.filter(c => /^Jsx|^Identifier|^CallExpression|^IfKeyword/.test(c.kind)).map(classification => ({
       range: new this.monaco.Range(
         classification.startLine,
         classification.start,
@@ -107,54 +93,50 @@ export default class MonacoEditor extends Component {
         classification.end
       ),
       options: {
-        inlineClassName: classification.kind,
-      },
+        inlineClassName: classification.kind
+      }
     }));
 
-    // const modelInfo = await this.getModelById(this.props.id);
-    this.lastDecorations = this.editor.deltaDecorations(this.lastDecorations || [], decorations);
+    this.lastDecorations = this.editor.deltaDecorations(
+      this.lastDecorations || [],
+      decorations
+    );
   };
 
-  syntaxHighlight = (code, title, version) => {
-    const mode = 'typescript';
-    if (mode === 'typescript' || mode === 'javascript') {
+  syntaxHighlight = code => {
+    if (/typescript|javascript/.test(this.props.language)) {
       this.syntaxWorker.postMessage({
-        code,
-        title,
-        version,
+        code
       });
     }
   };
 
   editorWillMount(monaco) {
     const { editorWillMount } = this.props;
-    defineCodeSandboxTheme(monaco);
     editorWillMount(monaco);
   }
 
   editorDidMount(editor, monaco) {
     this.props.editorDidMount(editor, monaco);
     this.handleWindowResize();
-    this.monacoListeners.push(editor.onDidChangeModelContent((event) => {
-      const value = editor.getValue();
+    this.monacoListeners.push(
+      editor.onDidChangeModelContent(event => {
+        const value = editor.getValue();
 
-      // Always refer to the latest value
-      this.__current_value = value;
-      this.syntaxHighlight(value, 'a.js', '1.0');
-      // Only invoking when user input changed
-      if (!this.__prevent_trigger_change_event) {
-        this.props.onChange(value, event);
-      }
-    }));
+        // Always refer to the latest value
+        this.__current_value = value;
+        this.syntaxHighlight(value);
+        // Only invoking when user input changed
+        if (!this.__prevent_trigger_change_event) {
+          this.props.onChange(value, event);
+        }
+      })
+    );
     configureMonacoEditor(editor, monaco);
     this.setupWorkers();
-    setTimeout(() => {
-      this.syntaxHighlight(
-        this.props.value,
-        'a.js',
-        '1.0'
-      );
-    }, 500);
+    requestAnimationFrame(() => {
+      this.syntaxHighlight(this.props.value);
+    });
   }
 
   afterViewInit() {
@@ -190,7 +172,8 @@ export default class MonacoEditor extends Component {
       // We need to avoid loading multiple loader.js when there are multiple editors loading
       // concurrently, delay to call callbacks except the first one
       // eslint-disable-next-line max-len
-      window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ = window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ || [];
+      window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ =
+        window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ || [];
       window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__.push({
         window: this,
         fn: onGotAmdLoader
@@ -209,18 +192,15 @@ export default class MonacoEditor extends Component {
 
   initMonaco() {
     const { theme, options, language, value } = this.props;
-    // const context = this.props.context || window;
-    // Before initializing monaco editor
     this.editorWillMount(monaco);
     if (!editorInstance) {
       const domNode = document.createElement('div');
       domNode.className = 'monaco-editor-node';
       this.containerElement.appendChild(domNode);
       editorInstance = monaco.editor.create(domNode, {
-        // language,
+        language,
         value,
-        model: monaco.editor.createModel(value, 'javascript', new monaco.Uri.file('./editor_name.jsx')),
-        ...options,
+        ...options
       });
     } else {
       monaco.editor.setModelLanguage(editorInstance.getModel(), language);
@@ -232,17 +212,15 @@ export default class MonacoEditor extends Component {
     this.editorDidMount(this.editor, monaco);
   }
 
-  assignRef = (component) => {
+  assignRef = component => {
     this.containerElement = component;
-  }
+  };
 
   handleWindowResize = () => {
     this.editor.layout();
-  }
+  };
 
   render() {
-    return (
-      <div ref={this.assignRef} className="common-monaco-editor" />
-    );
+    return <div ref={this.assignRef} className="common-monaco-editor" />;
   }
 }

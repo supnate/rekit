@@ -2,7 +2,6 @@
 /* global monaco */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SyntaxHighlightWorker from 'worker-loader?name=monaco-syntax-highlighter.[hash].worker.js!./monaco/workers/syntax-highlighter'; // eslint-disable-line
 import configureMonacoEditor from './monaco/configureMonacoEditor';
 
 function noop() {}
@@ -63,53 +62,8 @@ export default class MonacoEditor extends Component {
     this.containerElement.removeChild(getEditorNode());
     this.editor = null;
     this.monacoListeners.forEach(lis => lis.dispose());
-    if (this.syntaxWorker) {
-      this.syntaxWorker.terminate();
-    }
     window.removeEventListener('resize', this.handleWindowResize);
   }
-
-  setupSyntaxWorker = () => {
-    this.syntaxWorker = new SyntaxHighlightWorker();
-
-    this.syntaxWorker.addEventListener('message', event => {
-      const { classifications } = event.data;
-      requestAnimationFrame(() => {
-        this.updateDecorations(classifications);
-      });
-    });
-  };
-
-  setupWorkers = () => {
-    this.setupSyntaxWorker();
-  };
-
-  updateDecorations = classifications => {
-    const decorations = classifications.map(classification => ({
-      range: new this.monaco.Range(
-        classification.startLine,
-        classification.start,
-        classification.endLine,
-        classification.end
-      ),
-      options: {
-        inlineClassName: classification.kind
-      }
-    }));
-
-    this.lastDecorations = this.editor.deltaDecorations(
-      this.lastDecorations || [],
-      decorations
-    );
-  };
-
-  syntaxHighlight = code => {
-    if (/typescript|javascript/.test(this.props.language)) {
-      this.syntaxWorker.postMessage({
-        code
-      });
-    }
-  };
 
   editorWillMount(monaco) {
     const { editorWillMount } = this.props;
@@ -122,21 +76,14 @@ export default class MonacoEditor extends Component {
     this.monacoListeners.push(
       editor.onDidChangeModelContent(event => {
         const value = editor.getValue();
-
         // Always refer to the latest value
         this.__current_value = value;
-        this.syntaxHighlight(value);
         // Only invoking when user input changed
         if (!this.__prevent_trigger_change_event) {
           this.props.onChange(value, event);
         }
       })
     );
-    configureMonacoEditor(editor, monaco);
-    this.setupWorkers();
-    requestAnimationFrame(() => {
-      this.syntaxHighlight(this.props.value);
-    });
   }
 
   afterViewInit() {
@@ -202,6 +149,7 @@ export default class MonacoEditor extends Component {
         value,
         ...options
       });
+      configureMonacoEditor(editorInstance, monaco);
     } else {
       monaco.editor.setModelLanguage(editorInstance.getModel(), language);
       this.containerElement.appendChild(getEditorNode());

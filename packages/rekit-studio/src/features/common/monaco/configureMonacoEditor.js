@@ -1,6 +1,7 @@
+import setupSyntaxWorker from './setupSyntaxWorker';
 
 // Config Monaco Editor to support JSX and ESLint
-const configureMonacoEditor = (editor, monaco) => {
+function configureMonacoEditor(editor, monaco) {
   const compilerDefaults = {
     jsxFactory: 'React.createElement',
     reactNamespace: 'React',
@@ -11,11 +12,11 @@ const configureMonacoEditor = (editor, monaco) => {
     experimentalDecorators: true,
     noEmit: true,
     allowJs: true,
-    typeRoots: ['node_modules/@types'],
+    typeRoots: ['node_modules/@types']
   };
 
-  // monaco.languages.typescript.typescriptDefaults.setMaximunWorkerIdleTime(-1);
-  // monaco.languages.typescript.javascriptDefaults.setMaximunWorkerIdleTime(-1);
+  monaco.languages.typescript.typescriptDefaults.setMaximunWorkerIdleTime(-1);
+  monaco.languages.typescript.javascriptDefaults.setMaximunWorkerIdleTime(-1);
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
     compilerDefaults
   );
@@ -34,6 +35,8 @@ const configureMonacoEditor = (editor, monaco) => {
     noSemanticValidation: true,
     noSyntaxValidation: false
   });
-};
+
+  setupSyntaxWorker(editor, monaco);
+}
 
 export default configureMonacoEditor;

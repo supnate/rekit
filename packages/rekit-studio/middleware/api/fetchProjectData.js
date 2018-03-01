@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const fs = require('fs');
+const path = require('path');
 const rekitCore = require('rekit-core');
 
 const app = rekitCore.app;
@@ -13,7 +14,7 @@ function mapRelPathForDepsByArr(arr) {
     if (item.file) {
       item.file = utils.getRelativePath(item.file);
       const testFile = item.file.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js');
-      item.hasTest = /^src\//.test(item.file) && /\.js$/.test(item.file) && fs.existsSync(testFile);
+      item.hasTest = /^src\//.test(item.file) && /\.js$/.test(item.file) && fs.existsSync(path.join(utils.getProjectRoot(), testFile));
     }
     if (item.children) mapRelPathForDepsByArr(item.children);
     if (item.deps) {

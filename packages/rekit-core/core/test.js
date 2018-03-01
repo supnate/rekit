@@ -171,6 +171,7 @@ function moveAction(source, target, args) {
   const newDescribe = `${target.feature}/redux/${target.name}`;
 
   const ast = vio.getAst(targetPath);
+  vio.assertAst(ast, targetPath);
   let changes = [].concat(
     refactor.renameImportSpecifier(ast, source.name, target.name),
     refactor.renameStringLiteral(ast, oldImportPath1, newImportPath1),

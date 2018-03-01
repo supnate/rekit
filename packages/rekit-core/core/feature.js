@@ -148,7 +148,9 @@ function move(oldName, newName) {
   const reduxFolder = utils.joinPath(prjRoot, 'src/features', newName, 'redux');
   const constantsFile = utils.joinPath(reduxFolder, 'constants.js');
   const constants = [];
-  traverse(vio.getAst(constantsFile), {
+  const ast = vio.getAst(constantsFile);
+  vio.assertAst(ast, constantsFile);
+  traverse(ast, {
     VariableDeclarator(p) {
       const name = _.get(p, 'node.id.name');
       if (name && _.startsWith(name, `${_.upperSnakeCase(oldName)}_`) && name === _.get(p, 'node.init.value')) {

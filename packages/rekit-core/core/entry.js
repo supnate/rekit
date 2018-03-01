@@ -65,6 +65,7 @@ module.exports = {
       // If in the same feature, rename imported component name
       const targetPath = utils.mapFeatureFile(source.feature, 'route.js');
       const ast = vio.getAst(targetPath);
+      vio.assertAst(ast, targetPath);
       const oldName = _.pascalCase(source.name);
       const newName = _.pascalCase(dest.name);
       const changes = [].concat(

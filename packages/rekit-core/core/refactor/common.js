@@ -40,6 +40,7 @@ function updateFile(filePath, changes) {
 
   if (_.isFunction(changes)) {
     const ast = vio.getAst(filePath);
+    vio.assertAst(ast, filePath);
     changes = changes(ast);
   }
   let code = vio.getContent(filePath);
@@ -118,6 +119,7 @@ function acceptFilePathForAst(func) {
     let ast = file;
     if (_.isString(file)) {
       ast = vio.getAst(file);
+      vio.assertAst(ast, file);
     }
     const args = _.toArray(arguments);
     args[0] = ast;

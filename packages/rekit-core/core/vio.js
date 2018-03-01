@@ -21,9 +21,10 @@ let dirs = {};
 let asts = {};
 let mvs = {}; // Files to move
 let mvDirs = {}; // Folders to move
+let failedToParse = {};
 
 function printDiff(diff) {
-  diff.forEach((line) => {
+  diff.forEach(line => {
     if (line.added) {
       line.value.split('\n').forEach(l => l && console.log(colors.green(' +++ ') + colors.gray(l)));
     } else if (line.removed) {
@@ -35,12 +36,10 @@ function printDiff(diff) {
 function log(label, color, filePath, toFilePath) {
   const p = filePath.replace(prjRoot, '');
   const to = toFilePath ? toFilePath.replace(prjRoot, '') : '';
-  console.log(colors[color](label + p + (to ? (' to ' + to) : '')));
+  console.log(colors[color](label + p + (to ? ' to ' + to : '')));
 }
 
-function mapPathAfterMvDir() {
-
-}
+function mapPathAfterMvDir() {}
 function getLines(filePath) {
   if (_.isArray(filePath)) {
     // If it's already lines, return the arg.
@@ -51,14 +50,14 @@ function getLines(filePath) {
     // if the file is moved, find the real file path
     let realFilePath = _.findKey(mvs, s => s === filePath) || filePath;
     // if dir is moved, find the original file path
-    Object.keys(mvDirs).forEach((oldDir) => {
+    Object.keys(mvDirs).forEach(oldDir => {
       if (_.startsWith(realFilePath, mvDirs[oldDir])) {
         realFilePath = realFilePath.replace(mvDirs[oldDir], oldDir);
       }
     });
-// console.log('real file path: ', Object.keys(fileLines), realFilePath);
+    // console.log('real file path: ', Object.keys(fileLines), realFilePath);
     if (!shell.test('-e', realFilePath)) {
-      utils.fatalError('Can\'t find such file: ' + realFilePath);
+      utils.fatalError("Can't find such file: " + realFilePath);
     }
     fileLines[filePath] = shell.cat(realFilePath).split(/\r?\n/);
   }
@@ -88,20 +87,38 @@ function getAst(filePath) {
           'functionBind',
           'functionSent',
           'dynamicImport',
-        ]
+        ],
       });
-      if (!ast) utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
+      if (!ast) {
+        failedToParse[filePath] = true;
+        return null;
+        // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
+      }
+      delete failedToParse[filePath];
       asts[filePath] = ast;
       ast._filePath = filePath;
     } catch (e) {
-      utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
+      failedToParse[filePath] = true;
+      return null;
+      // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
     }
   }
   return asts[filePath];
 }
 
+function assertAst(ast, filePath) {
+  if (!ast) {
+    reset(); // eslint-disable-line
+    utils.fatalError(`Failed to parse ${filePath}, please fix and try again.`);
+  }
+}
+
+function getFilesFailedToPath() {
+  return failedToParse;
+}
+
 function fileExists(filePath) {
-  return (!!fileLines[filePath] || !!toSave[filePath]) && !toDel[filePath] || shell.test('-e', filePath);
+  return ((!!fileLines[filePath] || !!toSave[filePath]) && !toDel[filePath]) || shell.test('-e', filePath);
 }
 
 function fileNotExists(filePath) {
@@ -109,7 +126,7 @@ function fileNotExists(filePath) {
 }
 
 function dirExists(dir) {
-  return !!dirs[dir] && !toDel[dir] || shell.test('-e', dir);
+  return (!!dirs[dir] && !toDel[dir]) || shell.test('-e', dir);
 }
 
 function dirNotExists(dir) {
@@ -180,8 +197,8 @@ function move(oldPath, newPath) {
 }
 
 function moveDir(oldPath, newPath) {
-  const updateKeys = (obj) => {
-    _.keys(obj).forEach((key) => {
+  const updateKeys = obj => {
+    _.keys(obj).forEach(key => {
       if (_.startsWith(key, oldPath)) {
         const value = obj[key];
         delete obj[key];
@@ -197,6 +214,7 @@ function moveDir(oldPath, newPath) {
   updateKeys(dirs);
   updateKeys(asts);
   updateKeys(mvs);
+  updateKeys(failedToParse);
 
   const invertedMvs = _.invert(mvs);
   updateKeys(invertedMvs);
@@ -245,7 +263,7 @@ function reset() {
 
 function flush() {
   const res = [];
-  Object.keys(dirs).forEach((dir) => {
+  Object.keys(dirs).forEach(dir => {
     if (!shell.test('-e', dir)) {
       shell.mkdir('-p', dir);
       log('Created: ', 'blue', dir);
@@ -257,7 +275,7 @@ function flush() {
   });
 
   // Move directories
-  Object.keys(mvDirs).forEach((oldDir) => {
+  Object.keys(mvDirs).forEach(oldDir => {
     if (!shell.test('-e', oldDir)) {
       log('Warning: no dir to move: ', 'yellow', oldDir);
       res.push({
@@ -276,7 +294,7 @@ function flush() {
   });
 
   // Delete files
-  Object.keys(toDel).forEach((filePath) => {
+  Object.keys(toDel).forEach(filePath => {
     if (!shell.test('-e', filePath)) {
       log('Warning: no file to delete: ', 'yellow', filePath);
       res.push({
@@ -295,7 +313,7 @@ function flush() {
   });
 
   // Move files
-  Object.keys(mvs).forEach((filePath) => {
+  Object.keys(mvs).forEach(filePath => {
     if (!shell.test('-e', filePath)) {
       log('Warning: no file to move: ', 'yellow', filePath);
       res.push({
@@ -315,10 +333,13 @@ function flush() {
   });
 
   // Create/update files
-  Object.keys(toSave).forEach((filePath) => {
+  Object.keys(toSave).forEach(filePath => {
     const newContent = getLines(filePath).join('\n');
     if (shell.test('-e', filePath)) {
-      const oldContent = shell.cat(filePath).split(/\r?\n/).join('\n');
+      const oldContent = shell
+        .cat(filePath)
+        .split(/\r?\n/)
+        .join('\n');
       if (oldContent === newContent) {
         // log('Warning: nothing is changed for: ', 'yellow', filePath);
         // res.push({
@@ -354,6 +375,8 @@ module.exports = {
   getLines,
   getContent,
   getAst,
+  assertAst,
+  getFilesFailedToPath,
   saveAst,
   fileExists,
   fileNotExists,

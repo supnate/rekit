@@ -19,7 +19,7 @@ const format = require('./api/format');
 
 const utils = rekitCore.utils;
 
-// rekitCore.utils.setProjectRoot('/Users/i305656/workspace/rekit');
+rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/rekit-boilerplate');
 rekitCore.plugin.loadPlugins(rekitCore);
 
 let lastProjectData = null;

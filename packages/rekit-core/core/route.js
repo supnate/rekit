@@ -32,6 +32,7 @@ function add(feature, component, args) {
   refactor.addImportFrom(targetPath, './', '', _.pascalCase(component));
 
   const ast = vio.getAst(targetPath);
+  vio.assertAst(ast, targetPath);
   const arrNode = getChildRoutesNode(ast);
   if (arrNode) {
     const rule = `{ path: '${urlPath}', name: '${args.pageName || _.upperFirst(_.lowerCase(component))}', component: ${_.pascalCase(component)}${args.isIndex ? ', isIndex: true' : ''} }`;
@@ -51,6 +52,7 @@ function remove(feature, component) {
   const targetPath = utils.mapFeatureFile(feature, 'route.js');
   refactor.removeImportSpecifier(targetPath, _.pascalCase(component));
   const ast = vio.getAst(targetPath);
+  vio.assertAst(ast, targetPath);
   const arrNode = getChildRoutesNode(ast);
   if (arrNode) {
     let changes = [];
@@ -78,6 +80,7 @@ function move(source, target) {
     ));
   } else {
     const ast = vio.getAst(targetPath);
+    vio.assertAst(ast, targetPath);
     const ruleNodes = [];
     traverse(ast, {
       ObjectExpression(path) {
@@ -93,6 +96,7 @@ function move(source, target) {
     const oldContent = vio.getContent(targetPath);
     ruleNodes.forEach((ruleNode) => {
       const ast2 = vio.getAst(targetPath2);
+      vio.assertAst(ast2, targetPath2);
       const arrNode = getChildRoutesNode(ast2);
 
       // move route rule to the target route.js

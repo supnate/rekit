@@ -104,7 +104,7 @@ module.exports = function() { // eslint-disable-line
     setupSocketIo(server);
     const prjRoot = rekitCore.utils.getProjectRoot();
     app.use('/coverage', express.static(utils.joinPath(prjRoot, 'coverage'), { fallthrough: false }));
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({ limit: '5MB' }));
     app.use(bodyParser.urlencoded({ extended: true }));
 
     return (req, res, next) => {

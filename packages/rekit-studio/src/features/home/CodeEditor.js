@@ -116,11 +116,11 @@ export class CodeEditor extends Component {
     axios
       .post('/rekit/api/format-code', {
         content: this.state.currentContent,
-        ext,
+        file: this.props.file,
       })
       .then(res => {
         this.editor.executeEdits('format', [
-          { range: new monaco.Range(1, 1, 100000, 1), text: res.data.content, forceMoveMarkers: true },
+          { range: new monaco.Range(1, 1, 1000000, 1), text: res.data.content, forceMoveMarkers: true },
         ]);
         this.setState(
           {

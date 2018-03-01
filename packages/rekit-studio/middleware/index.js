@@ -7,7 +7,6 @@ const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const Watchpack = require('watchpack');
-const prettier = require('prettier');
 const rekitCore = require('rekit-core');
 const fetchProjectData = require('./api/fetchProjectData');
 const getFileContent = require('./api/getFileContent');
@@ -16,6 +15,7 @@ const saveFile = require('./api/saveFile');
 const runBuild = require('./api/runBuild');
 const runTest = require('./api/runTest');
 const lint = require('./api/lint');
+const format = require('./api/format');
 
 const utils = rekitCore.utils;
 
@@ -123,21 +123,7 @@ module.exports = function() { // eslint-disable-line
             break;
           }
           case '/api/format-code': {
-            const content = req.body.content;
-            const ext = req.body.ext;
-            const options = {
-              singleQuote: true,
-              trailingComma: 'es5',
-              printWidth: 120,
-              filepath: `foo.${ext}`,
-            };
-            try {
-              res.write(JSON.stringify({ content: prettier.format(content, options) }));
-            } catch (err) {
-              console.log('Failed to format code: ', err);
-              res.write(JSON.stringify({ content, error: err }));
-            }
-            res.end();
+            format(req, res);
             break;
           }
           case '/api/lint':

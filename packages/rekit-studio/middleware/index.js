@@ -15,6 +15,7 @@ const execCmd = require('./api/execCmd');
 const saveFile = require('./api/saveFile');
 const runBuild = require('./api/runBuild');
 const runTest = require('./api/runTest');
+const lint = require('./api/lint');
 
 const utils = rekitCore.utils;
 
@@ -139,6 +140,9 @@ module.exports = function() { // eslint-disable-line
             res.end();
             break;
           }
+          case '/api/lint':
+            lint(req, res);
+            break;
           case '/api/save-file': {
             if (args.readonly) { reply403(res); break; }
             const absPath = utils.joinPath(prjRoot, req.body.file);

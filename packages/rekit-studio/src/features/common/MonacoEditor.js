@@ -12,6 +12,7 @@ export default class MonacoEditor extends Component {
   static propTypes = {
     theme: PropTypes.string,
     language: PropTypes.string,
+    file: PropTypes.string,
     value: PropTypes.string,
     options: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     editorDidMount: PropTypes.func,
@@ -24,6 +25,7 @@ export default class MonacoEditor extends Component {
     theme: 'vs-dark',
     options: {},
     value: null,
+    file: '',
     editorDidMount: noop,
     editorWillMount: noop,
     onChange: noop
@@ -37,6 +39,10 @@ export default class MonacoEditor extends Component {
   componentDidMount() {
     this.afterViewInit();
     window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.editor) this.editor._editingFile = nextProps.file;
   }
 
   componentDidUpdate(prevProps) {
@@ -156,6 +162,7 @@ export default class MonacoEditor extends Component {
     }
     monaco.editor.setTheme(theme);
     this.editor = editorInstance;
+    this.editor._editingFile = this.props.file;
     this.monaco = monaco;
     this.editorDidMount(this.editor, monaco);
   }

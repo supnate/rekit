@@ -357,6 +357,7 @@ export class CodeEditor extends Component {
           </div>
         )}
         <MonacoEditor
+          file={this.props.file}
           language={lang}
           value={this.state.currentContent}
           options={options}

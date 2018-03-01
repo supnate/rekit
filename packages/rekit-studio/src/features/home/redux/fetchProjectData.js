@@ -77,6 +77,7 @@ export function reducer(state, action) {
         ...state,
         // projectData: action.data,
         // ...action.data,
+        filesHasSyntaxError: action.data.filesHasSyntaxError,
         elementById,
         featureById,
         projectName: action.data.projectName,

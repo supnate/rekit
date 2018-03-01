@@ -19,11 +19,12 @@ const format = require('./api/format');
 
 const utils = rekitCore.utils;
 
-rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/rekit-boilerplate');
+// rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/rekit-boilerplate');
 rekitCore.plugin.loadPlugins(rekitCore);
 
 let lastProjectData = null;
-module.exports = function() { // eslint-disable-line
+module.exports = () => {
+  // eslint-disable-line
   let io = null;
 
   const bgProcesses = {};
@@ -47,11 +48,15 @@ module.exports = function() { // eslint-disable-line
 
   // Watchpack.prototype.watch(string[] files, string[] directories, [number startTime])
   // Watch src files change only
-  wp.watch([], [path.join(rekitCore.utils.getProjectRoot(), 'src'), path.join(rekitCore.utils.getProjectRoot(), 'coverage')], Date.now() - 10);
+  wp.watch(
+    [],
+    [path.join(rekitCore.utils.getProjectRoot(), 'src'), path.join(rekitCore.utils.getProjectRoot(), 'tests'), path.join(rekitCore.utils.getProjectRoot(), 'coverage')],
+    Date.now() - 10
+  );
   // starts watching these files and directories
   // calling this again will override the files and directories
 
-  wp.on('aggregated', (changes) => {
+  wp.on('aggregated', changes => {
     // changes: an array of all changed files
     rekitCore.vio.reset();
     // const newProjectData = fetchProjectData();
@@ -62,34 +67,16 @@ module.exports = function() { // eslint-disable-line
 
   const rootPath = '/rekit';
 
-  // function execCmd(req, res) {
-  //   try {
-  //     const args = req.body;
-  //     rekitCore.handleCommand(args);
-  //     const logs = rekitCore.vio.flush();
-  //     rekitCore.vio.reset();
-  //     res.write(JSON.stringify({
-  //       args,
-  //       logs,
-  //     }));
-  //     res.end();
-  //   } catch (e) {
-  //     res.statusCode = 500;
-  //     res.write(e.toString());
-  //     res.end();
-  //   }
-  // }
-
   function setupSocketIo(server) {
     io = require('socket.io')(server);
 
-    io.on('connection', (client) => {
+    io.on('connection', client => {
       client.on('disconnect', () => {
         console.log('socket disconnected');
       });
     });
 
-    io.on('error', (err) => {
+    io.on('error', err => {
       console.log('socket error', err);
     });
   }
@@ -116,9 +103,16 @@ module.exports = function() { // eslint-disable-line
         switch (p) {
           case '/api/project-data': {
             lastProjectData = fetchProjectData();
-            res.write(JSON.stringify(Object.assign({
-              bgProcesses,
-            }, lastProjectData)));
+            res.write(
+              JSON.stringify(
+                Object.assign(
+                  {
+                    bgProcesses,
+                  },
+                  lastProjectData
+                )
+              )
+            );
             res.end();
             break;
           }
@@ -130,7 +124,10 @@ module.exports = function() { // eslint-disable-line
             lint(req, res);
             break;
           case '/api/save-file': {
-            if (args.readonly) { reply403(res); break; }
+            if (args.readonly) {
+              reply403(res);
+              break;
+            }
             const absPath = utils.joinPath(prjRoot, req.body.file);
             if (!_.startsWith(absPath, prjRoot)) {
               // prevent ../.. in req.query.file
@@ -176,39 +173,52 @@ module.exports = function() { // eslint-disable-line
             break;
           }
           case '/api/exec-cmd':
-            if (args.readonly) { reply403(res); break; }
+            if (args.readonly) {
+              reply403(res);
+              break;
+            }
             execCmd(req, res);
             break;
           case '/api/run-build':
-            if (args.readonly) { reply403(res); break; }
+            if (args.readonly) {
+              reply403(res);
+              break;
+            }
             if (bgProcesses.runningBuild) {
               res.statusCode = 500;
               res.write(JSON.stringify({ error: 'Build process is running...' }));
               res.end();
             } else {
               bgProcesses.runningBuild = true;
-              runBuild(io).then(() => {
-                bgProcesses.runningBuild = false;
-              }).catch(() => {
-                bgProcesses.runningBuild = false;
-              });
+              runBuild(io)
+                .then(() => {
+                  bgProcesses.runningBuild = false;
+                })
+                .catch(() => {
+                  bgProcesses.runningBuild = false;
+                });
               res.write('{}');
               res.end();
             }
             break;
           case '/api/run-test':
-            if (args.readonly) { reply403(res); break; }
+            if (args.readonly) {
+              reply403(res);
+              break;
+            }
             if (bgProcesses.runningTest) {
               res.statusCode = 500;
               res.write(JSON.stringify({ error: 'Test process is running...' }));
               res.end();
             } else {
               bgProcesses.runningTest = true;
-              runTest(io, req.body.testFile || '').then(() => {
-                bgProcesses.runningTest = false;
-              }).catch(() => {
-                bgProcesses.runningTest = false;
-              });
+              runTest(io, req.body.testFile || '')
+                .then(() => {
+                  bgProcesses.runningTest = false;
+                })
+                .catch(() => {
+                  bgProcesses.runningTest = false;
+                });
               res.write('{}');
               res.end();
             }

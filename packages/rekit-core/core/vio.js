@@ -113,7 +113,7 @@ function assertAst(ast, filePath) {
   }
 }
 
-function getFilesFailedToPath() {
+function getFilesFailedToParse() {
   return failedToParse;
 }
 
@@ -376,7 +376,7 @@ module.exports = {
   getContent,
   getAst,
   assertAst,
-  getFilesFailedToPath,
+  getFilesFailedToParse,
   saveAst,
   fileExists,
   fileNotExists,

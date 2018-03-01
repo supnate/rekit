@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Cookies from 'js-cookie';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Dropdown, Icon, Menu, message, Modal, Tree, Spin } from 'antd';
+import { Dropdown, Icon, Menu, message, Modal, Tooltip, Tree, Spin } from 'antd';
 import history from '../../common/history';
 import cmdSuccessNotification from '../rekit-cmds/cmdSuccessNotification';
 import { execCmd, showCmdDialog, dismissExecCmdError } from '../rekit-cmds/redux/actions';
@@ -370,9 +370,12 @@ export class ProjectExplorer extends Component {
       c: 'Connected to Redux store',
       r: 'Used in route config',
     };
-    return (
-      <span>
-        {nodeData.icon && this.renderTreeNodeIcon(nodeData.icon)}
+    const syntaxError = this.hasSyntaxError(nodeData);
+    let ele = (
+      <span
+        className={syntaxError ? 'has-syntax-error' : ''}
+      >
+        {nodeData.icon && this.renderTreeNodeIcon(syntaxError ? 'close-circle-o' : nodeData.icon)}
         <label>
           {nodeData.searchable ? this.renderHighlightedTreeNodeLabel(nodeData.label) : nodeData.label}
           {_.has(nodeData, 'count') ? ` (${nodeData.count})` : ''}
@@ -385,6 +388,14 @@ export class ProjectExplorer extends Component {
           ))}
       </span>
     );
+    if (syntaxError) {
+      ele = <Tooltip placement="top" title="There's syntax error in the file, please fix.">{ele}</Tooltip>;
+    }
+    return ele;
+  }
+
+  hasSyntaxError(nodeData) {
+    return this.props.home.filesHasSyntaxError[nodeData.key];
   }
 
   renderTreeNode = nodeData => {

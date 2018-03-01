@@ -10,6 +10,7 @@ const initialState = {
   fetchProjectDataError: null,
   fetchFileContentPending: false,
   fetchFileContentError: null,
+  filesHasSyntaxError: {},
 
   // Resotre open tabs and history tabs from local storage
   openTabs: JSON.parse(sessionStorage.getItem('openTabs') || '[]'),

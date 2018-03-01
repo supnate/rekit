@@ -67,7 +67,7 @@ function getRekitProps(file) {
     },
     action: ff.exportReducer && ff.importConstant && {
       isAsync: ff.importMultipleConstants,
-    }
+    },
   };
 
   if (props.component) props.type = 'component';

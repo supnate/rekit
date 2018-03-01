@@ -113,11 +113,6 @@ export default class MonacoEditor extends Component {
 
     // const modelInfo = await this.getModelById(this.props.id);
     this.lastDecorations = this.editor.deltaDecorations(this.lastDecorations || [], decorations);
-
-    // modelInfo.decorations = this.editor.deltaDecorations(
-    //   modelInfo.decorations || [],
-    //   decorations
-    // );
   };
 
   syntaxHighlight = (code, title, version) => {

@@ -271,7 +271,6 @@ export class CodeEditor extends Component {
     }
     const options = {
       selectOnLineNumbers: true,
-      renderWhitespace: 'boundary',
     };
     const ext = this.props.file.split('.').pop();
     const lang =

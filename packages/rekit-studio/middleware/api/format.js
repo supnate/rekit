@@ -15,6 +15,12 @@ const PRETTIER_CONFIG_FILES = [
   'prettier.config.js',
 ];
 
+const DEFAULT_PRETTIER_OPTIONS = {
+  singleQuote: true,
+  trailingComma: 'es5',
+  printWidth: 120,
+};
+
 const wp = new Watchpack({
   // options:
   aggregateTimeout: 10,
@@ -43,7 +49,7 @@ function format(req, res) {
     .resolveConfig(file)
     .then(options => {
       try {
-        const formatted = prettier.format(content, options || {});
+        const formatted = prettier.format(content, options || DEFAULT_PRETTIER_OPTIONS);
         res.write(JSON.stringify({ content: formatted }));
       } catch (err) {
         console.log('Failed to format code: ', err);

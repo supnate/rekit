@@ -12,7 +12,6 @@ import editorStateMap from './editorStateMap';
 
 export class CodeEditor extends Component {
   static propTypes = {
-    // home: PropTypes.object.isRequired,
     fileContentById: PropTypes.object.isRequired,
     fileContentNeedReload: PropTypes.object.isRequired,
     fetchFileContentPending: PropTypes.bool.isRequired, // eslint-disable-line
@@ -112,7 +111,6 @@ export class CodeEditor extends Component {
 
   formatCode = () => {
     this.setState({ loadingFile: true });
-    const ext = this.props.file.split('.').pop();
     axios
       .post('/rekit/api/format-code', {
         content: this.state.currentContent,
@@ -197,11 +195,11 @@ export class CodeEditor extends Component {
     editor.focus();
 
     // This seems to be able to add multiple times.
-    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => {
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
       // eslint-disable-line
       if (this.hasChange()) this.handleSave();
     });
-    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_B], () => {
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_B], () => { // eslint-disable-line
       // eslint-disable-line
       this.formatCode();
     });
@@ -372,7 +370,6 @@ export class CodeEditor extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    // home: state.home,
     fileContentById: state.home.fileContentById,
     fileContentNeedReload: state.home.fileContentNeedReload,
     fetchFileContentPending: state.home.fetchFileContentPending,

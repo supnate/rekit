@@ -13,7 +13,7 @@ Feature is the top level concept of a project, and it's the core concept of Reki
  * `user`: manage admins of the system.
  * etc...
 
-A feature usually always contains multiple actions, components or routing rules. A Rekit application always consists of multiple features. By this approach, a large application could always be divided into multiple small, well-decoupled, understandable features.
+A feature may contain multiple actions, components or routing rules. A Rekit application consists of multiple features. By this approach, a large application could always be divided into multiple small, well-decoupled, understandable features.
 
 There are two default features created automatically for a new Rekit application:
 

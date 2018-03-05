@@ -69,6 +69,7 @@ function getContent(filePath) {
 }
 
 function getAst(filePath) {
+  if (_.startsWith(utils.getRelativePath(filePath), 'src/libs/')) return null; // ignore libs folder to parse
   if (!asts[filePath]) {
     const code = getLines(filePath).join('\n');
     try {

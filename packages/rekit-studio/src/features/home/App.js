@@ -23,7 +23,9 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.fetchProjectData().catch(err => {
+    this.props.actions.fetchProjectData().then(() => {
+      document.title = this.props.home.projectName;
+    }).catch(err => {
       Modal.error({
         title: 'Failed to load project data',
         content: err && (err.message || err.toString()),

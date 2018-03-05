@@ -28,6 +28,8 @@ const doLint = _.debounce(() => {
         }
       })
       .catch(() => {});
+  } else {
+    updateLintWarnings([]);
   }
 }, 500);
 

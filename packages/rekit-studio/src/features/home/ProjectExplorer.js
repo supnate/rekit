@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu, message, Modal, Tooltip, Tree, Spin } from 'antd';
+import scrollIntoView from 'dom-scroll-into-view';
 import history from '../../common/history';
 import cmdSuccessNotification from '../rekit-cmds/cmdSuccessNotification';
 import { execCmd, showCmdDialog, dismissExecCmdError } from '../rekit-cmds/redux/actions';
@@ -30,6 +31,7 @@ const menuItems = {
 export class ProjectExplorer extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     searchKey: PropTypes.string,
     treeData: PropTypes.object.isRequired,
@@ -53,6 +55,25 @@ export class ProjectExplorer extends Component {
     selectedKey: null,
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.getSelectedKey(prevProps) !== this.getSelectedKey(this.props)) {
+      const targetNode = this.rootNode.querySelector('.ant-tree-node-selected');
+      if (targetNode) {
+        scrollIntoView(targetNode, this.rootNode, {
+          onlyScrollIfNeeded: true,
+          offsetTop: 50,
+        });
+      }
+    }
+  }
+
+  getSelectedKey(props) {
+    // selected tree node always maps to an url path
+    const arr = props.router.location.pathname.split('/');
+    if (arr[1] === 'element') return decodeURIComponent(arr[2]);
+    if (arr[2] === 'routes') return `${arr[1]}-routes`;
+    return null;
+  }
   getMenuItems(treeNode) {
     const evtKey = treeNode.props.eventKey;
     // eventKey is 'file' property of most items
@@ -327,6 +348,10 @@ export class ProjectExplorer extends Component {
     }
   };
 
+  hasSyntaxError(nodeData) {
+    return this.props.home.filesHasSyntaxError[nodeData.key];
+  }
+
   renderLoading() {
     return (
       <div className="home-project-explorer">
@@ -372,9 +397,7 @@ export class ProjectExplorer extends Component {
     };
     const syntaxError = this.hasSyntaxError(nodeData);
     let ele = (
-      <span
-        className={syntaxError ? 'has-syntax-error' : ''}
-      >
+      <span className={syntaxError ? 'has-syntax-error' : ''}>
         {nodeData.icon && this.renderTreeNodeIcon(syntaxError ? 'close-circle-o' : nodeData.icon)}
         <label>
           {nodeData.searchable ? this.renderHighlightedTreeNodeLabel(nodeData.label) : nodeData.label}
@@ -389,27 +412,25 @@ export class ProjectExplorer extends Component {
       </span>
     );
     if (syntaxError) {
-      ele = <Tooltip placement="top" title="There's syntax error in the file, please fix.">{ele}</Tooltip>;
+      ele = (
+        <Tooltip placement="top" title="There's syntax error in the file, please fix.">
+          {ele}
+        </Tooltip>
+      );
     }
     return ele;
   }
 
-  hasSyntaxError(nodeData) {
-    return this.props.home.filesHasSyntaxError[nodeData.key];
-  }
-
-  renderTreeNode = nodeData => {
-    return (
-      <TreeNode
-        key={nodeData.key}
-        title={this.renderTreeNodeTitle(nodeData)}
-        className={nodeData.className}
-        isLeaf={!nodeData.children}
-      >
-        {nodeData.children && nodeData.children.map(this.renderTreeNode)}
-      </TreeNode>
-    );
-  };
+  renderTreeNode = nodeData => (
+    <TreeNode
+      key={nodeData.key}
+      title={this.renderTreeNodeTitle(nodeData)}
+      className={nodeData.className}
+      isLeaf={!nodeData.children}
+    >
+      {nodeData.children && nodeData.children.map(this.renderTreeNode)}
+    </TreeNode>
+  );
 
   render() {
     const { home, treeData, searchKey } = this.props;
@@ -434,7 +455,7 @@ export class ProjectExplorer extends Component {
         {treeNodes.length > 0 ? (
           <Tree
             autoExpandParent={false}
-            selectedKeys={[this.state.selectedKey]}
+            selectedKeys={[this.getSelectedKey(this.props)]}
             expandedKeys={expandedKeys}
             onRightClick={this.handleContextMenu}
             onSelect={this.handleSelect}
@@ -469,6 +490,7 @@ function mapStateToProps(state, props) {
   return {
     home: state.home,
     treeData: getFilteredExplorerTreeData(state.home, props.searchKey),
+    router: state.router,
   };
 }
 

@@ -63,12 +63,13 @@ module.exports = (type) => { // eslint-disable-line
         ],
       },
       dist: {
-        main: [
-          'babel-polyfill',
-          './styles/index.less',
-          './styles/antdCustom.less',
-          './index'
-        ],
+        // main: [
+        //   'babel-polyfill',
+        //   './styles/index.less',
+        //   './styles/antdCustom.less',
+        //   './index'
+        // ],
+        babylon: ['babylon'],
       },
       demo: {
         main: [
@@ -82,6 +83,7 @@ module.exports = (type) => { // eslint-disable-line
     }[type],
 
     output: {
+      library: 'babylon',
       // Js bundle name, [name] will be replaced by which is in entry
       filename: '[name].js',
 

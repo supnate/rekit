@@ -1,8 +1,9 @@
-/* eslint no-restricted-globals: 0, prefer-spread: 0 */
+/* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
 /* global self */
 // self.importScripts(['/static/libs/typescript.min.js']);
 self.importScripts(['/static/libs/prism.min.js']);
-
+self.importScripts(['/static/libs/babylon.js']);
+console.log(babylon);
 function getLineNumberAndOffset(start, lines) {
   let line = 0;
   let offset = 0;
@@ -25,40 +26,76 @@ function tagType(token) {
   return null;
 }
 
-function findJsxText(tokens) {
+function findEndTagIndex(startIndex, tokens) {
+  let depth = 1;
+  for (let i = startIndex; i < tokens.length; i += 1) {
+    if (tokens[i].type !== 'tag') continue;
+    const tt = tagType(tokens[i]);
+    if (tt === 'start') depth += 1;
+    if (tt === 'end') depth -= 1;
+    if (depth === 0) return i;
+  }
+
+  return startIndex;
+}
+
+function findJsxText(tokens, startIndex) {
   let jsxDepth = 0;
   let jsxExpDepth = 0;
   let jsxTextToken = null;
-  const result = [];
-  for (let i = 0; i < tokens.length; i++) {
+  let result = [];
+  for (let i = startIndex; i < tokens.length; i++) {
     const t = tokens[i];
     if (t.type === 'tag') {
       const tt = tagType(t);
-      result.push(t);
       if (tt === 'start') {
+        if (jsxDepth > 0) {
+          // Find jsx text in sub tag
+          result = [...result, ...findJsxText(tokens, i)];
+          jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
+          result.push(jsxTextToken);
+          i = findEndTagIndex(i + 1, tokens);
+          continue; // eslint-disable-line
+        }
+        const tagTokens = flattenTagToken(t); // flatten tokens for a tag
+        result = [...result, ...tagTokens];
+        // i += tagTokens.length - 1;
+        // result.push(t);
         jsxDepth += 1;
         jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
         result.push(jsxTextToken);
       }
       if (tt === 'end') {
+        const tagTokens = flattenTagToken(t); // flatten tokens for a tag
+        result = [...result, ...tagTokens];
+        // i += tagTokens.length - 1;
+        // result.push(t);
         // if (jsxTextToken.length > 0) result.push(jsxTextToken);
         jsxDepth -= 1;
         if (jsxDepth < 0) jsxDepth = 0;
+
         if (jsxDepth === 0) jsxTextToken = null;
         else {
           jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
           result.push(jsxTextToken);
         }
+        if (startIndex > 0) return result;
       }
-      if (tt === 'self-close' && jsxDepth > 0) {
-        jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
-        result.push(jsxTextToken);
+      if (tt === 'self-close') {
+        const tagTokens = flattenTagToken(t); // flatten tokens for a tag
+        result = [...result, ...tagTokens];
+        // i += tagTokens.length - 1;
+        // result.push(t);
+        if (jsxDepth > 0) {
+          jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
+          result.push(jsxTextToken);
+        }
       }
       continue; // eslint-disable-line
     }
 
     // Find jsx expression
-    if (t.content === '{') {
+    if (t.content === '{' && jsxTextToken) {
       jsxExpDepth += 1;
       if (jsxExpDepth === 1) {
         result.push({
@@ -69,9 +106,12 @@ function findJsxText(tokens) {
         continue; // eslint-disable-line
       }
     }
+
     if (t.content === '}') {
       jsxExpDepth -= 1;
-      if (jsxExpDepth < 0)jsxExpDepth = 0;
+      if (jsxExpDepth < 0) {
+        jsxExpDepth = 0;
+      }
       if (jsxExpDepth === 0) {
         result.push({
           ...t,
@@ -97,7 +137,7 @@ function findJsxText(tokens) {
 }
 
 // let jsxContext = [];
-function flattenToken(token) {
+function flattenTagToken(token) {
   if (!Array.isArray(token.content)) return [token];
 
   const isEndTag = token.content[0].content[0].content === '</';
@@ -145,7 +185,7 @@ function flattenToken(token) {
           ...t.content[i],
           type: 'jsx-exp-start',
         },
-        ...t.content.slice(i + 1, t.content.length - 1),
+        ...findJsxText(t.content.slice(i + 1, t.content.length - 1), 0),
         {
           ...t.content[t.content.length - 1],
           type: 'jsx-exp-end',
@@ -170,17 +210,8 @@ self.addEventListener('message', event => {
   try {
     // jsxContext = [];
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
-    console.log(tokens);
-    tokens = findJsxText(tokens);
-    tokens = tokens.reduce((prev, t) => {
-      if (t.type === 'tag') {
-        prev.push.apply(prev, flattenToken(t)); // eslint-disable-line
-        return prev;
-      }
-      prev.push(t);
-      return prev;
-    }, []);
-
+    console.log('tokens: ', tokens);
+    tokens = findJsxText(tokens, 0);
     const classifications = [];
     let pos = 0;
     const lines = code.split('\n').map(line => line.length);

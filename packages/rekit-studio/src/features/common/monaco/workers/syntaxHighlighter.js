@@ -1,9 +1,9 @@
 /* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
-/* global self */
+/* global self, babylon */
 // self.importScripts(['/static/libs/typescript.min.js']);
 self.importScripts(['/static/libs/prism.min.js']);
-self.importScripts(['/static/libs/babylon.js']);
-console.log(babylon);
+// self.importScripts(['/static/libs/babylon.js']);
+
 function getLineNumberAndOffset(start, lines) {
   let line = 0;
   let offset = 0;
@@ -122,7 +122,7 @@ function findJsxText(tokens, startIndex) {
           jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
           result.push(jsxTextToken);
         }
-        continue; // eslint-disable-line        
+        continue; // eslint-disable-line
       }
     }
 
@@ -210,7 +210,6 @@ self.addEventListener('message', event => {
   try {
     // jsxContext = [];
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
-    console.log('tokens: ', tokens);
     tokens = findJsxText(tokens, 0);
     const classifications = [];
     let pos = 0;
@@ -249,3 +248,47 @@ self.addEventListener('message', event => {
     /* Ignore error */
   }
 });
+
+// Respond to message from parent thread
+// self.addEventListener('message', event => {
+//   const { code } = event.data;
+//   try {
+//     // jsxContext = [];
+//     const tokens = babylon.parse(code, {
+//       sourceType: 'module',
+//       plugins: [
+//         'jsx',
+//         'flow',
+//         'doExpressions',
+//         'objectRestSpread',
+//         'decorators',
+//         'classProperties',
+//         'exportExtensions',
+//         'asyncGenerators',
+//         'functionBind',
+//         'functionSent',
+//         'dynamicImport',
+//       ],
+//     }).tokens;
+//     console.log('tokens: ', tokens);
+//     const classifications = [];
+//     for (let i = 0; i < tokens.length; i++) {
+//       const t = tokens[i];
+//       let kind = t.type.label;
+//       if (kind === 'jsxName' && i > 0 && tokens[i - 1].type.label !== 'jsxTagStart' && tokens[i - 1].type.label !== '/') kind = 'jsxAttrName';
+//       if (kind === '/' && i > 0 && tokens[i - 1].type.label === 'jsxTagStart') kind = 'jsxTagStart';
+//       classifications.push({
+//         start: t.loc.start.column + 1,
+//         end: t.loc.end.column + 1,
+//         kind,
+//         startLine: t.loc.start.line,
+//         endLine: t.loc.end.line,
+//       });
+//     }
+
+//     self.postMessage({ classifications });
+//   } catch (e) {
+//     console.log('failed to parse:', e);
+//     /* Ignore error */
+//   }
+// });

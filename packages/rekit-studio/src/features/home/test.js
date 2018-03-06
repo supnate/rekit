@@ -1,1 +1,1 @@
-<CodeView title={<h1>Title</h1>}>for of as</CodeView>
+<CodeView title={() => <span title="a">2</span>}>for of as</CodeView>

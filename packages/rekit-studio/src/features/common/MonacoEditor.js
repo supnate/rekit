@@ -17,7 +17,8 @@ export default class MonacoEditor extends Component {
     options: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     editorDidMount: PropTypes.func,
     editorWillMount: PropTypes.func,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    model: PropTypes.object,
   };
 
   static defaultProps = {
@@ -25,6 +26,7 @@ export default class MonacoEditor extends Component {
     theme: 'vs-dark',
     options: {},
     value: null,
+    model: null,
     file: '',
     editorDidMount: noop,
     editorWillMount: noop,

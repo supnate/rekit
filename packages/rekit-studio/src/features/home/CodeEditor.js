@@ -1,3 +1,4 @@
+/* eslint no-bitwise: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -9,6 +10,8 @@ import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import { MonacoEditor, UnloadComponent } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert } from './redux/actions';
 import editorStateMap from './editorStateMap';
+
+let modelCache = {};
 
 export class CodeEditor extends Component {
   static propTypes = {
@@ -109,6 +112,15 @@ export class CodeEditor extends Component {
     return this.props.fileContentById[this.props.file];
   }
 
+  getModel(filePath) {
+    if (!window.monaco) return null;
+    let model = modelCache[filePath];
+    if (!model) {
+      model = monaco.editor.createModel(this.state.currentContent);
+    }
+    return model;
+  }
+
   formatCode = () => {
     this.setState({ loadingFile: true });
     axios
@@ -195,12 +207,10 @@ export class CodeEditor extends Component {
     editor.focus();
 
     // This seems to be able to add multiple times.
-    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => { // eslint-disable-line
-      // eslint-disable-line
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => {
       if (this.hasChange()) this.handleSave();
     });
-    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_B], () => { // eslint-disable-line
-      // eslint-disable-line
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_B], () => {
       this.formatCode();
     });
     this.monacoListeners.push(

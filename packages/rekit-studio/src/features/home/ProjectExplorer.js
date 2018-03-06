@@ -56,12 +56,14 @@ export class ProjectExplorer extends Component {
   };
 
   componentDidUpdate(prevProps) {
+    if (!this.rootNode) return;
     if (this.getSelectedKey(prevProps) !== this.getSelectedKey(this.props)) {
       const targetNode = this.rootNode.querySelector('.ant-tree-node-selected');
       if (targetNode) {
         scrollIntoView(targetNode, this.rootNode, {
           onlyScrollIfNeeded: true,
           offsetTop: 50,
+          offsetBottom: 50,
         });
       }
     }

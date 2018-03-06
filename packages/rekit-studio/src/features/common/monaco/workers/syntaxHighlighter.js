@@ -107,7 +107,7 @@ function findJsxText(tokens, startIndex) {
       }
     }
 
-    if (t.content === '}') {
+    if (t.content === '}' && jsxExpDepth > 0) {
       jsxExpDepth -= 1;
       if (jsxExpDepth < 0) {
         jsxExpDepth = 0;
@@ -210,6 +210,7 @@ self.addEventListener('message', event => {
   try {
     // jsxContext = [];
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
+    console.log(tokens);
     tokens = findJsxText(tokens, 0);
     const classifications = [];
     let pos = 0;

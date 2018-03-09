@@ -16,6 +16,7 @@ function setupLintWorker(_editor, _monaco) {
 }
 
 const doLint = _.debounce(() => {
+  if (!editor.getModel()) return;
   if (/javascript/i.test(editor.getModel().getModeId())) {
     const code = editor.getValue();
     axios
@@ -35,6 +36,7 @@ const doLint = _.debounce(() => {
 }, 500);
 
 function updateLintWarnings(validations) {
+  if (!editor.getModel()) return;
   const markers = validations.map(error => ({
     severity: Math.min(error.severity + 1, 3),
     startColumn: error.column,

@@ -7,7 +7,7 @@ import modelManager from './monaco/modelManager';
 
 function noop() {}
 let editorInstance = null; // Only one global monaco editor.
-const getEditorNode = () => editorInstance.getDomNode().parentNode;
+const getEditorNode = () => editorInstance && editorInstance.getDomNode() && editorInstance.getDomNode().parentNode;
 
 export default class MonacoEditor extends Component {
   static propTypes = {
@@ -71,7 +71,8 @@ export default class MonacoEditor extends Component {
   // }
 
   componentWillUnmount() {
-    if (editorInstance) this.containerElement.removeChild(getEditorNode());
+    const editorNode = getEditorNode();
+    if (editorNode) this.containerElement.removeChild(getEditorNode());
     this.editor = null;
     this.monacoListeners.forEach(lis => lis.dispose());
     window.removeEventListener('resize', this.handleWindowResize);

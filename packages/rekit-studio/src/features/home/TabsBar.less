@@ -82,5 +82,28 @@
         background-color: #aaa;
       }
     }
+    &-has-change {
+    //   background: red;
+      .anticon-close {
+        visibility: visible;
+        &::before {
+          content: ' ';
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 5px;
+          background-color: #aaa;
+        }
+
+        &:hover::before{
+          content: "\E633";
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 0px;
+          background-color: transparent;
+        }
+      }
+    }
   }
 }

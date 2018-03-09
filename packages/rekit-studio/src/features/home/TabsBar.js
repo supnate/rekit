@@ -3,12 +3,14 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Dropdown, Icon, Menu } from 'antd';
+import { Dropdown, Icon, Menu, Modal } from 'antd';
 import classnames from 'classnames';
 import scrollIntoView from 'dom-scroll-into-view';
 import history from '../../common/history';
 import { closeTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
+import modelManager from '../common/monaco/modelManager';
+import { getElementData, getElementFiles } from './helpers';
 
 export class TabsBar extends Component {
   static propTypes = {
@@ -16,6 +18,11 @@ export class TabsBar extends Component {
     router: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
+
+  componentDidUpdate(prevProps) {
+    if (this.delayScroll) clearTimeout(this.delayScroll);
+    this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
+  }
 
   getCurrentFile() {
     // only for element page
@@ -48,6 +55,14 @@ export class TabsBar extends Component {
   getTabTooltip(tab) {
     if (!_.startsWith(tab.key, '#')) return tab.key;
     return tab.name;
+  }
+
+  isChanged(tab) {
+    const files = getElementFiles(this.props.home, tab.key);
+    if (!files) return false;
+    return (
+      modelManager.isChanged(files.code) || modelManager.isChanged(files.test) || modelManager.isChanged(files.style)
+    );
   }
 
   isCurrentTab(tab) {
@@ -97,45 +112,49 @@ export class TabsBar extends Component {
     }
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.delayScroll) clearTimeout(this.delayScroll);
-    this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
-  }
-
   scrollActiveTabIntoView = () => {
     delete this.delayScroll;
     if (!this.rootNode) return;
-    scrollIntoView(this.rootNode.querySelector('.tab-active'), this.rootNode, {
-      allowHorizontalScroll: true,
-      onlyScrollIfNeeded: true,
-      offsetRight: 100,
-      offsetLeft: 100,
-    });
+    const node = this.rootNode.querySelector('.tab-active');
+    if (node) {
+      scrollIntoView(node, this.rootNode, {
+        allowHorizontalScroll: true,
+        onlyScrollIfNeeded: true,
+        offsetRight: 100,
+        offsetLeft: 100,
+      });}
     this.rootNode.scrollTop = 0; // Prevent vertical offset when switching tabs.
   };
 
   handleClose = (evt, tab) => {
     if (evt && evt.stopPropagation) evt.stopPropagation();
-    this.props.actions.closeTab(tab.key);
-    const { historyTabs, cssExt } = this.props.home;
-    const ele = this.getElementData(tab.key);
-    if (ele) {
-      const codeFile = ele.file;
-      const styleFile = `src/features/${ele.feature}/${ele.name}.${cssExt}`;
-      const testFile = `tests/${ele.file.replace(/^src\//, '').replace('.js', '')}.test.js`;
+    const files = getElementFiles(this.props.home, tab.key);
+    Modal.confirm({
+      title: 'Discard changes?',
+      content: `Do you want to discard changes you made to ${files.code}?`,
+      okText: 'Discard',
+      onOk: () => {
+        this.props.actions.closeTab(tab.key);
+        if (files) {
+          delete editorStateMap[files.code];
+          delete editorStateMap[files.style];
+          delete editorStateMap[files.test];
+        }
+        // modelManager.dispose(files.code);
+        // modelManager.dispose(files.style);
+        // modelManager.dispose(files.test);
 
-      delete editorStateMap[codeFile];
-      delete editorStateMap[styleFile];
-      delete editorStateMap[testFile];
-    }
-
-    if (historyTabs.length === 1) {
-      history.push('/welcome');
-    } else if (this.isCurrentTab(tab)) {
-      // Close the current one
-      const nextKey = historyTabs[1]; // at this point the props has not been updated.
-      this.openTab(nextKey);
-    }
+        const { historyTabs } = this.props.home;
+        if (historyTabs.length === 1) {
+          history.push('/welcome');
+        } else if (this.isCurrentTab(tab)) {
+          // Close the current one
+          const nextKey = historyTabs[1]; // at this point the props has not been updated.
+          this.openTab(nextKey);
+        }
+      },
+      onCancel: () => {},
+    });
   };
 
   handleMenuClick = (tab, menuKey) => {
@@ -175,7 +194,10 @@ export class TabsBar extends Component {
             <span
               key={tab.key}
               onClick={() => this.openTab(tab.key)}
-              className={classnames('tab', { 'tab-active': this.isCurrentTab(tab) })}
+              className={classnames('tab', {
+                'tab-active': this.isCurrentTab(tab),
+                'tab-has-change': this.isChanged(tab),
+              })}
             >
               <Icon type={tab.icon || 'file'} />
               <label title={this.getTabTooltip(tab)}>{tab.name}</label>

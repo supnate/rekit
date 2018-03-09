@@ -4,11 +4,8 @@ import _ from 'lodash';
 const initialContent = {};
 // let editor = null;
 
-const getUri = _.memoize(file => new monaco.Uri().with({ path: file, scheme: 'file' }))
+const getUri = _.memoize(file => new monaco.Uri().with({ path: file, scheme: 'file' }));
 const modelManager = {
-  setEditor(_editor) {
-    editor = _editor;
-  },
   getModel(filePath, content, noCreate) {
     if (!window.monaco) return null;
     const uri = getUri(filePath);
@@ -19,7 +16,10 @@ const modelManager = {
     return model;
   },
   dispose(filePath) {
+    if (!filePath) return;
+    delete initialContent[filePath];
     const model = this.getModel(filePath, null, true);
+    console.log('dispose: ', filePath);
     if (model) model.dispose();
   },
   setValue(filePath, content) {
@@ -42,7 +42,12 @@ const modelManager = {
     return !!this.getModel(filePath, null, true);
   },
   isChanged(filePath) {
-    return _.has(initialContent, filePath) && this.hasModel(filePath) && initialContent[filePath] !== this.getValue(filePath);
+    return (
+      filePath &&
+      _.has(initialContent, filePath) &&
+      this.hasModel(filePath) &&
+      initialContent[filePath] !== this.getValue(filePath)
+    );
   },
   getInitialValue(filePath) {
     return initialContent[filePath] || null;

@@ -12,8 +12,6 @@ import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/a
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
 
-let modelCache = {};
-
 export class CodeEditor extends Component {
   static propTypes = {
     fileContentById: PropTypes.object.isRequired,
@@ -78,11 +76,12 @@ export class CodeEditor extends Component {
       this.preventSaveEditorState = true;
       this.setState({
         loadingFile: true,
-        currentContent: '',
       });
       await this.checkAndFetchFileContent(nextProps);
       // Todo: check if conflict
       modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
+      this.preventSaveEditorState = false;
+      this.recoverEditorState();
       this.setState({
         loadingFile: false,
       });
@@ -102,7 +101,7 @@ export class CodeEditor extends Component {
           content: 'Do you want to reload it?',
           okText: 'Yes',
           cancelText: 'No',
-          onOk: this.reloadContent,
+          // onOk: this.reloadContent,
         });
       } else if (!hasChange) {
         // this.reloadContent();
@@ -122,7 +121,7 @@ export class CodeEditor extends Component {
     this.setState({ loadingFile: true });
     axios
       .post('/rekit/api/format-code', {
-        content: this.state.currentContent,
+        content: modelManager.getValue(this.props.file),
         file: this.props.file,
       })
       .then(res => {
@@ -133,7 +132,7 @@ export class CodeEditor extends Component {
           {
             loadingFile: false,
             // currentContent: res.data.content,
-          },
+          }
           // () => this.props.onStateChange({ hasChange: this.hasChange() })
         );
       })
@@ -145,7 +144,6 @@ export class CodeEditor extends Component {
   };
 
   reloadContent = () => {
-    console.log('reload content');
     // Reload content from Redux store to internal state(editor).
     this.setState({
       currentContent: this.getFileContent(),

@@ -91,12 +91,6 @@ export class ElementPage extends Component {
     });
   };
 
-  handleCodeChange = args => {
-    this.setState({
-      codeChanged: args.hasChange,
-    });
-  };
-
   handleTabChange = tabKey => {
     const file = decodeURIComponent(this.props.match.params.file);
     history.push(`/element/${encodeURIComponent(file)}/${tabKey}`);
@@ -250,11 +244,7 @@ export class ElementPage extends Component {
           )}
         {tabKey !== 'diagram' &&
           data.hasCode && (
-            <CodeEditor
-              file={codeFile}
-              onStateChange={this.handleCodeChange}
-              onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null}
-            />
+            <CodeEditor file={codeFile} onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null} />
           )}
         {!data.hasCode &&
           !data.isPic && (

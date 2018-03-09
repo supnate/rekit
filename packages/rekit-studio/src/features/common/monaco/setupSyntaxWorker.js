@@ -24,6 +24,7 @@ function setupSyntaxWorker(_editor, _monaco) {
 }
 
 function syntaxHighlight() {
+  if (!editor.getModel()) return; // all models disposed
   if (/typescript|javascript/i.test(editor.getModel().getModeId())) {
     syntaxWorker.postMessage({
       code: editor.getValue(),

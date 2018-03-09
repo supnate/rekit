@@ -1,4 +1,4 @@
-/* eslint no-bitwise: 0 */
+/* eslint no-bitwise: 0, jsx-no-bind: 0*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -8,8 +8,9 @@ import { Prompt } from 'react-router';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import { MonacoEditor, UnloadComponent } from '../common';
-import { fetchFileContent, saveFile, showDemoAlert } from './redux/actions';
+import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/actions';
 import editorStateMap from './editorStateMap';
+import modelManager from '../common/monaco/modelManager';
 
 let modelCache = {};
 
@@ -59,6 +60,8 @@ export class CodeEditor extends Component {
       loadingFile: true,
     });
     await this.checkAndFetchFileContent(this.props);
+    // Todo: check if conflict
+    modelManager.setInitialValue(this.props.file, this.getFileContent(this.props.file), true);
     this.setState({
       // eslint-disable-line
       currentContent: this.getFileContent(),
@@ -78,14 +81,17 @@ export class CodeEditor extends Component {
         currentContent: '',
       });
       await this.checkAndFetchFileContent(nextProps);
+      // Todo: check if conflict
+      modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
       this.setState({
         loadingFile: false,
       });
-      this.reloadContent();
+      // this.reloadContent();
     } else if (nextProps.fileContentNeedReload[nextProps.file]) {
       const oldContent = this.getFileContent();
       const hasChange = this.hasChange(); // has changed
       await this.checkAndFetchFileContent(nextProps);
+      modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
       this.setState({
         loadingFile: false,
       });
@@ -99,7 +105,7 @@ export class CodeEditor extends Component {
           onOk: this.reloadContent,
         });
       } else if (!hasChange) {
-        this.reloadContent();
+        // this.reloadContent();
       }
     }
   }
@@ -108,17 +114,8 @@ export class CodeEditor extends Component {
     this.monacoListeners.forEach(lis => lis.dispose());
   }
 
-  getFileContent() {
-    return this.props.fileContentById[this.props.file];
-  }
-
-  getModel(filePath) {
-    if (!window.monaco) return null;
-    let model = modelCache[filePath];
-    if (!model) {
-      model = monaco.editor.createModel(this.state.currentContent);
-    }
-    return model;
+  getFileContent(filePath) {
+    return this.props.fileContentById[filePath || this.props.file];
   }
 
   formatCode = () => {
@@ -135,9 +132,9 @@ export class CodeEditor extends Component {
         this.setState(
           {
             loadingFile: false,
-            currentContent: res.data.content,
+            // currentContent: res.data.content,
           },
-          () => this.props.onStateChange({ hasChange: this.hasChange() })
+          // () => this.props.onStateChange({ hasChange: this.hasChange() })
         );
       })
       .catch(() => {
@@ -148,10 +145,12 @@ export class CodeEditor extends Component {
   };
 
   reloadContent = () => {
+    console.log('reload content');
     // Reload content from Redux store to internal state(editor).
     this.setState({
       currentContent: this.getFileContent(),
     });
+    if (this.editor) this.editor.setValue(this.getFileContent());
     this.props.onStateChange({ hasChange: false });
     this.recoverEditorState();
   };
@@ -167,7 +166,8 @@ export class CodeEditor extends Component {
 
   hasChange() {
     // Whether the editor content is different from which in store.
-    return this.state.currentContent !== this.getFileContent();
+    return modelManager.isChanged(this.props.file);
+    // return this.state.currentContent !== this.getFileContent();
   }
 
   checkAndFetchFileContent(props) {
@@ -192,11 +192,12 @@ export class CodeEditor extends Component {
     }
   }
 
-  handleEditorChange = newValue => {
-    this.setState({
-      currentContent: newValue,
-    });
-    this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
+  handleEditorChange = () => {
+    this.props.actions.codeChange();
+    // this.setState({
+    //   currentContent: newValue,
+    // });
+    // this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
   };
 
   handleEditorDidMount = editor => {
@@ -205,7 +206,6 @@ export class CodeEditor extends Component {
     });
     this.editor = editor;
     editor.focus();
-
     // This seems to be able to add multiple times.
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => {
       if (this.hasChange()) this.handleSave();
@@ -236,8 +236,8 @@ export class CodeEditor extends Component {
 
   handleSave = () => {
     this.props.actions
-      .saveFile(this.props.file, this.state.currentContent)
-      .then(() => this.props.onStateChange({ hasChange: false }))
+      .saveFile(this.props.file, this.editor.getValue())
+      // .then(() => this.props.onStateChange({ hasChange: false }))
       .catch(() => {
         if (process.env.REKIT_ENV === 'demo') {
           this.props.actions.showDemoAlert();
@@ -256,10 +256,7 @@ export class CodeEditor extends Component {
       okText: 'Discard',
       cancelText: 'No',
       onOk: () => {
-        this.setState({
-          currentContent: this.getFileContent(),
-        });
-        this.props.onStateChange({ hasChange: false });
+        modelManager.setValue(this.props.file, modelManager.getInitialValue(this.props.file));
       },
     });
   };
@@ -293,10 +290,6 @@ export class CodeEditor extends Component {
     const { saveFilePending } = this.props;
     return (
       <div className="home-code-editor">
-        <Prompt
-          when={hasChange}
-          message="The change is not saved, are you sure to leave? Unsaved change will be discarded."
-        />
         {hasChange && <UnloadComponent />}
         <div className="code-editor-toolbar">
           <div className="file-path">{this.props.file}</div>
@@ -367,7 +360,6 @@ export class CodeEditor extends Component {
         <MonacoEditor
           file={this.props.file}
           language={lang}
-          value={this.state.currentContent}
           options={options}
           onChange={this.handleEditorChange}
           editorDidMount={this.handleEditorDidMount}
@@ -380,6 +372,7 @@ export class CodeEditor extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
+    // codeChange: state.home.codeChange,
     fileContentById: state.home.fileContentById,
     fileContentNeedReload: state.home.fileContentNeedReload,
     fetchFileContentPending: state.home.fetchFileContentPending,
@@ -390,7 +383,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent, saveFile, showDemoAlert }, dispatch),
+    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert }, dispatch),
   };
 }
 

@@ -11,6 +11,7 @@ function setupLintWorker(_editor, _monaco) {
   editor = _editor;
   monaco = _monaco;
   editor.onDidChangeModelContent(doLint);
+  editor.onDidChangeModel(doLint);
   requestAnimationFrame(doLint); // For first time load
 }
 

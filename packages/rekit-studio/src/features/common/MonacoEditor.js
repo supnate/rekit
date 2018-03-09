@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import configureMonacoEditor from './monaco/configureMonacoEditor';
+import modelManager from './monaco/modelManager';
 
 function noop() {}
 let editorInstance = null; // Only one global monaco editor.
@@ -11,22 +12,18 @@ const getEditorNode = () => editorInstance.getDomNode().parentNode;
 export default class MonacoEditor extends Component {
   static propTypes = {
     theme: PropTypes.string,
-    language: PropTypes.string,
     file: PropTypes.string,
-    value: PropTypes.string,
+    // initialValue: PropTypes.string,
     options: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     editorDidMount: PropTypes.func,
     editorWillMount: PropTypes.func,
     onChange: PropTypes.func,
-    model: PropTypes.object,
   };
 
   static defaultProps = {
-    language: 'javascript',
     theme: 'vs-dark',
     options: {},
-    value: null,
-    model: null,
+    // initialValue: '',
     file: '',
     editorDidMount: noop,
     editorWillMount: noop,
@@ -45,29 +42,36 @@ export default class MonacoEditor extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.editor) this.editor._editingFile = nextProps.file;
+    if (nextProps.file !== this.props.file) {
+      this.editor.setModel(modelManager.getModel(nextProps.file));
+    }
+    // if (nextProps.model !== this.props.model && this.editor && nextProps.model) {
+    //   console.log('switch model');
+    //   this.editor.setModel(nextProps.model);
+    // }
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.value !== this.__current_value) {
+  // componentDidUpdate(prevProps) {
+    // if (this.props.value !== this.__current_value) {
       // Always refer to the latest value
-      this.__current_value = this.props.value;
+      // this.__current_value = this.props.value;
       // Consider the situation of rendering 1+ times before the editor mounted
-      if (this.editor) {
-        this.__prevent_trigger_change_event = true;
-        this.editor.setValue(this.__current_value);
-        this.__prevent_trigger_change_event = false;
-      }
-    }
-    if (prevProps.language !== this.props.language) {
-      monaco.editor.setModelLanguage(
-        this.editor.getModel(),
-        this.props.language
-      );
-    }
-  }
+      // if (this.editor) {
+        // this.__prevent_trigger_change_event = true;
+        // this.editor.setValue(this.__current_value);
+        // this.__prevent_trigger_change_event = false;
+      // }
+    // }
+    // if (prevProps.language !== this.props.language) {
+      // monaco.editor.setModelLanguage(
+      //   this.editor.getModel(),
+      //   this.props.language
+      // );
+    // }
+  // }
 
   componentWillUnmount() {
-    this.containerElement.removeChild(getEditorNode());
+    if (editorInstance) this.containerElement.removeChild(getEditorNode());
     this.editor = null;
     this.monacoListeners.forEach(lis => lis.dispose());
     window.removeEventListener('resize', this.handleWindowResize);
@@ -146,20 +150,20 @@ export default class MonacoEditor extends Component {
   }
 
   initMonaco() {
-    const { theme, options, language, value } = this.props;
+    const { theme, options, file, initialValue } = this.props;
     this.editorWillMount(monaco);
     if (!editorInstance) {
       const domNode = document.createElement('div');
       domNode.className = 'monaco-editor-node';
       this.containerElement.appendChild(domNode);
       editorInstance = monaco.editor.create(domNode, {
-        language,
-        value,
+        model: modelManager.getModel(file),
         ...options
       });
+      // modelManager.setEditor(editorInstance);
       configureMonacoEditor(editorInstance, monaco);
     } else {
-      monaco.editor.setModelLanguage(editorInstance.getModel(), language);
+      // monaco.editor.setModelLanguage(editorInstance.getModel(), language);
       this.containerElement.appendChild(getEditorNode());
     }
     monaco.editor.setTheme(theme);

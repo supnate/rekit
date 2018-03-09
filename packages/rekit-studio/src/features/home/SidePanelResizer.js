@@ -16,14 +16,14 @@ export class SidePanelResizer extends Component {
   };
 
   assignRef = node => {
-    this.node = node;
+    this.node =node;
   };
 
   handleMouseDown = evt => {
     this.setState({ dragging: true });
   };
 
-  handleMouseMove = (evt) => {
+  handleMouseMove = evt => {
     if (!this.state.dragging) return;
     this.props.actions.setSidePanelWidth(evt.pageX);
     window.dispatchEvent(new window.Event('resize'));

@@ -1,1 +1,1 @@
-<CodeView title={<span title="a">2</span>}>for of as</CodeView>
+<CodeView title={<span title={123}>2</span>}>for of as</CodeView>

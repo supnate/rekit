@@ -1,6 +1,7 @@
 /* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
 /* global self, babylon */
 // self.importScripts(['/static/libs/typescript.min.js']);
+self.Prism = { disableWorkerMessageHandler: true };
 self.importScripts(['/static/libs/prism-1.12.2.js']);
 // self.importScripts(['/static/libs/babylon.js']);
 
@@ -208,9 +209,11 @@ function flattenTagToken(token) {
 self.addEventListener('message', event => {
   const { code } = event.data;
   try {
-    // jsxContext = [];
+    // console.time('parse');
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
     tokens = findJsxText(tokens, 0);
+    // console.timeEnd('parse');
+    
     const classifications = [];
     let pos = 0;
     const lines = code.split('\n').map(line => line.length);
@@ -248,47 +251,3 @@ self.addEventListener('message', event => {
     /* Ignore error */
   }
 });
-
-// Respond to message from parent thread
-// self.addEventListener('message', event => {
-//   const { code } = event.data;
-//   try {
-//     // jsxContext = [];
-//     const tokens = babylon.parse(code, {
-//       sourceType: 'module',
-//       plugins: [
-//         'jsx',
-//         'flow',
-//         'doExpressions',
-//         'objectRestSpread',
-//         'decorators',
-//         'classProperties',
-//         'exportExtensions',
-//         'asyncGenerators',
-//         'functionBind',
-//         'functionSent',
-//         'dynamicImport',
-//       ],
-//     }).tokens;
-//     console.log('tokens: ', tokens);
-//     const classifications = [];
-//     for (let i = 0; i < tokens.length; i++) {
-//       const t = tokens[i];
-//       let kind = t.type.label;
-//       if (kind === 'jsxName' && i > 0 && tokens[i - 1].type.label !== 'jsxTagStart' && tokens[i - 1].type.label !== '/') kind = 'jsxAttrName';
-//       if (kind === '/' && i > 0 && tokens[i - 1].type.label === 'jsxTagStart') kind = 'jsxTagStart';
-//       classifications.push({
-//         start: t.loc.start.column + 1,
-//         end: t.loc.end.column + 1,
-//         kind,
-//         startLine: t.loc.start.line,
-//         endLine: t.loc.end.line,
-//       });
-//     }
-
-//     self.postMessage({ classifications });
-//   } catch (e) {
-//     console.log('failed to parse:', e);
-//     /* Ignore error */
-//   }
-// });

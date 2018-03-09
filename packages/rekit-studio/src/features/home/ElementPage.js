@@ -7,6 +7,7 @@ import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
+import modelManager from '../common/monaco/modelManager';
 import { CodeEditor } from './';
 
 const TabPane = Tabs.TabPane;
@@ -106,6 +107,35 @@ export class ElementPage extends Component {
     history.push(`/tools/tests/${encodeURIComponent(file)}`);
   };
 
+  getCodeFile(tabKey) {
+    const data = this.getElementData();
+
+    const { home } = this.props;
+    // const onlyCode = data.hasCode && !data.hasDiagram && !data.hasTest;
+
+    let codeFile;
+
+    // if (!data.hasCode) tabKey = 'diagram';
+    // if (onlyCode) tabKey = 'code';
+    // if (tabKey === 'style' && (data.type !== 'component' || !data.feature)) tabKey = 'diagram';
+    switch (tabKey) {
+      case 'code':
+        codeFile = data.file;
+        break;
+      case 'style':
+        codeFile = `src/features/${data.feature}/${data.name}.${home.cssExt}`;
+        break;
+      case 'test':
+        codeFile = `tests/${decodeURIComponent(this.props.match.params.file)
+          .replace(/^src\//, '')
+          .replace('.js', '')}.test.js`;
+        break;
+      default:
+        return null;
+    }
+    return codeFile;
+  }
+
   renderNotFound() {
     return (
       <div className="home-element-page">
@@ -142,6 +172,17 @@ export class ElementPage extends Component {
         {mark}
       </span>
     ));
+  }
+
+  renderTabTitle(key) {
+    const file = this.getCodeFile(key);
+    console.log('tab file: ', key, file);
+    return (
+      <span>
+        {_.capitalize(key)}
+        {file && modelManager.isChanged(file) ? <span style={{ color: '#108ee9' }}> *</span> : null}
+      </span>
+    );
   }
 
   render() {
@@ -186,7 +227,6 @@ export class ElementPage extends Component {
     const ext = arr.length > 1 ? arr.pop() : null;
 
     // const title = data.feature ? `${data.feature} / ${data.name}` : data.file;
-    const codeChangeMark = this.state.codeChanged ? ' *' : '';
     return (
       <div className="home-element-page">
         {data.isPic && (
@@ -203,10 +243,9 @@ export class ElementPage extends Component {
                   <ElementDiagram homeStore={this.props.home} elementId={data.file} size={this.state.editAreaSize} />
                 </TabPane>
               )}
-              {data.hasCode && <TabPane tab={`Code${tabKey === 'code' ? codeChangeMark : ''}`} key="code" />}
-              {data.type === 'component' &&
-                data.feature && <TabPane tab={`Style${tabKey === 'style' ? codeChangeMark : ''}`} key="style" />}
-              {data.hasTest && <TabPane tab={`Test${tabKey === 'test' ? codeChangeMark : ''}`} key="test" />}
+              {data.hasCode && <TabPane tab={this.renderTabTitle('code')} key="code" />}
+              {data.type === 'component' && data.feature && <TabPane tab={this.renderTabTitle('style')} key="style" />}
+              {data.hasTest && <TabPane tab={this.renderTabTitle('test')} key="test" />}
             </Tabs>
           )}
         {tabKey !== 'diagram' &&

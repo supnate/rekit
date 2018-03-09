@@ -10,6 +10,7 @@ import { reducer as closeTabReducer } from './closeTab';
 import { reducer as moveTabReducer } from './moveTab';
 import { reducer as setSidePanelWidthReducer } from './setSidePanelWidth';
 import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
+import { reducer as codeChangeReducer } from './codeChange';
 
 const reducers = [
   fetchProjectData,
@@ -20,6 +21,7 @@ const reducers = [
   closeTabReducer,
   moveTabReducer,
   setSidePanelWidthReducer,
+  codeChangeReducer,
 ];
 
 export default function reducer(state = initialState, action) {

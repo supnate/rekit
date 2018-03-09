@@ -19,6 +19,7 @@ function setupSyntaxWorker(_editor, _monaco) {
     });
   });
   editor.onDidChangeModelContent(syntaxHighlight);
+  editor.onDidChangeModel(syntaxHighlight);
   requestAnimationFrame(syntaxHighlight); // For first time load
 }
 

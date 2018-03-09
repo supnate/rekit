@@ -1,7 +1,7 @@
 /* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
 /* global self, babylon */
 // self.importScripts(['/static/libs/typescript.min.js']);
-self.importScripts(['/static/libs/prism.min.js']);
+self.importScripts(['/static/libs/prism-1.12.2.js']);
 // self.importScripts(['/static/libs/babylon.js']);
 
 function getLineNumberAndOffset(start, lines) {

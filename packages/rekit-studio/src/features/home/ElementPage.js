@@ -170,7 +170,6 @@ export class ElementPage extends Component {
 
   renderTabTitle(key) {
     const file = this.getCodeFile(key);
-    console.log('tab file: ', key, file);
     return (
       <span>
         {_.capitalize(key)}

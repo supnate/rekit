@@ -19,14 +19,14 @@ const modelManager = {
     if (!filePath) return;
     delete initialContent[filePath];
     const model = this.getModel(filePath, null, true);
-    console.log('dispose: ', filePath);
     if (model) model.dispose();
   },
   setValue(filePath, content) {
     const model = this.getModel(filePath);
-    if (model) model.setValue(content);
+    if (model && model.getValue() !== content) model.setValue(content);
   },
   setInitialValue(filePath, content) {
+    if (initialContent[filePath] === content) return;
     const model = this.getModel(filePath, content, true);
     if (model && (!_.has(initialContent, filePath) || model.getValue() === initialContent[filePath])) {
       model.setValue(content);

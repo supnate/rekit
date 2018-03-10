@@ -131,9 +131,7 @@ export class CodeEditor extends Component {
         this.setState(
           {
             loadingFile: false,
-            // currentContent: res.data.content,
           }
-          // () => this.props.onStateChange({ hasChange: this.hasChange() })
         );
       })
       .catch(() => {
@@ -235,7 +233,10 @@ export class CodeEditor extends Component {
   handleSave = () => {
     this.props.actions
       .saveFile(this.props.file, this.editor.getValue())
-      // .then(() => this.props.onStateChange({ hasChange: false }))
+      .then(() => {
+        modelManager.setInitialValue(this.props.file, this.editor.getValue());
+        this.props.actions.codeChange();
+      })
       .catch(() => {
         if (process.env.REKIT_ENV === 'demo') {
           this.props.actions.showDemoAlert();

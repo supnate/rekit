@@ -122,39 +122,50 @@ export class TabsBar extends Component {
         onlyScrollIfNeeded: true,
         offsetRight: 100,
         offsetLeft: 100,
-      });}
+      });
+    }
     this.rootNode.scrollTop = 0; // Prevent vertical offset when switching tabs.
   };
 
   handleClose = (evt, tab) => {
+    console.log('close tab: ', tab.key);
     if (evt && evt.stopPropagation) evt.stopPropagation();
     const files = getElementFiles(this.props.home, tab.key);
-    Modal.confirm({
-      title: 'Discard changes?',
-      content: `Do you want to discard changes you made to ${files.code}?`,
-      okText: 'Discard',
-      onOk: () => {
-        this.props.actions.closeTab(tab.key);
-        if (files) {
-          delete editorStateMap[files.code];
-          delete editorStateMap[files.style];
-          delete editorStateMap[files.test];
-        }
-        // modelManager.dispose(files.code);
-        // modelManager.dispose(files.style);
-        // modelManager.dispose(files.test);
 
-        const { historyTabs } = this.props.home;
-        if (historyTabs.length === 1) {
-          history.push('/welcome');
-        } else if (this.isCurrentTab(tab)) {
-          // Close the current one
-          const nextKey = historyTabs[1]; // at this point the props has not been updated.
-          this.openTab(nextKey);
-        }
-      },
-      onCancel: () => {},
-    });
+    const doClose = () => {
+      if (files) {
+        delete editorStateMap[files.code];
+        delete editorStateMap[files.style];
+        delete editorStateMap[files.test];
+        modelManager.dispose(files.code);
+        modelManager.dispose(files.style);
+        modelManager.dispose(files.test);
+      }
+
+      this.props.actions.closeTab(tab.key);
+      const { historyTabs } = this.props.home;
+      if (historyTabs.length === 1) {
+        history.push('/welcome');
+      } else if (this.isCurrentTab(tab)) {
+        // Close the current one
+        const nextKey = historyTabs[1]; // at this point the props has not been updated.
+        this.openTab(nextKey);
+      }
+    };
+
+    if (files && [files.code, files.test, files.style].some(f => modelManager.isChanged(f))) {
+      Modal.confirm({
+        title: 'Discard changes?',
+        content: `Do you want to discard changes you made to ${files.code}?`,
+        okText: 'Discard',
+        onOk: () => {
+          doClose();
+        },
+        onCancel: () => {},
+      });
+    } else {
+      doClose();
+    }
   };
 
   handleMenuClick = (tab, menuKey) => {

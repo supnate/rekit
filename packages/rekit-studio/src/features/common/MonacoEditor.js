@@ -13,7 +13,6 @@ export default class MonacoEditor extends Component {
   static propTypes = {
     theme: PropTypes.string,
     file: PropTypes.string,
-    // initialValue: PropTypes.string,
     options: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     editorDidMount: PropTypes.func,
     editorWillMount: PropTypes.func,
@@ -23,7 +22,6 @@ export default class MonacoEditor extends Component {
   static defaultProps = {
     theme: 'vs-dark',
     options: {},
-    // initialValue: '',
     file: '',
     editorDidMount: noop,
     editorWillMount: noop,
@@ -45,30 +43,7 @@ export default class MonacoEditor extends Component {
     if (nextProps.file !== this.props.file) {
       this.editor.setModel(modelManager.getModel(nextProps.file));
     }
-    // if (nextProps.model !== this.props.model && this.editor && nextProps.model) {
-    //   console.log('switch model');
-    //   this.editor.setModel(nextProps.model);
-    // }
   }
-
-  // componentDidUpdate(prevProps) {
-    // if (this.props.value !== this.__current_value) {
-      // Always refer to the latest value
-      // this.__current_value = this.props.value;
-      // Consider the situation of rendering 1+ times before the editor mounted
-      // if (this.editor) {
-        // this.__prevent_trigger_change_event = true;
-        // this.editor.setValue(this.__current_value);
-        // this.__prevent_trigger_change_event = false;
-      // }
-    // }
-    // if (prevProps.language !== this.props.language) {
-      // monaco.editor.setModelLanguage(
-      //   this.editor.getModel(),
-      //   this.props.language
-      // );
-    // }
-  // }
 
   componentWillUnmount() {
     const editorNode = getEditorNode();
@@ -151,7 +126,7 @@ export default class MonacoEditor extends Component {
   }
 
   initMonaco() {
-    const { theme, options, file, initialValue } = this.props;
+    const { theme, options, file } = this.props;
     this.editorWillMount(monaco);
     if (!editorInstance) {
       const domNode = document.createElement('div');
@@ -161,10 +136,9 @@ export default class MonacoEditor extends Component {
         model: modelManager.getModel(file),
         ...options
       });
-      // modelManager.setEditor(editorInstance);
       configureMonacoEditor(editorInstance, monaco);
     } else {
-      // monaco.editor.setModelLanguage(editorInstance.getModel(), language);
+      editorInstance.setModel(modelManager.getModel(file));
       this.containerElement.appendChild(getEditorNode());
     }
     monaco.editor.setTheme(theme);

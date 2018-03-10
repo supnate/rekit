@@ -10,6 +10,7 @@ import history from '../../common/history';
 import { closeTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
+import { UnloadComponent } from '../common';
 import { getElementData, getElementFiles } from './helpers';
 
 export class TabsBar extends Component {
@@ -220,6 +221,7 @@ export class TabsBar extends Component {
     );
     return (
       <div className="home-tabs-bar" ref={this.assignRef} style={{ marginLeft: `${sidePanelWidth}px` }}>
+        {openTabs.some(t => this.isChanged(t)) && <UnloadComponent />}
         {openTabs.map(tab => (
           <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
             <span

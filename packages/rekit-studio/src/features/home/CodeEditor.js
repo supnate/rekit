@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Prompt } from 'react-router';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
-import { MonacoEditor, UnloadComponent } from '../common';
+import { MonacoEditor } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
@@ -270,20 +270,10 @@ export class CodeEditor extends Component {
     const options = {
       selectOnLineNumbers: true,
     };
-    const ext = this.props.file.split('.').pop();
-    const lang =
-      {
-        js: 'javascript',
-        ts: 'typescript',
-        jsx: 'javascript',
-        tsx: 'typescript',
-        md: 'markdown',
-      }[ext] || ext;
     const hasChange = this.hasChange();
     const { saveFilePending } = this.props;
     return (
       <div className="home-code-editor">
-        {hasChange && <UnloadComponent />}
         <div className="code-editor-toolbar">
           <div className="file-path">{this.props.file}</div>
           <div>
@@ -352,7 +342,6 @@ export class CodeEditor extends Component {
         )}
         <MonacoEditor
           file={this.props.file}
-          language={lang}
           options={options}
           onChange={this.handleEditorChange}
           editorDidMount={this.handleEditorDidMount}

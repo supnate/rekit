@@ -1,10 +1,9 @@
-/* eslint no-bitwise: 0, jsx-no-bind: 0*/
+/* eslint no-bitwise: 0, jsx-no-bind: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Prompt } from 'react-router';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import { MonacoEditor } from '../common';
@@ -44,7 +43,6 @@ export class CodeEditor extends Component {
 
   state = {
     notFound: false,
-    currentContent: '',
     loadingFile: false,
     loadingEditor: true,
     cursorPos: {
@@ -62,7 +60,6 @@ export class CodeEditor extends Component {
     modelManager.setInitialValue(this.props.file, this.getFileContent(this.props.file), true);
     this.setState({
       // eslint-disable-line
-      currentContent: this.getFileContent(),
       loadingFile: false,
     });
     this.props.onStateChange({ hasChange: false });
@@ -101,7 +98,7 @@ export class CodeEditor extends Component {
           cancelText: 'No',
           onOk: () => {
             modelManager.reset(nextProps.file);
-          }
+          },
         });
       }
     }
@@ -126,27 +123,15 @@ export class CodeEditor extends Component {
         this.editor.executeEdits('format', [
           { range: new monaco.Range(1, 1, 1000000, 1), text: res.data.content, forceMoveMarkers: true },
         ]);
-        this.setState(
-          {
-            loadingFile: false,
-          }
-        );
+        this.setState({
+          loadingFile: false,
+        });
       })
       .catch(() => {
         this.setState({
           loadingFile: false,
         });
       });
-  };
-
-  reloadContent = () => {
-    // Reload content from Redux store to internal state(editor).
-    this.setState({
-      currentContent: this.getFileContent(),
-    });
-    if (this.editor) this.editor.setValue(this.getFileContent());
-    this.props.onStateChange({ hasChange: false });
-    this.recoverEditorState();
   };
 
   recoverEditorState = () => {

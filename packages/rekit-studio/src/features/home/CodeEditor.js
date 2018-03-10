@@ -254,6 +254,7 @@ export class CodeEditor extends Component {
     }
     const options = {
       selectOnLineNumbers: true,
+      wrappingIndent: 2,
     };
     const hasChange = this.hasChange();
     const { saveFilePending } = this.props;

@@ -10,7 +10,7 @@ export default class WelcomePage extends Component {
     return (
       <div className="home-welcome-page">
         <div className="content-container">
-          <img src={require('../../images/logo.png')} />
+          <img src={require('../../images/logo.png')} alt="logo" />
           <h2>Welcome to Rekit!</h2>
           <a href="http://rekit.js.org" target="_blank">http://rekit.js.org</a>
         </div>

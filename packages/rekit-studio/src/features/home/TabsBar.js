@@ -15,11 +15,31 @@ import { getElementData, getElementFiles } from './helpers';
 export class TabsBar extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
+    rekitCmds: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
-  componentDidUpdate(prevProps) {
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.rekitCmds.execCmdPending &&
+      !nextProps.rekitCmds.execCmdPending &&
+      nextProps.rekitCmds.execCmdResult
+    ) {
+      // If current tab is renamed/moved/removed
+      const cmdRes = nextProps.rekitCmds.execCmdResult;
+      console.log('cmd exec result: ', cmdRes);
+      if (/^(rename|move|remove)$/.test(cmdRes.args.commandName)) {
+        const file = cmdRes.args.path;
+        const tab = _.find(nextProps.home.openTabs, { key: file });
+        if (tab) {
+          this.handleClose({}, tab);
+        }
+      }
+    }
+  }
+
+  componentDidUpdate() {
     if (this.delayScroll) clearTimeout(this.delayScroll);
     this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
   }
@@ -127,7 +147,7 @@ export class TabsBar extends Component {
     this.rootNode.scrollTop = 0; // Prevent vertical offset when switching tabs.
   };
 
-  handleClose = (evt, tab) => {
+  handleClose = (evt, tab, force) => {
     if (evt && evt.stopPropagation) evt.stopPropagation();
     const files = getElementFiles(this.props.home, tab.key);
     const data = getElementData(this.props.home, tab.key);
@@ -153,7 +173,7 @@ export class TabsBar extends Component {
       }
     };
 
-    if (files && [files.code, files.test, files.style].some(f => modelManager.isChanged(f))) {
+    if (!force && files && [files.code, files.test, files.style].some(f => modelManager.isChanged(f))) {
       Modal.confirm({
         title: 'Discard changes?',
         content: `Do you want to discard changes you made to ${data.name}?`,
@@ -225,6 +245,7 @@ export class TabsBar extends Component {
 function mapStateToProps(state) {
   return {
     home: state.home,
+    rekitCmds: state.rekitCmds,
     router: state.router,
   };
 }

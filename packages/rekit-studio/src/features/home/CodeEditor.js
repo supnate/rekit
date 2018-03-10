@@ -72,7 +72,6 @@ export class CodeEditor extends Component {
     const { props } = this;
     if (props.file !== nextProps.file) {
       // When file is changed, prevent saving before its state is restored.
-      this.props.onStateChange({ hasChange: false });
       this.preventSaveEditorState = true;
       this.setState({
         loadingFile: true,
@@ -85,7 +84,6 @@ export class CodeEditor extends Component {
       this.setState({
         loadingFile: false,
       });
-      // this.reloadContent();
     } else if (nextProps.fileContentNeedReload[nextProps.file]) {
       const oldContent = this.getFileContent();
       const hasChange = this.hasChange(); // has changed
@@ -95,16 +93,16 @@ export class CodeEditor extends Component {
         loadingFile: false,
       });
       const newContent = this.getFileContent();
-      if (hasChange && oldContent !== newContent && newContent !== this.state.currentContent) {
+      if (hasChange && oldContent !== newContent && newContent !== modelManager.getValue(nextProps.file)) {
         Modal.confirm({
           title: 'The file has changed on disk.',
           content: 'Do you want to reload it?',
           okText: 'Yes',
           cancelText: 'No',
-          // onOk: this.reloadContent,
+          onOk: () => {
+            modelManager.reset(nextProps.file);
+          }
         });
-      } else if (!hasChange) {
-        // this.reloadContent();
       }
     }
   }
@@ -190,10 +188,6 @@ export class CodeEditor extends Component {
 
   handleEditorChange = () => {
     this.props.actions.codeChange();
-    // this.setState({
-    //   currentContent: newValue,
-    // });
-    // this.props.onStateChange({ hasChange: newValue !== this.getFileContent() });
   };
 
   handleEditorDidMount = editor => {

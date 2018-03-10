@@ -128,18 +128,18 @@ export class TabsBar extends Component {
   };
 
   handleClose = (evt, tab) => {
-    console.log('close tab: ', tab.key);
     if (evt && evt.stopPropagation) evt.stopPropagation();
     const files = getElementFiles(this.props.home, tab.key);
+    const data = getElementData(this.props.home, tab.key);
 
     const doClose = () => {
       if (files) {
         delete editorStateMap[files.code];
         delete editorStateMap[files.style];
         delete editorStateMap[files.test];
-        modelManager.dispose(files.code);
-        modelManager.dispose(files.style);
-        modelManager.dispose(files.test);
+        modelManager.reset(files.code);
+        modelManager.reset(files.style);
+        modelManager.reset(files.test);
       }
 
       this.props.actions.closeTab(tab.key);
@@ -156,7 +156,7 @@ export class TabsBar extends Component {
     if (files && [files.code, files.test, files.style].some(f => modelManager.isChanged(f))) {
       Modal.confirm({
         title: 'Discard changes?',
-        content: `Do you want to discard changes you made to ${files.code}?`,
+        content: `Do you want to discard changes you made to ${data.name}?`,
         okText: 'Discard',
         onOk: () => {
           doClose();

@@ -1,8 +1,6 @@
-// const modelCache = {};
 import _ from 'lodash';
 
 const initialContent = {};
-// let editor = null;
 
 const getUri = _.memoize(file => new monaco.Uri().with({ path: file, scheme: 'file' }));
 const modelManager = {
@@ -15,11 +13,12 @@ const modelManager = {
     }
     return model;
   },
-  dispose(filePath) {
+  reset(filePath) {
+    // Set the model content to initial values
     if (!filePath) return;
-    delete initialContent[filePath];
+    // delete initialContent[filePath];
     const model = this.getModel(filePath, null, true);
-    if (model) model.dispose();
+    if (model && model.getValue() !== this.getInitialValue(filePath)) model.setValue(this.getInitialValue(filePath) || '');
   },
   setValue(filePath, content) {
     const model = this.getModel(filePath);

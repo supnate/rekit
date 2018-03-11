@@ -38,6 +38,23 @@
     left: 50%;
     transform: translateX(-50%);
     background-color: #191919;
+    max-height: 600px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      transition: all 0.3s ease;
+      border-color: transparent;
+      background-color: hsla(0, 0%, 100%, 0.1);
+      z-index: 40;
+    }
+  
+    &::-webkit-scrollbar-corner {
+      background-color: rgba(0, 0, 0, 0);
+    }
     ul {
       margin: 0;
       padding: 0;
@@ -65,7 +82,11 @@
       .anticon-notification {
         color: @action-color;
       }
+      strong {
+        color: #0097FF;
+      }
       .element-description {
+        margin-left: 10px;
         font-size: 12px;
         color: rgba(255, 255, 255, 0.3);
       }

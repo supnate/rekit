@@ -36,3 +36,14 @@ export function getElementFiles(homeState, file) {
   if (data.type === 'component') files.style = `src/features/${data.feature}/${data.name}.${homeState.cssExt}`;
   return files;
 }
+
+export function getElementUrl(element) {
+  switch (element.type) {
+    case 'component':
+    case 'action':
+    case 'misc':
+      return `/element/${encodeURIComponent(element.file)}/code`;
+    default:
+      return '/';
+  }
+}

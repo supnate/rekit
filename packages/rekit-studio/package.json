@@ -1,6 +1,6 @@
 {
   "name": "rekit-studio",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Web IDE for Rekit projects.",
   "keywords": [
     "rekit",
@@ -87,7 +87,6 @@
   ],
   "dependencies": {
     "body-parser": "^1.17.1",
-    "dom-scroll-into-view": "^1.2.1",
     "history": "^4.6.1",
     "prettier": "1.10.2",
     "shelljs": "^0.8.0",

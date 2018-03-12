@@ -77,7 +77,7 @@ This repo contains multiple packages managed by [yarn workspaces](https://yarnpk
 | Packages  | Description |
 | --- | --- |
 | rekit-core |[![Version](http://img.shields.io/npm/v/rekit-core.svg)](https://www.npmjs.org/package/rekit-core) Provide core APIs such as create components, rename actions, etc... |
-| rekit |[![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit) The CLI wrapper of rekit-core, and create apps by clone repo from [rekit-boilerplate](https://github.com/supnate/rekit-boilerplate)  |
+| rekit |[![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit) CLI wrapper of rekit-core, create apps by cloning repo from [rekit-boilerplate](https://github.com/supnate/rekit-boilerplate)  |
 | rekit-studio |[![Version](http://img.shields.io/npm/v/rekit-studio.svg)](https://www.npmjs.org/package/rekit-studio) Dedicated IDE for Rekit development, uses rekit-core to manage project too. |
 | rekit-plugin-redux-saga |[![Version](http://img.shields.io/npm/v/rekit-plugin-redux-saga.svg)](https://www.npmjs.org/package/rekit-plugin-redux-saga) Use redux-saga instead of redux-thunk for async actions. |
 | rekit-plugin-selector |[![Version](http://img.shields.io/npm/v/rekit-plugin-selector.svg)](https://www.npmjs.org/package/rekit-plugin-selector) Support selectors by Rekit cli. |

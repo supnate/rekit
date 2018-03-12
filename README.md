@@ -8,7 +8,6 @@ Rekit is a toolkit for building scalable web applications with React, Redux and 
 
 It helps you focus on business logic rather than dealing with massive libraries, patterns, configurations etc.
 
-[![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit)
 [![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
 [![Coverage Status](https://img.shields.io/codecov/c/github/supnate/rekit/master.svg)](https://codecov.io/github/supnate/rekit)
 [![Gitter](https://badges.gitter.im/supnate/rekit.svg)](https://gitter.im/rekitjs/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
@@ -77,11 +76,11 @@ This repo contains multiple packages managed by [yarn workspaces](https://yarnpk
 
 | Packages  | Description |
 | --- | --- |
-| rekit-core  | Provide core APIs such as create components, rename actions, etc... |
-| rekit  | The CLI wrapper of rekit-core, and create apps by clone repo from [rekit-boilerplate](https://github.com/supnate/rekit-boilerplate)  |
-| rekit-studio | Dedicated IDE for Rekit development, uses rekit-core to manage project too. |
-| rekit-plugin-redux-saga | Use redux-saga instead of redux-thunk for async actions. |
-| rekit-plugin-selector | Support selectors by Rekit cli. |
+| rekit-core |[![Version](http://img.shields.io/npm/v/rekit-core.svg)](https://www.npmjs.org/package/rekit-core) Provide core APIs such as create components, rename actions, etc... |
+| rekit |[![Version](http://img.shields.io/npm/v/rekit.svg)](https://www.npmjs.org/package/rekit) The CLI wrapper of rekit-core, and create apps by clone repo from [rekit-boilerplate](https://github.com/supnate/rekit-boilerplate)  |
+| rekit-studio |[![Version](http://img.shields.io/npm/v/rekit-studio.svg)](https://www.npmjs.org/package/rekit-studio) Dedicated IDE for Rekit development, uses rekit-core to manage project too. |
+| rekit-plugin-redux-saga |[![Version](http://img.shields.io/npm/v/rekit-plugin-redux-saga.svg)](https://www.npmjs.org/package/rekit-plugin-redux-saga) Use redux-saga instead of redux-thunk for async actions. |
+| rekit-plugin-selector |[![Version](http://img.shields.io/npm/v/rekit-plugin-selector.svg)](https://www.npmjs.org/package/rekit-plugin-selector) Support selectors by Rekit cli. |
 
 ## Key Features
  * It's production-ready but not a starter kit.

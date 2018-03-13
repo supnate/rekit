@@ -3,7 +3,7 @@
 const rekitCore = require('rekit-core');
 const spawn = require('child_process').spawn;
 
-function runBuild(io, testFile) {
+function runTest(io, testFile) {
   const prjRoot = rekitCore.utils.getProjectRoot();
   return new Promise((resolve) => {
     console.log('test file: ', testFile);
@@ -39,4 +39,4 @@ function runBuild(io, testFile) {
   });
 }
 
-module.exports = runBuild;
+module.exports = runTest;

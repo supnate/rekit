@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
@@ -179,8 +180,53 @@ export class ElementPage extends Component {
     );
   }
 
+  renderRouteRulesPane(data) {
+    const fid = data.feature;
+    const routes = this.props.home.featureById[fid].routes;
+    const devPort = this.props.home.rekit.devPort;
+    return (
+      <div className="rules-view">
+        <p>This is a rough overview of routing config defined in a feature. </p>
+        <p>If a route rule isIndex === true and also has a path property then there will be two rules.</p>
+        <p>
+          To edit the rules, please modify the config <Link to={`/${fid}/routes/code`}>code</Link> directly.
+        </p>
+        <p>
+          NOTE: if route path has parameters, you need to modify the link address with correct values after click the
+          route link.{' '}
+        </p>
+        {routes.length === 0 ? (
+          <Alert type="info" message="No routing rules defined." showIcon />
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Path</th>
+                <th>Component</th>
+              </tr>
+            </thead>
+            <tbody>
+              {routes.map(route => (
+                <tr key={route.path}>
+                  <td>
+                    <a href={`//localhost:${devPort}${route.path}`} target="_blank">
+                      {route.path}
+                    </a>
+                  </td>
+                  <td>
+                    {fid}/{route.component}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    );
+  }
+
   render() {
-    const data = this.getElementData();console.log(data);
+    const data = this.getElementData();
     if (!data) {
       return this.renderNotFound();
     }
@@ -211,12 +257,6 @@ export class ElementPage extends Component {
         break;
     }
 
-    const iconTypes = {
-      component: 'appstore-o',
-      action: 'notification',
-      misc: 'file',
-    };
-
     const arr = data.file.split('.');
     const ext = arr.length > 1 ? arr.pop() : null;
 
@@ -237,15 +277,18 @@ export class ElementPage extends Component {
                   <ElementDiagram homeStore={this.props.home} elementId={data.file} size={this.state.editAreaSize} />
                 </TabPane>
               )}
+              {data.isRoute && <TabPane tab="Rules" key="rules" />}
               {data.hasCode && <TabPane tab={this.renderTabTitle('code')} key="code" />}
               {data.type === 'component' && data.feature && <TabPane tab={this.renderTabTitle('style')} key="style" />}
               {data.hasTest && <TabPane tab={this.renderTabTitle('test')} key="test" />}
             </Tabs>
           )}
         {tabKey !== 'diagram' &&
+          tabKey !== 'rules' &&
           data.hasCode && (
             <CodeEditor file={codeFile} onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null} />
           )}
+        {data.isRoute && this.renderRouteRulesPane(data)}
         {!data.hasCode &&
           !data.isPic && (
             <Alert

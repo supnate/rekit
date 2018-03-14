@@ -69,6 +69,8 @@ function getActionsTreeData(feature) {
 
 function getChildData(child) {
   if (_.endsWith(child.file, '/redux/initialState.js')) return null;
+
+  if (/src\/features\/[^/]+\/route\.js$/.test(child.file)) return null;
   return {
     key: child.file,
     className: child.children ? 'misc-folder' : 'misc-file',
@@ -86,7 +88,7 @@ function getMiscTreeData(feature) {
     className: 'misc',
     label: 'Misc',
     icon: 'folder',
-    children: misc.map(getChildData),
+    children: _.compact(misc.map(getChildData)),
   };
 }
 
@@ -103,7 +105,7 @@ export const getExplorerTreeData = createSelector(
         label: feature.name,
         icon: 'book',
         children: [
-          { label: 'Routes', key: `${fid}-routes`, searchable: false, className: 'routes', icon: 'share-alt', count: feature.routes.length },
+          { label: 'Routes', key: `src/features/${fid}/route.js`, searchable: false, className: 'routes', icon: 'share-alt', count: feature.routes.length },
           getActionsTreeData(feature),
           getComponentsTreeData(feature),
           getMiscTreeData(feature),

@@ -24,6 +24,9 @@ const reducers = [
   codeChangeReducer,
 ];
 
+const pascalCase = _.flow(_.camelCase, _.upperFirst);
+
+
 export default function reducer(state = initialState, action) {
   let newState;
   switch (action.type) {
@@ -69,6 +72,10 @@ export default function reducer(state = initialState, action) {
             action: 'notification',
             misc: 'file',
           }[ele.type] || 'file';
+        if (ele.name === 'route.js') {
+          icon = 'share-alt';
+          name = pascalCase(ele.feature);
+        }
       } else if (arr[0] === 'tools' && arr[1] === 'tests') {
         key = '#tests';
         name = 'Run Tests';

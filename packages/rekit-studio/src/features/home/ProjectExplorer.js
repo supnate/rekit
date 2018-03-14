@@ -186,23 +186,11 @@ export class ProjectExplorer extends Component {
 
       if (evt.node.props.className === 'routes') {
         // feature's routes
-        history.push(`/${key.replace('-routes', '')}/routes`);
+        history.push(`/element/${encodeURIComponent(key)}/rules`); // eslint-disable-line
       } else {
-        // const prjRoot = this.props.home.projectRoot;
-        // const ele = this.props.home.elementById[key];
-        // const file = key.replace(`${prjRoot}/src/features/${ele.feature}/`, '');
         const tabItem = _.find(this.props.home.openTabs, { key });
-        // let tab = '';
-        // if (/element\/[^/]+\/(code|diagram|style|test)$/.test(document.location.pathname)) {
-        //   // remember the current tab
-        //   tab = `/${RegExp.$1}`;
-        // }
-
         const subTab = tabItem ? tabItem.subTab : 'code';
-
         history.push(`/element/${encodeURIComponent(key)}/${subTab}`);
-        // history.push(`/element/?file=${key}`);
-        // history.push(`/element/${ele.feature || '_src_'}/${encodeURIComponent(file)}${tab}`);
       }
     }
 

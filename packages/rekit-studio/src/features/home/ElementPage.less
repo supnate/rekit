@@ -27,9 +27,15 @@
       color: #fff;
       cursor: default;
 
-      &-c { background-color: #42bd41; }
-      &-r { background-color: #ffb300; }
-      &-a { background-color: #4fc3f7; }
+      &-c {
+        background-color: #42bd41;
+      }
+      &-r {
+        background-color: #ffb300;
+      }
+      &-a {
+        background-color: #4fc3f7;
+      }
     }
   }
 
@@ -48,8 +54,8 @@
   }
 
   .ant-tabs-tab {
-    margin-left: 20px!important;
-    padding: 8px 12px!important;
+    margin-left: 20px !important;
+    padding: 8px 12px !important;
     color: #ccc;
     &-active {
       background-color: #444;
@@ -64,6 +70,39 @@
 
   .diagram-element-diagram {
     margin: 30px;
+  }
+
+  .rules-view {
+    padding: 30px;
+    height: ~'calc(100% - 36px)';
+    color: #ccc;
+    background-color: #333;
+    overflow: auto;
+    .scroll-style();
+    table {
+      margin-top: 20px;
+      th,
+      td {
+        padding: 10px;
+        min-width: 400px;
+        text-align: left;
+        border: 1px solid #666;
+        color: #ccc;
+        &:nth-child(2) {
+          min-width: 300px;
+        }
+      }
+      thead {
+        background-color: #444;
+        font-weight: bold;
+      }
+
+      tbody {
+        tr:hover {
+          // background-color: lighten(#e0f2f1, 5%);
+        }
+      }
+    }
   }
 }
 

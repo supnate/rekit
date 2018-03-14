@@ -72,6 +72,7 @@ export class ElementPage extends Component {
       ...ele,
       hasDiagram: /^(js|jsx)$/.test(ext),
       hasTest: ele.hasTest,
+      isRoute: ele.feature && ele.name === 'route.js',
       hasCode: /^(js|jsx|html|css|less|scss|txt|json|sass|md|log|pl|py|sh|cmd)$/.test(ext),
       isPic: /^(jpe?g|png|gif|bmp)$/.test(ext),
     };
@@ -179,7 +180,7 @@ export class ElementPage extends Component {
   }
 
   render() {
-    const data = this.getElementData();
+    const data = this.getElementData();console.log(data);
     if (!data) {
       return this.renderNotFound();
     }

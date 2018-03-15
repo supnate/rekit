@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import update from 'immutability-helper';
+import { storage } from '../../common/utils';
 import {
   HOME_CLOSE_TAB,
 } from './constants';
@@ -22,8 +23,8 @@ export function reducer(state, action) {
         openTabs: { $splice: [[index1, 1]] },
         historyTabs: { $splice: [[index2, 1]] },
       });
-      sessionStorage.setItem('openTabs', JSON.stringify(newState.openTabs));
-      sessionStorage.setItem('historyTabs', JSON.stringify(newState.historyTabs));
+      storage.session.setItem('openTabs', newState.openTabs);
+      storage.session.setItem('historyTabs', newState.historyTabs);
       return newState;
     }
 

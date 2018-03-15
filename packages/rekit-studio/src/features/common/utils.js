@@ -1,17 +1,24 @@
-// import { browserHistory } from 'react-router-dom';
+const setItem = type => (key, item) => {
+  const obj = window[`${type}Storage`];
+  return obj.setItem(key, JSON.stringify(item));
+};
+const getItem = type => (key, defaultValue, saveIfNotExist) => {
+  const obj = window[`${type}Storage`];
+  const savedItem = obj.getItem(key);
+  if (!savedItem && saveIfNotExist) {
+    setItem(type)(key, defaultValue);
+  }
 
-// export function gotoPage(urlPath) {
-//   browserHistory.push(urlPath);
-// }
+  return savedItem ? JSON.parse(savedItem) : defaultValue;
+};
 
-// export const history = {
-//   push: browserHistory.push,
-// };
-
-// export function encodeFilePath(file) {
-//   return file.replace(/\//g, '-');
-// }
-
-// export function decodeFilePath(file) {
-//   return file.replace(/-/g, '/');
-// }
+export const storage = {
+  local: {
+    setItem: setItem('local'),
+    getItem: getItem('local'),
+  },
+  session: {
+    setItem: setItem('session'),
+    getItem: getItem('session'),
+  },
+};

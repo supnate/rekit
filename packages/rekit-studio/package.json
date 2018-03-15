@@ -136,7 +136,6 @@
     "highlight.js": "^9.11.0",
     "immutability-helper": "^2.6.4",
     "isomorphic-fetch": "^2.2.1",
-    "js-cookie": "^2.1.4",
     "jsdom": "^11.5.1",
     "lerna": "^2.7.1",
     "less": "^2.7.2",

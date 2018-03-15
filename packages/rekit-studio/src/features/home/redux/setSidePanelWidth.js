@@ -2,12 +2,13 @@
 // putting related actions and reducers in one file. See more at:
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da
 
+import { storage } from '../../common/utils';
 import { HOME_SET_SIDE_PANEL_WIDTH } from './constants';
 
 export function setSidePanelWidth(width) {
   if (width < 100) width = 100;
   if (width > 500) width = 500;
-  localStorage.setItem('sidePanelWidth', width);
+  storage.local.setItem('sidePanelWidth', width);
   return {
     type: HOME_SET_SIDE_PANEL_WIDTH,
     payload: { width },

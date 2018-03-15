@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import Cookies from 'js-cookie';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu, message, Modal, Tooltip, Tree, Spin } from 'antd';
 import scrollIntoView from 'dom-scroll-into-view';
 import history from '../../common/history';
+import { storage } from '../common/utils';
 import cmdSuccessNotification from '../rekit-cmds/cmdSuccessNotification';
 import { execCmd, showCmdDialog, dismissExecCmdError } from '../rekit-cmds/redux/actions';
 import { getExpandedKeys, getFilteredExplorerTreeData } from './selectors/explorerTreeData';
@@ -31,7 +31,6 @@ const menuItems = {
 export class ProjectExplorer extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     searchKey: PropTypes.string,
     treeData: PropTypes.object.isRequired,
@@ -44,10 +43,7 @@ export class ProjectExplorer extends Component {
   constructor(props) {
     super(props);
     const defaultOpen = ['features'];
-    if (!Cookies.getJSON('explorerExpandedKeys')) {
-      Cookies.set('explorerExpandedKeys', defaultOpen);
-    }
-    this.state.expandedKeys = Cookies.getJSON('explorerExpandedKeys');
+    this.state.expandedKeys = storage.local.getItem('explorerExpandedKeys', defaultOpen, true);
   }
   state = {
     expandedKeys: [],
@@ -169,9 +165,10 @@ export class ProjectExplorer extends Component {
     const key = evt.node.props.eventKey;
 
     const hasChildren = !!_.get(evt, 'node.props.children');
-    const keysInCookie = Cookies.getJSON('explorerExpandedKeys');
+    // const keysInCookie = Cookies.getJSON('explorerExpandedKeys');
 
-    let expandedKeys = keysInCookie || this.state.expandedKeys;
+    // let expandedKeys = keysInCookie || this.state.expandedKeys;
+    let expandedKeys = storage.local.getItem('explorerExpandedKeys');
     let selectedKey = this.state.selectedKey;
     if (hasChildren) {
       // toggle expanding
@@ -194,7 +191,8 @@ export class ProjectExplorer extends Component {
       }
     }
 
-    Cookies.set('explorerExpandedKeys', expandedKeys, { expires: 999 });
+    // Cookies.set('explorerExpandedKeys', expandedKeys, { expires: 999 });
+    storage.local.setItem('explorerExpandedKeys', expandedKeys);
     this.setState({
       selectedKey,
       expandedKeys,
@@ -203,16 +201,19 @@ export class ProjectExplorer extends Component {
 
   handleExpand = (expanded, evt) => {
     const key = evt.node.props.eventKey;
-    const keysInCookie = Cookies.getJSON('explorerExpandedKeys');
+    // const keysInCookie = Cookies.getJSON('explorerExpandedKeys');
 
-    let expandedKeys = keysInCookie || this.state.expandedKeys;
+    // let expandedKeys = keysInCookie || this.state.expandedKeys;
+    let expandedKeys = storage.local.getItem('explorerExpandedKeys');
+
     if (expandedKeys.includes(key)) {
       expandedKeys = expandedKeys.filter(k => k !== key);
     } else {
       expandedKeys = [...expandedKeys, key];
     }
 
-    Cookies.set('explorerExpandedKeys', expandedKeys, { expires: 999 });
+    storage.local.setItem('explorerExpandedKeys', expandedKeys);
+    // Cookies.set('explorerExpandedKeys', expandedKeys, { expires: 999 });
     this.setState({
       expandedKeys,
     });

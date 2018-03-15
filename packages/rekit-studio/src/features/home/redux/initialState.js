@@ -1,3 +1,5 @@
+import { storage } from '../../common/utils';
+
 const initialState = {
   sidePanelWidth: parseInt(localStorage.getItem('sidePanelWidth') || 220, 10),
   elementById: {},
@@ -13,8 +15,8 @@ const initialState = {
   filesHasSyntaxError: {},
 
   // Resotre open tabs and history tabs from local storage
-  openTabs: JSON.parse(sessionStorage.getItem('openTabs') || '[]'),
-  historyTabs: JSON.parse(sessionStorage.getItem('historyTabs') || '[]'),
+  openTabs: storage.session.getItem('openTabs', []),
+  historyTabs: storage.session.getItem('historyTabs', []),
 
   demoAlertVisible: false,
   saveFilePending: false,

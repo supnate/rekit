@@ -1,20 +1,19 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
-import { expect } from 'chai';
 
 import {
   ${actionTypes.begin},
   ${actionTypes.success},
   ${actionTypes.failure},
   ${actionTypes.dismissError},
-} from 'src/features/${_.kebabCase(feature)}/redux/constants';
+} from '../../../../src/features/${_.kebabCase(feature)}/redux/constants';
 
 import {
   ${_.camelCase(action)},
   dismiss${_.pascalCase(action)}Error,
   reducer,
-} from 'src/features/${_.kebabCase(feature)}/redux/${_.camelCase(action)}';
+} from '../../../../src/features/${_.kebabCase(feature)}/redux/${_.camelCase(action)}';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -30,8 +29,8 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
     return store.dispatch(${_.camelCase(action)}())
       .then(() => {
         const actions = store.getActions();
-        expect(actions[0]).to.have.property('type', ${actionTypes.begin});
-        expect(actions[1]).to.have.property('type', ${actionTypes.success});
+        expect(actions[0]).toHaveProperty('type', ${actionTypes.begin});
+        expect(actions[1]).toHaveProperty('type', ${actionTypes.success});
       });
   });
 
@@ -41,9 +40,9 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
     return store.dispatch(${_.camelCase(action)}({ error: true }))
       .catch(() => {
         const actions = store.getActions();
-        expect(actions[0]).to.have.property('type', ${actionTypes.begin});
-        expect(actions[1]).to.have.property('type', ${actionTypes.failure});
-        expect(actions[1]).to.have.nested.property('data.error').that.exist;
+        expect(actions[0]).toHaveProperty('type', ${actionTypes.begin});
+        expect(actions[1]).toHaveProperty('type', ${actionTypes.failure});
+        expect(actions[1]).toHaveProperty('data.error', expect.anything());
       });
   });
 
@@ -51,7 +50,7 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
     const expectedAction = {
       type: ${actionTypes.dismissError},
     };
-    expect(dismiss${_.pascalCase(action)}Error()).to.deep.equal(expectedAction);
+    expect(dismiss${_.pascalCase(action)}Error()).toEqual(expectedAction);
   });
 
   it('handles action type ${actionTypes.begin} correctly', () => {
@@ -60,8 +59,8 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
       prevState,
       { type: ${actionTypes.begin} }
     );
-    expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${_.camelCase(action)}Pending).to.be.true;
+    expect(state).not.toBe(prevState); // should be immutable
+    expect(state.${_.camelCase(action)}Pending).toBe(true);
   });
 
   it('handles action type ${actionTypes.success} correctly', () => {
@@ -70,8 +69,8 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
       prevState,
       { type: ${actionTypes.success}, data: {} }
     );
-    expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${_.camelCase(action)}Pending).to.be.false;
+    expect(state).not.toBe(prevState); // should be immutable
+    expect(state.${_.camelCase(action)}Pending).toBe(false);
   });
 
   it('handles action type ${actionTypes.failure} correctly', () => {
@@ -80,9 +79,9 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
       prevState,
       { type: ${actionTypes.failure}, data: { error: new Error('some error') } }
     );
-    expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${_.camelCase(action)}Pending).to.be.false;
-    expect(state.${_.camelCase(action)}Error).to.exist;
+    expect(state).not.toBe(prevState); // should be immutable
+    expect(state.${_.camelCase(action)}Pending).toBe(false);
+    expect(state.${_.camelCase(action)}Error).toEqual(expect.anything());
   });
 
   it('handles action type ${actionTypes.dismissError} correctly', () => {
@@ -91,7 +90,8 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
       prevState,
       { type: ${actionTypes.dismissError} }
     );
-    expect(state).to.not.equal(prevState); // should be immutable
-    expect(state.${_.camelCase(action)}Error).to.be.null;
+    expect(state).not.toBe(prevState); // should be immutable
+    expect(state.${_.camelCase(action)}Error).toBe(null);
   });
 });
+

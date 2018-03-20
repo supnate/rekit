@@ -3,7 +3,7 @@
 /**
  * Template manager. A simple wrapper of lodash template for using vio internally.
  * @module
-**/
+ **/
 
 const path = require('path');
 const _ = require('lodash');
@@ -21,9 +21,17 @@ _.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
  *
  * @param {string} file - The path to the template file.
  * @alias module:template.readTemplate
-**/
+ **/
 function readTemplate(file) {
   if (!path.isAbsolute(file)) {
+    if (
+      utils.isJest() &&
+      ['Component.test.js', 'ConnectedComponent.test.js', 'redux/action.test.js', 'redux/async_action.test.js'].indexOf(
+        file
+      ) >= 0
+    ) {
+      file = `jest/${file}`;
+    }
     const customTemplate = path.join(utils.getProjectRoot(), 'tools/templates', file);
     if (!shell.test('-e', customTemplate)) {
       file = utils.joinPath(__dirname, '../templates', file);
@@ -32,7 +40,7 @@ function readTemplate(file) {
     }
   }
   if (!shell.test('-e', file) && !vio.fileExists(file)) {
-    utils.fatalError('Template file does\'t exist: ', file);
+    utils.fatalError("Template file does't exist: ", file);
   }
   return vio.getContent(file);
 }
@@ -56,7 +64,7 @@ function readTemplate(file) {
  *
  * // Result => create a file 'path/to/result.txt' which contains text: 'hello Nate!'
  * // NOTE the result is only in vio, you need to call vio.flush() to write to disk.
-**/
+ **/
 function generate(targetPath, args) {
   if (!args.templateFile && !args.content && !args.template) {
     utils.fatalError('No template for generating' + targetPath + '.');

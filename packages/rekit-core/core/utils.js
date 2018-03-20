@@ -5,7 +5,7 @@
 /**
  * The common utility module. It provides various tools for managing a Rekit app.
  * @module
-**/
+ **/
 
 const path = require('path');
 const _ = require('lodash');
@@ -48,7 +48,7 @@ function joinPath() {
 /**
  * Log a message to console. It respects the setSilent switch.
  * @param {string} msg - The message to log.
-**/
+ **/
 function log(msg) {
   if (!silent) console.log(msg);
 }
@@ -56,7 +56,7 @@ function log(msg) {
 /**
  * Log a warning message to console. It respects the setSilent switch.
  * @param {string} msg - The message to log.
-**/
+ **/
 function warn(msg) {
   if (!silent) console.log(colors.yellow('Warning: ' + msg));
 }
@@ -64,7 +64,7 @@ function warn(msg) {
 /**
  * Log an error message to console. It respects the setSilent switch.
  * @param {string} msg - The message to log.
-**/
+ **/
 function error(msg) {
   if (!silent) console.log(colors.red('Error: ' + msg));
 }
@@ -72,7 +72,7 @@ function error(msg) {
 /**
  * Throw a fatal error and log an error message.
  * @param {string} msg - The message to log.
-**/
+ **/
 function fatalError(msg) {
   error(msg);
   throw new Error(msg);
@@ -83,15 +83,15 @@ let prjRoot;
 /**
  * By default Rekit will try to find the current Rekit project root. But you can also manually set it by calling this method.
  * @param {string} root - The project root.
-**/
+ **/
 function setProjectRoot(root) {
-  prjRoot = /\/$/.test(root) ? root : (root + '/');
+  prjRoot = /\/$/.test(root) ? root : root + '/';
   prjRoot = joinPath(prjRoot);
 }
 
 /**
  * Get the project root. By default it finds the Rekit project root of which the command is run.
-**/
+ **/
 function getProjectRoot() {
   if (!prjRoot) {
     let cwd = process.cwd();
@@ -99,7 +99,8 @@ function getProjectRoot() {
     // Traverse above until find the package.json.
     while (cwd && lastDir !== cwd) {
       const pkgPath = joinPath(cwd, 'package.json');
-      if (shell.test('-e', pkgPath) && require(pkgPath).rekit) { // eslint-disable-line
+      if (shell.test('-e', pkgPath) && require(pkgPath).rekit) {
+        // eslint-disable-line
         prjRoot = cwd;
         break;
       }
@@ -107,13 +108,13 @@ function getProjectRoot() {
       cwd = joinPath(cwd, '..');
     }
   }
-  return joinPath(/\/$/.test(prjRoot) ? prjRoot : (prjRoot + '/'));
+  return joinPath(/\/$/.test(prjRoot) ? prjRoot : prjRoot + '/');
 }
 
 let pkgJson = null;
 /**
  * Get the current project's package.json.
-**/
+ **/
 function getPkgJson() {
   // Get the project package json
   if (!pkgJson) {
@@ -125,7 +126,7 @@ function getPkgJson() {
 
 /**
  * Set the current project's package.json.
-**/
+ **/
 function setPkgJson(obj) {
   // Only used for unit test purpose
   pkgJson = obj;
@@ -134,7 +135,7 @@ function setPkgJson(obj) {
 /**
  * Get the relative path to the project root by given full path.
  * @param {string} fullPath - A full path string.
-**/
+ **/
 function getRelativePath(fullPath) {
   // Get rel path relative to project root.
   const _prjRoot = getProjectRoot();
@@ -145,7 +146,7 @@ function getRelativePath(fullPath) {
 /**
  * Get the full path of a relative path to the project root.
  * @param {string} relPath - The relative path.
-**/
+ **/
 function getFullPath(relPath) {
   const _prjRoot = getProjectRoot();
   const regExp = new RegExp(`^${_.escapeRegExp(_prjRoot)}`, 'i');
@@ -161,7 +162,7 @@ function getFullPath(relPath) {
  * const utils = require('rekit-core').utils;
  * utils.getActionType('home', 'doSomething');
  * // => HOME_DO_SOMETHING
-**/
+ **/
 function getActionType(feature, action) {
   return `${_.upperSnakeCase(feature)}_${_.upperSnakeCase(action)}`;
 }
@@ -181,7 +182,7 @@ function getActionType(feature, action) {
  * //   doAsyncFailure: 'HOME_DO_ASYNC_FAILURE',
  * //   doAsyncDismissError: 'HOME_DO_ASYNC_DISMISS_ERROR',
  * // }
-**/
+ **/
 function getAsyncActionTypes(feature, action) {
   return {
     normal: getActionType(feature, action),
@@ -201,7 +202,7 @@ function getAsyncActionTypes(feature, action) {
  * const utils =require('rekit-core').utils;
  * utils.mapSrcFile('common/configStore.js');
  * // => /path/to/project/src/common/configStore.js
-**/
+ **/
 function mapSrcFile(filePath) {
   return joinPath(getProjectRoot(), 'src', filePath);
 }
@@ -238,7 +239,17 @@ function getFeatures() {
 function getCssExt() {
   const pkgPath = joinPath(getProjectRoot(), 'package.json');
   const pkg = require(pkgPath); // eslint-disable-line
-  return (pkg && pkg.rekit && pkg.rekit.css === 'sass') ? 'scss' : 'less';
+  return pkg && pkg.rekit && pkg.rekit.css === 'sass' ? 'scss' : 'less';
+}
+
+let _isJest;
+function isJest() {
+  if (_isJest === undefined) {
+    const pkgPath = joinPath(getProjectRoot(), 'package.json');
+    const pkg = require(pkgPath); // eslint-disable-line
+    _isJest = (pkg.dependencies && pkg.dependencies.jest) || (pkg.devDependencies && pkg.devDependencies.jest);
+  }
+  return _isJest;
 }
 
 function getFeatureName(filePath) {
@@ -252,6 +263,7 @@ function getFeatureName(filePath) {
 }
 
 module.exports = {
+  isJest,
   getCssExt,
   setProjectRoot,
   getProjectRoot,

@@ -1,6 +1,7 @@
 {
-    "compilerOptions": {
-        "experimentalDecorators": true,
-        "allowJs": true
-    }
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "allowJs": true
+  },
+  "excludes": "*/node_modules/*"
 }

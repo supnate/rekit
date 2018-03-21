@@ -22,6 +22,7 @@ describe('${_.kebabCase(feature)}/redux/${_.camelCase(action)}', () => {
     expect(state).not.toBe(prevState);
 
     // TODO: use real case expected value instead of {}.
-    expect(state).toEqual({});
+    const expectedState = {};
+    expect(state).toEqual(expectedState);
   });
 });

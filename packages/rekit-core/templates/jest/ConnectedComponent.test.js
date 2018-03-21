@@ -13,7 +13,7 @@ describe('${_.kebabCase(feature)}/${_.pascalCase(component)}', () => {
     );
 
     expect(
-      renderedComponent.find('.${_.kebabCase(feature)}-${_.kebabCase(component)}')
-    ).toHaveLength(1);
+      renderedComponent.find('.${_.kebabCase(feature)}-${_.kebabCase(component)}').length
+    ).toBe(1);
   });
 });

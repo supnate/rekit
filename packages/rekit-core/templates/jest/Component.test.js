@@ -4,5 +4,5 @@ import { ${_.pascalCase(component)} } from '../../../src/features/${_.kebabCase(
 
 it('renders node with correct class name', () => {
   const renderedComponent = shallow(<${_.pascalCase(component)} />);
-  expect(renderedComponent.find('.${_.kebabCase(feature)}-${_.kebabCase(component)}')).toHaveLength(1);
+  expect(renderedComponent.find('.${_.kebabCase(feature)}-${_.kebabCase(component)}').length).toBe(1);
 });

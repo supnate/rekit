@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const rekitCore = require('rekit-core');
 const spawn = require('child_process').spawn;
 
@@ -8,8 +10,20 @@ function runTest(io, testFile) {
   return new Promise((resolve) => {
     console.log('test file: ', testFile);
     // if (!testFile) return;
-    const args = [`${prjRoot}/tools/run_test.js`];
+    const isCra = fs.existsSync(path.join(prjRoot, 'scripts/test.js'));
+    console.log('is cra: ', isCra);
+    const args = isCra ? [`${prjRoot}/scripts/test.js`] : [`${prjRoot}/tools/run_test.js`];
+
+    if (isCra) testFile = testFile.replace('**/', '').replace(/\*/g, '.*');
     if (testFile) args.push(testFile);
+    if (isCra) {
+      args.push('--env=jsdom');
+      args.push('--no-watch');
+      if (!testFile) {
+        args.push('--coverage');
+      }
+    }
+
     const child = spawn('node',
       args,
       {

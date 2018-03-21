@@ -1,14 +1,18 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const rekitCore = require('rekit-core');
 const spawn = require('child_process').spawn;
 
 function runBuild(io) {
   const prjRoot = rekitCore.utils.getProjectRoot();
   return new Promise((resolve) => {
+    const isCra = fs.existsSync(path.join(prjRoot, 'scripts/build.js'));
+
     const child = spawn('node',
       [
-        `${prjRoot}/tools/build.js`
+        isCra ? `${prjRoot}/scripts/build.js` : `${prjRoot}/tools/build.js`
       ],
       {
         stdio: 'pipe',

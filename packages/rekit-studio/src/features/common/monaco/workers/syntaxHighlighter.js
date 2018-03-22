@@ -3,6 +3,7 @@
 // self.importScripts(['/static/libs/typescript.min.js']);
 self.Prism = { disableWorkerMessageHandler: true };
 self.importScripts(['/static/libs/prism-1.12.2.js']);
+// self.importScripts(['/static/libs/prism-1.13.0.js']);
 // self.importScripts(['/static/libs/babylon.js']);
 
 function getLineNumberAndOffset(start, lines) {
@@ -211,6 +212,7 @@ self.addEventListener('message', event => {
   try {
     // console.time('parse');
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
+    console.log(tokens);
     tokens = findJsxText(tokens, 0);
     // console.timeEnd('parse');
     

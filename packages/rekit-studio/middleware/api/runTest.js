@@ -19,6 +19,7 @@ function runTest(io, testFile) {
     if (isCra) {
       args.push('--env=jsdom');
       args.push('--no-watch');
+      args.push('--colors');
       if (!testFile) {
         args.push('--coverage');
       }

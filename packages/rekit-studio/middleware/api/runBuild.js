@@ -10,10 +10,11 @@ function runBuild(io) {
   return new Promise((resolve) => {
     const isCra = fs.existsSync(path.join(prjRoot, 'scripts/build.js'));
 
+    const args = [];
+    if (isCra) args.push(`${prjRoot}/scripts/build.js`, '--colors');
+    else args.push(`${prjRoot}/tools/build.js`);
     const child = spawn('node',
-      [
-        isCra ? `${prjRoot}/scripts/build.js` : `${prjRoot}/tools/build.js`
-      ],
+      args,
       {
         stdio: 'pipe',
         cwd: prjRoot

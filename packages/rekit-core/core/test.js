@@ -175,6 +175,14 @@ function moveAction(source, target, args) {
   const oldImportPath2 = `src/features/${source.feature}/redux/constants`;
   const newImportPath2 = `src/features/${target.feature}/redux/constants`;
 
+  // For action/reducer import
+  const oldImportPath3 = `../../../../src/features/${source.feature}/redux/${source.name}`;
+  const newImportPath3 = `../../../../src/features/${target.feature}/redux/${target.name}`;
+
+  // For constant import
+  const oldImportPath4 = `../../../../src/features/${source.feature}/redux/constants`;
+  const newImportPath4 = `../../../../src/features/${target.feature}/redux/constants`;
+
   // Try to update describe('xxx')
   const oldDescribe = `${source.feature}/redux/${source.name}`;
   const newDescribe = `${target.feature}/redux/${target.name}`;
@@ -185,6 +193,8 @@ function moveAction(source, target, args) {
     refactor.renameImportSpecifier(ast, source.name, target.name),
     refactor.renameStringLiteral(ast, oldImportPath1, newImportPath1),
     refactor.renameStringLiteral(ast, oldImportPath2, newImportPath2),
+    refactor.renameStringLiteral(ast, oldImportPath3, newImportPath3),
+    refactor.renameStringLiteral(ast, oldImportPath4, newImportPath4),
     refactor.renameStringLiteral(ast, oldDescribe, newDescribe)
   );
 

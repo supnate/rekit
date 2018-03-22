@@ -3,7 +3,7 @@
 /**
  * Get basic application data. Such as components, actions, etc.
  * @module
-**/
+ **/
 
 const _ = require('lodash');
 const mPath = require('path');
@@ -19,6 +19,17 @@ function getRekitProps(file) {
   if (propsCache[file] && propsCache[file].content === vio.getContent(file)) {
     return propsCache[file].props;
   }
+  const isInFeature = /src\/features\/\w+\//.test(file);
+  if (!isInFeature) {
+    // all files not under a feature are misc
+    const props = { type: 'misc' };
+    propsCache[file] = {
+      content: vio.getContent(file),
+      props,
+    };
+    return props;
+  }
+
   const ast = vio.getAst(file);
   const ff = {}; // File features
 
@@ -43,10 +54,7 @@ function getRekitProps(file) {
       }
     },
     ClassDeclaration(path) {
-      if (
-        path.node.superClass
-        && path.node.body.body.some(n => n.type === 'ClassMethod' && n.key.name === 'render')
-      ) {
+      if (path.node.superClass && path.node.body.body.some(n => n.type === 'ClassMethod' && n.key.name === 'render')) {
         ff.hasClassAndRenderMethod = true;
       }
     },
@@ -59,15 +67,17 @@ function getRekitProps(file) {
       if (_.get(path, 'node.declaration.id.name') === 'reducer') {
         ff.exportReducer = true;
       }
-    }
+    },
   });
   const props = {
-    component: ff.importReact && ff.hasClassAndRenderMethod && {
-      connectToStore: ff.connectCall,
-    },
-    action: ff.exportReducer && ff.importConstant && {
-      isAsync: ff.importMultipleConstants,
-    },
+    component: ff.importReact &&
+      ff.hasClassAndRenderMethod && {
+        connectToStore: ff.connectCall,
+      },
+    action: ff.exportReducer &&
+      ff.importConstant && {
+        isAsync: ff.importMultipleConstants,
+      },
   };
 
   if (props.component) props.type = 'component';
@@ -101,7 +111,7 @@ function getRootRoutePath() {
       const props = node.properties;
       if (!props.length) return;
       const obj = {};
-      props.forEach((p) => {
+      props.forEach(p => {
         if (_.has(p, 'key.name') && !p.computed) {
           obj[p.key.name] = p;
         }
@@ -109,7 +119,7 @@ function getRootRoutePath() {
       if (obj.path && obj.childRoutes && !rootPath) {
         rootPath = _.get(obj.path, 'value.value');
       }
-    }
+    },
   });
   return rootPath;
 }
@@ -131,7 +141,7 @@ function getFeatureRoutes(feature) {
       const props = node.properties;
       if (!props.length) return;
       const obj = {};
-      props.forEach((p) => {
+      props.forEach(p => {
         if (_.has(p, 'key.name') && !p.computed) {
           obj[p.key.name] = p;
         }
@@ -158,13 +168,13 @@ function getFeatureRoutes(feature) {
         rootPath = _.get(obj.path, 'value.value');
         if (!rootPath) rootPath = '$none'; // only find the first rootPath
       }
-    }
+    },
   });
   const prjRootPath = getRootRoutePath();
   if (rootPath === '$none') rootPath = prjRootPath;
   else if (!/^\//.test(rootPath)) rootPath = prjRootPath + '/' + rootPath;
   rootPath = rootPath.replace(/\/+/, '/');
-  arr.forEach((item) => {
+  arr.forEach(item => {
     if (!/^\//.test(item.path)) {
       item.path = (rootPath + '/' + item.path).replace(/\/+/, '/');
     }
@@ -178,44 +188,58 @@ function getFeatureRoutes(feature) {
 
 /**
  * Get feature's components, actions, misc files and their dependencies.
-**/
+ **/
 function getFeatureStructure(feature) {
   const dir = utils.joinPath(utils.getProjectRoot(), 'src/features', feature);
   const noneMisc = {};
 
-  const components = shell.ls(dir + '/*.js').map((file) => {
-    const props = getRekitProps(file);
-    if (props && props.component) {
-      noneMisc[file] = true;
-      noneMisc[file.replace('.js', '.less')] = true;
-      noneMisc[file.replace('.js', '.scss')] = true;
-      return Object.assign({
-        feature,
-        name: mPath.basename(file).replace('.js', ''),
-        type: 'component',
-        file,
-      }, props.component);
-    }
-    return null;
-  }).filter(item => !!item).sort((a, b) => a.name.localeCompare(b.name));
+  const components = shell
+    .ls(dir + '/*.js')
+    .map(file => {
+      const props = getRekitProps(file);
+      if (props && props.component) {
+        noneMisc[file] = true;
+        noneMisc[file.replace('.js', '.less')] = true;
+        noneMisc[file.replace('.js', '.scss')] = true;
+        return Object.assign(
+          {
+            feature,
+            name: mPath.basename(file).replace('.js', ''),
+            type: 'component',
+            file,
+          },
+          props.component
+        );
+      }
+      return null;
+    })
+    .filter(item => !!item)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
-  const actions = shell.ls(dir + '/redux/*.js').map((file) => {
-    const props = getRekitProps(file);
-    if (props && props.action) {
-      noneMisc[file] = true;
-      return Object.assign({
-        feature,
-        name: mPath.basename(file).replace('.js', ''),
-        type: 'action',
-        file,
-      }, props.action);
-    }
-    return null;
-  }).filter(item => !!item).sort((a, b) => a.name.localeCompare(b.name));
+  const actions = shell
+    .ls(dir + '/redux/*.js')
+    .map(file => {
+      const props = getRekitProps(file);
+      if (props && props.action) {
+        noneMisc[file] = true;
+        return Object.assign(
+          {
+            feature,
+            name: mPath.basename(file).replace('.js', ''),
+            type: 'action',
+            file,
+          },
+          props.action
+        );
+      }
+      return null;
+    })
+    .filter(item => !!item)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   function getMiscFiles(root) {
     const arr = [];
-    shell.ls(root).forEach((file) => {
+    shell.ls(root).forEach(file => {
       const fullPath = utils.joinPath(root, file);
       if (shell.test('-d', fullPath)) {
         // is directory
@@ -275,7 +299,7 @@ function getEntryData(filePath) {
     file: filePath,
     feature,
     bySource: {},
-    exported: {}
+    exported: {},
   };
   traverse(ast, {
     ExportNamedDeclaration(path) {
@@ -283,8 +307,8 @@ function getEntryData(filePath) {
       if (!node.source || !node.source.value) return;
       const sourceFile = `${refactor.resolveModulePath(filePath, node.source.value)}.js`; // from which file
       const specifiers = {};
-      node.specifiers.forEach((specifier) => {
-        specifiers[specifier.exported.name] = specifier.local && specifier.local.name || true;
+      node.specifiers.forEach(specifier => {
+        specifiers[specifier.exported.name] = (specifier.local && specifier.local.name) || true;
         data.exported[specifier.exported.name] = sourceFile;
       });
       data.bySource[sourceFile] = specifiers;
@@ -297,7 +321,7 @@ function getEntryData(filePath) {
  * Get dependencies of a module by path.
  * @param {string} modulePath - The full path of the module.
  * @alias module:app.getDeps
-**/
+ **/
 function getDeps(filePath) {
   // Summary:
   //   Get dependencies of a module
@@ -335,7 +359,7 @@ function getDeps(filePath) {
       const resolvedPath = refactor.resolveModulePath(filePath, depModule);
       // if (!isLocalModule(depModule)) return;
       const fullPath = resolvedPath + '.js';
-      if (!shell.test('-e', fullPath)) return;  // only depends on js modules, no json or other support
+      if (!shell.test('-e', fullPath)) return; // only depends on js modules, no json or other support
       depFiles.push({
         name: mPath.basename(resolvedPath),
         file: fullPath,
@@ -347,7 +371,7 @@ function getDeps(filePath) {
       if (!source) return;
       const resolvedPath = refactor.resolveModulePath(filePath, source);
       const fullPath = resolvedPath + '.js';
-      if (!shell.test('-e', fullPath)) return;  // only depends on js modules, no json or other support
+      if (!shell.test('-e', fullPath)) return; // only depends on js modules, no json or other support
       depFiles.push({
         name: mPath.basename(resolvedPath),
         file: fullPath,
@@ -369,7 +393,7 @@ function getDeps(filePath) {
         // indexFile += '.js';
 
         const indexEntry = getEntryData(indexFile);
-        node.specifiers.forEach((specifier) => {
+        node.specifiers.forEach(specifier => {
           if (specifier.type === 'ImportNamespaceSpecifier') {
             namespaceIndex[specifier.local.name] = indexEntry;
             return;
@@ -390,13 +414,13 @@ function getDeps(filePath) {
       }
 
       const fullPath = resolvedPath + '.js';
-      if (!shell.test('-e', fullPath)) return;  // only depends on js modules, no json or other support
+      if (!shell.test('-e', fullPath)) return; // only depends on js modules, no json or other support
 
       // Import from actions
       if (isActionEntry(fullPath)) {
-        const actionEntry = getEntryData(fullPath);// getActionEntry(utils.getFeatureName(fullPath));
+        const actionEntry = getEntryData(fullPath); // getActionEntry(utils.getFeatureName(fullPath));
 
-        node.specifiers.forEach((specifier) => {
+        node.specifiers.forEach(specifier => {
           if (specifier.type === 'ImportNamespaceSpecifier') {
             namespaceActions[specifier.local.name] = actionEntry;
             return;
@@ -419,7 +443,7 @@ function getDeps(filePath) {
       }
 
       if (isConstantEntry(fullPath)) {
-        node.specifiers.forEach((specifier) => {
+        node.specifiers.forEach(specifier => {
           deps.constants.push({
             name: specifier.imported.name,
             feature: utils.getFeatureName(fullPath),
@@ -463,7 +487,7 @@ function getDeps(filePath) {
     },
   });
 
-  depFiles.forEach((item) => {
+  depFiles.forEach(item => {
     const props = getRekitProps(item.file);
     // Other files
     if (props.component) {
@@ -495,7 +519,7 @@ function getDeps(filePath) {
 
 /**
  * Get src files excepts features of a Rekit project.
-**/
+ **/
 function getSrcFiles(dir) {
   // Summary
   //  Get files under src exclues features folder
@@ -504,7 +528,7 @@ function getSrcFiles(dir) {
 
   return _.toArray(shell.ls(dir))
     .filter(file => utils.joinPath(prjRoot, 'src/features') !== utils.joinPath(dir, file)) // exclude features folder
-    .map((file) => {
+    .map(file => {
       file = utils.joinPath(dir, file);
       if (shell.test('-d', file)) {
         return {

@@ -11,7 +11,6 @@ function runTest(io, testFile) {
     console.log('test file: ', testFile);
     // if (!testFile) return;
     const isCra = fs.existsSync(path.join(prjRoot, 'scripts/test.js'));
-    console.log('is cra: ', isCra);
     const args = isCra ? [`${prjRoot}/scripts/test.js`] : [`${prjRoot}/tools/run_test.js`];
 
     if (isCra) testFile = testFile.replace('**/', '').replace(/\*/g, '.*');

@@ -60,7 +60,7 @@ function add(name) {
 
   // Create wrapper reducer for the feature
   template.generate(utils.joinPath(utils.getProjectRoot(), `tests/features/${name}/redux/reducer.test.js`), {
-    templateFile: 'reducer.test.js',
+    templateFile: 'redux/reducer.test.js',
     context: { feature: name }
   });
 }

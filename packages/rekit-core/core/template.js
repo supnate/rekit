@@ -26,9 +26,13 @@ function readTemplate(file) {
   if (!path.isAbsolute(file)) {
     if (
       utils.isJest() &&
-      ['Component.test.js', 'ConnectedComponent.test.js', 'redux/action.test.js', 'redux/async_action.test.js'].indexOf(
-        file
-      ) >= 0
+      [
+        'Component.test.js',
+        'ConnectedComponent.test.js',
+        'redux/action.test.js',
+        'redux/async_action.test.js',
+        'redux/reducer.test.js',
+      ].indexOf(file) >= 0
     ) {
       file = `jest/${file}`;
     }

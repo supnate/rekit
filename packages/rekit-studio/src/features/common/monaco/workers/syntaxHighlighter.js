@@ -212,7 +212,7 @@ self.addEventListener('message', event => {
   try {
     // console.time('parse');
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
-    console.log(tokens);
+    // console.log(tokens);
     tokens = findJsxText(tokens, 0);
     // console.timeEnd('parse');
     

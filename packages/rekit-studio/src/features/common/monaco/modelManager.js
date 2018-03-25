@@ -10,6 +10,7 @@ const modelManager = {
     let model = monaco.editor.getModel(uri);
     if (!model && !noCreate) {
       model = monaco.editor.createModel(content || initialContent[filePath] || '', null, uri);
+      model.updateOptions({ tabSize: 2 });
     }
     return model;
   },

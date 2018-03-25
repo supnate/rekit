@@ -135,7 +135,7 @@ export default class MonacoEditor extends Component {
       editorInstance = monaco.editor.create(domNode, {
         model: modelManager.getModel(file),
         ...options
-      });window.editor = editorInstance;
+      });
       configureMonacoEditor(editorInstance, monaco);
     } else {
       editorInstance.setModel(modelManager.getModel(file));

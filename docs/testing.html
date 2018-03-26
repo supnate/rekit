@@ -330,61 +330,8 @@
                                 <section class="normal markdown-section">
                                 
                                 <h2 id="testing">Testing</h2>
-<p>Testing a React + Redux application is difficult, you need to know many libs/tools regarding React testing and learn their usage. But Rekit will setup everything for you. You just need to write test code in the auto generated test files, running test with Rekit Studio and reading the coverage report in a browser.</p>
-<p>However here is the process of how React testing works. You can know how Rekit setups the testing process.</p>
-<ol>
-<li><a href="https://github.com/gotwarlost/istanbul" target="_blank">Istanbul</a> instruments the source code for test coverage report. Istanbul itself doesn&apos;t support JSX, but there&apos;s a babel plugin <a href="https://github.com/istanbuljs/babel-plugin-istanbul" target="_blank">babel-plugin-istanbul</a> then it works.</li>
-<li>Webpack builds all testing files with <a href="https://github.com/zinserjan/mocha-webpack" target="_blank">mocha-webpack</a> which auto finds test files to test.</li>
-<li><a href="https://github.com/mochajs/mocha" target="_blank">Mocha</a> runs the built version of testing files.</li>
-<li><a href="https://github.com/istanbuljs/nyc" target="_blank">nyc</a> generates the test coverage report.</li>
-</ol>
-<p>All app testing files are saved in the folder <code>test/app</code>. And the folder structure is the same with the source code folder structure in <code>src</code> folder.</p>
-<h4 id="how-rekit-generates-testing-files">How Rekit generates testing files</h4>
-<p>When creating a new component or action, Rekit auto creates test cases for them. Even you don&apos;t add any code to to the generated test cases, they help you avoid simple errors. Such as:</p>
-<ol>
-<li>It ensures a component is always rendered successfully by checking the existence of the root DOM node with correct css class.</li>
-<li>It ensures reducer is immutable by checking equality of the previous and new states.</li>
-</ol>
-<p>For example, when creating a new page, it generates below test case:</p>
-<pre class="language-"><code class="lang-javascript"><span class="token function">it</span><span class="token punctuation">(</span><span class="token string">&apos;renders node with correct class name&apos;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> pageProps <span class="token operator">=</span> <span class="token punctuation">{</span>
-    home<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-    actions<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">;</span>
-  <span class="token keyword">const</span> renderedComponent <span class="token operator">=</span> <span class="token function">shallow</span><span class="token punctuation">(</span>
-    <span class="token operator">&lt;</span>TestPage1 <span class="token punctuation">{</span><span class="token operator">...</span>pageProps<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token function">expect</span><span class="token punctuation">(</span>
-    renderedComponent<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">&apos;.home-test-page-1&apos;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>node
-  <span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>exist<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-<p>When creating an action, it generates below reducer test case:</p>
-<pre class="language-"><code class="lang-javascript"><span class="token function">it</span><span class="token punctuation">(</span><span class="token string">&apos;reducer should handle MY_ACTION&apos;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> prevState <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-  <span class="token keyword">const</span> state <span class="token operator">=</span> <span class="token function">reducer</span><span class="token punctuation">(</span>
-    prevState<span class="token punctuation">,</span>
-    <span class="token punctuation">{</span> type<span class="token punctuation">:</span> MY_ACTION <span class="token punctuation">}</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">expect</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>not<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span>prevState<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// should be immutable</span>
-  <span class="token function">expect</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">.</span>to<span class="token punctuation">.</span>deep<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span>prevState<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// TODO: replace this line with real case.</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-<h4 id="run-tests">Run tests</h4>
-<p>As you may have noticed, test cases also need to be built with webpack, then Mocha could run the test cases. So running a single test case file also needs the build. So <code>tools/run_test.js</code> is created to simplify this process. You can run any test case file just by the <code>run_test.js</code> tool. It&apos;s also exported as <code>npm test</code>. All arguments to it is just passed to the <code>run_test.js</code> script. The usage is as below:</p>
-<pre class="language-"><code>npm test  // run all tests of the project
-npm test features/home // run tests under the `home` feature
-npm test **/List.test.js // run all tests named list.test.js under app folder
-</code></pre><p>The script is under your project, so you can edit it for free to meet your own requirements.</p>
-<p>By default it does below things:</p>
-<ol>
-<li>Istanbul instruments the source code.</li>
-<li>Mocha runs the test cases.</li>
-<li>nyc generates the test coverage report.</li>
-</ol>
-<h4 id="see-the-coverage-report">See the coverage report</h4>
-<p>If tests are are run for the whole project then test coverage report will be generated at <code>coverage</code> folder.</p>
+<p>From version 2.3.0, Rekit starts to use jest for unit test since the boilerplate is created by create-react-app. You can see more introduction at: <a href="https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests" target="_blank">https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#running-tests</a> .</p>
+<p>The only difference is Rekit save all test files under the folder <code>/tests</code> rather than along side with source files under <code>/src</code> folder.</p>
 
                                 
                                 </section>
@@ -428,7 +375,7 @@ npm test **/List.test.js // run all tests named list.test.js under app folder
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.13","depth":1,"next":{"title":"Bundling","level":"1.14","depth":1,"path":"docs/webpack.md","ref":"docs/webpack.md","articles":[]},"previous":{"title":"Styling","level":"1.12","depth":1,"path":"docs/styling.md","ref":"docs/styling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/testing.md","mtime":"2018-02-14T04:37:52.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-14T04:38:32.216Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Testing","level":"1.13","depth":1,"next":{"title":"Bundling","level":"1.14","depth":1,"path":"docs/webpack.md","ref":"docs/webpack.md","articles":[]},"previous":{"title":"Styling","level":"1.12","depth":1,"path":"docs/styling.md","ref":"docs/styling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/testing.md","mtime":"2018-03-26T13:10:03.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T15:17:55.300Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -446,7 +393,7 @@ npm test **/List.test.js // run all tests named list.test.js under app folder
         
     
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
         
     
         

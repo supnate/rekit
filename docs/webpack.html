@@ -330,15 +330,7 @@
                                 <section class="normal markdown-section">
                                 
                                 <h2 id="bundling">Bundling</h2>
-<p>Webpack is also considered one of the most difficult parts for building a React application. Luckily again Rekit setups everything for you. There are 2 webpack config files corresponding to different usage:</p>
-<ul>
-<li><code>webpack.config.js</code>: it&apos;s a webpack config factory for dev, dll and dist bundling.</li>
-<li><code>webpack.test.config.js</code>: the config for test build.</li>
-</ul>
-<h4 id="boost-the-build-performance-by-using-webpack-dll-plugin">Boost the build performance by using webpack-dll-plugin</h4>
-<p>When a React application grows large, the build time in dev time takes long time. The <code>webpack-dll-plugin</code> could resolve the problem. There&apos;s very few docs about it but there&apos;s a great article introducing it: <a href="http://engineering.invisionapp.com/post/optimizing-webpack/" target="_blank">http://engineering.invisionapp.com/post/optimizing-webpack/</a> . Rekit takes use the approach mentioned in the article.</p>
-<p>The basic idea is to build common libs such as React, Redux, React-router into a separate dll bundle. So that they don&apos;t need to be built every time your code is changed. By doing this the build time could be significantly reduced.</p>
-<p>Rekit integrates the process in <code>tools/server.js</code> which is run when calling <code>npm start</code>. The script checks versions of all packages needed for the dll build. So that it auto builds a new dll when any dependency version is changed.</p>
+<p>It&apos;s the same as create-react-app, see more info at: <a href="https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#deployment" target="_blank">https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#deployment</a> .</p>
 
                                 
                                 </section>
@@ -382,7 +374,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Bundling","level":"1.14","depth":1,"next":{"title":"Code Quality Check","level":"1.15","depth":1,"path":"docs/eslint.md","ref":"docs/eslint.md","articles":[]},"previous":{"title":"Testing","level":"1.13","depth":1,"path":"docs/testing.md","ref":"docs/testing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/webpack.md","mtime":"2018-02-08T05:46:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-14T04:38:32.216Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Bundling","level":"1.14","depth":1,"next":{"title":"Code Quality Check","level":"1.15","depth":1,"path":"docs/eslint.md","ref":"docs/eslint.md","articles":[]},"previous":{"title":"Testing","level":"1.13","depth":1,"path":"docs/testing.md","ref":"docs/testing.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/webpack.md","mtime":"2018-03-26T13:12:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T15:17:55.300Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -400,7 +392,7 @@
         
     
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
         
     
         

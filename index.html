@@ -54,7 +54,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
 
     
     <link rel="next" href="docs/get-started.html" />
@@ -312,7 +312,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Read Me</a>
+        <a href="." >Rekit - Read Me</a>
     </h1>
 </div>
 
@@ -329,18 +329,18 @@
                                 
                                 <h1 id=""><img src="images/logo_text.png?raw=true" width="260"></h1>
 <blockquote>
-<p>&#x1F389;&#x1F389;&#x1F389;  <a href="https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542" target="_blank">Introducing Rekit Studio: a real IDE for React and Redux development</a></p>
+<p>&#x1F525;  <a href="https://medium.com/@nate_wang/rekit-now-creates-apps-by-create-react-app-3f0d82fd64f3" target="_blank">Rekit Now Creates Apps By Create-react-app</a></p>
+<p>&#x1F389;  <a href="https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542" target="_blank">Introducing Rekit Studio: a real IDE for React and Redux development</a></p>
+<p>&#x1F389;  <a href="https://medium.com/@nate_wang/using-rekit-studio-in-an-existing-react-project-39713d9667b" target="_blank">Using Rekit Studio in an Existing React Project</a></p>
 </blockquote>
 <p>Rekit is a toolkit for building scalable web applications with React, Redux and React-router. It&apos;s an all-in-one solution for creating modern React apps.</p>
 <p>It helps you focus on business logic rather than dealing with massive libraries, patterns, configurations etc.</p>
-<p><a href="https://www.npmjs.org/package/rekit" target="_blank"><img src="http://img.shields.io/npm/v/rekit.svg" alt="Version"></a>
-<a href="https://travis-ci.org/supnate/rekit" target="_blank"><img src="https://travis-ci.org/supnate/rekit.svg?branch=master" alt="Build Status"></a>
-<a href="https://david-dm.org/supnate/rekit" target="_blank"><img src="https://david-dm.org/supnate/rekit.svg?style=flat-square" alt="Dependency Status"></a>
+<p><a href="https://travis-ci.org/supnate/rekit" target="_blank"><img src="https://travis-ci.org/supnate/rekit.svg?branch=master" alt="Build Status"></a>
 <a href="https://codecov.io/github/supnate/rekit" target="_blank"><img src="https://img.shields.io/codecov/c/github/supnate/rekit/master.svg" alt="Coverage Status"></a>
 <a href="https://gitter.im/rekitjs/Lobby?utm_source=share-link&amp;utm_medium=link&amp;utm_campaign=share-link" target="_blank"><img src="https://badges.gitter.im/supnate/rekit.svg" alt="Gitter"></a>
-<a href="https://demo.rekit.org" target="_blank"><img src="https://img.shields.io/badge/demo-link-blue.svg" alt="Demo"></a>
+<a href="http://demo.rekit.org" target="_blank"><img src="https://img.shields.io/badge/demo-link-blue.svg" alt="Demo"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT licensed"></a></p>
-<p>Rekit creates apps using an opinionated folder and code structure. It&apos;s designed to be scalable, testable and maintainable by using <a href="https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0" target="_blank">feature oriented architecture</a>, <a href="https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk" target="_blank">one action per file pattern</a>. This ensures application logic is well grouped and decoupled.</p>
+<p>Rekit creates apps bootstrapped by <a href="https://github.com/facebook/create-react-app" target="_blank">create-react-app</a> and uses an opinionated way to organize folder and code. It&apos;s designed to be scalable, testable and maintainable by using <a href="https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0" target="_blank">feature oriented architecture</a>, <a href="https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk" target="_blank">one action per file pattern</a>. This ensures application logic is well grouped and decoupled.</p>
 <p>Besides creating apps, Rekit provides powerful tools for managing the project:</p>
 <ol>
 <li><a href="https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542" target="_blank">Rekit Studio</a>: the real IDE for React, Redux development.</li>
@@ -360,16 +360,15 @@
 </code></pre><p>This will install a global command <code>rekit</code> to the system. Rekit is developed and tested on npm 3+ and node 6+, so this is the prerequisite for using Rekit.</p>
 <h2 id="usage">Usage</h2>
 <p>Create a new application</p>
-<pre class="language-"><code>rekit create <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>app-name</span><span class="token punctuation">&gt;</span></span> [--sass] [--clean]
-</code></pre><p>This will create a new app named <code>app-name</code> in the current directory. The <code>--sass</code> flag allows to use <a href="https://sass-lang.com/" target="_blank">sass</a> instead of default <a href="http://lesscss.org/" target="_blank">less</a> as the CSS transpiler. The <code>--clean</code> flag is used to create a clean app without any sample code. After creating the app, you need to install dependencies and start the dev server:</p>
+<pre class="language-"><code>rekit create <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>app-name</span><span class="token punctuation">&gt;</span></span> [--sass]
+</code></pre><p>This will create a new app named <code>app-name</code> in the current directory. The <code>--sass</code> flag allows to use <a href="https://sass-lang.com/" target="_blank">sass</a> instead of default <a href="http://lesscss.org/" target="_blank">less</a> as the CSS transpiler. After creating the app, you need to install dependencies and start the dev server:</p>
 <pre class="language-"><code>cd app-name
 npm install
 npm start
-</code></pre><p>It then starts three lightweight express servers by default:</p>
+</code></pre><p>It then starts two express servers by default:</p>
 <ol>
-<li>Wepback dev server: <a href="http://localhost:6075" target="_blank">http://localhost:6075</a>. This is the dev server your application is running on.</li>
+<li>Webpack dev server: <a href="http://localhost:6075" target="_blank">http://localhost:6075</a>. Just what create-react-app starts.</li>
 <li>Rekit Studio: <a href="http://localhost:6076" target="_blank">http://localhost:6076</a>. The IDE for Rekit projects.</li>
-<li>Build result test server: <a href="http://localhost:6077" target="_blank">http://localhost:6077</a>. This is the server for verifying the build result before deploying to production server.</li>
 </ol>
 <p>To change the ports dev-servers running on, edit the <code>rekit</code> section in <code>package.json</code>:</p>
 <pre class="language-"><code>{
@@ -377,7 +376,6 @@ npm start
   &quot;rekit&quot;: {
     &quot;devPort&quot;: 6075,
     &quot;studioPort&quot;: 6076,
-    &quot;buildPort&quot;: 6077,
     ...
   }
   ...
@@ -394,23 +392,23 @@ npm start
 <tbody>
 <tr>
 <td>rekit-core</td>
-<td>Provide core APIs such as create components, rename actions, etc...</td>
+<td><a href="https://www.npmjs.org/package/rekit-core" target="_blank"><img src="http://img.shields.io/npm/v/rekit-core.svg" alt="Version"></a> Provide core APIs such as create components, rename actions, etc...</td>
 </tr>
 <tr>
 <td>rekit</td>
-<td>The CLI wrapper of rekit-core, and create apps by clone repo from <a href="https://github.com/supnate/rekit-boilerplate" target="_blank">rekit-boilerplate</a></td>
+<td><a href="https://www.npmjs.org/package/rekit" target="_blank"><img src="http://img.shields.io/npm/v/rekit.svg" alt="Version"></a> CLI wrapper of rekit-core, create apps by cloning repo from <a href="https://github.com/supnate/rekit-boilerplate" target="_blank">rekit-boilerplate</a></td>
 </tr>
 <tr>
 <td>rekit-studio</td>
-<td>Dedicated IDE for Rekit development, uses rekit-core to manage project too.</td>
+<td><a href="https://www.npmjs.org/package/rekit-studio" target="_blank"><img src="http://img.shields.io/npm/v/rekit-studio.svg" alt="Version"></a> Dedicated IDE for Rekit development, uses rekit-core to manage project too.</td>
 </tr>
 <tr>
 <td>rekit-plugin-redux-saga</td>
-<td>Use redux-saga instead of redux-thunk for async actions.</td>
+<td><a href="https://www.npmjs.org/package/rekit-plugin-redux-saga" target="_blank"><img src="http://img.shields.io/npm/v/rekit-plugin-redux-saga.svg" alt="Version"></a> Use redux-saga instead of redux-thunk for async actions.</td>
 </tr>
 <tr>
 <td>rekit-plugin-selector</td>
-<td>Support selectors by Rekit cli.</td>
+<td><a href="https://www.npmjs.org/package/rekit-plugin-selector" target="_blank"><img src="http://img.shields.io/npm/v/rekit-plugin-selector.svg" alt="Version"></a> Support selectors by Rekit cli.</td>
 </tr>
 </tbody>
 </table>
@@ -420,7 +418,7 @@ npm start
 <li>Zero additional configuration needed after creating an app.</li>
 <li>Dedicated IDE for Rekit development.</li>
 <li>Command line tools to manage actions, reducers, components and pages.</li>
-<li>Embed build script and test server for the build result.</li>
+<li>Bootstrapped by <a href="https://github.com/facebook/create-react-app" target="_blank">create-react-app</a>, all your knowledge about it still works.</li>
 <li>Use <a href="http://webpack.js.org" target="_blank">Webpack 3</a> for bundling.</li>
 <li>Use <a href="https://babeljs.io/" target="_blank">Babel</a> for ES2015(ES6)+ support.</li>
 <li>Use <a href="http://gaearon.github.io/react-hot-loader/" target="_blank">React hot loader</a> for hot module replacement.</li>
@@ -428,10 +426,8 @@ npm start
 <li>Use <a href="https://github.com/reactjs/react-router" target="_blank">React-router</a> for routing and it&apos;s configured with Redux reducer.</li>
 <li>Use <a href="http://webpack.github.io/docs/list-of-plugins.html#dllplugin" target="_blank">Webpack dll plugin</a> to improve dev-time build performance.</li>
 <li>Use <a href="http://lesscss.org/" target="_blank">Less</a> or <a href="https://sass-lang.com/" target="_blank">Sass</a> as CSS transpilers.</li>
-<li>Use <a href="https://mochajs.org/" target="_blank">mocha</a>, <a href="https://github.com/airbnb/enzyme" target="_blank">enzyme</a> for testing.</li>
-<li>Use <a href="https://github.com/gotwarlost/istanbul" target="_blank">istanbul</a> for testing coverage report.</li>
+<li>Use <a href="https://mochajs.org/" target="_blank">jest</a>, <a href="https://github.com/airbnb/enzyme" target="_blank">enzyme</a> for testing.</li>
 <li>Support <a href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd" target="_blank">Redux dev tools</a>.</li>
-<li>Proxy to API in DEV like <a href="https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development" target="_blank">create-react-app</a>. e.g.  fetch(/api/\<your path="">) </your></li>
 </ul>
 <h2 id="documentation">Documentation</h2>
 <p><a href="http://rekit.js.org" target="_blank">http://rekit.js.org</a></p>
@@ -476,7 +472,7 @@ npm start
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Read Me","level":"1.1","depth":1,"next":{"title":"Get Started","level":"1.2","depth":1,"path":"docs/get-started.md","ref":"docs/get-started.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"README.md","mtime":"2018-02-08T06:04:59.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-14T04:38:32.216Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Read Me","level":"1.1","depth":1,"next":{"title":"Get Started","level":"1.2","depth":1,"path":"docs/get-started.md","ref":"docs/get-started.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"README.md","mtime":"2018-03-26T15:17:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T15:17:55.300Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
@@ -494,7 +490,7 @@ npm start
         
     
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
         
     
         

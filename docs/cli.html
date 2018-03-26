@@ -342,37 +342,6 @@
 <p>If you will use a plugin via npm, use the below command:</p>
 <pre class="language-"><code>rekit install <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin-name</span><span class="token punctuation">&gt;</span></span>
 </code></pre><p>This will execute <code>install.js</code> script of the plugin to do the initialization and added the plugin name to <code>rekit.plugins</code> section of package.json.</p>
-<h3 id="rekit-tools">Rekit tools</h3>
-<p>Rekit tools are pure scripts shipped with created applications. They are put in the <code>tools</code> folder of your app and are supposed to be edited to meet additional requirements of your project.</p>
-<h5 id="toolsserverjs">tools/server.js</h5>
-<p>This script is used to start dev servers, by default it starts all 3 servers include webpack dev server, Rekit Studio and the build result server. You can only start some of servers by arguments.</p>
-<p>Usage:</p>
-<pre class="language-"><code>node tools/server.js [-m, --mode] [--readonly]
-</code></pre><ul>
-<li><code>mode</code>: if not provided, all 3 dev servers are started. Otherwise only the specified dev server is started. It could be:<ul>
-<li><code>dev</code>: webpack dev server</li>
-<li><code>studio</code>: Rekit Studio</li>
-<li><code>build</code>: start a static express server for build folder.</li>
-</ul>
-</li>
-<li><code>readonly</code>: start the Rekit Studio on readonly mode. It&apos;s useful to start a studio server only for explore the project structure. For example, the Rekit Studio <a href="http://demo.rekit.org" target="_blank">live demo</a> is running on readonly mode.</li>
-</ul>
-<p>It&apos;s also available as the npm script: <code>npm start</code>. </p>
-<h5 id="toolsruntestjs">tools/run_test.js</h5>
-<p>This script is helpful to run one or multiple unit tests. It accepts argument what tests files should be run.</p>
-<p>Usage:</p>
-<pre class="language-"><code>node tools/run_test.js <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>file-pattern</span><span class="token punctuation">&gt;</span></span>
-</code></pre><p>The file pattern is the same as what <code>mocha</code> accepts. If no <code>file-pattern</code> specified, it runs all tests and generates test coverage report. Otherwise run tests matches the pattern.</p>
-<p>For example:</p>
-<pre class="language-"><code>node tools/run_test.js features/home/redux/counterPlusOne.test.js  // run test of a redux action
-node tools/run_test.js features/home // run all tests of home feature
-node tools/run_test.js // run all tests and generate test coverage report
-</code></pre><p>It&apos;s also available as the npm script: <code>npm test</code>. </p>
-<h4 id="toolsbuildjs">tools/build.js</h4>
-<p>This script is used to build the project.</p>
-<p>Usage:</p>
-<pre class="language-"><code>node tools/build.js
-</code></pre><p>It&apos;s also available as the npm script: <code>npm run build</code>. It will build the project to the <code>build</code> folder.</p>
 <h3 id="manage-features-components-and-actions">Manage features, components and actions.</h3>
 <p>This is the key part of daily Rekit development. You will use below commands to mange Rekit elements.</p>
 <blockquote>
@@ -482,7 +451,7 @@ node tools/run_test.js // run all tests and generate test coverage report
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Command Line Tools","level":"1.9","depth":1,"next":{"title":"Plugin","level":"1.10","depth":1,"path":"docs/plugin.md","ref":"docs/plugin.md","articles":[]},"previous":{"title":"Rekit Studio","level":"1.8","depth":1,"url":"https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542","ref":"https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/cli.md","mtime":"2018-02-12T16:26:56.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-14T04:38:32.216Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Command Line Tools","level":"1.9","depth":1,"next":{"title":"Plugin","level":"1.10","depth":1,"path":"docs/plugin.md","ref":"docs/plugin.md","articles":[]},"previous":{"title":"Rekit Studio","level":"1.8","depth":1,"url":"https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542","ref":"https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/cli.md","mtime":"2018-03-26T13:00:25.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T15:17:55.300Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -500,7 +469,7 @@ node tools/run_test.js // run all tests and generate test coverage report
         
     
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
         
     
         

@@ -339,16 +339,13 @@ $ cd my-app
 $ npm install
 </code></pre><h5 id="3-start-it">3. Start it!</h5>
 <pre class="language-"><code>$ npm start
-</code></pre><h3 id="see-the-welcome-page">See the welcome page</h3>
+</code></pre><h3 id="see-the-examples">See the examples</h3>
 <p>The app should be started in a few seconds, then you can access it at: <a href="http://localhost:6075" target="_blank">http://localhost:6075</a>.</p>
-<p>If everything is ok, you should be able to see the welcome page:</p>
-<p><img src="../images/welcome-page.png" width="700" alt="Rekit Welcome Page"></p>
-<p>The welcome page consists of 3 parts:</p>
-<p><strong>1. A simple nav component</strong>
-It reads the route config of the whole application and generates links to different pages.</p>
-<p><strong>2. A counter demo using sync actions.</strong>
+<p>When a Rekit app is created, there will be an examples feature in it. You can see it at: <a href="http://localhost:6075/examples" target="_blank">http://localhost:6075/examples</a>:</p>
+<p>The examples feature has two examples:</p>
+<p><strong>1. A counter demo using sync actions.</strong>
 By the sample you can quickly see how component, actions and reducers work together.</p>
-<p><strong>3. A demo to fetch latest topics of <code>reactjs</code> channel from Reddit</strong>
+<p><strong>2. A demo to fetch latest topics of <code>reactjs</code> channel from Reddit</strong>
 This is just the same example from the official Redux site: <a href="https://redux.js.org/docs/advanced/ExampleRedditAPI.html" target="_blank">https://redux.js.org/docs/advanced/ExampleRedditAPI.html</a>. It demonstrates the <a href="concepts#async-action">async actions</a> for a Redux application. But the Rekit version uses <a href="one-action-one-file.html">one action one file pattern</a>, and it adds error handling which is a common requirement for real-world apps.</p>
 <h3 id="using-rekit-studio">Using Rekit Studio</h3>
 <p>Rekit Studio is the IDE for Rekit projects. When a Rekit app is started, Rekit Studio is also auto started at: <a href="http://localhost:6076" target="_blank">http://localhost:6076</a> by default:</p>
@@ -356,16 +353,14 @@ This is just the same example from the official Redux site: <a href="https://red
 <p>See a full introduction at: <a href="https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542" target="_blank">https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542</a></p>
 <h3 id="where-to-start">Where to start</h3>
 <p>Rekit creates a single page application by default. You may need to edit the root container first to define your own container layout. The source file is at <code>src/features/home/App.js</code>.</p>
-<h3 id="two-quick-tutorial-videos">Two quick tutorial videos</h3>
+<h3 id="see-the-quick-tutorial-videos">See the quick tutorial videos</h3>
 <p>There are two samples on the welcome page, and they are also demos on Redux&apos;s official web site. Now let&apos;s see how to create them with Rekit.</p>
+<p><a href="https://youtu.be/i53XffYtWMc" title="Rekit Demo" target="_blank"><img src="../images/rekit-studio-youtube.png" width="500" alt="Rekit Demo"></a></p>
+<p>The demo contains two parts, which are examples in Redux&apos;s official website:</p>
 <ol>
-<li><a href="https://youtu.be/HT6YzZtbPKc" target="_blank">Create a counter with Rekit in 1 minute!</a></li>
+<li>Create a simple counter in 1 minute!</li>
+<li>Show the latest reactjs topics on Reddit using async actions.</li>
 </ol>
-<p><img src="../images/youtube.png" width="400" alt="Demo video"></p>
-<ol>
-<li><a href="https://youtu.be/edq5lWsxZMg" target="_blank">Create a Reddit list viewer step by step (5 minutes).</a></li>
-</ol>
-<p><img src="../images/youtube.png" width="400" alt="Demo video"></p>
 <h3 id="thats-it">That&apos;s it!</h3>
 <p>You have already created your very first Rekit app and tried powerful Rekit tools! Now you can read more details about Rekit in the following pages.</p>
 
@@ -411,7 +406,7 @@ This is just the same example from the official Redux site: <a href="https://red
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Get Started","level":"1.2","depth":1,"next":{"title":"App Architecture","level":"1.3","depth":1,"path":"docs/app.md","ref":"docs/app.md","articles":[]},"previous":{"title":"Read Me","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/get-started.md","mtime":"2018-02-14T04:37:52.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-14T04:38:32.216Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Get Started","level":"1.2","depth":1,"next":{"title":"App Architecture","level":"1.3","depth":1,"path":"docs/app.md","ref":"docs/app.md","articles":[]},"previous":{"title":"Read Me","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","anchorjs"],"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/supnate/rekit/"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/supnate/rekit/tree/master"},"theme-default":{"styles":{"website":"build/gitbook.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Rekit","gitbook":"3.x.x"},"file":{"path":"docs/get-started.md","mtime":"2018-03-26T13:12:54.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-03-26T15:17:55.300Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -429,7 +424,7 @@ This is just the same example from the official Redux site: <a href="https://red
         
     
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js"></script>
         
     
         

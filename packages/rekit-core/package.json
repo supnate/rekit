@@ -1,10 +1,10 @@
 {
   "name": "rekit-core",
-  "version": "2.2.5",
+  "version": "2.3.0",
   "description": "Rekit core functions.",
   "author": "Nate Wang <supnate@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/supnate/rekit-core",
+  "homepage": "https://github.com/supnate/rekit",
   "main": "core/index.js",
   "keywords": [
     "rekit",

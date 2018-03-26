@@ -14,7 +14,7 @@ It helps you focus on business logic rather than dealing with massive libraries,
 [![Demo](https://img.shields.io/badge/demo-link-blue.svg)](http://demo.rekit.org)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-Rekit creates apps using an opinionated folder and code structure. It's designed to be scalable, testable and maintainable by using [feature oriented architecture](https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0), [one action per file pattern](https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk). This ensures application logic is well grouped and decoupled.
+Rekit creates apps bootstrapped by [create-react-app](https://github.com/facebook/create-react-app) and uses an opinionated way to organize folder and code. It's designed to be scalable, testable and maintainable by using [feature oriented architecture](https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0), [one action per file pattern](https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk). This ensures application logic is well grouped and decoupled.
 
 Besides creating apps, Rekit provides powerful tools for managing the project:
 
@@ -42,20 +42,19 @@ This will install a global command `rekit` to the system. Rekit is developed and
 ## Usage
 Create a new application
 ```
-rekit create <app-name> [--sass] [--clean]
+rekit create <app-name> [--sass]
 ```
-This will create a new app named `app-name` in the current directory. The `--sass` flag allows to use [sass](https://sass-lang.com/) instead of default [less](http://lesscss.org/) as the CSS transpiler. The `--clean` flag is used to create a clean app without any sample code. After creating the app, you need to install dependencies and start the dev server:
+This will create a new app named `app-name` in the current directory. The `--sass` flag allows to use [sass](https://sass-lang.com/) instead of default [less](http://lesscss.org/) as the CSS transpiler. After creating the app, you need to install dependencies and start the dev server:
 ```
 cd app-name
 npm install
 npm start
 ```
 
-It then starts three lightweight express servers by default:
+It then starts two express servers by default:
 
- 1. Webpack dev server: [http://localhost:6075](http://localhost:6075). This is the dev server your application is running on.
+ 1. Webpack dev server: [http://localhost:6075](http://localhost:6075). Just what create-react-app starts.
  2. Rekit Studio: [http://localhost:6076](http://localhost:6076). The IDE for Rekit projects.
- 3. Build result test server: [http://localhost:6077](http://localhost:6077). This is the server for verifying the build result before deploying to production server.
 
 To change the ports dev-servers running on, edit the `rekit` section in `package.json`:
 ```
@@ -64,7 +63,6 @@ To change the ports dev-servers running on, edit the `rekit` section in `package
   "rekit": {
     "devPort": 6075,
     "studioPort": 6076,
-    "buildPort": 6077,
     ...
   }
   ...
@@ -87,7 +85,7 @@ This repo contains multiple packages managed by [yarn workspaces](https://yarnpk
  * Zero additional configuration needed after creating an app.
  * Dedicated IDE for Rekit development.
  * Command line tools to manage actions, reducers, components and pages.
- * Embed build script and test server for the build result.
+ * Bootstrapped by [create-react-app](https://github.com/facebook/create-react-app), all your knowledge about it still works.
  * Use [Webpack 3](http://webpack.js.org) for bundling.
  * Use [Babel](https://babeljs.io/) for ES2015(ES6)+ support.
  * Use [React hot loader](http://gaearon.github.io/react-hot-loader/) for hot module replacement.
@@ -95,11 +93,8 @@ This repo contains multiple packages managed by [yarn workspaces](https://yarnpk
  * Use [React-router](https://github.com/reactjs/react-router) for routing and it's configured with Redux reducer.
  * Use [Webpack dll plugin](http://webpack.github.io/docs/list-of-plugins.html#dllplugin) to improve dev-time build performance.
  * Use [Less](http://lesscss.org/) or [Sass](https://sass-lang.com/) as CSS transpilers.
- * Use [mocha](https://mochajs.org/), [enzyme](https://github.com/airbnb/enzyme) for testing.
- * Use [istanbul](https://github.com/gotwarlost/istanbul) for testing coverage report.
+ * Use [jest](https://mochajs.org/), [enzyme](https://github.com/airbnb/enzyme) for testing.
  * Support [Redux dev tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd).
- * Proxy to API in DEV like [create-react-app](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#proxying-api-requests-in-development). e.g.  fetch(/api/\<your path>) 
-
 
 ## Documentation
 [http://rekit.js.org](http://rekit.js.org)

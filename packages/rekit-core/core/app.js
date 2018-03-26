@@ -19,7 +19,7 @@ function getRekitProps(file) {
   if (propsCache[file] && propsCache[file].content === vio.getContent(file)) {
     return propsCache[file].props;
   }
-  const isInFeature = /src\/features\/\w+\//.test(file);
+  const isInFeature = /src\/features\/[a-z0-9-]+\//.test(file);
   if (!isInFeature) {
     // all files not under a feature are misc
     const props = { type: 'misc' };

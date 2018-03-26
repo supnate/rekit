@@ -9,7 +9,7 @@ const fs = require('fs');
 const utils = require('./utils');
 
 function download(a1, dest, callback) {console.log('creating from: ', a1);
-  utils.copyFolderRecursiveSync(path.join(__dirname, '../../../../rekit-boilerplate-cra'), dest, p => !/node_modules/.test(p));
+  utils.copyFolderRecursiveSync(path.join(__dirname, '../../../../rekit-boilerplate-cra'), dest, p => !/node_modules|\/coverage|\/build/.test(p));
   callback();
 }
 

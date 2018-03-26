@@ -186,7 +186,6 @@ if (rekitCore) {
 }
 
 const args = parser.parseArgs();
-console.log(args);
 
 console.time('😃  Done');
 // Convert aliases

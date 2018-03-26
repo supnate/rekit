@@ -48,12 +48,6 @@ export class BuildPage extends Component {
           <Button type="primary" size="small" disabled={runBuildRunning || runBuildPending} onClick={this.handleBuildButtonClick}>
             {runBuildRunning ? 'Building...' : 'Run build'}
           </Button>
-          <div className="build-result-link">
-            The build result is running at:&nbsp;
-            <a href={`http://localhost:${this.props.home.rekit.buildPort}`} target="_blank">
-              http://localhost:{this.props.home.rekit.buildPort}
-            </a>
-          </div>
         </div>
 
         { (runBuildRunning || percent === 100) && <Progress percent={percent} />}

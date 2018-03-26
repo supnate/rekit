@@ -32,11 +32,11 @@ As the above picture shows, Rekit creates an application with a special folder s
 |    |    +-- styles
 |    --- tools
 |    |    +-- plugins
-|    |    |-- server.js
+|    --- scripts
 |    |    |-- build.js
+|    |    |-- start.js
 |    |    |-- ...
 |-- .eslintrc
 |-- .gitignore
-|-- webpack-config.js
 |-- ...
 ```

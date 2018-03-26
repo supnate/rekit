@@ -4,7 +4,7 @@ Feature oriented web application architecture (in React)
 
 Feature is a very nature concept for people to understand a system. It's also used to describe user requirements for software development. But when a feature comes to programmers side it's usually immediately converted to technical artifacts such as components, actions, models etc. This convention adds the difficulty for new comers or developers themselves serval weeks later to understand the system. So if we organize an software project by features rather than technique categories (like components, actions, models) it will help us always manage the project under control when the project grows because we construct the system with bigger units.
 
-This architecture is also the key concept of [Rekit](https://github.com/supnate), a toolkit for building web applications with React, Redux and React router.)
+This architecture is also the key concept of [Rekit](https://github.com/supnate/rekit), a toolkit for building web applications with React, Redux and React router.)
 
 Unlike backend system, frontend web application is the direct interface for user to understand the capabilities of an application. So it's more suitable to be organized by features.
 

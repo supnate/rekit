@@ -27,55 +27,6 @@ rekit install <plugin-name>
 
 This will execute `install.js` script of the plugin to do the initialization and added the plugin name to `rekit.plugins` section of package.json.
 
-### Rekit tools
-
-Rekit tools are pure scripts shipped with created applications. They are put in the `tools` folder of your app and are supposed to be edited to meet additional requirements of your project.
-
-##### tools/server.js
-This script is used to start dev servers, by default it starts all 3 servers include webpack dev server, Rekit Studio and the build result server. You can only start some of servers by arguments.
-
-Usage:
-```
-node tools/server.js [-m, --mode] [--readonly]
-```
-
-- `mode`: if not provided, all 3 dev servers are started. Otherwise only the specified dev server is started. It could be:
-  - `dev`: webpack dev server
-  - `studio`: Rekit Studio
-  - `build`: start a static express server for build folder.
-- `readonly`: start the Rekit Studio on readonly mode. It's useful to start a studio server only for explore the project structure. For example, the Rekit Studio [live demo](http://demo.rekit.org) is running on readonly mode.
-
-It's also available as the npm script: `npm start`. 
-
-##### tools/run_test.js
-This script is helpful to run one or multiple unit tests. It accepts argument what tests files should be run.
-
-Usage:
-```
-node tools/run_test.js <file-pattern>
-```
-
-The file pattern is the same as what `mocha` accepts. If no `file-pattern` specified, it runs all tests and generates test coverage report. Otherwise run tests matches the pattern.
-
-For example:
-```
-node tools/run_test.js features/home/redux/counterPlusOne.test.js  // run test of a redux action
-node tools/run_test.js features/home // run all tests of home feature
-node tools/run_test.js // run all tests and generate test coverage report
-```
-
-It's also available as the npm script: `npm test`. 
-
-#### tools/build.js
-This script is used to build the project.
-
-Usage:
-```
-node tools/build.js
-```
-
-It's also available as the npm script: `npm run build`. It will build the project to the `build` folder.
-
 ### Manage features, components and actions.
 This is the key part of daily Rekit development. You will use below commands to mange Rekit elements.
 

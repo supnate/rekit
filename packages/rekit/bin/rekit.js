@@ -76,6 +76,11 @@ createCmd.addArgument(['--clean', '-c'], {
   action: 'storeTrue',
 });
 
+createCmd.addArgument(['--template', '-t'], {
+  help: 'Which template to use for creating a project. Clone from "https://github.com/supnate/rekit-boilerplate-${template} Default to cra (create-react-app). If it\'s rekit. Then use supnate/rekit-boilerplate.',
+  defaultValue: 'cra',
+});
+
 const createPluginCmd = subparsers.addParser('create-plugin', {
   addHelp: true,
   description: 'Create a Rekit plugin. If under a Rekit project, create a local plugin; otherwise create a plugin as a npm package.',
@@ -181,6 +186,7 @@ if (rekitCore) {
 }
 
 const args = parser.parseArgs();
+console.log(args);
 
 console.time('😃  Done');
 // Convert aliases

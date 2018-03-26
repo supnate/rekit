@@ -5,13 +5,13 @@
 
 const path = require('path');
 const fs = require('fs');
-const download = require('download-git-repo');
+// const download = require('download-git-repo');
 const utils = require('./utils');
 
-// function download(a1, dest, callback) {
-//   utils.copyFolderRecursiveSync(path.join(__dirname, '../../../../rekit-boilerplate'), dest, p => !/node_modules/.test(p));
-//   callback();
-// }
+function download(a1, dest, callback) {console.log('creating from: ', a1);
+  utils.copyFolderRecursiveSync(path.join(__dirname, '../../../../rekit-boilerplate-cra'), dest, p => !/node_modules/.test(p));
+  callback();
+}
 
 function createApp(args) {
   const prjName = args.name;
@@ -30,7 +30,8 @@ function createApp(args) {
   fs.mkdirSync(prjPath);
 
   // Download boilerplate from: https://github.com/supnate/rekit-boilerplate dist branch.
-  download('supnate/rekit-boilerplate#dist', prjPath, (err) => {
+  const tplRepo = args.template === 'rekit' ? `supnate/rekit-boilerplate#dist` : `supnate/rekit-boilerplate-${args.template}#dist`;
+  download(tplRepo, prjPath, (err) => {
     if (err) {
       console.log('Failed to download the boilerplate. The project was not created. Please check and retry.');
       console.log(err);

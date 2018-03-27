@@ -1,10 +1,7 @@
 /* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
 /* global self, babylon */
-// self.importScripts(['/static/libs/typescript.min.js']);
 self.Prism = { disableWorkerMessageHandler: true };
 self.importScripts(['/static/libs/prism-1.12.2.js']);
-// self.importScripts(['/static/libs/prism-1.13.0.js']);
-// self.importScripts(['/static/libs/babylon.js']);
 
 function getLineNumberAndOffset(start, lines) {
   let line = 0;
@@ -61,8 +58,6 @@ function findJsxText(tokens, startIndex) {
         }
         const tagTokens = flattenTagToken(t); // flatten tokens for a tag
         result = [...result, ...tagTokens];
-        // i += tagTokens.length - 1;
-        // result.push(t);
         jsxDepth += 1;
         jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
         result.push(jsxTextToken);
@@ -70,9 +65,6 @@ function findJsxText(tokens, startIndex) {
       if (tt === 'end') {
         const tagTokens = flattenTagToken(t); // flatten tokens for a tag
         result = [...result, ...tagTokens];
-        // i += tagTokens.length - 1;
-        // result.push(t);
-        // if (jsxTextToken.length > 0) result.push(jsxTextToken);
         jsxDepth -= 1;
         if (jsxDepth < 0) jsxDepth = 0;
 
@@ -86,8 +78,6 @@ function findJsxText(tokens, startIndex) {
       if (tt === 'self-close') {
         const tagTokens = flattenTagToken(t); // flatten tokens for a tag
         result = [...result, ...tagTokens];
-        // i += tagTokens.length - 1;
-        // result.push(t);
         if (jsxDepth > 0) {
           jsxTextToken = { content: '', type: 'jsx-text', length: 0 };
           result.push(jsxTextToken);
@@ -138,7 +128,6 @@ function findJsxText(tokens, startIndex) {
   return result;
 }
 
-// let jsxContext = [];
 function flattenTagToken(token) {
   if (!Array.isArray(token.content)) return [token];
 
@@ -210,11 +199,8 @@ function flattenTagToken(token) {
 self.addEventListener('message', event => {
   const { code } = event.data;
   try {
-    // console.time('parse');
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
-    // console.log(tokens);
     tokens = findJsxText(tokens, 0);
-    // console.timeEnd('parse');
     
     const classifications = [];
     let pos = 0;

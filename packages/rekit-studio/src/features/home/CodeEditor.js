@@ -125,6 +125,10 @@ export class CodeEditor extends Component {
         cursorOffset,
       })
       .then(res => {
+        if (res.data.error || !res.data.content.formatted) {
+          this.setState({ loadingFile: false });
+          return;
+        }
         this.editor.executeEdits('format', [
           { range: new monaco.Range(1, 1, 1000000, 1), text: res.data.content.formatted, forceMoveMarkers: true },
         ]);

@@ -114,15 +114,30 @@ export class CodeEditor extends Component {
 
   formatCode = () => {
     this.setState({ loadingFile: true });
+    const lines = this.editor.getValue().split('\n');
+    const { lineNumber, column } = this.editor.getPosition();
+    const cursorOffset = lines.slice(0, lineNumber - 1).reduce((c, line) => c + line.length + 1, 0) + column - 1;
+
     axios
       .post('/rekit/api/format-code', {
         content: modelManager.getValue(this.props.file),
         file: this.props.file,
+        cursorOffset,
       })
       .then(res => {
         this.editor.executeEdits('format', [
-          { range: new monaco.Range(1, 1, 1000000, 1), text: res.data.content, forceMoveMarkers: true },
+          { range: new monaco.Range(1, 1, 1000000, 1), text: res.data.content.formatted, forceMoveMarkers: true },
         ]);
+        const newCursorOffset = res.data.content.cursorOffset;
+        const newLines = res.data.content.formatted.split('\n');
+        let c = 0;
+        let newLineNumber = 0;
+        while (c + newLines[newLineNumber].length + 1 < newCursorOffset && newLineNumber < newLines.length) {
+          c += newLines[newLineNumber].length + 1;
+          newLineNumber += 1;
+        }
+        const col = newCursorOffset - c;
+        this.editor.setPosition({ lineNumber: newLineNumber + 1, column: col + 1 });
         this.setState({
           loadingFile: false,
         });

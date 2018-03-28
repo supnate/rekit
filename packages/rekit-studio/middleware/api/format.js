@@ -49,7 +49,10 @@ function format(req, res) {
     .resolveConfig(file)
     .then(options => {
       try {
-        const formatted = prettier.format(content, Object.assign({ filepath: file }, options || DEFAULT_PRETTIER_OPTIONS));
+        const formatted = prettier.formatWithCursor(
+          content,
+          Object.assign({ filepath: file, cursorOffset: req.body.cursorOffset }, options || DEFAULT_PRETTIER_OPTIONS)
+        );
         res.write(JSON.stringify({ content: formatted }));
       } catch (err) {
         console.log('Failed to format code: ', err);

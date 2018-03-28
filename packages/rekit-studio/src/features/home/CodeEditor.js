@@ -10,6 +10,7 @@ import { MonacoEditor } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
+import { OutlineView } from '.';
 
 export class CodeEditor extends Component {
   static propTypes = {
@@ -338,6 +339,11 @@ export class CodeEditor extends Component {
                   </Button>
                 </Tooltip>
               )}
+            <Tooltip title="Toggle Outline View">
+              <Button size="small" onClick={this.handleToggleOutlineView}>
+                <Icon type="bars" />
+              </Button>
+            </Tooltip>
           </div>
         </div>
         {(this.state.loadingFile || this.state.loadingEditor) && (
@@ -351,6 +357,7 @@ export class CodeEditor extends Component {
           onChange={this.handleEditorChange}
           editorDidMount={this.handleEditorDidMount}
         />
+        {this.editor && <OutlineView code={this.editor.getValue()} />}
       </div>
     );
   }

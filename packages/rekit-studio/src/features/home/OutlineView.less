@@ -1,0 +1,24 @@
+@import '../../styles/mixins';
+
+.home-outline-view {
+  position: absolute;
+  right: 0;
+  top: 31px;
+  bottom: 0;
+  width: 200px;
+  background-color: #2a2d33;
+  border-left: 1px solid #000;
+  color: #bbb;
+
+  .ant-tree {
+    .ant-tree-switcher {
+      color: #bbb;
+    }
+    .ant-tree-node-content-wrapper {
+      color: #bbb;
+      &:hover {
+        background: #333;
+      }
+    }
+  }
+}

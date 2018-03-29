@@ -10,6 +10,8 @@ import { MonacoEditor } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
+import { storage } from '../common/utils';
+
 import { OutlineView, OutlineResizer } from '.';
 
 export class CodeEditor extends Component {
@@ -51,6 +53,7 @@ export class CodeEditor extends Component {
       lineNumber: 1,
       column: 1,
     },
+    showOutline: !storage.local.getItem('noOutline'),
   };
 
   async componentWillMount() {
@@ -72,9 +75,12 @@ export class CodeEditor extends Component {
     if (props.file !== nextProps.file) {
       // When file is changed, prevent saving before its state is restored.
       this.preventSaveEditorState = true;
-      this.setState({
-        loadingFile: true,
-      });
+      this.setState(
+        {
+          loadingFile: true,
+        },
+        () => this.editor.layout()
+      );
       await this.checkAndFetchFileContent(nextProps);
       // Todo: check if conflict
       modelManager.setInitialValue(nextProps.file, this.getFileContent(nextProps.file), true);
@@ -115,7 +121,11 @@ export class CodeEditor extends Component {
   }
 
   getOutlineWidth() {
-    return this.props.outlineWidth;
+    return this.hasOutline() && this.state.showOutline ? this.props.outlineWidth : 0;
+  }
+
+  hasOutline() {
+    return this.props.file.split('.').pop() === 'js';
   }
 
   formatCode = () => {
@@ -213,6 +223,9 @@ export class CodeEditor extends Component {
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => {
       if (this.hasChange()) this.handleSave();
     });
+    editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_O], () => {
+      this.handleToggleOutline();
+    });
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_B], () => {
       this.formatCode();
     });
@@ -267,6 +280,18 @@ export class CodeEditor extends Component {
         modelManager.setValue(this.props.file, modelManager.getInitialValue(this.props.file));
       },
     });
+  };
+
+  handleToggleOutline = () => {
+    this.setState(
+      {
+        showOutline: !this.state.showOutline,
+      },
+      () => {
+        this.editor.layout();
+        storage.local.setItem('noOutline', !this.state.showOutline);
+      }
+    );
   };
 
   render() {
@@ -350,15 +375,26 @@ export class CodeEditor extends Component {
                   </Button>
                 </Tooltip>
               )}
-            <Tooltip title="Toggle Outline View">
-              <Button size="small" onClick={this.handleToggleOutlineView}>
-                <Icon type="bars" />
-              </Button>
-            </Tooltip>
+            {this.hasOutline() && (
+              <Tooltip
+                title={
+                  <label>
+                    Toggle Outline View{' '}
+                    <span style={{ color: '#888', fontSize: '12px' }}>
+                      ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+O)
+                    </span>
+                  </label>
+                }
+              >
+                <Button size="small" onClick={this.handleToggleOutline}>
+                  <Icon type="bars" />
+                </Button>
+              </Tooltip>
+            )}
           </div>
         </div>
         {(this.state.loadingFile || this.state.loadingEditor) && (
-          <div className="loading-container">
+          <div className="loading-container" style={{ marginRight: `${this.getOutlineWidth()}px` }}>
             <Spin size="large" />
           </div>
         )}
@@ -370,13 +406,15 @@ export class CodeEditor extends Component {
             editorDidMount={this.handleEditorDidMount}
           />
         </div>
-        {this.editor && (
-          <OutlineView
-            code={this.editor.getValue()}
-            width={this.getOutlineWidth()}
-            onSelectNode={this.handleOutlineSelect}
-          />
-        )}
+        {this.editor &&
+          this.hasOutline() &&
+          this.state.showOutline && (
+            <OutlineView
+              code={this.editor.getValue()}
+              width={this.getOutlineWidth()}
+              onSelectNode={this.handleOutlineSelect}
+            />
+          )}
       </div>
     );
   }

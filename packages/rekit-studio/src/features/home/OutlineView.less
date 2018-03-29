@@ -11,8 +11,11 @@
   color: #bbb;
   overflow: auto;
   .scroll-style();
-
-  .outline-header{
+  .no-outline {
+    color: #aaa;
+    padding: 10px;
+  }
+  .outline-header {
     padding: 5px 12px;
     background: #222;
   }
@@ -44,29 +47,28 @@
       &-class-declaration::after {
         content: '✦';
         font-size: 16px;
-        color: #EA80FC;
+        color: #ea80fc;
       }
       &-class-method::after {
         content: '●';
         font-size: 13px;
-        color: #66BB6A;
+        color: #66bb6a;
       }
       &-class-property::after {
         content: '■';
         font-size: 12px;
-        color: #FFCA28;
+        color: #ffca28;
       }
       &-function-declaration::after {
         content: '●';
         font-size: 13px;
-        color: #29B6F6;
+        color: #29b6f6;
       }
       &-variable-declaration::after {
         content: '◆';
         font-size: 13px;
-        color: #29B6F6;
+        color: #29b6f6;
       }
-      
     }
   }
 }

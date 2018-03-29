@@ -13,9 +13,6 @@ function getScopeNodes(scope, contextKey) {
       arr.push(getClassNode(node));
       return;
     }
-    // if (node.declaration && node.declaration.type === 'ClassDeclaration') {
-    //   arr.push(getClassNode(node.declaration));
-    // }
 
     let key, label; // eslint-disable-line
     if (/^(ClassProperty|ClassMethod)$/.test(node.type)) {

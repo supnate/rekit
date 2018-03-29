@@ -49,9 +49,9 @@ export default class OutlineView extends Component {
     });
   }
 
-  createOutline = _.debounce(code => {
+  createOutline = code => {
     this.worker.postMessage({ code });
-  }, 200);
+  };
 
   handleTreeSelect = (keys, evt) => {
     const nodeData = getTreeNodeData(this.state.treeData, evt.node.props.eventKey);
@@ -81,6 +81,10 @@ export default class OutlineView extends Component {
   render() {
     return (
       <div className="home-outline-view" style={{ width: `${this.props.width}px` }}>
+        {this.state.treeData &&
+          (_.get(this.state.treeData, 'children.length') || 0) === 0 && (
+            <div className="no-outline">No outline to show.</div>
+          )}
         <Tree selectedKeys={[]} expandedKeys={this.state.defaultExpandedKeys} onSelect={this.handleTreeSelect}>
           {this.state.treeData && this.state.treeData.children.map(this.renderTreeNode)}
         </Tree>

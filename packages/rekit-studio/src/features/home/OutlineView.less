@@ -3,22 +3,70 @@
 .home-outline-view {
   position: absolute;
   right: 0;
-  top: 31px;
+  top: 32px;
   bottom: 0;
-  width: 200px;
+  width: 260px;
   background-color: #2a2d33;
   border-left: 1px solid #000;
   color: #bbb;
+  overflow: auto;
+  .scroll-style();
+
+  .outline-header{
+    padding: 5px 12px;
+    background: #222;
+  }
 
   .ant-tree {
+    margin-left: 8px;
     .ant-tree-switcher {
       color: #bbb;
+      display: none;
     }
     .ant-tree-node-content-wrapper {
       color: #bbb;
+      transition: none;
       &:hover {
-        background: #333;
+        background: #444;
       }
+    }
+  }
+
+  .ant-tree-title {
+    .node-icon {
+      display: inline-block;
+      width: 16px;
+      &::after {
+        content: '◇';
+        display: inline-block;
+        color: #aaa;
+      }
+      &-class-declaration::after {
+        content: '✦';
+        font-size: 16px;
+        color: #EA80FC;
+      }
+      &-class-method::after {
+        content: '●';
+        font-size: 13px;
+        color: #66BB6A;
+      }
+      &-class-property::after {
+        content: '■';
+        font-size: 12px;
+        color: #FFCA28;
+      }
+      &-function-declaration::after {
+        content: '●';
+        font-size: 13px;
+        color: #29B6F6;
+      }
+      &-variable-declaration::after {
+        content: '◆';
+        font-size: 13px;
+        color: #29B6F6;
+      }
+      
     }
   }
 }

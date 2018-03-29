@@ -1,75 +1,91 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Tree, Icon } from 'antd';
+import { Tree } from 'antd';
 import OutlineWorker from 'worker-loader?name=outline.[hash].worker.js!./workers/outline'; // eslint-disable-line
-
-import * as actions from './redux/actions';
+import { getTreeNodeData } from '../common/utils';
 
 const { TreeNode } = Tree;
 
-export class OutlineView extends Component {
+export default class OutlineView extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
     code: PropTypes.string.isRequired,
+    onSelectNode: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onSelectNode() {},
   };
 
   constructor(props) {
+    console.log('outline constructor');
     super(props);
     this.worker = new OutlineWorker();
     this.setupWorker();
+    this.createOutline();
   }
 
+  state = {
+    treeData: null,
+    defaultExpandedKeys: [],
+  };
+
   componentDidMount() {
-    this.getOutline(this.props.code);
+    this.createOutline(this.props.code);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.getOutline(nextProps.code);
+    this.createOutline(nextProps.code);
   }
   setupWorker() {
     this.worker.addEventListener('message', msg => {
-      console.log('msg: ', msg);
+      if (msg.data.root && msg.data.root.children) {
+        const classes = msg.data.root.children.filter(n => n.type === 'ClassDeclaration').map(n => n.key);
+        console.log('classes: ', classes);
+        this.setState({
+          treeData: msg.data.root,
+          defaultExpandedKeys: _.union(this.state.defaultExpandedKeys, classes),
+        });
+      }
     });
   }
 
-  getOutline(code) {
+  createOutline = _.debounce(code => {
     this.worker.postMessage({ code });
+  }, 200);
+
+  handleTreeSelect = (keys, evt) => {
+    const nodeData = getTreeNodeData(this.state.treeData, evt.node.props.eventKey);
+    if (nodeData) {
+      this.props.onSelectNode(nodeData);
+    }
+  };
+
+  renderTreeNodeTitle(nodeData) {
+    return (
+      <span>
+        <span className={`node-icon node-icon-${_.kebabCase(nodeData.type)}`} />
+        {nodeData.label}
+      </span>
+    );
   }
+
+  renderTreeNode = nodeData => {
+    if (!nodeData) return null;
+    return (
+      <TreeNode title={this.renderTreeNodeTitle(nodeData)} key={nodeData.key}>
+        {nodeData.children ? nodeData.children.map(item => this.renderTreeNode(item)) : null}
+      </TreeNode>
+    );
+  };
 
   render() {
     return (
       <div className="home-outline-view">
-        <Tree selectedKeys={[]}>
-          <TreeNode title="parent 1" key="0-0">
-            <TreeNode title="parent 1-0" key="0-0-0">
-              <TreeNode title="leaf" key="0-0-0-0" />
-              <TreeNode title="leaf" key="0-0-0-1" />
-            </TreeNode>
-            <TreeNode title="parent 1-1" key="0-0-1">
-              <TreeNode title="sss" key="0-0-1-0" />
-            </TreeNode>
-          </TreeNode>
+        <Tree selectedKeys={[]} expandedKeys={this.state.defaultExpandedKeys} onSelect={this.handleTreeSelect}>
+          {this.state.treeData && this.state.treeData.children.map(this.renderTreeNode)}
         </Tree>
       </div>
     );
   }
 }
-
-/* istanbul ignore next */
-function mapStateToProps(state) {
-  return {
-    home: state.home,
-  };
-}
-
-/* istanbul ignore next */
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({ ...actions }, dispatch),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(OutlineView);

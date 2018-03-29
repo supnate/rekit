@@ -195,10 +195,14 @@ export class CodeEditor extends Component {
     this.props.actions.codeChange();
   };
 
+  handleOutlineSelect = nodeData => {
+    if (nodeData.startLine && this.editor) {
+      this.editor.setScrollTop(this.editor.getTopForLineNumber(nodeData.startLine));
+    }
+  };
+
   handleEditorDidMount = editor => {
-    this.setState({
-      loadingEditor: false,
-    });
+    
     this.editor = editor;
     editor.focus();
     // This seems to be able to add multiple times.
@@ -213,7 +217,9 @@ export class CodeEditor extends Component {
       editor.onDidChangeCursorPosition(this.handleEditorCursorScrollerChange),
       editor.onDidScrollChange(this.handleEditorCursorScrollerChange)
     );
-
+    this.setState({
+      loadingEditor: false,
+    });
     // // It needs some time for editor to load its content
     setTimeout(this.recoverEditorState, 30);
   };
@@ -357,7 +363,7 @@ export class CodeEditor extends Component {
           onChange={this.handleEditorChange}
           editorDidMount={this.handleEditorDidMount}
         />
-        {this.editor && <OutlineView code={this.editor.getValue()} />}
+        {this.editor && <OutlineView code={this.editor.getValue()} onSelectNode={this.handleOutlineSelect} />}
       </div>
     );
   }

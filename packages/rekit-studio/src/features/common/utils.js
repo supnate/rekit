@@ -22,3 +22,13 @@ export const storage = {
     getItem: getItem('session'),
   },
 };
+
+export const getTreeNodeData = (treeData, key) => {
+  const arr = [treeData];
+  while (arr.length) {
+    const node = arr.pop();
+    if (node.key === key) return node;
+    if (node.children) arr.push.apply(arr, node.children);
+  }
+  return null;
+};

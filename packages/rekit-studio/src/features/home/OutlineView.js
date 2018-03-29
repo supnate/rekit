@@ -11,6 +11,7 @@ export default class OutlineView extends Component {
   static propTypes = {
     code: PropTypes.string.isRequired,
     onSelectNode: PropTypes.func,
+    width: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
@@ -18,7 +19,6 @@ export default class OutlineView extends Component {
   };
 
   constructor(props) {
-    console.log('outline constructor');
     super(props);
     this.worker = new OutlineWorker();
     this.setupWorker();
@@ -41,7 +41,6 @@ export default class OutlineView extends Component {
     this.worker.addEventListener('message', msg => {
       if (msg.data.root && msg.data.root.children) {
         const classes = msg.data.root.children.filter(n => n.type === 'ClassDeclaration').map(n => n.key);
-        console.log('classes: ', classes);
         this.setState({
           treeData: msg.data.root,
           defaultExpandedKeys: _.union(this.state.defaultExpandedKeys, classes),
@@ -81,7 +80,7 @@ export default class OutlineView extends Component {
 
   render() {
     return (
-      <div className="home-outline-view">
+      <div className="home-outline-view" style={{ width: `${this.props.width}px` }}>
         <Tree selectedKeys={[]} expandedKeys={this.state.defaultExpandedKeys} onSelect={this.handleTreeSelect}>
           {this.state.treeData && this.state.treeData.children.map(this.renderTreeNode)}
         </Tree>

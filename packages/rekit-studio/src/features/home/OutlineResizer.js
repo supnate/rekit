@@ -7,7 +7,7 @@ import { setOutlineWidth } from './redux/actions';
 
 export class OutlineReiszer extends Component {
   static propTypes = {
-    sidePanelWidth: PropTypes.number.isRequired,
+    outlineWidth: PropTypes.number.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -25,7 +25,8 @@ export class OutlineReiszer extends Component {
 
   handleMouseMove = evt => {
     if (!this.state.dragging) return;
-    this.props.actions.setOutlineWidth(evt.pageX);
+
+    this.props.actions.setOutlineWidth(window.screen.width - evt.pageX);
     window.dispatchEvent(new window.Event('resize'));
   };
 
@@ -37,14 +38,14 @@ export class OutlineReiszer extends Component {
     return (
       <div
         className={classnames('home-outline-resizer', { 'is-dragging': this.state.dragging })}
-        style={{ left: `${this.props.sidePanelWidth}px` }}
+        style={{ right: `${this.props.outlineWidth - 4}px` }}
         ref={this.assignRef}
         onMouseUp={this.handleMouseUp}
         onMouseMove={this.handleMouseMove}
       >
         <div
           className="true-resizer"
-          style={{ left: `${this.state.dragging ? this.props.sidePanelWidth : 0}px` }}
+          style={{ right: `${this.state.dragging ? this.props.outlineWidth : 0}px` }}
           onMouseDown={this.handleMouseDown}
         />
       </div>
@@ -55,7 +56,7 @@ export class OutlineReiszer extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    sidePanelWidth: state.home.sidePanelWidth,
+    outlineWidth: state.home.outlineWidth,
   };
 }
 

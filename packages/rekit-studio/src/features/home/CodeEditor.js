@@ -10,10 +10,11 @@ import { MonacoEditor } from '../common';
 import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
-import { OutlineView } from '.';
+import { OutlineView, OutlineResizer } from '.';
 
 export class CodeEditor extends Component {
   static propTypes = {
+    outlineWidth: PropTypes.number.isRequired,
     fileContentById: PropTypes.object.isRequired,
     fileContentNeedReload: PropTypes.object.isRequired,
     fetchFileContentPending: PropTypes.bool.isRequired, // eslint-disable-line
@@ -113,6 +114,10 @@ export class CodeEditor extends Component {
     return this.props.fileContentById[filePath || this.props.file];
   }
 
+  getOutlineWidth() {
+    return this.props.outlineWidth;
+  }
+
   formatCode = () => {
     this.setState({ loadingFile: true });
     const lines = this.editor.getValue().split('\n');
@@ -202,7 +207,6 @@ export class CodeEditor extends Component {
   };
 
   handleEditorDidMount = editor => {
-    
     this.editor = editor;
     editor.focus();
     // This seems to be able to add multiple times.
@@ -286,6 +290,7 @@ export class CodeEditor extends Component {
     const { saveFilePending } = this.props;
     return (
       <div className="home-code-editor">
+        <OutlineResizer />
         <div className="code-editor-toolbar">
           <div className="file-path">{this.props.file}</div>
           <div>
@@ -357,13 +362,21 @@ export class CodeEditor extends Component {
             <Spin size="large" />
           </div>
         )}
-        <MonacoEditor
-          file={this.props.file}
-          options={options}
-          onChange={this.handleEditorChange}
-          editorDidMount={this.handleEditorDidMount}
-        />
-        {this.editor && <OutlineView code={this.editor.getValue()} onSelectNode={this.handleOutlineSelect} />}
+        <div className="monaco-editor-container" style={{ marginRight: `${this.getOutlineWidth()}px` }}>
+          <MonacoEditor
+            file={this.props.file}
+            options={options}
+            onChange={this.handleEditorChange}
+            editorDidMount={this.handleEditorDidMount}
+          />
+        </div>
+        {this.editor && (
+          <OutlineView
+            code={this.editor.getValue()}
+            width={this.getOutlineWidth()}
+            onSelectNode={this.handleOutlineSelect}
+          />
+        )}
       </div>
     );
   }
@@ -373,6 +386,7 @@ export class CodeEditor extends Component {
 function mapStateToProps(state) {
   return {
     // codeChange: state.home.codeChange,
+    outlineWidth: state.home.outlineWidth,
     fileContentById: state.home.fileContentById,
     fileContentNeedReload: state.home.fileContentNeedReload,
     fetchFileContentPending: state.home.fetchFileContentPending,

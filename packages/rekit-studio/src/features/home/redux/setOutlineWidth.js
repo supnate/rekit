@@ -1,14 +1,14 @@
-// Rekit uses a new approach to organizing actions and reducers. That is
-// putting related actions and reducers in one file. See more at:
-// https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da
+import { storage } from '../../common/utils';
 
-import {
-  HOME_SET_OUTLINE_WIDTH,
-} from './constants';
+import { HOME_SET_OUTLINE_WIDTH } from './constants';
 
-export function setOutlineWidth() {
+export function setOutlineWidth(width) {
+  if (width < 50) width = 50;
+  if (width > 500) width = 500;
+  storage.local.setItem('outlineWidth', width);
   return {
     type: HOME_SET_OUTLINE_WIDTH,
+    data: { width },
   };
 }
 
@@ -17,6 +17,7 @@ export function reducer(state, action) {
     case HOME_SET_OUTLINE_WIDTH:
       return {
         ...state,
+        outlineWidth: action.data.width,
       };
 
     default:

@@ -90,7 +90,7 @@ self.addEventListener('message', event => {
 
     self.postMessage({ root });
   } catch (e) {
-    console.log('failed to parse ast: ', e);
+    // console.log('failed to parse ast: ', e);
     /* Ignore error */
   }
 });

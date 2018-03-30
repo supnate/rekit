@@ -26,7 +26,7 @@ export class OutlineReiszer extends Component {
   handleMouseMove = evt => {
     if (!this.state.dragging) return;
 
-    this.props.actions.setOutlineWidth(window.screen.width - evt.pageX);
+    this.props.actions.setOutlineWidth(document.body.offsetWidth - evt.pageX);
     window.dispatchEvent(new window.Event('resize'));
   };
 

@@ -37,6 +37,10 @@ export default class OutlineView extends Component {
   componentWillReceiveProps(nextProps) {
     this.createOutline(nextProps.code);
   }
+
+  componentWillUnmount() {
+    this.worker.terminate();
+  }
   setupWorker() {
     this.worker.addEventListener('message', msg => {
       if (msg.data.root && msg.data.root.children) {
@@ -49,9 +53,9 @@ export default class OutlineView extends Component {
     });
   }
 
-  createOutline = code => {
+  createOutline = _.debounce(code => {
     this.worker.postMessage({ code });
-  };
+  }, 200);
 
   handleTreeSelect = (keys, evt) => {
     const nodeData = getTreeNodeData(this.state.treeData, evt.node.props.eventKey);

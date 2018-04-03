@@ -87,7 +87,7 @@ function findJsxText(tokens, startIndex) {
     }
 
     // Find jsx expression
-    if (t.content === '{' && jsxTextToken) {
+    if (t.content === '{') {
       jsxExpDepth += 1;
       if (jsxExpDepth === 1) {
         result.push({
@@ -201,7 +201,7 @@ self.addEventListener('message', event => {
   try {
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
     tokens = findJsxText(tokens, 0);
-    
+
     const classifications = [];
     let pos = 0;
     const lines = code.split('\n').map(line => line.length);

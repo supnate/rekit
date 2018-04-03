@@ -1,0 +1,12 @@
+{
+  "name": "rekit-plugin-apollo",
+  "version": "0.0.1",
+  "description": "description of apollo",
+  "keywords": [
+    "rekit"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

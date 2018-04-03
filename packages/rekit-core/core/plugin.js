@@ -21,7 +21,6 @@ function getPlugins(rekitCore) {
 function injectExtensionPoints(func, command, targetName) {
   // Summary:
   //  Hook: add/move/remove elements
-
   function execExtension(hookName, args) {
     getPlugins().forEach((p) => {
       if (p.hooks && p.hooks[hookName]) {

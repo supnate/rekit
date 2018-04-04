@@ -1,7 +1,7 @@
 /* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
 /* global self, babylon */
 self.Prism = { disableWorkerMessageHandler: true };
-self.importScripts(['/static/libs/prism-1.12.2.js']);
+self.importScripts(['/static/libs/prism-1.13.0.js']);
 
 function getLineNumberAndOffset(start, lines) {
   let line = 0;
@@ -176,7 +176,8 @@ function flattenTagToken(token) {
           ...t.content[i],
           type: 'jsx-exp-start',
         },
-        ...findJsxText(t.content.slice(i + 1, t.content.length - 1), 0),
+        ...t.content.slice(i + 1, t.content.length - 1),
+        // ...findJsxText(t.content.slice(i + 1, t.content.length - 1), 0),
         {
           ...t.content[t.content.length - 1],
           type: 'jsx-exp-end',
@@ -195,13 +196,21 @@ function flattenTagToken(token) {
   return result;
 }
 
+function flattenTokens(tokens) {
+  return tokens.reduce((prev, token) => {
+    if (token.type === 'tag') prev.push.apply(prev, flattenTagToken(token));
+    else prev.push(token);
+    return prev;
+  }, []);
+}
+
 // Respond to message from parent thread
 self.addEventListener('message', event => {
   const { code } = event.data;
   try {
     let tokens = Prism.tokenize(code, Prism.languages.jsx);
-    tokens = findJsxText(tokens, 0);
-
+    Prism.walkTokensForJsx(tokens);
+    tokens = flattenTokens(tokens);
     const classifications = [];
     let pos = 0;
     const lines = code.split('\n').map(line => line.length);

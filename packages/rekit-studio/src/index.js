@@ -7,9 +7,9 @@ import { browserHistory } from 'react-router';
 // import { syncHistoryWithStore } from 'react-router-redux';
 import Root from './Root';
 import routeConfig from './common/routeConfig';
-import configStore from './common/configStore';
-
-const store = configStore();
+// import configStore from './common/configStore';
+import store from './common/store';
+// const store = configStore();
 // const history = syncHistoryWithStore(browserHistory, store);
 
 if (process.env.NODE_ENV !== 'test') {

@@ -19,7 +19,7 @@ const format = require('./api/format');
 
 const utils = rekitCore.utils;
 
-// rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/rekit-boilerplate-cra');
+// rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/app-hasura');
 rekitCore.plugin.loadPlugins(rekitCore);
 
 let lastProjectData = null;

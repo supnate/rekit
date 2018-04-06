@@ -81,6 +81,7 @@ This repo contains multiple packages managed by [yarn workspaces](https://yarnpk
 | rekit-studio |[![Version](http://img.shields.io/npm/v/rekit-studio.svg)](https://www.npmjs.org/package/rekit-studio) Dedicated IDE for Rekit development, uses rekit-core to manage project too. |
 | rekit-plugin-redux-saga |[![Version](http://img.shields.io/npm/v/rekit-plugin-redux-saga.svg)](https://www.npmjs.org/package/rekit-plugin-redux-saga) Use redux-saga instead of redux-thunk for async actions. |
 | rekit-plugin-selector |[![Version](http://img.shields.io/npm/v/rekit-plugin-selector.svg)](https://www.npmjs.org/package/rekit-plugin-selector) Support selectors by Rekit cli. |
+| rekit-plugin-apollo |[![Version](http://img.shields.io/npm/v/rekit-plugin-apollo.svg)](https://www.npmjs.org/package/rekit-plugin-apollo) Support graphql by [Apollo](https://www.apollographql.com/). |
 
 ## Key Features
  * It's production-ready but not a starter kit.

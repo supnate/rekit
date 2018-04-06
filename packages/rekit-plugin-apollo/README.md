@@ -10,4 +10,7 @@ This plugin allows a Rekit project to easily use Apollo for graphql.
 
 Then you can use Rekit's cli to create a component with apollo: "rekit add component home/my-component --apollo"
 
-Rekit Studio support will be soon.
+Or with Rekit Studio by checking apollo checkbox when creating a component.
+
+NOTE: you need to restart Rekit Studio after intalling the plugin.
+

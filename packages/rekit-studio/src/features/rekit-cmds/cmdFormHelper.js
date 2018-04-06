@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import store from '../../common/store';
 
-store.subscribe(() => {
-  console.log(store.getState().home);
-});
+// store.subscribe(() => {
+//   console.log(store.getState().home);
+// });
 
 // function select(state) {
 //   return state.auth.tokens.authentication_token
@@ -56,7 +56,7 @@ export function getMeta(cmdType, cmdArgs) {
           key: 'connect',
           tooltip: 'Whether to connect to Redux store using react-redux',
         },
-        plugins && plugins.indexOf('apollo') >= 0||1
+        plugins && plugins.indexOf('apollo') >= 0
           ? {
               type: 'bool',
               widget: 'checkbox',

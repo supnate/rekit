@@ -4,7 +4,7 @@
 import {
   DefaultPage,
   WebpackManager,
-  NpmManager,
+  DepsManager,
 } from './';
 
 export default {
@@ -13,6 +13,6 @@ export default {
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
     { path: 'webpack', name: 'Webpack manager', component: WebpackManager },
-    { path: 'npm', name: 'Npm manager', component: NpmManager },
+    { path: 'deps', name: 'Deps manager', component: DepsManager },
   ],
 };

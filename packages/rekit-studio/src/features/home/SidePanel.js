@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { autobind } from 'core-decorators';
 import { Dropdown, Icon, Menu, Modal } from 'antd';
 import * as actions from './redux/actions';
 import history from '../../common/history';
@@ -34,7 +33,7 @@ export class SidePanel extends Component {
     });
   }
 
-  handleAddMenuClick = (evt) => {
+  handleMainMenuClick = (evt) => {
     switch (evt.key) {
       case 'add-feature':
       case 'add-component':
@@ -43,6 +42,9 @@ export class SidePanel extends Component {
           type: evt.key,
           ...this.cmdContext,
         });
+        break;
+      case 'deps':
+        history.push('/config/deps');
         break;
       case 'build':
         history.push('/tools/build');
@@ -67,9 +69,9 @@ export class SidePanel extends Component {
     });
   }
 
-  renderAddMenu = () => {
+  renderMainMenu = () => {
     return (
-      <Menu onClick={this.handleAddMenuClick}>
+      <Menu onClick={this.handleMainMenuClick}>
         <Menu.Item key="add-feature">
           <Icon type="book" style={{ color: '#29b6f6' }} /> &nbsp;Add Feature
         </Menu.Item>
@@ -78,6 +80,9 @@ export class SidePanel extends Component {
         </Menu.Item>
         <Menu.Item key="add-component">
           <Icon type="appstore-o" style={{ color: '#F08036' }} /> &nbsp;Add Component
+        </Menu.Item>
+        <Menu.Item key="deps">
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Dependencies
         </Menu.Item>
         <Menu.Item key="tests">
           <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Run Tests
@@ -106,7 +111,7 @@ export class SidePanel extends Component {
               <Icon type="home" /> {prjName}
             </h5>
           </Link>
-          <Dropdown overlay={this.renderAddMenu()}>
+          <Dropdown overlay={this.renderMainMenu()}>
             <label>
               <Icon type="ellipsis" style={{ fontSize: '20px', fontWeight: 'bold' }} />
             </label>

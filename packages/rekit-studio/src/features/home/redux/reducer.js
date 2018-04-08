@@ -93,6 +93,11 @@ export default function reducer(state = initialState, action) {
         name = 'Build';
         type = 'build';
         icon = 'play-circle-o';
+      } else if (arr[0] === 'config' && arr[1] === 'deps') {
+        key = '#deps';
+        name = 'Dependencies';
+        type = 'deps';
+        icon = 'profile';
       } else {
         // No tabs for other pages like '/blank'
         newState = state;

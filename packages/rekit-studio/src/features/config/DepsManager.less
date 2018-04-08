@@ -1,0 +1,38 @@
+@import '../../styles/mixins';
+
+.config-deps-manager {
+  border-top: 1px solid #000;
+  padding: 20px;
+
+  .toolbar {
+  }
+  .ant-table-wrapper {
+    margin-top: 20px;
+    max-width: 600px;
+    .ant-table {
+      border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    table {
+      padding: 0 !important;
+    }
+
+    th {
+      background-color: #333 !important;
+      color: #ccc;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    td {
+      border-color: rgba(255, 255, 255, 0.3) !important;
+      color: #bbb;
+      a {
+        color: #bbb;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    tr:hover td {
+      background-color: #333;
+    }
+  }
+}

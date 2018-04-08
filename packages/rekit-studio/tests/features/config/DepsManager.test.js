@@ -1,20 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { NpmManager } from 'src/features/config/NpmManager';
+import { DepsManager } from 'src/features/config/DepsManager';
 
-describe('config/NpmManager', () => {
+describe('config/DepsManager', () => {
   it('renders node with correct class name', () => {
     const props = {
       config: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <NpmManager {...props} />
+      <DepsManager {...props} />
     );
 
     expect(
-      renderedComponent.find('.config-npm-manager').getElement()
+      renderedComponent.find('.config-deps-manager').getElement()
     ).to.exist;
   });
 });

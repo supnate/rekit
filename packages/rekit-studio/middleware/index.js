@@ -16,6 +16,7 @@ const runBuild = require('./api/runBuild');
 const runTest = require('./api/runTest');
 const lint = require('./api/lint');
 const format = require('./api/format');
+const fetchDeps = require('./api/fetchDeps');
 
 const utils = rekitCore.utils;
 
@@ -50,7 +51,11 @@ module.exports = () => {
   // Watch src files change only
   wp.watch(
     [],
-    [path.join(rekitCore.utils.getProjectRoot(), 'src'), path.join(rekitCore.utils.getProjectRoot(), 'tests'), path.join(rekitCore.utils.getProjectRoot(), 'coverage')],
+    [
+      path.join(rekitCore.utils.getProjectRoot(), 'src'),
+      path.join(rekitCore.utils.getProjectRoot(), 'tests'),
+      path.join(rekitCore.utils.getProjectRoot(), 'coverage'),
+    ],
     Date.now() - 10
   );
   // starts watching these files and directories
@@ -118,6 +123,17 @@ module.exports = () => {
           }
           case '/api/format-code': {
             format(req, res);
+            break;
+          }
+          case '/api/fetchDeps': {
+            try {
+              res.write(JSON.stringify(fetchDeps()));
+              res.end();
+            } catch (e) {
+              res.statusCode = 500;
+              res.write(JSON.stringify({ error: e.toString() }));
+              res.end();
+            }
             break;
           }
           case '/api/lint':

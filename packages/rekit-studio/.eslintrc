@@ -26,7 +26,7 @@
     "max-len": 0,
     "arrow-parens": 0,
     "no-nested-ternary": 0,
-    "no_underscore_dangle": 0,
+    "no-underscore-dangle": 0,
     "no-param-reassign": 0,
     "no-mixed-operators": 0,
     "no-console": 0,

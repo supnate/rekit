@@ -6,7 +6,7 @@
     "guard-for-in": 0,
     "max-len": 0,
     "no-nested-ternary": 0,
-    "no_underscore_dangle": 0,
+    "no-underscore-dangle": 0,
     "no-console": 0,
     "no-shadow": 0,
     "object-curly-newline": 0,

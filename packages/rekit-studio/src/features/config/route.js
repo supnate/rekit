@@ -3,6 +3,8 @@
 
 import {
   DefaultPage,
+  WebpackManager,
+  NpmManager,
 } from './';
 
 export default {
@@ -10,5 +12,7 @@ export default {
   name: 'Config',
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
+    { path: 'webpack', name: 'Webpack manager', component: WebpackManager },
+    { path: 'npm', name: 'Npm manager', component: NpmManager },
   ],
 };

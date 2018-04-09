@@ -127,8 +127,10 @@ module.exports = () => {
           }
           case '/api/fetchDeps': {
             try {
-              res.write(JSON.stringify(fetchDeps()));
-              res.end();
+              fetchDeps().then((data) => {
+                res.write(data);
+                res.end();
+              });
             } catch (e) {
               res.statusCode = 500;
               res.write(JSON.stringify({ error: e.toString() }));

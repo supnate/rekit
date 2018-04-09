@@ -32,21 +32,32 @@ export class DepsManager extends Component {
         },
       },
       {
-        dataIndex: 'version',
-        title: 'Version',
+        dataIndex: 'requiredVersion',
+        title: 'Required',
+      },
+      {
+        dataIndex: 'installedVersion',
+        title: 'Installed',
       },
       {
         dataIndex: 'latestVersion',
         title: 'Latest',
       },
+      {
+        dataIndex: 'status',
+        title: 'Status',
+      },
     ];
   }
 
   getData() {
-    return _.entries(this.props.config.deps.devDeps)
-      .map(arr => ({
-        name: arr[0],
-        version: arr[1],
+    const { devDeps, allDeps, deps } = this.props.config.deps;
+    return devDeps
+      .map(name => ({
+        name,
+        requiredVersion: allDeps[name].requiredVersion,
+        installedVersion: allDeps[name].installedVersion,
+        latestVersion: allDeps[name].latestVersion,
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }
@@ -64,7 +75,7 @@ export class DepsManager extends Component {
     return (
       <div className="config-deps-manager">
         <div className="toolbar">
-          <Button type="primary" size="smaill">
+          <Button type="primary">
             Install Dependency
           </Button>
         </div>

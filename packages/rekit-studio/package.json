@@ -89,6 +89,7 @@
     "body-parser": "^1.17.1",
     "history": "^4.6.1",
     "lodash": "^4.17.5",
+    "package-json": "^4.0.1",
     "prettier": "1.10.2",
     "shelljs": "^0.8.0",
     "socket.io": "^2.0.1",

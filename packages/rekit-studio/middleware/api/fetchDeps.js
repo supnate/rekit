@@ -37,5 +37,5 @@ function fetchDeps() {
     });
   });
 }
-fetchDeps().then(console.log);
+
 module.exports = fetchDeps;

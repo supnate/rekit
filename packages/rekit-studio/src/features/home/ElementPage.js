@@ -87,22 +87,6 @@ export class ElementPage extends Component {
     };
   }
 
-  handleWindowResize = () => {
-    this.setState({
-      editAreaSize: this.getEditAreaSize(),
-    });
-  };
-
-  handleTabChange = tabKey => {
-    const file = decodeURIComponent(this.props.match.params.file);
-    history.push(`/element/${encodeURIComponent(file)}/${tabKey}`);
-  };
-
-  handleRunTest = () => {
-    const { file } = this.props.match.params;
-    history.push(`/tools/tests/${encodeURIComponent(file)}`);
-  };
-
   getCodeFile(tabKey) {
     const data = this.getElementData();
 
@@ -131,6 +115,22 @@ export class ElementPage extends Component {
     }
     return codeFile;
   }
+
+  handleWindowResize = () => {
+    this.setState({
+      editAreaSize: this.getEditAreaSize(),
+    });
+  };
+
+  handleTabChange = tabKey => {
+    const file = decodeURIComponent(this.props.match.params.file);
+    history.push(`/element/${encodeURIComponent(file)}/${tabKey}`);
+  };
+
+  handleRunTest = () => {
+    const { file } = this.props.match.params;
+    history.push(`/tools/tests/${encodeURIComponent(file)}`);
+  };
 
   renderNotFound() {
     return (
@@ -288,7 +288,7 @@ export class ElementPage extends Component {
           data.hasCode && (
             <CodeEditor file={codeFile} onRunTest={data.hasTest && tabKey === 'test' ? this.handleRunTest : null} />
           )}
-        {data.isRoute && this.renderRouteRulesPane(data)}
+        {data.isRoute && tabKey === 'rules' && this.renderRouteRulesPane(data)}
         {!data.hasCode &&
           !data.isPic && (
             <Alert

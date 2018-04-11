@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Table, Spin } from 'antd';
+import { Button, Icon, Table, Spin } from 'antd';
 import * as actions from './redux/actions';
 
 export class DepsManager extends Component {
@@ -34,25 +34,48 @@ export class DepsManager extends Component {
       {
         dataIndex: 'requiredVersion',
         title: 'Required',
+        width: 110,
       },
       {
         dataIndex: 'installedVersion',
         title: 'Installed',
+        width: 110,
       },
       {
         dataIndex: 'latestVersion',
         title: 'Latest',
+        width: 110,
       },
       {
         dataIndex: 'status',
         title: 'Status',
+        width: 80,
+        align: 'center',
+        render(item) {
+          console.log(item);
+          return <span className="status-icon-up-to-date" title="Up to date" />;
+        },
+      },
+      {
+        dataIndex: 'action',
+        title: 'Action',
+        width: 100,
+        align: 'center',
+        render() {
+          return (
+            <div className="actions">
+              <Icon type="arrow-up" title="Upgrade" />
+              <Icon type="close" title="Remove" />
+            </div>
+          );
+        },
       },
     ];
   }
 
-  getData() {
+  getData(depsType) {
     const { devDeps, allDeps, deps } = this.props.config.deps;
-    return devDeps
+    return (depsType === 'dev' ? devDeps : deps)
       .map(name => ({
         name,
         requiredVersion: allDeps[name].requiredVersion,
@@ -74,16 +97,27 @@ export class DepsManager extends Component {
     if (this.props.config.fetchDepsPending || !this.props.config.deps) return this.renderLoading();
     return (
       <div className="config-deps-manager">
-        <div className="toolbar">
-          <Button type="primary">
-            Install Dependency
-          </Button>
+        <div className="toolbar no-top-margin">
+          <h3>Dependencies</h3>
+          <Button type="primary" icon="plus" size="small" />
         </div>
         <Table
           pagination={false}
           rowKey="name"
           bordered
           dataSource={this.getData()}
+          columns={this.getColumns()}
+          size="small"
+        />
+        <div className="toolbar">
+          <h3>Dev Dependencies</h3>
+          <Button type="primary" icon="plus" size="small" />
+        </div>
+        <Table
+          pagination={false}
+          rowKey="name"
+          bordered
+          dataSource={this.getData('dev')}
           columns={this.getColumns()}
           size="small"
         />

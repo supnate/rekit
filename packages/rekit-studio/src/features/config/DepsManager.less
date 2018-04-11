@@ -5,24 +5,44 @@
   padding: 20px;
 
   .toolbar {
-  }
-  .ant-table-wrapper {
-    margin-top: 20px;
+    margin: 20px 0 0 0;
     min-width: 700px;
+    max-width: 900px;
+    &.no-top-margin {
+      margin-top: 0;
+    }
+    h3 {
+      margin: 0;
+      display: inline-block;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .ant-btn {
+      float: right;
+      transform: translateY(4px);
+    }
+  }
+
+  .ant-table-wrapper {
+    margin-top: 10px;
+    min-width: 700px;
+    max-width: 900px;
     .ant-table {
-      border-color: rgba(255, 255, 255, 0.3) !important;
+      background-color: #2b2b2b;
+      border-color: rgba(255, 255, 255, 0) !important;
     }
     table {
       padding: 0 !important;
     }
 
     th {
-      background-color: #333 !important;
+      background-color: #3b3b3b !important;
       color: #ccc;
-      border-color: rgba(255, 255, 255, 0.3) !important;
+      border-color: rgba(255, 255, 255, 0) !important;
+      border-bottom: 1px solid #222 !important;
     }
     td {
-      border-color: rgba(255, 255, 255, 0.3) !important;
+      border-color: rgba(255, 255, 255, 0) !important;
+      border-bottom: 1px solid #222 !important;
       color: #bbb;
       a {
         color: #bbb;
@@ -33,6 +53,42 @@
     }
     tr:hover td {
       background-color: #333;
+    }
+  }
+
+  .status-icon-up-to-date {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background-color: #8BC34A;
+  }
+
+  .actions {
+    .anticon-close {
+      margin-left: 8px;
+    }
+
+    .anticon {
+      display: inline-block;
+      background-color: #444;
+      font-size: 10px;
+      width: 14px;
+      height: 14px;
+      border-radius: 7px;
+      padding-top: 2px;
+      padding-left: 1px;
+      cursor: pointer;
+    }
+  }
+  tr:hover .actions {
+    .anticon-arrow-up {
+      background-color: #38adf5;
+      color: #fff;
+    }
+    .anticon-close {
+      background-color: #E91E63;
+      color: #fff;
     }
   }
 }

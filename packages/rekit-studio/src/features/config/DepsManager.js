@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon, Table, Spin } from 'antd';
+import semverDiff from 'semver-diff';
 import * as actions from './redux/actions';
 
 export class DepsManager extends Component {
@@ -51,9 +52,10 @@ export class DepsManager extends Component {
         title: 'Status',
         width: 80,
         align: 'center',
-        render(item) {
+        render(status, item) {
           console.log(item);
-          return <span className="status-icon-up-to-date" title="Up to date" />;
+          const diffResult = semverDiff(item.installedVersion, item.latestVersion);
+          return <span className={`status-icon status-icon-${diffResult}`} title={`${diffResult}`} />;
         },
       },
       {

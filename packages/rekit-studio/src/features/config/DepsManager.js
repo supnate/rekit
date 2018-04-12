@@ -16,7 +16,7 @@ export class DepsManager extends Component {
   state = {};
 
   componentDidMount() {
-    if (!this.props.config.deps || this.props.config.depsNeedReload) {
+    if ((!this.props.config.deps || this.props.config.depsNeedReload) && !this.props.config.fetchDepsPending) {
       this.props.actions.fetchDeps();
     }
   }

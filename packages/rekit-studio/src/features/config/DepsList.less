@@ -1,6 +1,31 @@
 @import '../../styles/mixins';
 
 .config-deps-list {
+  .toolbar {
+    margin: 20px 0 0 0;
+    min-width: 700px;
+    max-width: 900px;
+    &.no-top-margin {
+      margin-top: 0;
+    }
+    h3 {
+      margin: 0;
+      display: inline-block;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .ant-input {
+      .dark-input();
+      width: 300px;
+      float: right;
+      transform: translateY(4px);
+      margin-right: 10px;
+    }
+    .ant-btn {
+      float: right;
+      transform: translateY(4px);
+    }
+  }
+
   .ant-table-wrapper {
     margin-top: 10px;
     min-width: 700px;

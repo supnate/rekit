@@ -8,13 +8,15 @@
 
 import initialState from './initialState';
 import { reducer as fetchDepsReducer } from './fetchDeps';
+import { reducer as installPackageReducer } from './installPackage';
 
 const reducers = [
   fetchDepsReducer,
+  installPackageReducer,
 ];
 
 export default function reducer(state = initialState, action) {
-  let newState;
+  let newState = state;
   switch (action.type) {
     // Handle cross-topic actions here
     default:

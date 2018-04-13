@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Table, Spin, Menu } from 'antd';
+import { Button, Icon, Input, Table, Spin, Menu } from 'antd';
 import * as actions from './redux/actions';
 
 export class DepsList extends Component {
@@ -10,11 +10,13 @@ export class DepsList extends Component {
     config: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     deps: PropTypes.array.isRequired,
+    depsType: PropTypes.string.isRequired,
   };
 
   state = {
     statusFilter: [],
     statusFilterDropdownVisible: false,
+    inputValue: '',
   };
 
   getColumns() {
@@ -114,6 +116,14 @@ export class DepsList extends Component {
     return this.props.deps.filter(d => !this.state.statusFilter.length || this.state.statusFilter.includes(d.status));
   }
 
+  handleInputChange = evt => {
+    this.setState({ inputValue: evt.target.value });
+  };
+
+  handleAddPackage = () => {
+    this.props.actions.installPackage();
+  }
+
   handleStatusFilter = args => {
     console.log('select menu: ', args);
     this.setState({
@@ -134,6 +144,13 @@ export class DepsList extends Component {
   render() {
     return (
       <div className="config-deps-list">
+        <div className="toolbar no-top-margin">
+          <h3>{this.props.depsType === 'deps' ? 'Dependencies' : 'Dev Depedencies'}</h3>
+          <Button type="primary" size="small" onClick={this.handleAddPackage}>
+            Add
+          </Button>
+          <Input value={this.state.inputValue} size="small" onChange={this.handleInputChange} />
+        </div>
         <Table columns={this.getColumns()} dataSource={this.getData()} size="small" pagination={false} />
       </div>
     );

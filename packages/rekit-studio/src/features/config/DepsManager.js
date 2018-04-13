@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Spin } from 'antd';
+import { Button, Input, Spin } from 'antd';
 import semverDiff from 'semver-diff';
 import * as actions from './redux/actions';
 import { DepsList } from './';
@@ -46,16 +46,9 @@ export class DepsManager extends Component {
     if (this.props.config.fetchDepsPending || !this.props.config.deps) return this.renderLoading();
     return (
       <div className="config-deps-manager">
-        <div className="toolbar no-top-margin">
-          <h3>Dependencies</h3>
-          <Button type="primary" icon="plus" size="small" />
-        </div>
-        <DepsList deps={this.getData()} />
-        <div className="toolbar">
-          <h3>Dev Dependencies</h3>
-          <Button type="primary" icon="plus" size="small" />
-        </div>
-        <DepsList deps={this.getData('dev')} />
+        <DepsList deps={this.getData()} depsType="deps" />
+        <br />
+        <DepsList deps={this.getData('dev')} depsType="devDeps" />
       </div>
     );
   }

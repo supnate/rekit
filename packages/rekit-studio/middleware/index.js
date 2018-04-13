@@ -17,6 +17,7 @@ const runTest = require('./api/runTest');
 const lint = require('./api/lint');
 const format = require('./api/format');
 const fetchDeps = require('./api/fetchDeps');
+const installPackage = require('./api/installPackage');
 
 const utils = rekitCore.utils;
 
@@ -196,6 +197,15 @@ module.exports = () => {
               break;
             }
             execCmd(req, res);
+            break;
+          case '/api/install-package':
+            if (args.readonly) {
+              reply403(res);
+              break;
+            }
+            installPackage(io);
+            res.write('{}');
+            res.end();
             break;
           case '/api/run-build':
             if (args.readonly) {

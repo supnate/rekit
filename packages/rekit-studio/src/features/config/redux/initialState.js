@@ -10,6 +10,8 @@ const initialState = {
   fetchDepsError: null,
   deps: null,
   depsNeedReload: false,
+  installPackagePending: false,
+  installPackageError: null,
 };
 
 export default initialState;

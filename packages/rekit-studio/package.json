@@ -88,6 +88,7 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "history": "^4.6.1",
+    "loadash": "^1.0.0",
     "lodash": "^4.17.5",
     "package-json": "^4.0.1",
     "prettier": "1.10.2",

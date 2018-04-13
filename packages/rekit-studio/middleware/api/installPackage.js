@@ -8,13 +8,8 @@ const spawn = require('child_process').spawn;
 function installPackage(io, name, type, version) {
   const prjRoot = rekitCore.utils.getProjectRoot();
   return new Promise((resolve) => {
-    const isCra = fs.existsSync(path.join(prjRoot, 'scripts/build.js'));
-
-    const args = [];
-    if (isCra) args.push(`${prjRoot}/scripts/build.js`, '--colors');
-    else args.push(`${prjRoot}/tools/build.js`);
-    const child = spawn('node',
-      args,
+    const child = spawn('yarn',
+      ['add', 'loadash@latest'],
       {
         stdio: 'pipe',
         cwd: prjRoot
@@ -28,7 +23,8 @@ function installPackage(io, name, type, version) {
       const arr = [];
       text.forEach(t => arr.push(t));
       io.emit('output', {
-        type: 'build',
+        type: 'install-package',
+        id: 'test-id',
         output: arr,
       });
     };
@@ -36,7 +32,7 @@ function installPackage(io, name, type, version) {
     child.stderr.on('data', handleOutput);
 
     child.on('close', () => {
-      io.emit('build-finished', {});
+      io.emit('install-package-finished', {});
       resolve();
     });
   });

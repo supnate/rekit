@@ -18,14 +18,15 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     // Handle cross-topic actions here
     case HOME_FETCH_PROJECT_DATA_SUCCESS:
-      return {
+      newState = {
         ...state,
         runBuildRunning: !!_.get(action.data, 'bgProcesses.runningBuild'),
         runTestRunning: !!_.get(action.data, 'bgProcesses.runningTest'),
       };
+      break;
     case 'REKIT_STUDIO_OUTPUT':
       if (action.data.type === 'build') {
-        return {
+        newState = {
           ...state,
           runBuildOutput: [...state.runBuildOutput || [], ...action.data.output],
         };
@@ -34,18 +35,22 @@ export default function reducer(state = initialState, action) {
           ...state,
           runTestOutput: [...state.runTestOutput || [], ...action.data.output],
         };
+      } else {
+        newState = state;
       }
       break;
     case 'REKIT_TOOLS_BUILD_FINISHED':
-      return {
+      newState = {
         ...state,
         runBuildRunning: false,
       };
+      break;
     case 'REKIT_TOOLS_TEST_FINISHED':
-      return {
+      newState = {
         ...state,
         runTestRunning: false,
       };
+      break;
     default:
       newState = state;
       break;

@@ -1,6 +1,27 @@
 @import '../../styles/mixins';
 
 .config-deps-manager {
+  height: 100%;
   border-top: 1px solid #000;
   padding: 20px;
+  position: relative;
+  .deps-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 300px;
+    padding: 20px;
+    overflow: auto;
+  }
+  .common-output-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    z-index: 888;
+    border-top: 1px solid #000;
+    background-color: #111;
+  }
 }

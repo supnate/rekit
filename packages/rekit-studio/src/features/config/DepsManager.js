@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Input, Spin } from 'antd';
 import semverDiff from 'semver-diff';
 import * as actions from './redux/actions';
+import { OutputPanel } from '../common';
 import { DepsList } from './';
 
 export class DepsManager extends Component {
@@ -46,9 +47,12 @@ export class DepsManager extends Component {
     if (this.props.config.fetchDepsPending || !this.props.config.deps) return this.renderLoading();
     return (
       <div className="config-deps-manager">
-        <DepsList deps={this.getData()} depsType="deps" />
-        <br />
-        <DepsList deps={this.getData('dev')} depsType="devDeps" />
+        <div className="deps-container">
+          <DepsList deps={this.getData()} depsType="deps" />
+          <br />
+          <DepsList deps={this.getData('dev')} depsType="devDeps" />
+        </div>
+        <OutputPanel />
       </div>
     );
   }

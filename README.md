@@ -94,7 +94,7 @@ This repo contains multiple packages managed by [yarn workspaces](https://yarnpk
  * Use [React hot loader](http://gaearon.github.io/react-hot-loader/) for hot module replacement.
  * Use [Redux](http://redux.js.org/) for application state management.
  * Use [React-router](https://github.com/reactjs/react-router) for routing and it's configured with Redux reducer.
- * Use [Webpack dll plugin](http://webpack.github.io/docs/list-of-plugins.html#dllplugin) to improve dev-time build performance.
+ * Use [Webpack dll plugin](https://webpack.js.org/plugins/dll-plugin/#src/components/Sidebar/Sidebar.jsx) to improve dev-time build performance.
  * Use [Less](http://lesscss.org/) or [Sass](https://sass-lang.com/) as CSS transpilers.
  * Use [jest](https://facebook.github.io/jest/), [enzyme](https://github.com/airbnb/enzyme) for testing.
  * Support [Redux dev tools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd).

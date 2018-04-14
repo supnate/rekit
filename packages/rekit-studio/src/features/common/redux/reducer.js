@@ -8,13 +8,13 @@ export default function reducer(state = initialState, action) {
     // Handle cross-topic actions here
     case 'REKIT_STUDIO_OUTPUT': {
       const data = action.data;
-      let output = state.cmdOutput[data.id || 'general'] || [];
-      output = output.concat(action.data.output).slice(-200); // only keeps latest 200 output lines
+      let output = state.cmdOutput[data.id || data.type || 'general'] || [];
+      output = output.concat(data.output).slice(-200); // only keeps latest 200 output lines
       newState = {
         ...state,
         cmdOutput: {
           ...state.cmdOutput,
-          [data.id || 'general']: output
+          [data.id || data.type || 'general']: output
         },
       };
       break;

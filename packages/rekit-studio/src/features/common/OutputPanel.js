@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import Convert from 'ansi-to-html';
 import * as actions from './redux/actions';
+
+const convert = new Convert();
 
 export class OutputPanel extends Component {
   static propTypes = {
     common: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    filter: PropTypes.array.isRequired, // filter output
+    filter: PropTypes.string.isRequired, // filter output
   };
 
   render() {
+    const output = this.props.common.cmdOutput[this.props.filter] || [];
     return (
       <div className="common-output-panel">
-        Page Content: common/OutputPanel
+        {output.map(text => text.replace('[1G', '')).map(text => <div dangerouslySetInnerHTML={{ __html: convert.toHtml(text) }} />)}
       </div>
     );
   }
@@ -30,11 +34,8 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators({ ...actions }, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OutputPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(OutputPanel);

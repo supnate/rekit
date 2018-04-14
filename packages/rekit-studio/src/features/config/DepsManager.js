@@ -52,7 +52,7 @@ export class DepsManager extends Component {
           <br />
           <DepsList deps={this.getData('dev')} depsType="devDeps" />
         </div>
-        <OutputPanel />
+        <OutputPanel filter="install-package" />
       </div>
     );
   }

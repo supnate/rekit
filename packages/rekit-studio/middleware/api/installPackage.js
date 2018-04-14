@@ -3,7 +3,7 @@
 const runTask = require('../taskRunner');
 
 function installPackage(io, name, type, version) {
-  return runTask(io, `yarn add lodash@latest`);
+  return runTask(io, `yarn add lodash@latest --colors`, 'install-package');
   // const prjRoot = rekitCore.utils.getProjectRoot();
   // return new Promise((resolve) => {
   //   const child = spawn('yarn',

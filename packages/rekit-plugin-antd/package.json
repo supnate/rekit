@@ -1,0 +1,12 @@
+{
+  "name": "rekit-plugin-antd",
+  "version": "0.0.1",
+  "description": "description of antd",
+  "keywords": [
+    "rekit"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

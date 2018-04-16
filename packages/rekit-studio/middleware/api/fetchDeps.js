@@ -2,13 +2,14 @@
 
 const rekitCore = require('rekit-core');
 const packageJson = require('package-json');
+const utils = require('../utils');
 
-const utils = rekitCore.utils;
+// const tils = rekitCore.utils;
 
 function fetchDeps() {
   return new Promise((resolve, reject) => {
-    const prjRoot = utils.getProjectRoot();
-    const prjPkgJson = require(utils.joinPath(prjRoot, 'package.json')); // eslint-disable-line
+    const prjRoot = rekitCore.utils.getProjectRoot();
+    const prjPkgJson = utils.forceRequire(rekitCore.utils.joinPath(prjRoot, 'package.json')); // eslint-disable-line
     const allDeps = Object.assign({}, prjPkgJson.dependencies, prjPkgJson.devDependencies);
     Object.keys(allDeps).forEach(key => {
       allDeps[key] = {

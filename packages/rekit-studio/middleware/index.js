@@ -128,7 +128,7 @@ module.exports = () => {
           }
           case '/api/fetchDeps': {
             try {
-              fetchDeps().then((data) => {
+              fetchDeps().then(data => {
                 res.write(JSON.stringify(data));
                 res.end();
               });
@@ -203,7 +203,34 @@ module.exports = () => {
               reply403(res);
               break;
             }
-            installPackage(io);
+            bgProcesses.installPackagePending = true;
+            installPackage(io, req.body.name).then(() => {
+              bgProcesses.installPackagePending = false;
+            });
+            res.write('{}');
+            res.end();
+            break;
+          case '/api/update-package':
+            if (args.readonly) {
+              reply403(res);
+              break;
+            }
+            bgProcesses.updatePackagePending = true;
+            updatePackage(io, req.body.name).then(() => {
+              bgProcesses.updatePackagePending = false;
+            });
+            res.write('{}');
+            res.end();
+            break;
+          case '/api/remove-package':
+            if (args.readonly) {
+              reply403(res);
+              break;
+            }
+            bgProcesses.removePackagePending = true;
+            removePackage(io, req.body.name).then(() => {
+              bgProcesses.removePackagePending = false;
+            });
             res.write('{}');
             res.end();
             break;

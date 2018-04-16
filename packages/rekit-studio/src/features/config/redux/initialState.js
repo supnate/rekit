@@ -12,6 +12,10 @@ const initialState = {
   depsNeedReload: false,
   installPackagePending: false,
   installPackageError: null,
+  updatePackagePending: false,
+  updatePackageError: null,
+  removePackagePending: false,
+  removePackageError: null,
 };
 
 export default initialState;

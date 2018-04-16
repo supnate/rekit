@@ -121,8 +121,9 @@ export class DepsList extends Component {
   };
 
   handleAddPackage = () => {
-    this.props.actions.installPackage();
-  }
+    if (!this.state.inputValue) return;
+    this.props.actions.installPackage(this.state.inputValue);
+  };
 
   handleStatusFilter = args => {
     console.log('select menu: ', args);
@@ -149,7 +150,12 @@ export class DepsList extends Component {
           <Button type="primary" size="small" onClick={this.handleAddPackage}>
             Add
           </Button>
-          <Input value={this.state.inputValue} size="small" onChange={this.handleInputChange} />
+          <Input
+            value={this.state.inputValue}
+            size="small"
+            onChange={this.handleInputChange}
+            onPressEnter={this.handleAddPackage}
+          />
         </div>
         <Table columns={this.getColumns()} dataSource={this.getData()} size="small" pagination={false} />
       </div>

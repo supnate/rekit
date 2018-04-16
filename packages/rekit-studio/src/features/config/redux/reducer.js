@@ -9,10 +9,14 @@
 import initialState from './initialState';
 import { reducer as fetchDepsReducer } from './fetchDeps';
 import { reducer as installPackageReducer } from './installPackage';
+import { reducer as updatePackageReducer } from './updatePackage';
+import { reducer as removePackageReducer } from './removePackage';
 
 const reducers = [
   fetchDepsReducer,
   installPackageReducer,
+  updatePackageReducer,
+  removePackageReducer,
 ];
 
 export default function reducer(state = initialState, action) {

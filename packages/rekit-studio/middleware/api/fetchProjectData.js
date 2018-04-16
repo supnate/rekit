@@ -78,6 +78,7 @@ function fetchProjectData() {
     projectRoot: prjRoot,
     projectName: prjPkgJson.name,
     filesHasSyntaxError: syntaxErrors,
+    usingYarn: fs.existsSync(utils.joinPath(prjRoot, 'yarn.lock')),
     rekit: Object.assign({}, prjPkgJson.rekit, {
       coreVersion: fs.existsSync(corePkg) ? require(corePkg).version : 'UNKNOWN', // eslint-disable-line
       studioVersion: require(utils.joinPath(__dirname, '../../package.json')).version, // eslint-disable-line

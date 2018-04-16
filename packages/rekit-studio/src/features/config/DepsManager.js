@@ -51,6 +51,11 @@ export class DepsManager extends Component {
           <DepsList deps={this.getData()} depsType="deps" />
           <br />
           <DepsList deps={this.getData('dev')} depsType="devDeps" />
+          <br />
+          <p className="note">
+            NOTE: Rekit uses yarn if yarn.lock exists otherwise uses npm to install/update/remove packages. If you use
+            neither npm nor yarn to manage packages you can't install/update/remove packages from this page.
+          </p>
         </div>
         <OutputPanel filter="install-package" />
       </div>

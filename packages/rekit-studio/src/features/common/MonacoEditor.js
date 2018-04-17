@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 /* global monaco */
 import React, { Component } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import configureMonacoEditor from './monaco/configureMonacoEditor';
 import modelManager from './monaco/modelManager';
@@ -35,7 +36,7 @@ export default class MonacoEditor extends Component {
 
   componentDidMount() {
     this.afterViewInit();
-    window.addEventListener('resize', this.handleWindowResize);
+    window.addEventListener('resize', _.debounce(this.handleWindowResize, 100));
   }
 
   componentWillReceiveProps(nextProps) {

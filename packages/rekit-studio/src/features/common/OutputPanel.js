@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Convert from 'ansi-to-html';
+import { Terminal } from 'xterm';
 import * as actions from './redux/actions';
 
 const convert = new Convert();
+const terminal = new Terminal();
 
 export class OutputPanel extends Component {
   static propTypes = {

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Input, Spin } from 'antd';
 import semverDiff from 'semver-diff';
 import * as actions from './redux/actions';
-import { OutputPanel } from '../common';
+import { OutputPanel, Resizer } from '../common';
 import { DepsList } from './';
 
 export class DepsManager extends Component {
@@ -35,6 +35,10 @@ export class DepsManager extends Component {
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  handleResize = (evt) => {
+    console.log('resize: ', evt);
+  }
+
   renderLoading() {
     return (
       <div className="config-deps-manager page-loading">
@@ -57,6 +61,7 @@ export class DepsManager extends Component {
             neither npm nor yarn to manage packages you can't install/update/remove packages from this page.
           </p>
         </div>
+        <Resizer direction="horizontal" onResize={this.handleResize} />
         <OutputPanel filter="install-package" />
       </div>
     );

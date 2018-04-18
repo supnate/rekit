@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon, Input, Table, Spin, Menu } from 'antd';
 import * as actions from './redux/actions';
 
-export class DepsList extends Component {
+export class DepsList extends PureComponent {
   static propTypes = {
-    config: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     deps: PropTypes.array.isRequired,
     depsType: PropTypes.string.isRequired,
@@ -126,7 +125,6 @@ export class DepsList extends Component {
   };
 
   handleStatusFilter = args => {
-    console.log('select menu: ', args);
     this.setState({
       statusFilter: args.selectedKeys,
     });
@@ -157,18 +155,18 @@ export class DepsList extends Component {
             onPressEnter={this.handleAddPackage}
           />
         </div>
-        <Table columns={this.getColumns()} dataSource={this.getData()} size="small" pagination={false} />
+        <Table columns={this.getColumns()} dataSource={this.getData()} size="small" pagination={false} rowKey="name" />
       </div>
     );
   }
 }
 
-/* istanbul ignore next */
-function mapStateToProps(state) {
-  return {
-    config: state.config,
-  };
-}
+// /* istanbul ignore next */
+// function mapStateToProps(state) {
+//   return {
+//     config: state.config,
+//   };
+// }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
@@ -177,4 +175,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepsList);
+export default connect(mapDispatchToProps)(DepsList);

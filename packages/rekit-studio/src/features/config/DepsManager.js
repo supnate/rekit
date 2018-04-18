@@ -35,9 +35,9 @@ export class DepsManager extends Component {
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  handleResize = (evt) => {
-    console.log('resize: ', evt);
-  }
+  handleResize = pos => {
+    this.props.actions.setDepsOutputHeight(pos.bottom);
+  };
 
   renderLoading() {
     return (
@@ -51,7 +51,7 @@ export class DepsManager extends Component {
     if (this.props.config.fetchDepsPending || !this.props.config.deps) return this.renderLoading();
     return (
       <div className="config-deps-manager">
-        <div className="deps-container">
+        <div className="deps-container" style={{ bottom: `${this.props.config.depsOutputHeight}px` }}>
           <DepsList deps={this.getData()} depsType="deps" />
           <br />
           <DepsList deps={this.getData('dev')} depsType="devDeps" />
@@ -61,8 +61,12 @@ export class DepsManager extends Component {
             neither npm nor yarn to manage packages you can't install/update/remove packages from this page.
           </p>
         </div>
-        <Resizer direction="horizontal" onResize={this.handleResize} />
-        <OutputPanel filter="install-package" />
+        <Resizer
+          direction="horizontal"
+          position={{ bottom: `${this.props.config.depsOutputHeight - 2}px` }}
+          onResize={this.handleResize}
+        />
+        <OutputPanel filter="install-package" style={{ height: `${this.props.config.depsOutputHeight}px` }} />
       </div>
     );
   }

@@ -6,12 +6,10 @@ export default class Resizer extends Component {
   static propTypes = {
     onResize: PropTypes.func.isRequired,
     direction: PropTypes.oneOf(['vertical', 'horizontal']),
-    // fix: PropTypes.boolean,
     position: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
-    // fix: false,
     direction: 'vertical',
   };
 
@@ -23,50 +21,55 @@ export default class Resizer extends Component {
     this.maskNode = document.createElement('div');
     this.maskNode.style.display = 'none';
     this.maskNode.className = 'common-resizer-mask';
+    this.maskNode.addEventListener('mousemove', this.handleMouseMove);
+    this.maskNode.addEventListener('mouseup', this.handleMouseUp);
     document.body.appendChild(this.maskNode);
+    this.calcParentPosition();
+    window.addEventListener('resize', this.calcParentPosition);
   }
+
+  componentWillUnmount() {
+    document.body.removeChild(this.maskNode);
+    this.maskNode.removeEventListener('mousemove', this.handleMouseMove);
+    this.maskNode.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('resize', this.calcParentPosition);
+  }
+
+  calcParentPosition = () => {
+    this.parentPosition = this.node.offsetParent.getBoundingClientRect();
+  };
 
   assignRef = node => {
     this.node = node;
   };
 
   handleMouseDown = () => {
+    this.maskNode.style.display = 'block';
     this.setState({ dragging: true });
   };
 
   handleMouseMove = evt => {
     if (!this.state.dragging) return;
-    // this.props.actions.setSidePanelWidth(evt.pageX);
-    this.props.onResize(evt);
-    window.dispatchEvent(new window.Event('resize'));
+    if (this.props.direction === 'horizontal') {
+      const top = evt.pageY - this.parentPosition.top;
+      this.props.onResize({ top, bottom: this.parentPosition.height - top });
+    } else {
+      const left = evt.pageX - this.parentPosition.left;
+      this.props.onResize({ left, right: this.parentPosition.width - left });
+    }
   };
 
   handleMouseUp = () => {
+    this.maskNode.style.display = 'none';
     this.setState({ dragging: false });
+    window.dispatchEvent(new window.Event('resize'));
   };
 
   render() {
-    const { direction } = this.props;
+    const { direction, position } = this.props;
+    const className = classnames('common-resizer', `direction-${direction}`, { 'is-dragging': this.state.dragging });
     return (
-      <div
-        className={classnames('common-resizer', `direction-${direction}`, { 'is-dragging': this.state.dragging })}
-        ref={this.assignRef}
-      />
+      <div className={className} onMouseDown={this.handleMouseDown} ref={this.assignRef} style={position} />
     );
-    // return (
-    //   <div
-    //     className={classnames('home-side-panel-resizer', { 'is-dragging': this.state.dragging })}
-    //     style={{ left: `${this.props.sidePanelWidth}px` }}
-    //     ref={this.assignRef}
-    //     onMouseUp={this.handleMouseUp}
-    //     onMouseMove={this.handleMouseMove}
-    //   >
-    //     <div
-    //       className="true-resizer"
-    //       style={{ left: `${this.state.dragging ? this.props.sidePanelWidth : 0}px` }}
-    //       onMouseDown={this.handleMouseDown}
-    //     />
-    //   </div>
-    // );
   }
 }

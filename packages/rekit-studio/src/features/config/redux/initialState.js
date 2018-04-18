@@ -16,6 +16,7 @@ const initialState = {
   updatePackageError: null,
   removePackagePending: false,
   removePackageError: null,
+  depsOutputHeight: 260,
 };
 
 export default initialState;

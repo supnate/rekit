@@ -18,6 +18,8 @@ const lint = require('./api/lint');
 const format = require('./api/format');
 const fetchDeps = require('./api/fetchDeps');
 const installPackage = require('./api/installPackage');
+const updatePackage = require('./api/updatePackage');
+const removePackage = require('./api/removePackage');
 
 const utils = rekitCore.utils;
 

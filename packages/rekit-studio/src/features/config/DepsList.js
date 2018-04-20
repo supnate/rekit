@@ -10,6 +10,7 @@ export class DepsList extends PureComponent {
     actions: PropTypes.object.isRequired,
     deps: PropTypes.array.isRequired,
     depsType: PropTypes.string.isRequired,
+    bgProcesses: PropTypes.object.isRequired,
   };
 
   state = {
@@ -99,11 +100,11 @@ export class DepsList extends PureComponent {
         title: 'Action',
         width: 100,
         align: 'center',
-        render() {
+        render: (__, item) => {
           return (
             <div className="actions">
-              <Icon type="arrow-up" title="Upgrade" />
-              <Icon type="close" title="Remove" />
+              <Icon type="arrow-up" title="Upgrade" onClick={() => this.handleUpdatePackage(item.name)} />
+              <Icon type="close" title="Remove" onClick={() => this.handleRemovePackage(item.name)} />
             </div>
           );
         },
@@ -123,6 +124,12 @@ export class DepsList extends PureComponent {
     if (!this.state.inputValue) return;
     this.props.actions.installPackage(this.state.inputValue);
   };
+
+  handleUpdatePackage = (name) => {
+    if (this.props.bgProcesses.updatePackagePending) return;
+    this.props.actions.updatePackage(name);
+  };
+  handleRemovePackage = (name) => {};
 
   handleStatusFilter = args => {
     this.setState({
@@ -161,12 +168,12 @@ export class DepsList extends PureComponent {
   }
 }
 
-// /* istanbul ignore next */
-// function mapStateToProps(state) {
-//   return {
-//     config: state.config,
-//   };
-// }
+/* istanbul ignore next */
+function mapStateToProps(state) {
+  return {
+    bgProcesses: state.rekitTools.bgProcesses,
+  };
+}
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
@@ -175,4 +182,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapDispatchToProps)(DepsList);
+export default connect(mapStateToProps, mapDispatchToProps)(DepsList);

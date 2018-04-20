@@ -14,13 +14,13 @@ export class OutputPanel extends Component {
     common: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     style: PropTypes.object,
-    filter: PropTypes.string.isRequired, // filter output
+    filter: PropTypes.array.isRequired, // filter output
   };
 
   static defaultProps = { style: {} };
 
   render() {
-    const output = this.props.common.cmdOutput[this.props.filter] || [];
+    const output = this.props.filter.reduce((prev, name) => [...prev, ...(this.props.common.cmdOutput[name] || [])], []);
     return (
       <div className="common-output-panel" style={this.props.style}>
         {output

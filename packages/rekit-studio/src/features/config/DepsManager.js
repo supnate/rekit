@@ -66,7 +66,7 @@ export class DepsManager extends Component {
           position={{ bottom: `${this.props.config.depsOutputHeight - 2}px` }}
           onResize={this.handleResize}
         />
-        <OutputPanel filter="install-package" style={{ height: `${this.props.config.depsOutputHeight}px` }} />
+        <OutputPanel filter={['install-package', 'update-package', 'remove-package']} style={{ height: `${this.props.config.depsOutputHeight}px` }} />
       </div>
     );
   }

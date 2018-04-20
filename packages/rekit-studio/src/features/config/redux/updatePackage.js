@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   CONFIG_UPDATE_PACKAGE_BEGIN,
   CONFIG_UPDATE_PACKAGE_SUCCESS,
@@ -7,7 +8,7 @@ import {
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
-export function updatePackage(args = {}) {
+export function updatePackage(name) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
       type: CONFIG_UPDATE_PACKAGE_BEGIN,
@@ -21,12 +22,13 @@ export function updatePackage(args = {}) {
       // doRequest is a placeholder Promise. You should replace it with your own logic.
       // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
       // args.error here is only for test coverage purpose.
-      const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
+      // const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
+      const doRequest = axios.post('/api/update-package', { name });
       doRequest.then(
         (res) => {
           dispatch({
             type: CONFIG_UPDATE_PACKAGE_SUCCESS,
-            data: res,
+            data: res.data,
           });
           resolve(res);
         },

@@ -6,6 +6,7 @@ const rekitCore = require('rekit-core');
 const spawn = require('child_process').spawn;
 
 function runTask(io, cmd, type, id) {
+  console.log('running task: ', cmd);
   const prjRoot = rekitCore.utils.getProjectRoot();
   const args = cmd.split(' ');
   return new Promise((resolve) => {

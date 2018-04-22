@@ -1,10 +1,22 @@
 @import '../../styles/mixins';
 
 .common-output-panel {
+  position: relative;
   overflow: auto;
   .scroll-style();
 
   color: rgba(255, 255, 255, 0.7);
   padding: 10px;
   font-size: 12px;
+
+  .anticon-close {
+    color: rgba(255, 255, 255, 0.4);
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    &:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
 }

@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon, Input, Table, Spin, Menu } from 'antd';
 import * as actions from './redux/actions';
 
-export class DepsList extends PureComponent {
+export class DepsList extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     deps: PropTypes.array.isRequired,
@@ -18,6 +18,11 @@ export class DepsList extends PureComponent {
     statusFilterDropdownVisible: false,
     inputValue: '',
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(nextProps.deps === this.props.deps);
+    return true;
+  }
 
   getColumns() {
     return [
@@ -133,7 +138,10 @@ export class DepsList extends PureComponent {
     if (this.props.bgProcesses.updatePackagePending) return;
     this.props.actions.updatePackage(name);
   };
-  handleRemovePackage = name => {};
+  handleRemovePackage = name => {
+    if (this.props.bgProcesses.removePackagePending) return;
+    this.props.actions.removePackage(name);
+  };
 
   handleStatusFilter = args => {
     this.setState({
@@ -151,7 +159,7 @@ export class DepsList extends PureComponent {
     });
   };
 
-  render() {
+  render() {console.log('render deps list');
     return (
       <div className="config-deps-list">
         <div className="toolbar no-top-margin">
@@ -186,4 +194,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepsList);
+export default connect(mapStateToProps)(DepsList);

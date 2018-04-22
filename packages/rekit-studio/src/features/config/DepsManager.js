@@ -14,7 +14,9 @@ export class DepsManager extends Component {
     actions: PropTypes.object.isRequired,
   };
 
-  state = {};
+  state = {
+    outputVisible: true,
+  };
 
   componentDidMount() {
     if ((!this.props.config.deps || this.props.config.depsNeedReload) && !this.props.config.fetchDepsPending) {
@@ -50,6 +52,8 @@ export class DepsManager extends Component {
     this.props.actions.setDepsOutputHeight(pos.bottom);
   };
 
+  handleOutputClose = () => {};
+
   renderLoading() {
     return (
       <div className="config-deps-manager page-loading">
@@ -60,9 +64,13 @@ export class DepsManager extends Component {
 
   render() {
     if (!this.props.config.deps) return this.renderLoading();
+    const outputVisible = this.state.outputVisible;
     return (
       <div className="config-deps-manager">
-        <div className="deps-container" style={{ bottom: `${this.props.config.depsOutputHeight}px` }}>
+        <div
+          className="deps-container"
+          style={{ bottom: `${outputVisible ? this.props.config.depsOutputHeight : 0}px` }}
+        >
           <DepsList deps={this.getData()} depsType="deps" />
           <br />
           <DepsList deps={this.getData('dev')} depsType="devDeps" />
@@ -72,15 +80,20 @@ export class DepsManager extends Component {
             neither npm nor yarn to manage packages you can't install/update/remove packages from this page.
           </p>
         </div>
-        <Resizer
-          direction="horizontal"
-          position={{ bottom: `${this.props.config.depsOutputHeight - 2}px` }}
-          onResize={this.handleResize}
-        />
-        <OutputPanel
-          filter={['install-package', 'update-package', 'remove-package']}
-          style={{ height: `${this.props.config.depsOutputHeight}px` }}
-        />
+        {outputVisible && (
+          <Resizer
+            direction="horizontal"
+            position={{ bottom: `${this.props.config.depsOutputHeight - 2}px` }}
+            onResize={this.handleResize}
+          />
+        )}
+        {outputVisible && (
+          <OutputPanel
+            onClose={this.handleOutputClose}
+            filter={['install-package', 'update-package', 'remove-package']}
+            style={{ height: `${this.props.config.depsOutputHeight}px` }}
+          />
+        )}
       </div>
     );
   }

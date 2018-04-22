@@ -1,17 +1,17 @@
 import axios from 'axios';
 import {
-  CONFIG_FETCH_DEPS_BEGIN,
-  CONFIG_FETCH_DEPS_SUCCESS,
-  CONFIG_FETCH_DEPS_FAILURE,
-  CONFIG_FETCH_DEPS_DISMISS_ERROR,
+  CONFIG_FETCH_DEPS_REMOTE_BEGIN,
+  CONFIG_FETCH_DEPS_REMOTE_SUCCESS,
+  CONFIG_FETCH_DEPS_REMOTE_FAILURE,
+  CONFIG_FETCH_DEPS_REMOTE_DISMISS_ERROR,
 } from './constants';
 
 // Rekit uses redux-thunk for async actions by default: https://github.com/gaearon/redux-thunk
 // If you prefer redux-saga, you can use rekit-plugin-redux-saga: https://github.com/supnate/rekit-plugin-redux-saga
-export function fetchDeps(args = {}) {
+export function fetchDepsRemote(args = {}) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
-      type: CONFIG_FETCH_DEPS_BEGIN,
+      type: CONFIG_FETCH_DEPS_REMOTE_BEGIN,
     });
 
     // Return a promise so that you could control UI flow without states in the store.
@@ -22,12 +22,11 @@ export function fetchDeps(args = {}) {
       // doRequest is a placeholder Promise. You should replace it with your own logic.
       // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
       // args.error here is only for test coverage purpose.
-      // const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
-      const doRequest = axios.get('/api/fetchDeps');
+      const doRequest = axios.get('/api/fetchDepsRemote');
       doRequest.then(
         (res) => {
           dispatch({
-            type: CONFIG_FETCH_DEPS_SUCCESS,
+            type: CONFIG_FETCH_DEPS_REMOTE_SUCCESS,
             data: res.data,
           });
           resolve(res);
@@ -35,7 +34,7 @@ export function fetchDeps(args = {}) {
         // Use rejectHandler as the second argument so that render errors won't be caught.
         (err) => {
           dispatch({
-            type: CONFIG_FETCH_DEPS_FAILURE,
+            type: CONFIG_FETCH_DEPS_REMOTE_FAILURE,
             data: { error: err },
           });
           reject(err);
@@ -49,47 +48,44 @@ export function fetchDeps(args = {}) {
 
 // Async action saves request error by default, this method is used to dismiss the error info.
 // If you don't want errors to be saved in Redux store, just ignore this method.
-export function dismissFetchDepsError() {
+export function dismissFetchDepsRemoteError() {
   return {
-    type: CONFIG_FETCH_DEPS_DISMISS_ERROR,
+    type: CONFIG_FETCH_DEPS_REMOTE_DISMISS_ERROR,
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case CONFIG_FETCH_DEPS_BEGIN:
+    case CONFIG_FETCH_DEPS_REMOTE_BEGIN:
       // Just after a request is sent
       return {
         ...state,
-        fetchDepsPending: true,
-        fetchDepsError: null,
+        fetchDepsRemotePending: true,
+        fetchDepsRemoteError: null,
       };
 
-    case CONFIG_FETCH_DEPS_SUCCESS:
+    case CONFIG_FETCH_DEPS_REMOTE_SUCCESS:
       // The request is success
       return {
         ...state,
-        fetchDepsPending: false,
-        fetchDepsError: null,
-        deps: {
-          ...state.deps,
-          ...action.data,
-        }
+        fetchDepsRemotePending: false,
+        fetchDepsRemoteError: null,
+        deps: action.data,
       };
 
-    case CONFIG_FETCH_DEPS_FAILURE:
+    case CONFIG_FETCH_DEPS_REMOTE_FAILURE:
       // The request is failed
       return {
         ...state,
-        fetchDepsPending: false,
-        fetchDepsError: action.data.error,
+        fetchDepsRemotePending: false,
+        fetchDepsRemoteError: action.data.error,
       };
 
-    case CONFIG_FETCH_DEPS_DISMISS_ERROR:
+    case CONFIG_FETCH_DEPS_REMOTE_DISMISS_ERROR:
       // Dismiss the request failure error
       return {
         ...state,
-        fetchDepsError: null,
+        fetchDepsRemoteError: null,
       };
 
     default:

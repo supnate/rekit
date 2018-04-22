@@ -17,6 +17,8 @@ const initialState = {
   removePackagePending: false,
   removePackageError: null,
   depsOutputHeight: 260,
+  fetchDepsRemotePending: false,
+  fetchDepsRemoteError: null,
 };
 
 export default initialState;

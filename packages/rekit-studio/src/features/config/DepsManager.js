@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Input, Spin } from 'antd';
+import { Button, Input, Spin, message } from 'antd';
 import semverDiff from 'semver-diff';
 import * as actions from './redux/actions';
 import { OutputPanel, Resizer } from '../common';
@@ -18,7 +18,16 @@ export class DepsManager extends Component {
 
   componentDidMount() {
     if ((!this.props.config.deps || this.props.config.depsNeedReload) && !this.props.config.fetchDepsPending) {
-      this.props.actions.fetchDeps();
+      let hideMessage;
+      this.props.actions
+        .fetchDeps()
+        .then(() => {
+          hideMessage = message.loading('Fetching latest versions...', 0);
+          return this.props.actions.fetchDepsRemote();
+        })
+        .then(() => {
+          if (hideMessage) hideMessage();
+        });
     }
   }
 
@@ -30,7 +39,9 @@ export class DepsManager extends Component {
         requiredVersion: allDeps[name].requiredVersion,
         installedVersion: allDeps[name].installedVersion,
         latestVersion: allDeps[name].latestVersion,
-        status: semverDiff(allDeps[name].installedVersion, allDeps[name].latestVersion) + '', // eslint-disable-line
+        status: allDeps[name].latestVersion
+          ? semverDiff(allDeps[name].installedVersion, allDeps[name].latestVersion) + '' // eslint-disable-line
+          : '',
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }
@@ -66,7 +77,10 @@ export class DepsManager extends Component {
           position={{ bottom: `${this.props.config.depsOutputHeight - 2}px` }}
           onResize={this.handleResize}
         />
-        <OutputPanel filter={['install-package', 'update-package', 'remove-package']} style={{ height: `${this.props.config.depsOutputHeight}px` }} />
+        <OutputPanel
+          filter={['install-package', 'update-package', 'remove-package']}
+          style={{ height: `${this.props.config.depsOutputHeight}px` }}
+        />
       </div>
     );
   }

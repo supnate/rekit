@@ -46,6 +46,10 @@ export class DepsList extends PureComponent {
         dataIndex: 'latestVersion',
         title: 'Latest',
         width: 110,
+        render(ver) {
+          if (ver) return ver;
+          return '--';
+        },
       },
       {
         dataIndex: 'status',
@@ -92,7 +96,7 @@ export class DepsList extends PureComponent {
           });
         },
         render(status) {
-          return <span className={`status-icon status-icon-${status}`} title={`${status}`} />;
+          return status ? <span className={`status-icon status-icon-${status}`} title={`${status}`} /> : '';
         },
       },
       {
@@ -125,11 +129,11 @@ export class DepsList extends PureComponent {
     this.props.actions.installPackage(this.state.inputValue);
   };
 
-  handleUpdatePackage = (name) => {
+  handleUpdatePackage = name => {
     if (this.props.bgProcesses.updatePackagePending) return;
     this.props.actions.updatePackage(name);
   };
-  handleRemovePackage = (name) => {};
+  handleRemovePackage = name => {};
 
   handleStatusFilter = args => {
     this.setState({

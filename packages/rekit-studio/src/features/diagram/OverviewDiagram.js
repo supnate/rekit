@@ -1,15 +1,8 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
-import * as d3 from 'd3';
 import { colors } from '../common';
 import { getOverviewDiagramData } from './selectors/getOverviewDiagramData';
 
 export default class OverviewDiagram extends PureComponent {
-  static propTypes = {
-    homeStore: PropTypes.object.isRequired,
-  };
-
   componentDidMount() {
     this.refresh(this.props);
   }

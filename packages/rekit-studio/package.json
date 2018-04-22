@@ -86,7 +86,7 @@
     "middleware"
   ],
   "dependencies": {
-    "body-parser": "^1.17.1",
+    "body-parser": "^1.18.2",
     "history": "^4.6.1",
     "loadash": "^1.0.0",
     "lodash": "^4.17.5",

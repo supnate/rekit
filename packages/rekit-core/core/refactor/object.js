@@ -15,18 +15,18 @@ function objExpToObj(objExp) {
   return obj;
 }
 
-function nearestCharBefore(char, str, index) {
-  // Find the nearest char index before given index. skip white space strings
-  // If not found, return -1
-  // eg: nearestCharBefore(',', '1,    2, 3', 4) => 1
-  let i = index - 1;
-  while (i >= 0) {
-    if (str.charAt(i) === char) return i;
-    if (!/\s/.test(str.charAt(i))) return -1;
-    i -= 1;
-  }
-  return -1;
-}
+// function nearestCharBefore(char, str, index) {
+//   // Find the nearest char index before given index. skip white space strings
+//   // If not found, return -1
+//   // eg: nearestCharBefore(',', '1,    2, 3', 4) => 1
+//   let i = index - 1;
+//   while (i >= 0) {
+//     if (str.charAt(i) === char) return i;
+//     if (!/\s/.test(str.charAt(i))) return -1;
+//     i -= 1;
+//   }
+//   return -1;
+// }
 
 function addObjectProperty(ast, varName, propName, propValue) {
   const changes = [];

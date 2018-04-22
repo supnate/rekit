@@ -203,6 +203,17 @@ describe('action', function() { // eslint-disable-line
       `export const ${newActionTypes.failure} = '${newActionTypes.failure}';`,
       `export const ${newActionTypes.dismissError} = '${newActionTypes.dismissError}';`,
     ]);
+    expectLines(mapFeatureFile(`redux/renamedAsyncAction.js`), [
+      `        renamedAsyncActionPending: true,`,
+      `        renamedAsyncActionPending: false,`,
+      `        renamedAsyncActionError: null,`,
+    ]);
+    expectNoLines(mapFeatureFile(`redux/renamedAsyncAction.js`), [
+      `        asyncActionPending: true,`,
+      `        asyncActionPending: false,`,
+      `        asyncActionError: null,`,
+    ]);
+
     expectLines(mapFeatureFile('redux/actions.js'), [
       'export { renamedAsyncAction, dismissRenamedAsyncActionError } from \'./renamedAsyncAction\';',
     ]);

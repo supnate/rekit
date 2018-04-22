@@ -59,7 +59,7 @@ export class DepsManager extends Component {
   }
 
   render() {
-    if (this.props.config.fetchDepsPending || !this.props.config.deps) return this.renderLoading();
+    if (!this.props.config.deps) return this.renderLoading();
     return (
       <div className="config-deps-manager">
         <div className="deps-container" style={{ bottom: `${this.props.config.depsOutputHeight}px` }}>

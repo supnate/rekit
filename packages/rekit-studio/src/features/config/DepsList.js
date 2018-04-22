@@ -46,8 +46,8 @@ export class DepsList extends PureComponent {
         dataIndex: 'latestVersion',
         title: 'Latest',
         width: 110,
-        render(ver) {
-          if (ver) return ver;
+        render(ver, item) {
+          if (ver) return <span className={`status-${item.status}`}>{ver}</span>;
           return '--';
         },
       },

@@ -19,11 +19,6 @@ export class DepsList extends Component {
     inputValue: '',
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps.deps === this.props.deps);
-    return true;
-  }
-
   getColumns() {
     return [
       {

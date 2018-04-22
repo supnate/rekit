@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Input, Spin, message } from 'antd';
-import semverDiff from 'semver-diff';
+import { Spin, message } from 'antd';
 import * as actions from './redux/actions';
 import { OutputPanel, Resizer } from '../common';
 import { DepsList } from './';
+import { depsSelector, devDepsSelector } from './selectors/depsSelector';
 
 export class DepsManager extends Component {
   static propTypes = {
@@ -34,18 +34,8 @@ export class DepsManager extends Component {
   }
 
   getData(depsType) {
-    const { devDeps, allDeps, deps } = this.props.config.deps;
-    return (depsType === 'dev' ? devDeps : deps)
-      .map(name => ({
-        name,
-        requiredVersion: allDeps[name].requiredVersion,
-        installedVersion: allDeps[name].installedVersion,
-        latestVersion: allDeps[name].latestVersion,
-        status: allDeps[name].latestVersion
-          ? semverDiff(allDeps[name].installedVersion, allDeps[name].latestVersion) + '' // eslint-disable-line
-          : '',
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const deps = this.props.config.deps;
+    return depsType === 'dev' ? devDepsSelector(deps) : depsSelector(deps);
   }
 
   handleResize = pos => {

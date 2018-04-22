@@ -154,7 +154,7 @@ export class DepsList extends Component {
     });
   };
 
-  render() {console.log('render deps list');
+  render() {
     return (
       <div className="config-deps-list">
         <div className="toolbar no-top-margin">
@@ -189,4 +189,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps)(DepsList);
+export default connect(mapStateToProps, mapDispatchToProps)(DepsList);

@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import * as d3 from 'd3';
 import { Alert, Button, Icon, Tooltip } from 'antd';
+import tinygradient from 'tinygradient';
 import history from '../../common/history';
 
 export class TestCoverageSummary extends PureComponent {
@@ -51,13 +51,14 @@ export class TestCoverageSummary extends PureComponent {
   }
 
   renderReport() {
-    const color = d3
-      .scaleLinear()
-      .domain([0, 90])
-      .range(['#ef5350', '#81C784']);
+    // const color = d3
+    //   .scaleLinear()
+    //   .domain([0, 90])
+    //   .range(['#ef5350', '#81C784']);
     // let arr = [];
     // for (let i = 5; i < 100; i += 20)arr.push(i);
     // arr = _.shuffle(arr);
+    const gradient = tinygradient(['#ef5350', '#81C784']);
     const { features, featureById } = this.props.home;
 
     // const trs = /<tr>.+<\/tr>/mig.exec(this.state.reportData.replace(/\r|\n/g, ''));
@@ -99,7 +100,7 @@ export class TestCoverageSummary extends PureComponent {
           <div className="coverage-percent">
             <div
               className="percent-inner"
-              style={{ width: `${overallCoverage}%`, backgroundColor: color(overallCoverage) }}
+              style={{ width: `${overallCoverage}%`, backgroundColor: gradient.rgbAt(overallCoverage / 100) }}
             />
           </div>
         </li>
@@ -120,7 +121,7 @@ export class TestCoverageSummary extends PureComponent {
                   </Tooltip>
                 </label>
                 <div className="coverage-percent">
-                  <div className="percent-inner" style={{ width: `${0}%`, backgroundColor: color(0) }} />
+                  <div className="percent-inner" style={{ width: `${0}%`, backgroundColor: gradient.rgbAt(0) }} />
                 </div>
               </li>
             );
@@ -131,7 +132,7 @@ export class TestCoverageSummary extends PureComponent {
                 {name}: {p}%
               </label>
               <div className="coverage-percent">
-                <div className="percent-inner" style={{ width: `${p}%`, backgroundColor: color(p) }} />
+                <div className="percent-inner" style={{ width: `${p}%`, backgroundColor: gradient.rgbAt(p / 100) }} />
               </div>
             </li>
           );

@@ -26,6 +26,8 @@ export default class Resizer extends Component {
     document.body.appendChild(this.maskNode);
     this.calcParentPosition();
     window.addEventListener('resize', this.calcParentPosition);
+    if (this.props.direction === 'horizontal') this.maskNode.style.cursor = 'row-resize';
+    else this.maskNode.style.cursor = 'col-resize';
   }
 
   componentWillUnmount() {

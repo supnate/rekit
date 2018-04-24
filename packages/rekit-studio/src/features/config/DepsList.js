@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Input, Table, Spin, Menu } from 'antd';
+import { Button, Icon, Input, Table, Spin, Menu, Modal } from 'antd';
 import * as actions from './redux/actions';
 
 export class DepsList extends Component {
@@ -135,7 +135,15 @@ export class DepsList extends Component {
   };
   handleRemovePackage = name => {
     if (this.props.bgProcesses.removePackagePending) return;
-    this.props.actions.removePackage(name);
+    Modal.confirm({
+      title: 'Confirm',
+      content: 'Are you sure to remove the package?',
+      okText: 'Yes',
+      okType: 'danger',
+      onOk: () => {
+        this.props.actions.removePackage(name);
+      },
+    });
   };
 
   handleStatusFilter = args => {

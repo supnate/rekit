@@ -7,7 +7,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   color: #aaa;
-  background-color: #333;
+  background-color: #222;
   white-space: nowrap;
   border-left: 1px solid #000;
   &::-webkit-scrollbar {
@@ -20,15 +20,25 @@
   span.tab {
     position: relative;
     display: inline-block;
+    background-color: #333;
+    outline: none;
     padding: 0 30px 0 10px;
+    border-left: 1px solid #1a1a1a;
     border-right: 1px solid #1a1a1a;
+    margin-left: -1px;
     cursor: pointer;
     user-select: none;
     label {
       cursor: pointer;
     }
 
-    .anticon-close, .anticon-dot {
+    &.is-dragging {
+      background-color: #2a2a2a;
+      border-right-color: rgba(0, 0, 0, 0);
+    }
+
+    .anticon-close,
+    .anticon-dot {
       position: absolute;
       font-weight: bold;
       font-size: 13px;
@@ -56,7 +66,7 @@
     }
 
     .anticon-appstore-o {
-      color: #F08036;
+      color: #f08036;
     }
 
     .anticon-notification {
@@ -64,14 +74,24 @@
     }
 
     .anticon-home {
-      color: #33CDFF;
+      color: #33cdff;
       font-size: 14px;
     }
-    .anticon-share-alt { color: #26a69a; }
-    .anticon-check-circle-o { color: #8BC34A; }
-    .anticon-pie-chart { color: #FDD835; }
-    .anticon-play-circle-o { color: #66BB6A; }
-    .anticon-profile { color: #33CDFF; }
+    .anticon-share-alt {
+      color: #26a69a;
+    }
+    .anticon-check-circle-o {
+      color: #8bc34a;
+    }
+    .anticon-pie-chart {
+      color: #fdd835;
+    }
+    .anticon-play-circle-o {
+      color: #66bb6a;
+    }
+    .anticon-profile {
+      color: #33cdff;
+    }
     .anticon-dot {
       visibility: visible;
       &::before {
@@ -84,7 +104,7 @@
       }
     }
     &-has-change {
-    //   background: red;
+      //   background: red;
       .anticon-close {
         visibility: visible;
         &::before {
@@ -96,8 +116,8 @@
           background-color: #aaa;
         }
 
-        &:hover::before{
-          content: "\E633";
+        &:hover::before {
+          content: '\E633';
           display: inline-block;
           width: 10px;
           height: 10px;

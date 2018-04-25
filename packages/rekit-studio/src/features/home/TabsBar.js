@@ -6,13 +6,20 @@ import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu, Modal } from 'antd';
 import classnames from 'classnames';
 import scrollIntoView from 'dom-scroll-into-view';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
-import { closeTab } from './redux/actions';
+import { closeTab, moveTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
 import { UnloadComponent } from '../common';
 import { getElementData, getElementFiles } from './helpers';
 
+const grid = 0;
+const getListStyle = () => ({
+  display: 'flex',
+  padding: grid,
+  overflow: 'auto',
+});
 export class TabsBar extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
@@ -42,7 +49,7 @@ export class TabsBar extends Component {
 
   componentDidUpdate() {
     if (this.delayScroll) clearTimeout(this.delayScroll);
-    this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
+    // this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
   }
 
   getCurrentFile() {
@@ -209,6 +216,10 @@ export class TabsBar extends Component {
     }
   };
 
+  handleDragEnd = result => {
+    this.props.actions.moveTab(result);
+  };
+
   assignRef = node => {
     this.rootNode = node;
   };
@@ -222,26 +233,49 @@ export class TabsBar extends Component {
         <Menu.Item key="close-self">Close</Menu.Item>
       </Menu>
     );
+
     return (
-      <div className="home-tabs-bar" ref={this.assignRef} style={{ marginLeft: `${sidePanelWidth}px` }}>
-        {openTabs.some(t => this.isChanged(t)) && <UnloadComponent />}
-        {openTabs.map(tab => (
-          <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
-            <span
-              key={tab.key}
-              onClick={() => this.openTab(tab.key)}
-              className={classnames('tab', {
-                'tab-active': this.isCurrentTab(tab),
-                'tab-has-change': this.isChanged(tab),
-              })}
+      <DragDropContext onDragEnd={this.handleDragEnd}>
+        <Droppable droppableId="droppable" direction="horizontal">
+          {(provided, snapshot) => (
+            <div
+              ref={node => {
+                this.assignRef(node);
+                provided.innerRef(node);
+              }}
+              className="home-tabs-bar"
+              style={{ marginLeft: `${sidePanelWidth}px`, ...getListStyle(snapshot.isDraggingOver) }}
             >
-              <Icon type={tab.icon || 'file'} />
-              <label title={this.getTabTooltip(tab)}>{tab.name}</label>
-              <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
-            </span>
-          </Dropdown>
-        ))}
-      </div>
+              {openTabs.some(t => this.isChanged(t)) && <UnloadComponent />}
+              {openTabs.map((tab, index) => (
+                <Draggable key={tab.key} draggableId={tab.key} index={index}>
+                  {(provided2, snapshot2) => (
+                    <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
+                      <span
+                        style={provided2.draggableProps.style}
+                        ref={provided2.innerRef}
+                        {...provided2.draggableProps}
+                        {...provided2.dragHandleProps}
+                        key={tab.key}
+                        onClick={() => this.openTab(tab.key)}
+                        className={classnames('tab', {
+                          'is-dragging': snapshot2.isDragging,
+                          'tab-active': this.isCurrentTab(tab),
+                          'tab-has-change': this.isChanged(tab),
+                        })}
+                      >
+                        <Icon type={tab.icon || 'file'} />
+                        <label title={this.getTabTooltip(tab)}>{tab.name}</label>
+                        <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
+                      </span>
+                    </Dropdown>
+                  )}
+                </Draggable>
+              ))}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     );
   }
 }
@@ -258,7 +292,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ closeTab }, dispatch),
+    actions: bindActionCreators({ closeTab, moveTab }, dispatch),
   };
 }
 

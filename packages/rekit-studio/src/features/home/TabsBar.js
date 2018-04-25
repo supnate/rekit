@@ -49,7 +49,7 @@ export class TabsBar extends Component {
 
   componentDidUpdate() {
     if (this.delayScroll) clearTimeout(this.delayScroll);
-    // this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
+    this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
   }
 
   getCurrentFile() {

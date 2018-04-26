@@ -111,7 +111,7 @@ function moveAsync(source, target) {
     refactor.renameImportSpecifier(ast, oldActionTypes.failure, newActionTypes.failure),
     refactor.renameImportSpecifier(ast, oldActionTypes.dismissError, newActionTypes.dismissError),
     refactor.renameIdentifier(ast, `${source.name}Pending`, `${target.name}Pending`),
-    refactor.renameIdentifier(ast, `${source.name}Error`, `${target.name}Error`),
+    refactor.renameIdentifier(ast, `${source.name}Error`, `${target.name}Error`)
   ));
   if (source.feature === target.feature) {
     // Update names in actions.js

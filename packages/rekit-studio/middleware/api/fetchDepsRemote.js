@@ -12,9 +12,13 @@ function fetchDepsRemote() {
     const prjPkgJson = helpers.forceRequire(rekitCore.utils.joinPath(prjRoot, 'package.json')); // eslint-disable-line
     const allDeps = Object.assign({}, prjPkgJson.dependencies, prjPkgJson.devDependencies);
     Object.keys(allDeps).forEach(key => {
+      let installedVersion = '--';
+      try {
+        installedVersion = require(`${key}/package.json`).version; // eslint-disable-line
+      } catch (e) {} // eslint-disable-line
       allDeps[key] = {
         requiredVersion: allDeps[key],
-        installedVersion: require(`${key}/package.json`).version, // eslint-disable-line
+        installedVersion,
         latestVersion: 'TODO',
       };
     });

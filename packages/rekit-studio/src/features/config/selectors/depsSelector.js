@@ -7,15 +7,18 @@ const allDepsSelector = state => state.allDeps;
 
 function compute(deps, allDeps) {
   return deps
-    .map(name => ({
-      name,
-      requiredVersion: allDeps[name].requiredVersion,
-      installedVersion: allDeps[name].installedVersion,
-      latestVersion: allDeps[name].latestVersion,
-      status: allDeps[name].latestVersion
-        ? semverDiff(allDeps[name].installedVersion, allDeps[name].latestVersion) + '' // eslint-disable-line
-        : '',
-    }))
+    .map(name => {
+      const dep = allDeps[name];
+      return {
+        name,
+        requiredVersion: dep.requiredVersion,
+        installedVersion: dep.installedVersion,
+        latestVersion: dep.latestVersion,
+        status: (dep.latestVersion && dep.installedVersion !== '--')
+          ? semverDiff(dep.installedVersion, dep.latestVersion) + '' // eslint-disable-line
+          : '',
+      };
+    })
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 

@@ -34,7 +34,7 @@ function runTask(io, cmd, type, id) {
     child.stderr.on('data', handleOutput);
 
     child.on('close', () => {
-      io.emit(`${type}-finished`, {});
+      io.emit('task-finished', { type });
       resolve();
     });
   });

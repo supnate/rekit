@@ -32,6 +32,13 @@ if (process.env.NODE_ENV !== 'test') {
     });
   });
 
+  socket.on('task-finished', (data) => {
+    store.dispatch({
+      type: 'REKIT_TASK_FINISHED',
+      data,
+    });
+  });
+
   socket.on('build-finished', (data) => {
     store.dispatch({
       type: 'REKIT_TOOLS_BUILD_FINISHED',

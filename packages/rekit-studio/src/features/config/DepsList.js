@@ -45,7 +45,7 @@ export class DepsList extends Component {
       {
         dataIndex: 'status',
         title: 'Latest',
-        width: 100,
+        width: 140,
         filterDropdown: (
           <div className="status-filter">
             <Menu

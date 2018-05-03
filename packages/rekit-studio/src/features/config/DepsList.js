@@ -43,19 +43,9 @@ export class DepsList extends Component {
         width: 110,
       },
       {
-        dataIndex: 'latestVersion',
-        title: 'Latest',
-        width: 110,
-        render(ver, item) {
-          if (ver) return <span className={`status-${item.status}`}>{ver}</span>;
-          return '--';
-        },
-      },
-      {
         dataIndex: 'status',
-        title: 'Status',
+        title: 'Latest',
         width: 100,
-        align: 'center',
         filterDropdown: (
           <div className="status-filter">
             <Menu
@@ -95,8 +85,13 @@ export class DepsList extends Component {
             statusFilterDropdownVisible: visible,
           });
         },
-        render(status) {
-          return status ? <span className={`status-icon status-icon-${status}`} title={`${status}`} /> : '';
+        render(status, record) {
+          return (
+            <span className={`status-${record.status}`}>
+              {status ? <span className={`status-icon status-icon-${status}`} title={`${status}`} /> : ''}
+              {' '}{record.latestVersion}
+            </span>
+          );
         },
       },
       {

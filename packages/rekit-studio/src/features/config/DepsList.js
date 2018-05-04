@@ -102,7 +102,7 @@ export class DepsList extends Component {
         render: (__, item) => {
           return (
             <div className="actions">
-              <Icon type="arrow-up" title="Upgrade" onClick={() => this.handleUpdatePackage(item.name)} />
+              <Icon type="arrow-up" title="Upgrade to the latest version." onClick={() => this.handleUpdatePackage(item.name)} />
               <Icon type="close" title="Remove" onClick={() => this.handleRemovePackage(item.name)} />
             </div>
           );

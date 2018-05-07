@@ -27,7 +27,7 @@ function add(feature, component, args) {
   assert.notEmpty(component, 'component name');
   assert.featureExist(feature);
   args = args || {};
-  const urlPath = _.kebabCase(args.urlPath || component);
+  const urlPath = args.urlPath || _.kebabCase(component);
   const targetPath = utils.mapFeatureFile(feature, 'route.js');
   refactor.addImportFrom(targetPath, './', '', _.pascalCase(component));
 

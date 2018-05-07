@@ -107,8 +107,7 @@ function addComponent(feature, name, args) {
   });
   if (args.urlPath) {
     let urlPath = args.urlPath;
-    if (urlPath === '$auto') urlPath = name;
-    urlPath = _.kebabCase(urlPath);
+    if (urlPath === '$auto') urlPath = _.kebabCase(name);
     route.add(feature, name, { urlPath, isIndex: !!args.isIndex });
   }
   style.add(feature, name);

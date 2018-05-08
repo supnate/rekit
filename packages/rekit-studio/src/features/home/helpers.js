@@ -1,5 +1,4 @@
-export function getElementData(homeState, file) {
-  const { elementById, projectRoot } = homeState;
+export function getElementData(elementById, projectRoot, file) {
   if (!file) return null;
   file = decodeURIComponent(file);
   const fullPath = projectRoot + file;
@@ -20,8 +19,8 @@ export function getElementData(homeState, file) {
   return data;
 }
 
-export function getElementFiles(homeState, file) {
-  const data = getElementData(homeState, file);
+export function getElementFiles(elementById, projectRoot, cssExt, file) {
+  const data = getElementData(elementById, projectRoot, file);
   if (!data) {
     return null;
   }
@@ -33,7 +32,7 @@ export function getElementFiles(homeState, file) {
       .replace(/^src\//, '')
       .replace('.js', '')}.test.js`;
   }
-  if (data.type === 'component') files.style = `src/features/${data.feature}/${data.name}.${homeState.cssExt}`;
+  if (data.type === 'component') files.style = `src/features/${data.feature}/${data.name}.${cssExt}`;
   return files;
 }
 

@@ -22,7 +22,7 @@ const getListStyle = () => ({
 });
 export class TabsBar extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
+    // home: PropTypes.object.isRequired,
     rekitCmds: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
@@ -39,7 +39,7 @@ export class TabsBar extends Component {
       console.log('cmd exec result: ', cmdRes);
       if (/^(rename|move|remove)$/.test(cmdRes.args.commandName)) {
         const file = cmdRes.args.path;
-        const tab = _.find(nextProps.home.openTabs, { key: file });
+        const tab = _.find(nextProps.openTabs, { key: file });
         if (tab) {
           this.handleClose({}, tab);
         }
@@ -86,7 +86,8 @@ export class TabsBar extends Component {
   }
 
   isChanged(tab) {
-    const files = getElementFiles(this.props.home, tab.key);
+    const { elementById, projectRoot, cssExt } = this.props;
+    const files = getElementFiles(elementById, projectRoot, cssExt, tab.key);
     if (!files) return false;
     return (
       modelManager.isChanged(files.code) || modelManager.isChanged(files.test) || modelManager.isChanged(files.style)
@@ -116,7 +117,7 @@ export class TabsBar extends Component {
   }
 
   openTab = key => {
-    const tab = _.find(this.props.home.openTabs, { key });
+    const tab = _.find(this.props.openTabs, { key });
     let path;
     switch (tab.type) {
       case 'home':
@@ -160,8 +161,9 @@ export class TabsBar extends Component {
 
   handleClose = (evt, tab, force) => {
     if (evt && evt.stopPropagation) evt.stopPropagation();
-    const files = getElementFiles(this.props.home, tab.key);
-    const data = getElementData(this.props.home, tab.key);
+    const { elementById, projectRoot, cssExt } = this.props;
+    const files = getElementFiles(elementById, projectRoot, cssExt, tab.key);
+    const data = getElementData(elementById, projectRoot, tab.key);
 
     const doClose = () => {
       if (files) {
@@ -174,7 +176,7 @@ export class TabsBar extends Component {
       }
 
       this.props.actions.closeTab(tab.key);
-      const { historyTabs } = this.props.home;
+      const { historyTabs } = this.props;
       if (historyTabs.length === 1) {
         history.push('/welcome');
       } else if (this.isCurrentTab(tab)) {
@@ -225,7 +227,7 @@ export class TabsBar extends Component {
   };
 
   render() {
-    const { openTabs, sidePanelWidth } = this.props.home;
+    const { openTabs, sidePanelWidth } = this.props;
     const getMenu = tab => (
       <Menu onClick={args => this.handleMenuClick(tab, args.key)}>
         <Menu.Item key="close-others">Close others</Menu.Item>
@@ -283,7 +285,7 @@ export class TabsBar extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    home: state.home,
+    ..._.pick(state.home, ['codeChange', 'openTabs', 'elementById', 'projectRoot', 'historyTabs', 'sidePanelWidth']),
     rekitCmds: state.rekitCmds,
     router: state.router,
   };

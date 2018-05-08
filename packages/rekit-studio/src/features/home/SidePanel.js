@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu, Modal } from 'antd';
@@ -12,7 +13,7 @@ import { About, DemoAlert, ProjectExplorer } from './';
 
 export class SidePanel extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
+    // home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -101,12 +102,12 @@ export class SidePanel extends Component {
   };
 
   render() {
-    const { home } = this.props;
-    const prjName = home.projectName || home.projectRoot.split('/').pop();
+    const { projectName, projectRoot, sidePanelWidth, demoAlertVisible } = this.props;
+    const prjName = projectName || projectRoot.split('/').pop();
     return (
-      <div className="home-side-panel dark-theme" style={{ width: `${home.sidePanelWidth}px` }}>
+      <div className="home-side-panel dark-theme" style={{ width: `${sidePanelWidth}px` }}>
         <div className="header">
-          <Link className="home-link" to="/" title={this.props.home.projectRoot}>
+          <Link className="home-link" to="/" title={this.props.projectRoot}>
             <h5>
               <Icon type="home" /> {prjName}
             </h5>
@@ -134,7 +135,7 @@ export class SidePanel extends Component {
             <About />
           </Modal>
         )}
-        {home.demoAlertVisible && <DemoAlert onClose={this.props.actions.hideDemoAlert} />}
+        {demoAlertVisible && <DemoAlert onClose={this.props.actions.hideDemoAlert} />}
       </div>
     );
   }
@@ -142,9 +143,12 @@ export class SidePanel extends Component {
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
-  return {
-    home: state.home,
-  };
+  return _.pick(state.home, [
+    'projectName',
+    'projectRoot',
+    'sidePanelWidth',
+    'demoAlertVisible',
+  ]);
 }
 
 /* istanbul ignore next */

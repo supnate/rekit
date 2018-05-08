@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import enUS from 'antd/lib/locale-provider/en_US';
 import { LocaleProvider, message, Modal, Spin } from 'antd';
 import { ErrorBoundary } from '../common';
@@ -17,14 +18,14 @@ import { fetchProjectData } from './redux/actions';
 
 export class App extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
+    // home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
   };
 
   componentDidMount() {
     this.props.actions.fetchProjectData().then(() => {
-      document.title = this.props.home.projectName;
+      document.title = this.props.projectName;
     }).catch(err => {
       Modal.error({
         title: 'Failed to load project data',
@@ -35,9 +36,9 @@ export class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.home.projectDataNeedReload &&
-      !nextProps.home.fetchProjectDataError &&
-      !nextProps.home.fetchProjectDataPending
+      nextProps.projectDataNeedReload &&
+      !nextProps.fetchProjectDataError &&
+      !nextProps.fetchProjectDataPending
     ) {
       this.props.actions
         .fetchProjectData()
@@ -58,7 +59,7 @@ export class App extends Component {
   }
 
   render() {
-    if (!this.props.home.features) {
+    if (!this.props.features) {
       return this.renderLoading();
     }
 
@@ -68,7 +69,7 @@ export class App extends Component {
           <SidePanel />
           <TabsBar />
           <SidePanelResizer />
-          <div id="page-container" className="page-container" style={{ left: `${this.props.home.sidePanelWidth}px` }}>
+          <div id="page-container" className="page-container" style={{ left: `${this.props.sidePanelWidth}px` }}>
             <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           <DialogPlace />
@@ -80,9 +81,15 @@ export class App extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    home: state.home,
-  };
+  return _.pick(state.home, [
+    'sidePanelWidth',
+    'projectName',
+    'features',
+    'projectDataNeedReload',
+    'fetchProjectDataError',
+    'fetchProjectDataPending',
+
+  ]);
 }
 
 function mapDispatchToProps(dispatch) {

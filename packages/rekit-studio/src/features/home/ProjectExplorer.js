@@ -75,8 +75,8 @@ export class ProjectExplorer extends Component {
   getMenuItems(treeNode) {
     const evtKey = treeNode.props.eventKey;
     // eventKey is 'file' property of most items
-    const { home } = this.props;
-    let ele = home.elementById[evtKey] || home.featureById[evtKey];
+    const { elementById, featureById } = this.props;
+    let ele = elementById[evtKey] || featureById[evtKey];
     if (!ele) {
       const key = treeNode.props.eventKey;
       const i = key.lastIndexOf('-');
@@ -122,8 +122,8 @@ export class ProjectExplorer extends Component {
     // when right click a menu item, need to cache the node context for context menu usage.
 
     const key = evt.node.props.eventKey;
-    const { home } = this.props;
-    const ele = home.elementById[key] || home.featureById[key];
+    const { elementById, featureById } = this.props;
+    const ele = elementById[key] || featureById[key];
     if (ele) {
       this.cmdContext = {
         feature: ele.feature,
@@ -185,7 +185,7 @@ export class ProjectExplorer extends Component {
         // feature's routes
         history.push(`/element/${encodeURIComponent(key)}/rules`); // eslint-disable-line
       } else {
-        const tabItem = _.find(this.props.home.openTabs, { key });
+        const tabItem = _.find(this.props.openTabs, { key });
         const subTab = tabItem ? tabItem.subTab : 'code';
         history.push(`/element/${encodeURIComponent(key)}/${subTab}`);
       }
@@ -251,7 +251,7 @@ export class ProjectExplorer extends Component {
 
   handleMenuClick = evt => {
     const cmdContext = this.cmdContext;
-    const prjRoot = this.props.home.projectRoot;
+    const prjRoot = this.props.projectRoot;
     switch (evt.key) {
       case 'add-feature':
         this.props.actions.showCmdDialog('cmd', {
@@ -340,7 +340,7 @@ export class ProjectExplorer extends Component {
   };
 
   hasSyntaxError(nodeData) {
-    return this.props.home.filesHasSyntaxError[nodeData.key];
+    return this.props.filesHasSyntaxError[nodeData.key];
   }
 
   renderLoading() {
@@ -424,16 +424,23 @@ export class ProjectExplorer extends Component {
   );
 
   render() {
-    const { home, treeData, searchKey } = this.props;
+    const { features, srcFiles, featureById, treeData, searchKey } = this.props;
 
-    if (!home.features) {
+    if (!features) {
       return this.renderLoading();
     }
 
     const treeNodes = treeData.children.map(this.renderTreeNode);
     let expandedKeys = this.state.expandedKeys;
     if (searchKey) {
-      expandedKeys = getExpandedKeys(home, searchKey);
+      expandedKeys = getExpandedKeys(
+        {
+          srcFiles,
+          features,
+          featureById,
+        },
+        searchKey
+      );
     }
 
     return (
@@ -478,8 +485,21 @@ export class ProjectExplorer extends Component {
 
 /* istanbul ignore next */
 function mapStateToProps(state, props) {
+  // const home = state.home,
   return {
-    home: state.home,
+    // elementById: elementById,
+    // features: features,
+    // featureById: featureById,
+    // home: _.
+    ..._.pick(state.home, [
+      'elementById',
+      'features',
+      'featureById',
+      'openTabs',
+      'projectRoot',
+      'filesHasSyntaxError',
+      'srcFiles',
+    ]),
     treeData: getFilteredExplorerTreeData(state.home, props.searchKey),
     router: state.router,
   };

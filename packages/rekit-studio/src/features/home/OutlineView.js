@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Tree } from 'antd';
@@ -7,7 +7,7 @@ import { getTreeNodeData } from '../common/utils';
 
 const { TreeNode } = Tree;
 
-export default class OutlineView extends Component {
+export default class OutlineView extends PureComponent {
   static propTypes = {
     code: PropTypes.string.isRequired,
     onSelectNode: PropTypes.func,
@@ -34,8 +34,13 @@ export default class OutlineView extends Component {
     this.createOutline(this.props.code);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.createOutline(nextProps.code);
+  componentDidUpdate(prevProps) {
+    console.log(
+      prevProps.code === this.props.code,
+      prevProps.onSelectNode === this.props.onSelectNode,
+      prevProps.width === this.props.width
+    );
+    if (prevProps.code !== this.props.code) this.createOutline(this.props.code);
   }
 
   componentWillUnmount() {

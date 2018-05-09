@@ -30,7 +30,6 @@ const menuItems = {
 
 export class ProjectExplorer extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     searchKey: PropTypes.string,
     treeData: PropTypes.object.isRequired,

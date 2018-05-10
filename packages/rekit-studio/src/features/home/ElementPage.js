@@ -74,7 +74,7 @@ export class ElementPage extends Component {
       hasDiagram: /^(js|jsx)$/.test(ext),
       hasTest: ele.hasTest,
       isRoute: ele.feature && ele.name === 'route.js',
-      hasCode: /^(js|jsx|html|css|less|scss|txt|json|sass|md|log|pl|py|sh|cmd)$/.test(ext),
+      hasCode: /^(js|jsx|html|css|less|scss|txt|json|sass|md|xml|svg|log|pl|py|sh|cmd)$/.test(ext),
       isPic: /^(jpe?g|png|gif|bmp)$/.test(ext),
     };
     // return _.find(featureById[feature].components, { name: ele.name });

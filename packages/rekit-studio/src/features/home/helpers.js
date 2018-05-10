@@ -12,7 +12,7 @@ export function getElementData(elementById, projectRoot, file) {
     ...ele,
     hasDiagram: /^(js|jsx)$/.test(ext),
     hasTest: ele.hasTest,
-    hasCode: /^(ts|tsx|js|jsx|html|css|less|scss|txt|json|sass|md|log|pl|py|sh|cmd)$/.test(ext),
+    hasCode: /^(ts|tsx|js|jsx|html|css|less|scss|txt|json|sass|md|xml|svg|log|pl|py|sh|cmd)$/.test(ext),
     isPic: /^(jpe?g|png|gif|bmp)$/.test(ext),
   };
   data.onlyCode = data.hasCode && !data.hasDiagram && !data.hasTest;

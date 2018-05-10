@@ -27,8 +27,9 @@ export default class SvgIcon extends Component {
         height: `${size}px`,
       };
     }
+    const cssCls = `common-svg-icon ${this.props.className || ''}`;
     return (
-      <svg className="common-svg-icon" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <svg className={cssCls} xmlns="http://www.w3.org/2000/svg" {...props}>
         <use xlinkHref={`#${type}`} />
       </svg>
     );

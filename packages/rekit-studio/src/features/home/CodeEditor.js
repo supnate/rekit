@@ -11,7 +11,6 @@ import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/a
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
 import { storage } from '../common/utils';
-
 import { OutlineView, OutlineResizer } from '.';
 
 export class CodeEditor extends Component {

@@ -35,11 +35,6 @@ export default class OutlineView extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(
-      prevProps.code === this.props.code,
-      prevProps.onSelectNode === this.props.onSelectNode,
-      prevProps.width === this.props.width
-    );
     if (prevProps.code !== this.props.code) this.createOutline(this.props.code);
   }
 

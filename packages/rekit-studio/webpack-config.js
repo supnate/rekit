@@ -8,15 +8,15 @@ const webpack = require('webpack');
 // const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-
 const pkgJson = require('./package.json');
 
-module.exports = (type) => { // eslint-disable-line
+module.exports = type => {
+  // eslint-disable-line
   // type is one of [dev, dll, test, dist]
   // NOTE: for test, only module property is used.
 
   const isDev = type === 'dev';
-  const isDist = (type === 'dist' || type === 'demo');
+  const isDist = type === 'dist' || type === 'demo';
 
   return {
     devtool: {
@@ -63,20 +63,10 @@ module.exports = (type) => { // eslint-disable-line
         ],
       },
       dist: {
-        main: [
-          'babel-polyfill',
-          './styles/index.less',
-          './styles/antdCustom.less',
-          './index'
-        ],
+        main: ['babel-polyfill', './styles/index.less', './styles/antdCustom.less', './index'],
       },
       demo: {
-        main: [
-          'babel-polyfill',
-          './styles/index.less',
-          './styles/antdCustom.less',
-          './index'
-        ],
+        main: ['babel-polyfill', './styles/index.less', './styles/antdCustom.less', './index'],
       },
       test: null,
     }[type],
@@ -89,16 +79,17 @@ module.exports = (type) => { // eslint-disable-line
       path: path.join(__dirname, 'build/static'),
 
       // Exposed asset path. NOTE: the end '/' is necessary
-      publicPath: '/static/'
+      publicPath: '/static/',
     },
 
     stats: 'errors-only',
 
     plugins: _.compact([
-      isDist && new webpack.LoaderOptionsPlugin({
-        minimize: true,
-        debug: false
-      }),
+      isDist &&
+        new webpack.LoaderOptionsPlugin({
+          minimize: true,
+          debug: false,
+        }),
       isDev && new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       // isDist && new LodashModuleReplacementPlugin({
@@ -115,19 +106,21 @@ module.exports = (type) => { // eslint-disable-line
         {
           from: './libs',
           to: 'libs',
-        }
+        },
       ]),
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify({
-            demo: 'production',
-            dist: 'production',
-            dev: 'development',
-            test: 'test',
-          }[type]),
+          NODE_ENV: JSON.stringify(
+            {
+              demo: 'production',
+              dist: 'production',
+              dev: 'development',
+              test: 'test',
+            }[type]
+          ),
           REKIT_ENV: JSON.stringify(type),
-        }
-      })
+        },
+      }),
     ]),
 
     module: {
@@ -135,25 +128,37 @@ module.exports = (type) => { // eslint-disable-line
         {
           test: /\.jsx?$/,
           exclude: /node_modules|build/,
-          loader: 'babel-loader?cacheDirectory=true'
-        }, {
-          test: /\.(ttf|eot|svg|woff)$/,
-          loader: 'url-loader?limit=1000000' // TODO: it seems only inline base64 font works.
-        }, {
+          loader: 'babel-loader?cacheDirectory=true',
+        },
+        {
+          test: /\.svg$/,
+          loader: 'svg-sprite-loader',
+          options: {}
+        },
+        {
+          test: /\.(ttf|eot|woff)$/,
+          loader: 'url-loader?limit=1000000', // TODO: it seems only inline base64 font works.
+        },
+        {
           test: /\.less$/,
-          loader: isDev ? 'style-loader!css-loader?sourceMap!less-loader?{"sourceMap":true}'
-            : 'style-loader!css-loader!less-loader'
-        }, {
+          loader: isDev
+            ? 'style-loader!css-loader?sourceMap!less-loader?{"sourceMap":true}'
+            : 'style-loader!css-loader!less-loader',
+        },
+        {
           test: /\.css$/,
-          loader: 'style-loader!css-loader'
-        }, {
+          loader: 'style-loader!css-loader',
+        },
+        
+        {
           test: /\.json$/,
-          loader: 'json-loader'
-        }, {
+          loader: 'json-loader',
+        },
+        {
           test: /\.(png|jpe?g|gif)$/,
-          loader: 'url-loader?limit=8192'
-        }
-      ]
-    }
+          loader: 'url-loader?limit=8192',
+        },
+      ],
+    },
   };
 };

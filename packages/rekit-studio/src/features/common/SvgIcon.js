@@ -22,6 +22,7 @@ export default class SvgIcon extends Component {
     delete props.size;
     if (size) {
       props.style = {
+        ...this.props.style,
         width: `${size}px`,
         height: `${size}px`,
       };

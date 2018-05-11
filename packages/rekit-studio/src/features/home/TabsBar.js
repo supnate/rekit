@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import scrollIntoView from 'dom-scroll-into-view';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
-import { closeTab, moveTab } from './redux/actions';
+import { closeTab, moveTab, stickTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
 import { UnloadComponent } from '../common';
@@ -260,10 +260,12 @@ export class TabsBar extends Component {
                         {...provided2.dragHandleProps}
                         key={tab.key}
                         onClick={() => this.openTab(tab.key)}
+                        onDoubleClick={() => this.props.actions.stickTab(tab.key)}
                         className={classnames('tab', {
                           'is-dragging': snapshot2.isDragging,
                           'tab-active': this.isCurrentTab(tab),
                           'tab-has-change': this.isChanged(tab),
+                          'is-temp': tab.isTemp,
                         })}
                       >
                         <Icon type={tab.icon || 'file'} />
@@ -294,7 +296,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ closeTab, moveTab }, dispatch),
+    actions: bindActionCreators({ closeTab, moveTab, stickTab }, dispatch),
   };
 }
 

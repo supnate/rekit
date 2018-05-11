@@ -12,6 +12,8 @@ import { reducer as setSidePanelWidthReducer } from './setSidePanelWidth';
 import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
 import { reducer as codeChangeReducer } from './codeChange';
 import { reducer as setOutlineWidthReducer } from './setOutlineWidth';
+import { reducer as stickTabReducer } from './stickTab';
+import { getTabKey } from '../helpers';
 
 const reducers = [
   fetchProjectData,
@@ -24,10 +26,10 @@ const reducers = [
   setSidePanelWidthReducer,
   codeChangeReducer,
   setOutlineWidthReducer,
+  stickTabReducer,
 ];
 
 const pascalCase = _.flow(_.camelCase, _.upperFirst);
-
 
 export default function reducer(state = initialState, action) {
   let newState;
@@ -46,20 +48,17 @@ export default function reducer(state = initialState, action) {
       const { pathname } = action.payload;
       const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
       let { openTabs, historyTabs } = state;
-      let key, type, name, icon, feature; // eslint-disable-line
-
+      let type, name, icon, feature; // eslint-disable-line
+      const key = getTabKey(pathname);
       if (arr.length === 0) {
-        key = '#home';
         type = 'home';
         name = 'Dashboard';
         icon = 'home';
       } else if (arr[1] === 'routes') {
-        key = `${arr[0]}/routes`;
         type = 'routes';
         name = _.capitalize(arr[0]);
         icon = 'share-alt';
       } else if (arr[0] === 'element') {
-        key = arr[1];
         const ele = state.elementById[key];
         if (!ele) {
           newState = state; // Should only happens when after refreshing the page when project data is not fetched.
@@ -79,22 +78,18 @@ export default function reducer(state = initialState, action) {
           name = pascalCase(ele.feature);
         }
       } else if (arr[0] === 'tools' && arr[1] === 'tests') {
-        key = '#tests';
         name = 'Run Tests';
         type = 'tests';
         icon = 'check-circle-o';
       } else if (arr[0] === 'tools' && arr[1] === 'coverage') {
-        key = '#coverage';
         name = 'Test Coverage';
         type = 'coverage';
         icon = 'pie-chart';
       } else if (arr[0] === 'tools' && arr[1] === 'build') {
-        key = '#build';
         name = 'Build';
         type = 'build';
         icon = 'play-circle-o';
       } else if (arr[0] === 'config' && arr[1] === 'deps') {
-        key = '#deps';
         name = 'Dependencies';
         type = 'deps';
         icon = 'profile';
@@ -106,10 +101,18 @@ export default function reducer(state = initialState, action) {
 
       const foundTab = _.find(openTabs, { key });
       if (!foundTab) {
-        const tabItem = { key, type, name, icon, pathname };
+        const tabItem = { key, type, name, icon, pathname, isTemp: true };
         if (type === 'element') {
           tabItem.subTab = arr[2] || '';
           tabItem.feature = feature;
+        }
+
+        const currentTemp = _.find(openTabs, { isTemp: true });
+        if (currentTemp) {
+          const index = openTabs.indexOf(currentTemp);
+          openTabs = update(openTabs, { $splice: [[index, 1]] });
+          const keyIndex = historyTabs.indexOf(currentTemp.key);
+          historyTabs = update(historyTabs, { $splice: [[keyIndex, 1]] });
         }
         openTabs = [...openTabs, tabItem];
         historyTabs = [key, ...historyTabs];

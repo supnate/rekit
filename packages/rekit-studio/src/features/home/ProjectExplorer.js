@@ -10,6 +10,7 @@ import { storage } from '../common/utils';
 import cmdSuccessNotification from '../rekit-cmds/cmdSuccessNotification';
 import { execCmd, showCmdDialog, dismissExecCmdError } from '../rekit-cmds/redux/actions';
 import { getExpandedKeys, getFilteredExplorerTreeData } from './selectors/explorerTreeData';
+import { stickTab } from './redux/actions';
 
 const TreeNode = Tree.TreeNode;
 
@@ -338,6 +339,10 @@ export class ProjectExplorer extends Component {
     }
   };
 
+  handleTreeNodeDoubleClick = () => {
+    setTimeout(this.props.actions.stickTab, 50);
+  };
+
   hasSyntaxError(nodeData) {
     return this.props.filesHasSyntaxError[nodeData.key];
   }
@@ -387,7 +392,7 @@ export class ProjectExplorer extends Component {
     };
     const syntaxError = this.hasSyntaxError(nodeData);
     let ele = (
-      <span className={syntaxError ? 'has-syntax-error' : ''}>
+      <span className={syntaxError ? 'has-syntax-error' : ''} onDoubleClick={this.handleTreeNodeDoubleClick}>
         {nodeData.icon && this.renderTreeNodeIcon(syntaxError ? 'close-circle-o' : nodeData.icon)}
         <label>
           {nodeData.searchable ? this.renderHighlightedTreeNodeLabel(nodeData.label) : nodeData.label}
@@ -507,7 +512,7 @@ function mapStateToProps(state, props) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ execCmd, showCmdDialog, dismissExecCmdError }, dispatch),
+    actions: bindActionCreators({ execCmd, showCmdDialog, dismissExecCmdError, stickTab }, dispatch),
   };
 }
 

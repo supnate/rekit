@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import { MonacoEditor } from '../common';
-import { fetchFileContent, saveFile, showDemoAlert, codeChange } from './redux/actions';
+import { fetchFileContent, saveFile, showDemoAlert, codeChange, stickTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
 import { storage } from '../common/utils';
@@ -220,7 +220,7 @@ export class CodeEditor extends Component {
     editor.focus();
     // This seems to be able to add multiple times.
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => {
-      if (this.hasChange()) this.handleSave();
+      this.handleSave();
     });
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_O], () => {
       this.handleToggleOutline();
@@ -252,6 +252,8 @@ export class CodeEditor extends Component {
   };
 
   handleSave = () => {
+    this.props.actions.stickTab();
+    if (!this.hasChange()) return;
     this.props.actions
       .saveFile(this.props.file, this.editor.getValue())
       .then(() => {
@@ -434,7 +436,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert }, dispatch),
+    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab }, dispatch),
   };
 }
 

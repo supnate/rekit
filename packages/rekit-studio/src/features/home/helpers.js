@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export function getElementData(elementById, projectRoot, file) {
   if (!file) return null;
   file = decodeURIComponent(file);
@@ -45,4 +47,27 @@ export function getElementUrl(element) {
     default:
       return '/';
   }
+}
+
+export function getTabKey(pathname) {
+  // Get the tab key by pathname, if not provided, get it from current url
+  if (!pathname) pathname = document.location.pathname;
+  const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
+  let key = null;
+  if (arr.length === 0) {
+    key = '#home';
+  } else if (arr[1] === 'routes') {
+    key = `${arr[0]}/routes`;
+  } else if (arr[0] === 'element') {
+    key = arr[1];
+  } else if (arr[0] === 'tools' && arr[1] === 'tests') {
+    key = '#tests';
+  } else if (arr[0] === 'tools' && arr[1] === 'coverage') {
+    key = '#coverage';
+  } else if (arr[0] === 'tools' && arr[1] === 'build') {
+    key = '#build';
+  } else if (arr[0] === 'config' && arr[1] === 'deps') {
+    key = '#deps';
+  }
+  return key;
 }

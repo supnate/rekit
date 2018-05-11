@@ -6,6 +6,12 @@ const helpers = require('../helpers');
 
 // const tils = rekitCore.utils;
 
+let latestVersionCache = {};
+// Clear cache every 2 hours.
+setInterval(() => {
+  latestVersionCache = {};
+}, 7200000);
+
 function fetchDepsRemote() {
   return new Promise((resolve, reject) => {
     const prjRoot = rekitCore.utils.getProjectRoot();
@@ -23,9 +29,16 @@ function fetchDepsRemote() {
       };
     });
     Promise.all(
-      Object.keys(allDeps).map(name => packageJson(name).then((json) => {
-        allDeps[json.name].latestVersion = json.version;
-      }))
+      Object.keys(allDeps).map(name => {
+        if (latestVersionCache[name]) {
+          allDeps[name].latestVersion = latestVersionCache[name];
+          return Promise.resolve();
+        }
+        return packageJson(name).then((json) => {
+          allDeps[json.name].latestVersion = json.version;
+          latestVersionCache[name] = json.version;
+        });
+      })
     ).then(() => {
       resolve({
         deps: Object.keys(prjPkgJson.dependencies || {}),

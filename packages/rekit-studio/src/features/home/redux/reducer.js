@@ -101,18 +101,20 @@ export default function reducer(state = initialState, action) {
 
       const foundTab = _.find(openTabs, { key });
       if (!foundTab) {
-        const tabItem = { key, type, name, icon, pathname, isTemp: true };
+        const isTemp = !/^#(home|tests|coverage|build|deps)$/.test(key);
+        const tabItem = { key, type, name, icon, pathname, isTemp };
         if (type === 'element') {
           tabItem.subTab = arr[2] || '';
           tabItem.feature = feature;
         }
-
-        const currentTemp = _.find(openTabs, { isTemp: true });
-        if (currentTemp) {
-          const index = openTabs.indexOf(currentTemp);
-          openTabs = update(openTabs, { $splice: [[index, 1]] });
-          const keyIndex = historyTabs.indexOf(currentTemp.key);
-          historyTabs = update(historyTabs, { $splice: [[keyIndex, 1]] });
+        if (isTemp) {
+          const currentTemp = _.find(openTabs, { isTemp: true });
+          if (currentTemp) {
+            const index = openTabs.indexOf(currentTemp);
+            openTabs = update(openTabs, { $splice: [[index, 1]] });
+            const keyIndex = historyTabs.indexOf(currentTemp.key);
+            historyTabs = update(historyTabs, { $splice: [[keyIndex, 1]] });
+          }
         }
         openTabs = [...openTabs, tabItem];
         historyTabs = [key, ...historyTabs];
@@ -144,6 +146,7 @@ export default function reducer(state = initialState, action) {
       sessionStorage.setItem('historyTabs', JSON.stringify(historyTabs));
       break;
     }
+
     default:
       newState = state;
       break;

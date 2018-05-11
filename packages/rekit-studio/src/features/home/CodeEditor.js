@@ -206,6 +206,7 @@ export class CodeEditor extends Component {
   }
 
   handleEditorChange = () => {
+    this.props.actions.stickTab();
     this.props.actions.codeChange();
   };
 

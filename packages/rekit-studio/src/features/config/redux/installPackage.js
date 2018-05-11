@@ -12,6 +12,7 @@ export function installPackage(name) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
       type: CONFIG_INSTALL_PACKAGE_BEGIN,
+      data: { name },
     });
 
     // Return a promise so that you could control UI flow without states in the store.
@@ -60,6 +61,7 @@ export function reducer(state, action) {
       // Just after a request is sent
       return {
         ...state,
+        [`installPackage!${action.data.name}`]: true,
         installPackagePending: true,
         installPackageError: null,
       };

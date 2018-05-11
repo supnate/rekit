@@ -19,6 +19,10 @@ const initialState = {
   depsOutputHeight: 260,
   fetchDepsRemotePending: false,
   fetchDepsRemoteError: null,
+
+  depStatus: {
+    'updatePackage!lodash': true,
+  },
 };
 
 export default initialState;

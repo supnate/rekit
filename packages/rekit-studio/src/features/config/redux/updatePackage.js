@@ -12,6 +12,7 @@ export function updatePackage(name) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
       type: CONFIG_UPDATE_PACKAGE_BEGIN,
+      data: { name },
     });
 
     // Return a promise so that you could control UI flow without states in the store.
@@ -61,6 +62,7 @@ export function reducer(state, action) {
       // Just after a request is sent
       return {
         ...state,
+        [`updatePackage!${action.data.name}`]: true,
         updatePackagePending: true,
         updatePackageError: null,
       };

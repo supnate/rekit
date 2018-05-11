@@ -5,7 +5,7 @@
 const rekitCore = require('rekit-core');
 const spawn = require('child_process').spawn;
 
-function runTask(io, cmd, type, id) {
+function runTask(io, cmd, type, params) {
   console.log('running task: ', cmd);
   const prjRoot = rekitCore.utils.getProjectRoot();
   const args = cmd.split(' ');
@@ -26,7 +26,8 @@ function runTask(io, cmd, type, id) {
       text.forEach(t => arr.push(t));
       io.emit('output', {
         type,
-        id,
+        id: params.id,
+        params,
         output: arr,
       });
     };
@@ -34,7 +35,7 @@ function runTask(io, cmd, type, id) {
     child.stderr.on('data', handleOutput);
 
     child.on('close', () => {
-      io.emit('task-finished', { type });
+      io.emit('task-finished', { type, params });
       resolve();
     });
   });

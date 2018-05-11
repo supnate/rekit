@@ -34,9 +34,9 @@ export class OutputPanel extends Component {
     this.scrollNode.scrollTop = this.scrollNode.scrollHeight;
   };
 
-  assignRef = (node) => {
+  assignRef = node => {
     this.scrollNode = node;
-  }
+  };
 
   render() {
     const output = this.props.filter.reduce(
@@ -46,9 +46,11 @@ export class OutputPanel extends Component {
     return (
       <div className="common-output-panel" style={this.props.style} ref={this.assignRef}>
         <Icon type="close" onClick={this.props.onClose} title="Close" />
-        {output
-          .map(text => text.replace('[1G', ''))
-          .map(text => <div dangerouslySetInnerHTML={{ __html: convert.toHtml(text) }} />)}
+        <div className="scroll-container">
+          {output
+            .map(text => text.replace('[1G', ''))
+            .map(text => <div dangerouslySetInnerHTML={{ __html: convert.toHtml(text) }} />)}
+        </div>
       </div>
     );
   }

@@ -217,7 +217,7 @@ module.exports = () => {
               reply403(res);
               break;
             }
-            bgProcesses.installPackagePending = true;
+            bgProcesses.installPackagePending = { name: req.body.name };
             installPackage(io, req.body.name).then(() => {
               bgProcesses.installPackagePending = false;
             });
@@ -229,7 +229,7 @@ module.exports = () => {
               reply403(res);
               break;
             }
-            bgProcesses.updatePackagePending = true;
+            bgProcesses.updatePackagePending = { name: req.body.name };
             updatePackage(io, req.body.name).then(() => {
               bgProcesses.updatePackagePending = false;
             });
@@ -241,7 +241,7 @@ module.exports = () => {
               reply403(res);
               break;
             }
-            bgProcesses.removePackagePending = true;
+            bgProcesses.removePackagePending = { name: req.body.name };
             removePackage(io, req.body.name).then(() => {
               bgProcesses.removePackagePending = false;
             });

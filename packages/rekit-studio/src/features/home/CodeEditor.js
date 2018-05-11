@@ -206,8 +206,8 @@ export class CodeEditor extends Component {
   }
 
   handleEditorChange = () => {
-    this.props.actions.stickTab();
     this.props.actions.codeChange();
+    if (this.hasChange()) this.props.actions.stickTab();
   };
 
   handleOutlineSelect = nodeData => {

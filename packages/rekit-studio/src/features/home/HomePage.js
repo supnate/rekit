@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { autobind } from 'core-decorators';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Col, Icon, Popover, Row } from 'antd';
 import { OverviewChordDiagram } from '../diagram';
@@ -163,4 +163,11 @@ function mapStateToProps(state) {
     home: state.home,
   };
 }
-export default connect(mapStateToProps)(HomePage);
+
+/* istanbul ignore next */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ }, dispatch),
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

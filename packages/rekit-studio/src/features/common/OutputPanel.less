@@ -2,11 +2,19 @@
 
 .common-output-panel {
   position: relative;
-  overflow: auto;
-  .scroll-style();
+  .scroll-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    .scroll-style();
+    padding: 10px;
+  }
 
   color: rgba(255, 255, 255, 0.7);
-  padding: 10px;
+
   font-size: 12px;
 
   .anticon-close {
@@ -15,6 +23,7 @@
     right: 10px;
     top: 10px;
     cursor: pointer;
+    z-index: 999;
     &:hover {
       color: rgba(255, 255, 255, 0.7);
     }

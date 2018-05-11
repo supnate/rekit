@@ -10,13 +10,14 @@ export class DepsList extends Component {
     actions: PropTypes.object.isRequired,
     deps: PropTypes.array.isRequired,
     depsType: PropTypes.string.isRequired,
-    bgProcesses: PropTypes.object.isRequired,
+    onShowOutput: PropTypes.func,
   };
 
   state = {
     statusFilter: [],
     statusFilterDropdownVisible: false,
     inputValue: '',
+    onShowOutput() {},
   };
 
   getColumns() {
@@ -88,8 +89,8 @@ export class DepsList extends Component {
         render(status, record) {
           return (
             <span className={`status-${record.status}`}>
-              {status ? <span className={`status-icon status-icon-${status}`} title={`${status}`} /> : ''}
-              {' '}{record.latestVersion}
+              {status ? <span className={`status-icon status-icon-${status}`} title={`${status}`} /> : ''}{' '}
+              {record.latestVersion}
             </span>
           );
         },
@@ -100,9 +101,24 @@ export class DepsList extends Component {
         width: 100,
         align: 'center',
         render: (__, item) => {
+          const depStatus = this.props.depStatus;
+          const key1 = `updatePackage!${item.name}`;
+          const key2 = `removePackage!${item.name}`;
+          const key3 = `installPackage!${item.name}`;
+          if (depStatus[key1] || depStatus[key2] || depStatus[key3]) {
+            return (
+              <div className="actions">
+                <Icon type="loading-3-quarters" spin onClick={this.handleLoadingIconClick} />
+              </div>
+            );
+          }
           return (
             <div className="actions">
-              <Icon type="arrow-up" title="Upgrade to the latest version." onClick={() => this.handleUpdatePackage(item.name)} />
+              <Icon
+                type="arrow-up"
+                title="Upgrade to the latest version."
+                onClick={() => this.handleUpdatePackage(item.name)}
+              />
               <Icon type="close" title="Remove" onClick={() => this.handleRemovePackage(item.name)} />
             </div>
           );
@@ -121,21 +137,29 @@ export class DepsList extends Component {
 
   handleAddPackage = () => {
     if (!this.state.inputValue) return;
+    this.props.onShowOutput();
     this.props.actions.installPackage(this.state.inputValue);
   };
 
   handleUpdatePackage = name => {
-    if (this.props.bgProcesses.updatePackagePending) return;
-    this.props.actions.updatePackage(name);
+    Modal.confirm({
+      title: 'Confirm',
+      content: 'Are you sure to update the package to the latest version?',
+      okText: 'Yes',
+      onOk: () => {
+        this.props.onShowOutput();
+        this.props.actions.updatePackage(name);
+      },
+    });
   };
   handleRemovePackage = name => {
-    if (this.props.bgProcesses.removePackagePending) return;
     Modal.confirm({
       title: 'Confirm',
       content: 'Are you sure to remove the package?',
       okText: 'Yes',
       okType: 'danger',
       onOk: () => {
+        this.props.onShowOutput();
         this.props.actions.removePackage(name);
       },
     });
@@ -155,6 +179,10 @@ export class DepsList extends Component {
       statusFilterDropdownVisible: false,
       statusFilter: [],
     });
+  };
+
+  handleLoadingIconClick = () => {
+    this.props.onShowOutput();
   };
 
   render() {
@@ -181,7 +209,7 @@ export class DepsList extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    bgProcesses: state.rekitTools.bgProcesses,
+    depStatus: state.config.depStatus,
   };
 }
 

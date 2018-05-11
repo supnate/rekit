@@ -12,6 +12,7 @@ export function removePackage(name) {
   return (dispatch) => { // optionally you can have getState as the second argument
     dispatch({
       type: CONFIG_REMOVE_PACKAGE_BEGIN,
+      data: { name },
     });
 
     // Return a promise so that you could control UI flow without states in the store.
@@ -60,6 +61,7 @@ export function reducer(state, action) {
       // Just after a request is sent
       return {
         ...state,
+        [`removePackage!${action.data.name}`]: true,
         removePackagePending: true,
         removePackageError: null,
       };

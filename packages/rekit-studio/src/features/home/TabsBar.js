@@ -202,7 +202,7 @@ export class TabsBar extends Component {
   };
 
   handleMenuClick = (tab, menuKey) => {
-    const { openTabs } = this.props.home;
+    const { openTabs } = this.props;
     switch (menuKey) {
       case 'close-others':
         openTabs.filter(t => t.key !== tab.key).forEach(t => this.handleClose({}, t));

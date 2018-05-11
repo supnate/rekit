@@ -20,6 +20,7 @@ export default class SvgIcon extends Component {
     const props = { ...this.props };
     delete props.type;
     delete props.size;
+    delete props.className;
     if (size) {
       props.style = {
         ...this.props.style,

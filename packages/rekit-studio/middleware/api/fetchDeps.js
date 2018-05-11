@@ -11,7 +11,7 @@ function fetchDeps() {
   Object.keys(allDeps).forEach(key => {
     let installedVersion = '--';
     try {
-      installedVersion = require(`${key}/package.json`).version; // eslint-disable-line
+      installedVersion = helpers.forceRequire(`${key}/package.json`).version; // eslint-disable-line
     } catch (e) {} // eslint-disable-line
     allDeps[key] = {
       requiredVersion: allDeps[key],

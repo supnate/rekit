@@ -21,7 +21,6 @@ const initialState = {
   fetchDepsRemoteError: null,
 
   depStatus: {
-    'updatePackage!lodash': true,
   },
 };
 

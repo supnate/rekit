@@ -5,9 +5,12 @@ const fetchProjectData = require('./middleware/api/fetchProjectData');
 // console.log(path.join('/Users/abc/../def', '../nate'));
 // console.log(path.resolve('/Users/abc/../nate'));
 const core = require('rekit-core');
+const helpers = require('./middleware/helpers');
+console.log(helpers.forceRequire('lodash/package.json').version);
+console.log(helpers.forceRequire('lodash/package.json').version);
 console.time('Done');
 // fetchProjectData();
-console.log(JSON.stringify(fetchProjectData().features[1].components[1].deps.actions));
+// console.log(JSON.stringify(fetchProjectData().features[1].components[1].deps.actions));
 console.timeEnd('Done');
 // const _ = require('lodash');
 

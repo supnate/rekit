@@ -17,7 +17,7 @@ while (prjRoot && prjRoot !== lastDir && fs.existsSync(prjRoot)) {
 module.exports = {
   forceRequire(modulePath) {
     // Avoid cache for require.
-    delete require.cache[modulePath];
+    delete require.cache[require.resolve(modulePath)];
     return require(modulePath); // eslint-disable-line
   },
 

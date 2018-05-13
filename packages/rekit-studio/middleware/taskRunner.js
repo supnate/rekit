@@ -45,13 +45,7 @@ function runTask(io, cmd, type, params) {
     child.stderr.on('data', handleOutput);
 
     child.on('close', () => {
-      io.emit('output', {
-        type,
-        id: params.id,
-        params,
-        output: arr,
-      });
-      arr.length = 0;
+      emitOutput.flush();
       io.emit('task-finished', { type, params });
       resolve();
     });

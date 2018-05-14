@@ -10,6 +10,7 @@ import rekitToolsReducer from '../features/rekit-tools/redux/reducer';
 import extensionReducer from '../features/extension/redux/reducer';
 import configReducer from '../features/config/redux/reducer';
 import layoutReducer from '../features/layout/redux/reducer';
+import editorReducer from '../features/editor/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -27,6 +28,7 @@ const reducerMap = {
   extension: extensionReducer,
   config: configReducer,
   layout: layoutReducer,
+  editor: editorReducer,
 };
 
 export default combineReducers(reducerMap);

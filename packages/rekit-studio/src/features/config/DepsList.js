@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Icon, Input, Table, Spin, Menu, Modal } from 'antd';
 import * as actions from './redux/actions';
+import { showDemoAlert } from '../home/redux/actions';
 
 export class DepsList extends Component {
   static propTypes = {
@@ -138,7 +139,16 @@ export class DepsList extends Component {
   handleAddPackage = () => {
     if (!this.state.inputValue) return;
     this.props.onShowOutput();
-    this.props.actions.installPackage(this.state.inputValue);
+    this.props.actions.installPackage(this.state.inputValue).catch(e => {
+      if (process.env.REKIT_ENV === 'demo') {
+        this.props.actions.showDemoAlert();
+      } else {
+        Modal.error({
+          title: 'Failed to install package',
+          content: 'Please retry or raise an issue on github.com/supnate/rekit',
+        });
+      }
+    });
   };
 
   handleUpdatePackage = name => {
@@ -148,7 +158,16 @@ export class DepsList extends Component {
       okText: 'Yes',
       onOk: () => {
         this.props.onShowOutput();
-        this.props.actions.updatePackage(name);
+        this.props.actions.updatePackage(name).catch(e => {
+          if (process.env.REKIT_ENV === 'demo') {
+            this.props.actions.showDemoAlert();
+          } else {
+            Modal.error({
+              title: 'Failed to update package',
+              content: 'Please retry or raise an issue on github.com/supnate/rekit',
+            });
+          }
+        });
       },
     });
   };
@@ -160,7 +179,16 @@ export class DepsList extends Component {
       okType: 'danger',
       onOk: () => {
         this.props.onShowOutput();
-        this.props.actions.removePackage(name);
+        this.props.actions.removePackage(name).catch(e => {
+          if (process.env.REKIT_ENV === 'demo') {
+            this.props.actions.showDemoAlert();
+          } else {
+            Modal.error({
+              title: 'Failed to remote package',
+              content: 'Please retry or raise an issue on github.com/supnate/rekit',
+            });
+          }
+        });
       },
     });
   };
@@ -216,7 +244,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch),
+    actions: bindActionCreators({ ...actions, showDemoAlert }, dispatch),
   };
 }
 

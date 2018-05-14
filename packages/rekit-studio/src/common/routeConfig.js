@@ -8,6 +8,7 @@ import rekitToolsRoute from '../features/rekit-tools/route';
 import extensionRoute from '../features/extension/route';
 import configRoute from '../features/config/route';
 import layoutRoute from '../features/layout/route';
+import editorRoute from '../features/editor/route';
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
 // This is used for Rekit cmds to register routes for new features, remove features, etc.
@@ -20,6 +21,7 @@ const childRoutes = [
   extensionRoute,
   configRoute,
   layoutRoute,
+  editorRoute,
 ];
 
 const routes = [{

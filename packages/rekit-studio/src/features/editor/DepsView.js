@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import history from '../../common/history';
 import * as actions from './redux/actions';
 
 export class DepsView extends Component {
   static propTypes = {
-    editor: PropTypes.object.isRequired,
+    moduleKey: PropTypes.object.isRequired,
+    fileById: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 

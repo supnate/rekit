@@ -37,7 +37,7 @@ function getLocalRekitCore() {
       return null;
     }
   }
-  return require(path.join(prjRoot, 'node_modules/rekit-core')); // eslint-disable-line
+  return require('rekit-core');
 }
 
 const rekitCore = getLocalRekitCore();

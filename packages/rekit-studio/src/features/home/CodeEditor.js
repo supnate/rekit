@@ -11,7 +11,7 @@ import { fetchFileContent, saveFile, showDemoAlert, codeChange, stickTab } from 
 import editorStateMap from './editorStateMap';
 import modelManager from '../common/monaco/modelManager';
 import { storage } from '../common/utils';
-import { OutlineView, OutlineResizer } from '.';
+import { OutlineView, OutlineResizer } from '../editor';
 
 export class CodeEditor extends Component {
   static propTypes = {

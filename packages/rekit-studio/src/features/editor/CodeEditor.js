@@ -6,12 +6,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
-import { MonacoEditor } from '../common';
-import { fetchFileContent, saveFile, showDemoAlert, codeChange, stickTab } from '../home/redux/actions';
-import editorStateMap from '../home/editorStateMap';
-import modelManager from '../common/monaco/modelManager';
+import { fetchFileContent, saveFile, showDemoAlert, stickTab } from '../home/redux/actions';
+import editorStateMap from './editorStateMap';
+import modelManager from './modelManager';
 import { storage } from '../common/utils';
-import { OutlineView, OutlineResizer } from '../home';
+import { codeChange } from './redux/actions';
+import { OutlineView, OutlineResizer, MonacoEditor } from './';
 
 export class CodeEditor extends Component {
   static propTypes = {

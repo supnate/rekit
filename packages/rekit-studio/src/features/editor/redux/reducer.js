@@ -8,9 +8,11 @@
 
 import initialState from './initialState';
 import { reducer as setOutlineWidthReducer } from './setOutlineWidth';
+import { reducer as codeChangeReducer } from './codeChange';
 
 const reducers = [
   setOutlineWidthReducer,
+  codeChangeReducer,
 ];
 
 export default function reducer(state = initialState, action) {

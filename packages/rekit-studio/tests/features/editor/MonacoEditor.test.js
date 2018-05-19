@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { MonacoEditorTest } from 'src/features/common';
+import { MonacoEditor } from 'src/features/editor';
 
-describe('common/MonacoEditorTest', () => {
+describe('editor/MonacoEditor', () => {
   it('renders node with correct class name', () => {
     const renderedComponent = shallow(
-      <MonacoEditorTest />
+      <MonacoEditor />
     );
 
     expect(
-      renderedComponent.find('.common-monaco-editor-test').getElement()
+      renderedComponent.find('.editor-monaco-editor').getElement()
     ).to.exist;
   });
 });

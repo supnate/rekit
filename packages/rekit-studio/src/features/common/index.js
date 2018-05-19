@@ -4,7 +4,6 @@ export { default as colors } from './colors';
 export { default as SearchInput } from './SearchInput';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as MonacoEditor } from './MonacoEditor';
-export { default as MonacoEditorTest } from './MonacoEditorTest';
 export { default as UnloadComponent } from './UnloadComponent';
 export { default as OutputPanel } from './OutputPanel';
 export { default as Resizer } from './Resizer';

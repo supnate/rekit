@@ -9,7 +9,7 @@ import history from '../../common/history';
 import { ElementDiagram } from '../diagram';
 import { colors } from '../common';
 import modelManager from '../common/monaco/modelManager';
-import { CodeEditor } from './';
+import { CodeEditor } from '../editor';
 
 const TabPane = Tabs.TabPane;
 

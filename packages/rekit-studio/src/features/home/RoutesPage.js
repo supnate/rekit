@@ -5,7 +5,7 @@ import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
-import { CodeEditor } from './';
+import { CodeEditor } from '../editor';
 
 const TabPane = Tabs.TabPane;
 export class RoutesPage extends Component {

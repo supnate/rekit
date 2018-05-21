@@ -9,10 +9,12 @@
 import initialState from './initialState';
 import { reducer as setOutlineWidthReducer } from './setOutlineWidth';
 import { reducer as codeChangeReducer } from './codeChange';
+import { reducer as doSyncReducer } from './doSync';
 
 const reducers = [
   setOutlineWidthReducer,
   codeChangeReducer,
+  doSyncReducer,
 ];
 
 export default function reducer(state = initialState, action) {

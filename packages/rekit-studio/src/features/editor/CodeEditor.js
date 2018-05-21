@@ -426,7 +426,7 @@ export class CodeEditor extends Component {
 function mapStateToProps(state) {
   return {
     // codeChange: state.home.codeChange,
-    outlineWidth: state.home.outlineWidth,
+    outlineWidth: state.editor.outlineWidth,
     fileContentById: state.home.fileContentById,
     fileContentNeedReload: state.home.fileContentNeedReload,
     fetchFileContentPending: state.home.fetchFileContentPending,

@@ -56,7 +56,7 @@ export class OutlineReiszer extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    outlineWidth: state.home.outlineWidth,
+    outlineWidth: state.editor.outlineWidth,
   };
 }
 

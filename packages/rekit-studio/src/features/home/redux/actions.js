@@ -9,5 +9,4 @@ export { closeTab } from './closeTab';
 export { moveTab } from './moveTab';
 export { setSidePanelWidth } from './setSidePanelWidth';
 export { codeChange } from './codeChange';
-export { setOutlineWidth } from './setOutlineWidth';
 export { stickTab } from './stickTab';

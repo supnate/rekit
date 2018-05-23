@@ -11,7 +11,6 @@ import { reducer as moveTabReducer } from './moveTab';
 import { reducer as setSidePanelWidthReducer } from './setSidePanelWidth';
 import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
 import { reducer as codeChangeReducer } from './codeChange';
-import { reducer as setOutlineWidthReducer } from './setOutlineWidth';
 import { reducer as stickTabReducer } from './stickTab';
 import { getTabKey } from '../helpers';
 
@@ -25,7 +24,6 @@ const reducers = [
   moveTabReducer,
   setSidePanelWidthReducer,
   codeChangeReducer,
-  setOutlineWidthReducer,
   stickTabReducer,
 ];
 

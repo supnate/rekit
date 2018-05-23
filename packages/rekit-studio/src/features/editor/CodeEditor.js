@@ -299,7 +299,7 @@ export class CodeEditor extends Component {
   render() {
     if (this.state.notFound) {
       return (
-        <div className="home-code-editor">
+        <div className="editor-code-editor">
           <div className="code-editor-toolbar">
             <div className="file-path" title={this.props.file}>
               {this.props.file}
@@ -316,7 +316,7 @@ export class CodeEditor extends Component {
     const hasChange = this.hasChange();
     const { saveFilePending } = this.props;
     return (
-      <div className="home-code-editor">
+      <div className="editor-code-editor">
         <OutlineResizer />
         <div className="code-editor-toolbar">
           <div className="file-path">{this.props.file}</div>

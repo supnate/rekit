@@ -158,6 +158,6 @@ export default class MonacoEditor extends Component {
   }, 100);
 
   render() {
-    return <div ref={this.assignRef} className="common-monaco-editor" />;
+    return <div ref={this.assignRef} className="editor-monaco-editor" />;
   }
 }

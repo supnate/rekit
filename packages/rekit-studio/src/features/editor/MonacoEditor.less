@@ -1,5 +1,240 @@
 @import '../../styles/mixins';
 
 .editor-monaco-editor {
+  .monaco-editor-node {
+    height: 100%;
+    font-family: Menlo, "Source Code Pro", monospace!important;
+  }
 
+  @jsxColor: lighten(#3dc1a0, 0%);
+
+  //babylong start
+  // .jsxName {
+  //   color: #3dc1a0;
+  // }
+
+  // .jsxAttrName {
+  //   color: #8ad3ff;
+  // }
+
+  // .jsxTagStart,
+  // .jsxTagEnd {
+  //   color: #6d6d6d;
+  // }
+  //babylong end
+
+//   div[class^="tocolor-"], div[class*=" tocolor-"] {
+//     color:red 
+// }
+//prismjs start
+  .mtk1,
+  .attr-name {
+    color: #8ad3ff;
+  }
+
+  .mtk1.tag,
+  .start-tag-name,
+  .end-tag-name {
+    color: #3dc1a0;
+  }
+
+  .mtk9.tag,
+  .tag-start,
+  .tag-end,
+  .end-tag-start,
+  .end-tag-end {
+    color: #6d6d6d;
+  }
+
+  .as-keyword,
+  .await-keyword,
+  .catch-keyword,
+  .default-keyword,
+  .else-keyword,
+  .export-keyword,
+  .from-keyword,
+  .if-keyword,
+  .import-keyword,
+  .return-keyword,
+  .static-keyword,
+  .try-keyword {
+    color: #b86cb4;
+  }
+
+  .regex {
+    color: #d16969;
+  }
+  .function,
+  .function-variable {
+    color: #d4d797;
+  }
+
+  .class-name,
+  .builtin,
+  .globals {
+    color: #3dc1a0;
+  }
+  .arrow-operator,
+  .jsx-exp-start,
+  .jsx-exp-end {
+    color: #569cd6;
+  }
+
+  .jsx-text, .plain-text {
+    color: #d4d4d4;
+  }
+  //prismjs end
+
+  // .AnyKeyword,
+  // .blitzKeywordGreen,
+  // .BooleanKeyword,
+  // .Identifier.ClassDeclaration,
+  // .Identifier.InterfaceDeclaration,
+  // .Identifier.TypeAliasDeclaration,
+  // .Identifier.TypeReference,
+  // .NumberKeyword,
+  // .StringKeyword,
+  // .VoidKeyword {
+  //   color: #3dc1a0 !important;
+  // }
+
+  // .mtk1.Identifier {
+  //   color: #8ad3ff!important;
+  // }
+  // .mtk1.Identifier.JsxOpeningElement {
+  //   color: @jsxColor!important;
+  // }
+  // .mtk1.Identifier.JsxExpression.JsxClosingElement {
+  //   color: @jsxColor;
+  // }
+  // .mtk1.JsxClosingElement {
+  //   color: #e0e0e0 !important;
+  // }
+  // .mtk1.Identifier.JsxClosingElement {
+  //   color: @jsxColor !important;
+  // }
+  // .mtk1.Identifier.JsxSelfClosingElement {
+  //   color: @jsxColor!important;
+  // }
+  // .mtk1.Identifier.VariableStatement.JsxClosingElement {
+  //   color: @jsxColor !important;
+  // }
+  // .mtk1.VariableStatement.JsxSelfClosingElement.Identifier {
+  //   color: @jsxColor;
+  // }
+  // .mtk1.Identifier.JsxAttribute.VariableDeclaration {
+  //   color: #aa759f;
+  // }
+  // .mtk1.JsxExpression.VariableStatement {
+  //   color: #fac863;
+  // }
+  // .mtk1.VariableStatement.JsxSelfClosingElement {
+  //   color: #e0e0e0;
+  // }
+  // .mtk1.VariableStatement.JsxClosingElement {
+  //   color: #e0e0e0;
+  // }
+  // .mtk1.JsxElement.JsxText {
+  //   color: #e0e0e0;
+  // }
+  // .JsxText {
+  //   color: #e0e0e0;
+  // }
+  // .mtk1.Identifier.JsxAttribute {
+  //   color: #8ad3ff !important;
+  // }
+
+  // .Identifier.CallExpression
+  //   + .OpenParenToken.CallExpression
+  //   + .Identifier.CallExpression {
+  //   color: #fac863 !important;
+  // }
+
+  // .mtk9.GreaterThanToken.SyntaxList.ExpressionWithTypeArguments.SyntaxList.HeritageClause.ClassDeclaration {
+  //   color: #dcdcdc !important;
+  // }
+  // .mtk9.JsxClosingElement,
+  // .mtk9.JsxSelfClosingElement,
+  // .mtk9.JsxOpeningElement {
+  //   color: #888!important
+  // }
+  // .mtk9.JsxAttribute {
+  //   color: #ddd!important
+  // }
+  // .JsxText {
+  //   color: #d4d4d4 !important;
+  // }
+  // .AsteriskToken.NamespaceImport,
+  // .mtk8,
+  // .mtk9.EqualsGreaterThanToken {
+  //   color: #569cd6;
+  // }
+  // .FirstBinaryOperator.JsxClosingElement,
+  // .FirstBinaryOperator.JsxElement.JsxOpeningElement,
+  // .FirstBinaryOperator.JsxSelfClosingElement,
+  // .JsxClosingElement.GreaterThanToken,
+  // .JsxElement.JsxClosingElement,
+  // .mtk9.GreaterThanToken,
+  // .SlashToken.JsxClosingElement,
+  // .SlashToken.JsxSelfClosingElement {
+  //   color: #6d6d6d !important;
+  // }
+  // .mtk1.Identifier.SyntaxList.JsxAttribute {
+  //   color: #8ad3ff !important;
+  // }
+  // .AsKeyword,
+  // .AwaitKeyword,
+  // .CatchKeyword,
+  // .DefaultKeyword,
+  // .ElseKeyword,
+  // .ExportKeyword,
+  // .FromKeyword,
+  // .IfKeyword,
+  // .ImportKeyword,
+  // .ReturnKeyword,
+  // .StaticKeyword,
+  // .TryKeyword {
+  //   color: #b86cb4 !important;
+  // }
+  // .mtk1.Identifier {
+  //   color: #8ad3ff !important;
+  // }
+  // .AnyKeyword,
+  // .blitzKeywordGreen,
+  // .BooleanKeyword,
+  // .Identifier.ClassDeclaration,
+  // .Identifier.InterfaceDeclaration,
+  // .Identifier.TypeAliasDeclaration,
+  // .Identifier.TypeReference,
+  // .NumberKeyword,
+  // .StringKeyword,
+  // .VoidKeyword {
+  //   color: #3dc1a0 !important;
+  // }
+  // .Identifier.CallExpression ~ .CallExpression + .Identifier.CallExpression,
+  // .Identifier.MethodDeclaration,
+  // .Identifier.PropertyAssignment.CallExpression {
+  //   color: #d4d797 !important;
+  // }
+  // .Identifier.CallExpression + .OpenParenToken.CallExpression + .Identifier.CallExpression {
+  //   color: #8ad3ff !important;
+  // }
+  // .FunctionKeyword + .FunctionDeclaration + .Identifier.FunctionDeclaration {
+  //   color: #d4d797 !important;
+  // }
+
+
+  // .vs-whitespace {
+  //   color: rgba(227, 228, 226, 0.16) !important;
+  // }
+}
+
+.monaco-global-editor-node {
+  position: absolute;
+  display: none;
+  z-index: 888;
+  right: 0;
+  bottom: 0;
+  height: 300px;
+  width: 300px;
 }

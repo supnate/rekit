@@ -10,7 +10,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { closeTab, moveTab, stickTab } from './redux/actions';
 import editorStateMap from './editorStateMap';
-import modelManager from '../common/monaco/modelManager';
+import modelManager from '../editor/modelManager';
 import { UnloadComponent } from '../common';
 import { getElementData, getElementFiles } from './helpers';
 

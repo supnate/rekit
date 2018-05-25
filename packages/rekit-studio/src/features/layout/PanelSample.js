@@ -7,7 +7,7 @@ export default class PanelSample extends Component {
   render() {
     return (
       <div className="layout-panel-sample">
-        <Panel>
+        <Panel width={600}>
           <Panel width={100}>abc</Panel>
           <Resizer />
           <Panel>def</Panel>

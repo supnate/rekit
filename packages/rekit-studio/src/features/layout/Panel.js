@@ -35,8 +35,13 @@ export class Panel extends Component {
     const newStyle = { ...style };
     if (direction === 'horizontal') {
       Object.assign(newStyle, { top: 0, bottom: 0 });
+    } else {
+      Object.assign(newStyle, { left: 0, right: 0 });
     }
+    const totalSize = this.props.width || document.body.offsetWidth;
+    const usedSize = 0;
     const children = [...this.props.children].map(child => {
+      console.log(child.props.width);
       return child;
     });
     return (

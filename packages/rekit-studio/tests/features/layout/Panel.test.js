@@ -1,20 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { DefaultPage } from 'src/features/layout/DefaultPage';
+import { Panel } from 'src/features/layout/Panel';
 
-describe('layout/DefaultPage', () => {
+describe('layout/Panel', () => {
   it('renders node with correct class name', () => {
     const props = {
       layout: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <DefaultPage {...props} />
+      <Panel {...props} />
     );
 
     expect(
-      renderedComponent.find('.layout-default-page').getElement()
+      renderedComponent.find('.layout-panel').getElement()
     ).to.exist;
   });
 });

@@ -11,6 +11,7 @@ export default class Resizer extends Component {
 
   static defaultProps = {
     direction: 'vertical',
+    _type: 'Layout.Resizer',
   };
 
   state = {

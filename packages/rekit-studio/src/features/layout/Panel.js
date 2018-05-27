@@ -15,7 +15,7 @@ export class Panel extends Component {
     width: PropTypes.number,
     height: PropTypes.number,
     closable: PropTypes.bool,
-    layout: PropTypes.func,
+    // layout: PropTypes.func,
   };
 
   static defaultProps = {
@@ -25,7 +25,8 @@ export class Panel extends Component {
     height: 0,
     style: {},
     closable: false,
-    layout() {},
+    layout: () => {},
+    _type: 'Layout.Panel',
   };
 
   handleResize(key) {}
@@ -33,17 +34,30 @@ export class Panel extends Component {
   render() {
     const { direction, className, style, width, height } = this.props;
     const newStyle = { ...style };
-    if (direction === 'horizontal') {
-      Object.assign(newStyle, { top: 0, bottom: 0 });
-    } else {
-      Object.assign(newStyle, { left: 0, right: 0 });
-    }
+    // if (direction === 'horizontal') {
+    //   Object.assign(newStyle, { top: 0, bottom: 0 });
+    // } else {
+    //   Object.assign(newStyle, { left: 0, right: 0 });
+    // }
     const totalSize = this.props.width || document.body.offsetWidth;
     const usedSize = 0;
-    const children = [...this.props.children].map(child => {
-      console.log(child.props.width);
+    let autoSizeChild = null;
+    let children = [...this.props.children];
+    children = children.map(child => {
+      if (!child.props || !/Layout\.Panel|Layout\.Resizer/.test(child.props._type)) return child;
+      const childWidth = child.props.width;
+      console.log('child width: ', childWidth);
+      if (!childWidth && childWidth !== 0) {
+        if (autoSizeChild) {
+          throw new Error('More than one panel do not have width property, please check');
+        }
+        autoSizeChild = child;
+      }
       return child;
     });
+    if (!autoSizeChild) {
+      autoSizeChild = children[children.length - 1];
+    }
     return (
       <div className={`layout-panel ${className}`} style={newStyle}>
         {children}

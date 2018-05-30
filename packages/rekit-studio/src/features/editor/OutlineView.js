@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Tree } from 'antd';
 import OutlineWorker from 'worker-loader?name=outline.[hash].worker.js!./workers/outline'; // eslint-disable-line
 import { getTreeNodeData } from '../common/utils';
+import { DepsView } from './';
 
 const { TreeNode } = Tree;
 
@@ -92,6 +93,7 @@ export default class OutlineView extends PureComponent {
         <Tree selectedKeys={[]} expandedKeys={this.state.defaultExpandedKeys} onSelect={this.handleTreeSelect}>
           {this.state.treeData && this.state.treeData.children.map(this.renderTreeNode)}
         </Tree>
+        <DepsView />
       </div>
     );
   }

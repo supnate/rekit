@@ -107,11 +107,11 @@ module.exports = () => {
     return (req, res, next) => {
       const urlObject = url.parse(req.originalUrl);
       const p = urlObject.pathname.replace(rootPath, '');
-
       try {
         switch (p) {
           case '/api/project-data': {
             lastProjectData = fetchProjectData();
+            res.setHeader('content-type', 'application/json');
             res.write(
               JSON.stringify(
                 Object.assign(

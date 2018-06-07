@@ -8,18 +8,30 @@ const getItem = type => (key, defaultValue, saveIfNotExist) => {
   if (!savedItem && saveIfNotExist) {
     setItem(type)(key, defaultValue);
   }
+  try {
+    if (savedItem) return JSON.parse(savedItem);
+  } catch (e) {
+    obj.removeItem(key);
+    return defaultValue;
+  }
+  return defaultValue;
+};
 
-  return savedItem ? JSON.parse(savedItem) : defaultValue;
+const removeItem = type => (key) => {
+  const obj = window[`${type}Storage`];
+  obj.removeItem(key);
 };
 
 export const storage = {
   local: {
     setItem: setItem('local'),
     getItem: getItem('local'),
+    removeItem: removeItem('local'),
   },
   session: {
     setItem: setItem('session'),
     getItem: getItem('session'),
+    removeItem: removeItem('session'),
   },
 };
 

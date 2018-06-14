@@ -17,6 +17,7 @@ export function reducer(state, action) {
     case EDITOR_CODE_CHANGE:
       return {
         ...state,
+        codeChange: state.codeChange + 1,
       };
 
     default:

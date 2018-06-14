@@ -287,9 +287,10 @@ export class TabsBar extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['codeChange', 'openTabs', 'elementById', 'projectRoot', 'historyTabs', 'sidePanelWidth']),
+    ..._.pick(state.home, ['openTabs', 'elementById', 'projectRoot', 'historyTabs', 'sidePanelWidth']),
     rekitCmds: state.rekitCmds,
     router: state.router,
+    codeChange: state.editor.codeChange,
   };
 }
 

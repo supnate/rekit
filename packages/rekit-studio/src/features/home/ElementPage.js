@@ -306,6 +306,7 @@ export class ElementPage extends Component {
 function mapStateToProps(state) {
   return {
     home: state.home,
+    codeChange: state.editor.codeChange,
     router: state.router,
   };
 }

@@ -12,7 +12,7 @@ import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
 import { codeChange } from './redux/actions';
-import { OutlineView, OutlineResizer, MonacoEditor, DepsView, EditorSider } from './';
+import { OutlineResizer, MonacoEditor, EditorSider } from './';
 
 export class CodeEditor extends Component {
   static propTypes = {

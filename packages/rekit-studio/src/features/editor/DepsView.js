@@ -38,6 +38,16 @@ export class DepsView extends Component {
       else if (link.target === file) dependents.push(link.source);
     });
 
+    const sort = deps => {
+      deps.sort((dep1, dep2) => {
+        const ele1 = this.props.home.elementById[dep1];
+        const ele2 = this.props.home.elementById[dep2];
+        return ele1.type.localeCompare(ele2.type) || ele1.name.localeCompare(ele2.name);
+      });
+    };
+    sort(dependencies);
+    sort(dependents);
+
     return (
       <div className="editor-deps-view">
         {dependencies.length > 0 && (

@@ -12,26 +12,32 @@ export default class EditorSider extends Component {
     code: PropTypes.string.isRequired,
     onSelectNode: PropTypes.func,
     width: PropTypes.number,
+    showDepsView: PropTypes.bool.isRequired,
   };
 
   render() {
     const { width, code, onSelectNode } = this.props;
+    const panes = [
+      <Pane className="pane" minSize="100px">
+        <div className="pane-header">Outline</div>
+        <OutlineView code={code} onSelectNode={onSelectNode} />
+      </Pane>,
+    ];
+    if (this.props.showDepsView) {
+      panes.push(
+        <Pane className="pane" minSize="100px">
+          <div className="pane-header">
+            Relations
+            <Button icon="right" size="small" onClick={() => history.go(1)} title="Go forward" />
+            <Button icon="left" size="small" onClick={() => history.go(-1)} title="Go back" />
+          </div>
+          <DepsView file={this.props.file} />
+        </Pane>
+      );
+    }
     return (
       <div className="editor-editor-sider" style={{ width: `${width}px` }}>
-        <SplitPane split="horizontal">
-          <Pane className="pane" minSize="100px">
-            <div className="pane-header">Outline</div>
-            <OutlineView code={code} onSelectNode={onSelectNode} />
-          </Pane>
-          <Pane className="pane" minSize="100px">
-            <div className="pane-header">
-              Relations
-              <Button icon="right" size="small" onClick={() => history.go(1)} title="Go forward" />
-              <Button icon="left" size="small" onClick={() => history.go(-1)} title="Go back" />
-            </div>
-            <DepsView file={this.props.file} />
-          </Pane>
-        </SplitPane>
+        <SplitPane split="horizontal">{panes}</SplitPane>
       </div>
     );
   }

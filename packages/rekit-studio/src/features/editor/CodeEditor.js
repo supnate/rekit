@@ -17,6 +17,7 @@ import { OutlineView, OutlineResizer, MonacoEditor, DepsView, EditorSider } from
 export class CodeEditor extends Component {
   static propTypes = {
     outlineWidth: PropTypes.number.isRequired,
+    elementById: PropTypes.object.isRequired,
     fileContentById: PropTypes.object.isRequired,
     fileContentNeedReload: PropTypes.object.isRequired,
     fetchFileContentPending: PropTypes.bool.isRequired, // eslint-disable-line
@@ -417,6 +418,7 @@ export class CodeEditor extends Component {
               code={this.editor.getValue()}
               width={this.getOutlineWidth()}
               onSelectNode={this.handleOutlineSelect}
+              showDepsView={!!this.props.elementById[this.props.file]}
             />
           )}
       </div>
@@ -430,6 +432,7 @@ function mapStateToProps(state) {
     // codeChange: state.home.codeChange,
     outlineWidth: state.editor.outlineWidth,
     fileContentById: state.home.fileContentById,
+    elementById: state.home.elementById,
     fileContentNeedReload: state.home.fileContentNeedReload,
     fetchFileContentPending: state.home.fetchFileContentPending,
     saveFilePending: state.home.saveFilePending,

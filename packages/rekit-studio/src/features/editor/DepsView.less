@@ -1,5 +1,40 @@
 @import '../../styles/mixins';
 
 .editor-deps-view {
-
+  color: #aaa;
+  padding: 10px;
+  dt {
+    margin-bottom: 3px;
+  }
+  .dependencies {
+    color: #9ccc65;
+  }
+  .dependents {
+    color: #29B6F6;
+  }
+  dd {
+    padding: 0;
+    margin: 0;
+  }
+  a {
+    display: block;
+    color: #bbb;
+    padding: 4px 10px 4px 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &:hover {
+      background-color: #444;
+      color: #bbb;
+    }
+  }
+  .anticon-appstore-o {
+    color: #f08036;
+  }
+  .anticon-notification {
+    color: #ec407a;
+  }
+  .anticon-file {
+    color: #8d6e63;
+  }
 }

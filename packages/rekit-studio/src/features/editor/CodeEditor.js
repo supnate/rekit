@@ -6,12 +6,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
+import SplitPane from 'react-split-pane';
 import { fetchFileContent, saveFile, showDemoAlert, stickTab } from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
 import { codeChange } from './redux/actions';
-import { OutlineView, OutlineResizer, MonacoEditor } from './';
+import { OutlineView, OutlineResizer, MonacoEditor, DepsView, EditorSider } from './';
 
 export class CodeEditor extends Component {
   static propTypes = {
@@ -381,7 +382,7 @@ export class CodeEditor extends Component {
               <Tooltip
                 title={
                   <label>
-                    Toggle Outline View{' '}
+                    Toggle Sider{' '}
                     <span style={{ color: '#888', fontSize: '12px' }}>
                       ({/^Mac/.test(window.navigator.platform) ? 'Cmd' : 'Ctrl'}+O)
                     </span>
@@ -411,7 +412,8 @@ export class CodeEditor extends Component {
         {this.editor &&
           this.hasOutline() &&
           this.state.showOutline && (
-            <OutlineView
+            <EditorSider
+              file={this.props.file}
               code={this.editor.getValue()}
               width={this.getOutlineWidth()}
               onSelectNode={this.handleOutlineSelect}

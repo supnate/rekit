@@ -30,6 +30,7 @@
     "no-param-reassign": 0,
     "no-mixed-operators": 0,
     "no-console": 0,
+    "jsx-a11y/anchor-is-valid": 0,
     "global-require": 0,
     "no-plusplus": 0,
     "no-else-return": 0,

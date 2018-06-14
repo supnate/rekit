@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Tree } from 'antd';
 import OutlineWorker from 'worker-loader?name=outline.[hash].worker.js!./workers/outline'; // eslint-disable-line
 import { getTreeNodeData } from '../common/utils';
-import { DepsView } from './';
 
 const { TreeNode } = Tree;
 
@@ -12,7 +11,6 @@ export default class OutlineView extends PureComponent {
   static propTypes = {
     code: PropTypes.string.isRequired,
     onSelectNode: PropTypes.func,
-    width: PropTypes.number.isRequired,
   };
 
   static defaultProps = {
@@ -85,7 +83,7 @@ export default class OutlineView extends PureComponent {
 
   render() {
     return (
-      <div className="home-outline-view" style={{ width: `${this.props.width}px` }}>
+      <div className="home-outline-view">
         {this.state.treeData &&
           (_.get(this.state.treeData, 'children.length') || 0) === 0 && (
             <div className="no-outline">No outline to show.</div>
@@ -93,7 +91,6 @@ export default class OutlineView extends PureComponent {
         <Tree selectedKeys={[]} expandedKeys={this.state.defaultExpandedKeys} onSelect={this.handleTreeSelect}>
           {this.state.treeData && this.state.treeData.children.map(this.renderTreeNode)}
         </Tree>
-        <DepsView />
       </div>
     );
   }

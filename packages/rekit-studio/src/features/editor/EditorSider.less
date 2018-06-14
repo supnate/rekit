@@ -1,5 +1,46 @@
 @import '../../styles/mixins';
 
 .editor-editor-sider {
+  position: absolute;
+  right: 0;
+  top: 32px;
+  bottom: 0;
+  width: 260px;
+  border-left: 1px solid #000;
 
+  .pane {
+    position: relative;
+    background-color: #2a2d33;
+  }
+
+  .pane-header {
+    padding: 0px 10px;
+    line-height: 30px;
+    background-color: #24262b;
+    color: #ccc;
+
+    .ant-btn {
+      float: right;
+      margin: 4px 0px 0 5px;
+      background-color: #333;
+      color: #ccc;
+      border: none;
+      outline: none;
+      .anticon {font-size: 12px;}
+      &:hover {
+        background-color: #111;
+      }
+      > span {
+        display: inline-block;
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  .home-outline-view, .editor-deps-view {
+    .abs-full();
+    top: 30px;
+    overflow: auto;
+    .scroll-style();
+  }
 }

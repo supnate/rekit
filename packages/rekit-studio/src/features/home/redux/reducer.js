@@ -13,6 +13,7 @@ import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
 import { reducer as codeChangeReducer } from './codeChange';
 import { reducer as stickTabReducer } from './stickTab';
 import { getTabKey } from '../helpers';
+import { storage } from '../../common/utils';
 
 const reducers = [
   fetchProjectData,
@@ -140,8 +141,8 @@ export default function reducer(state = initialState, action) {
         }
       }
       newState = { ...state, openTabs, historyTabs };
-      sessionStorage.setItem('openTabs', JSON.stringify(openTabs));
-      sessionStorage.setItem('historyTabs', JSON.stringify(historyTabs));
+      storage.session.setItem('openTabs', openTabs);
+      storage.session.setItem('historyTabs', historyTabs);
       break;
     }
 

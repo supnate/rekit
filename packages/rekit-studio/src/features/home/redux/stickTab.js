@@ -5,6 +5,7 @@ import _ from 'lodash';
 import update from 'immutability-helper';
 import { HOME_STICK_TAB } from './constants';
 import { getTabKey } from '../helpers';
+import { storage } from '../../common/utils';
 
 export function stickTab(key) {
   return {
@@ -23,7 +24,7 @@ export function reducer(state, action) {
         const sticked = update(tempTab, { $unset: ['isTemp'] });
         const index = openTabs.indexOf(tempTab);
         openTabs = update(openTabs, { [index]: { $set: sticked } });
-
+        storage.session.setItem('openTabs', openTabs);
         return {
           ...state,
           openTabs,

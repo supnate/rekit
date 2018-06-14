@@ -15,7 +15,7 @@ const initialState = {
   fetchFileContentError: null,
   filesHasSyntaxError: {},
 
-  // Resotre open tabs and history tabs from local storage
+  // Restore open tabs and history tabs from local storage
   openTabs: storage.session.getItem('openTabs', []),
   historyTabs: storage.session.getItem('historyTabs', []),
 

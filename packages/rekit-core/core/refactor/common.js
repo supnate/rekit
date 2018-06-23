@@ -55,7 +55,7 @@ function getModuleResolverAlias() {
   let alias = {};
   if (_.isArray(babelPlugins)) {
     const moduleResolver = babelPlugins.filter(p => p[0] === 'module-resolver');
-    if (moduleResolver) {
+    if (moduleResolver.length) {
       alias = moduleResolver[0][1].alias;
     }
   }

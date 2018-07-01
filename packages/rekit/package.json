@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "2.3.0",
+  "version": "2.3.2",
   "description": "Toolkit for building scalable web applications with React, Redux and React-router.",
   "license": "MIT",
   "bin": {

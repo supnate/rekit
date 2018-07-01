@@ -1,7 +1,7 @@
 /* eslint no-restricted-globals: 0, prefer-spread: 0, no-continue: 0, no-use-before-define: 0 */
 /* global self, babylon */
 self.Prism = { disableWorkerMessageHandler: true };
-self.importScripts(['/static/libs/prism-1.14.0.js']);
+self.importScripts(['/static/libs/prism-1.15.0.js']);
 
 function getLineNumberAndOffset(start, lines) {
   let line = 0;
@@ -212,7 +212,7 @@ self.addEventListener('message', event => {
     const env = {
       code,
       grammar: Prism.languages.jsx,
-      language: 'javascript',
+      language: 'jsx',
       tokens,
     };
     Prism.hooks.run('after-tokenize', env);

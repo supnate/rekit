@@ -34,6 +34,8 @@ function installPlugin(args, rekitCore) {
 
   // 2. register the plugin into rekit.plugins in package.json if have not
   console.log('Writing to package.json...');
+  const pkgJsonPath = path.join(prjRoot, 'package.json');
+  delete require.cache[pkgJsonPath];
   const pkg = require(path.join(prjRoot, 'package.json')); // eslint-disable-line
   if (!pkg.rekit.plugins) pkg.rekit.plugins = [];
   const shortName = pluginName.replace(/^rekit-plugin-/, '');
@@ -49,7 +51,7 @@ function installPlugin(args, rekitCore) {
   const installFile = path.join(prjRoot, 'node_modules', pluginName, 'install.js');
   if (fs.existsSync(installFile)) {
     // It's plugin's responsibility to handle multiple installation
-    require(installFile)(); // eslint-disable-line
+    require(installFile)(rekitCore); // eslint-disable-line
   }
 
   console.timeEnd('Done.');

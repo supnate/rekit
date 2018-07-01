@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Table } from 'antd';
+import { Icon, Table } from 'antd';
 
 export default class EnvVarsList extends Component {
   static propTypes = {
@@ -32,10 +32,6 @@ export default class EnvVarsList extends Component {
       <div className="config-env-vars-list">
         <div className="toolbar no-top-margin">
           <h4>{this.getEnv()}</h4>
-
-          <Button type="primary" size="small" onClick={this.handleAddEnvVar}>
-            Add
-          </Button>
         </div>
 
         <h5>General</h5>

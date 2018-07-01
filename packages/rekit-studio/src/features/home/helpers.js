@@ -68,6 +68,8 @@ export function getTabKey(pathname) {
     key = '#build';
   } else if (arr[0] === 'config' && arr[1] === 'deps') {
     key = '#deps';
+  } else if (arr[0] === 'config' && arr[1] === 'env') {
+    key = '#env';
   }
   return key;
 }

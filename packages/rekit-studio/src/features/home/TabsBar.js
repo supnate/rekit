@@ -111,6 +111,8 @@ export class TabsBar extends Component {
         return _.startsWith(pathname, '/tools/build');
       case 'deps':
         return _.startsWith(pathname, '/config/deps');
+      case 'env':
+        return _.startsWith(pathname, '/config/env');
       default:
         return false;
     }
@@ -133,6 +135,7 @@ export class TabsBar extends Component {
       case 'coverage':
       case 'build':
       case 'deps':
+      case 'env':
         path = tab.pathname;
         break;
       default:

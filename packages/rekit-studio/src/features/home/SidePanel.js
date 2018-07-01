@@ -47,6 +47,9 @@ export class SidePanel extends Component {
       case 'deps':
         history.push('/config/deps');
         break;
+      case 'env':
+        history.push('/config/env');
+        break;
       case 'build':
         history.push('/tools/build');
         break;
@@ -84,6 +87,9 @@ export class SidePanel extends Component {
         </Menu.Item>
         <Menu.Item key="deps">
           <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Dependencies
+        </Menu.Item>
+        <Menu.Item key="env">
+          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Environment Variables
         </Menu.Item>
         <Menu.Item key="tests">
           <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Run Tests

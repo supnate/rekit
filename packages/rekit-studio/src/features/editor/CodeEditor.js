@@ -135,6 +135,7 @@ export class CodeEditor extends Component {
     const { lineNumber, column } = this.editor.getPosition();
     const cursorOffset = lines.slice(0, lineNumber - 1).reduce((c, line) => c + line.length + 1, 0) + column - 1;
 
+    const formattingFile = this.props.file;
     axios
       .post('/rekit/api/format-code', {
         content: modelManager.getValue(this.props.file),
@@ -142,6 +143,7 @@ export class CodeEditor extends Component {
         cursorOffset,
       })
       .then(res => {
+        if (this.props.file !== formattingFile) return;
         if (res.data.error || !res.data.content.formatted) {
           this.setState({ loadingFile: false });
           return;

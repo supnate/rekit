@@ -1,7 +1,7 @@
 import { storage } from '../../common/utils';
 
 const initialState = {
-  projectData: {},
+  projectData: null,
 
   sidePanelWidth: parseInt(localStorage.getItem('sidePanelWidth') || 220, 10),
   outlineWidth: parseInt(localStorage.getItem('outlineWidth') || 200, 10),

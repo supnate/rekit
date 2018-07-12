@@ -10,3 +10,4 @@ export { moveTab } from './moveTab';
 export { setSidePanelWidth } from './setSidePanelWidth';
 export { codeChange } from './codeChange';
 export { stickTab } from './stickTab';
+export { updateProjectData } from './updateProjectData';

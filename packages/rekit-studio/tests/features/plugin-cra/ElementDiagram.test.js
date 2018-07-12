@@ -1,20 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { DefaultPage } from 'src/features/extension/DefaultPage';
+import { ElementDiagram } from 'src/features/plugin-cra/ElementDiagram';
 
-describe('extension/DefaultPage', () => {
+describe('plugin-cra/ElementDiagram', () => {
   it('renders node with correct class name', () => {
     const props = {
-      extension: {},
+      pluginCra: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <DefaultPage {...props} />
+      <ElementDiagram {...props} />
     );
 
     expect(
-      renderedComponent.find('.extension-default-page').getElement()
+      renderedComponent.find('.plugin-cra-element-diagram').getElement()
     ).to.exist;
   });
 });

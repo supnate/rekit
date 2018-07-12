@@ -1,4 +1,4 @@
-export { default as ProjectExplorer } from './ProjectExplorer';
+export { default as ProjectExplorerOld } from './ProjectExplorerOld';
 export { default as SidePanel } from './SidePanel';
 export { default as ElementPage } from './ElementPage';
 export { default as App } from './App';
@@ -12,3 +12,4 @@ export { default as WelcomePage } from './WelcomePage';
 export { default as AllRoutesPage } from './AllRoutesPage';
 export { default as QuickOpen } from './QuickOpen';
 export { default as SidePanelResizer } from './SidePanelResizer';
+export { default as ProjectExplorer } from './ProjectExplorer';

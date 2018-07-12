@@ -14,6 +14,7 @@ import { reducer as codeChangeReducer } from './codeChange';
 import { reducer as stickTabReducer } from './stickTab';
 import { getTabKey } from '../helpers';
 import { storage } from '../../common/utils';
+import { reducer as updateProjectDataReducer } from './updateProjectData';
 
 const reducers = [
   fetchProjectData,
@@ -26,6 +27,7 @@ const reducers = [
   setSidePanelWidthReducer,
   codeChangeReducer,
   stickTabReducer,
+  updateProjectDataReducer,
 ];
 
 const pascalCase = _.flow(_.camelCase, _.upperFirst);

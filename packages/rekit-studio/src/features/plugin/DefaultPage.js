@@ -4,16 +4,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 
-export class ProjectExplorer extends Component {
+export class DefaultPage extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
+    extension: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
-      <div className="home-project-explorer">
-        Page Content: home/ProjectExplorer
+      <div className="plugin-default-page">
+        Page Content: extension/DefaultPage
       </div>
     );
   }
@@ -22,7 +22,7 @@ export class ProjectExplorer extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    home: state.home,
+    extension: state.extension,
   };
 }
 
@@ -36,4 +36,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProjectExplorer);
+)(DefaultPage);

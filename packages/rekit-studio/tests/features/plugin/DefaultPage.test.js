@@ -1,20 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { ProjectExplorer } from 'src/features/home/ProjectExplorer';
+import { DefaultPage } from 'src/features/plugin/DefaultPage';
 
-describe('home/ProjectExplorer', () => {
+describe('plugin/DefaultPage', () => {
   it('renders node with correct class name', () => {
     const props = {
-      home: {},
+      extension: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <ProjectExplorer {...props} />
+      <DefaultPage {...props} />
     );
 
     expect(
-      renderedComponent.find('.home-project-explorer').getElement()
+      renderedComponent.find('.plugin-default-page').getElement()
     ).to.exist;
   });
 });

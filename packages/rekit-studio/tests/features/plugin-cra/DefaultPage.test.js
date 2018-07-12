@@ -1,20 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { ProjectExplorer } from 'src/features/home/ProjectExplorer';
+import { DefaultPage } from 'src/features/plugin-cra/DefaultPage';
 
-describe('home/ProjectExplorer', () => {
+describe('plugin-cra/DefaultPage', () => {
   it('renders node with correct class name', () => {
     const props = {
-      home: {},
+      pluginCra: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <ProjectExplorer {...props} />
+      <DefaultPage {...props} />
     );
 
     expect(
-      renderedComponent.find('.home-project-explorer').getElement()
+      renderedComponent.find('.plugin-cra-default-page').getElement()
     ).to.exist;
   });
 });

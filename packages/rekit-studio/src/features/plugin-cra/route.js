@@ -6,8 +6,8 @@ import {
 } from './';
 
 export default {
-  path: 'extension',
-  name: 'Extension',
+  path: 'plugin-cra',
+  name: 'Plugin cra',
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
   ],

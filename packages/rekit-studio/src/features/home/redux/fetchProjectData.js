@@ -8,6 +8,8 @@ import {
   HOME_FETCH_PROJECT_DATA_DISMISS_ERROR,
 } from './constants';
 
+import plugin from '../../plugin/plugin';
+
 export function fetchProjectData() {
   return (dispatch) => {
     dispatch({
@@ -15,14 +17,15 @@ export function fetchProjectData() {
     });
 
     return new Promise((resolve, reject) => {
-      axios.get('/rekit/api/project-data').then(
-        (res) => {
+      // axios.get('/rekit/api/project-data').then(
+      plugin.fetchProjectData().then(
+        (data) => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_SUCCESS,
-            data: res.data,
+            data,
           });
-          resolve(res.data);
+          resolve(data);
         },
         (err) => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
@@ -53,46 +56,47 @@ export function reducer(state, action) {
       };
 
     case HOME_FETCH_PROJECT_DATA_SUCCESS: {
-      const featureById = {};
-      const elementById = {};
+      // const featureById = {};
+      // const elementById = {};
 
-      const setElementById = (ele) => {
-        if (ele.children) {
-          // Only applies to misc
-          ele.children.forEach(setElementById);
-        } else {
-          elementById[ele.file] = ele;
-        }
-      };
-      action.data.features.forEach((f) => {
-        f.feature = f.key;
-        featureById[f.key] = f;
-        elementById[f.key] = f;
-        [...f.components, ...f.actions, ...f.misc].forEach(setElementById);
-      });
+      // const setElementById = (ele) => {
+      //   if (ele.children) {
+      //     // Only applies to misc
+      //     ele.children.forEach(setElementById);
+      //   } else {
+      //     elementById[ele.file] = ele;
+      //   }
+      // };
+      // action.data.features.forEach((f) => {
+      //   f.feature = f.key;
+      //   featureById[f.key] = f;
+      //   elementById[f.key] = f;
+      //   [...f.components, ...f.actions, ...f.misc].forEach(setElementById);
+      // });
 
-      action.data.srcFiles.forEach(setElementById);
-      const fileContentNeedReload = _.mapValues(state.fileContentById, () => true);
+      // action.data.srcFiles.forEach(setElementById);
+      // const fileContentNeedReload = _.mapValues(state.fileContentById, () => true);
       return {
         ...state,
+        projectData: action.data,
         // projectData: action.data,
         // ...action.data,
-        filesHasSyntaxError: action.data.filesHasSyntaxError,
-        elementById,
-        featureById,
-        projectName: action.data.projectName,
-        srcFiles: action.data.srcFiles,
-        testCoverage: action.data.testCoverage,
-        projectRoot: action.data.projectRoot,
-        cssExt: action.data.cssExt,
-        rekit: action.data.rekit,
-        // fileContentById: {},
-        fileContentNeedReload,
-        oldFileContentById: state.fileContentById,
-        features: action.data.features.map(f => f.key),
-        projectDataNeedReload: false,
-        fetchProjectDataPending: false,
-        fetchProjectDataError: null,
+        // filesHasSyntaxError: action.data.filesHasSyntaxError,
+        // elementById,
+        // featureById,
+        // projectName: action.data.projectName,
+        // srcFiles: action.data.srcFiles,
+        // testCoverage: action.data.testCoverage,
+        // projectRoot: action.data.projectRoot,
+        // cssExt: action.data.cssExt,
+        // rekit: action.data.rekit,
+        // // fileContentById: {},
+        // fileContentNeedReload,
+        // oldFileContentById: state.fileContentById,
+        // features: action.data.features.map(f => f.key),
+        // projectDataNeedReload: false,
+        // fetchProjectDataPending: false,
+        // fetchProjectDataError: null,
       };
     }
     case HOME_FETCH_PROJECT_DATA_FAILURE:

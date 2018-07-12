@@ -59,9 +59,9 @@ export class App extends Component {
   }
 
   render() {
-    if (!this.props.features) {
-      return this.renderLoading();
-    }
+    // if (!this.props.features) {
+    //   return this.renderLoading();
+    // }
 
     return (
       <LocaleProvider locale={enUS}>

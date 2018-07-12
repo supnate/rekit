@@ -102,8 +102,11 @@ export class SidePanel extends Component {
   };
 
   render() {
-    const { projectName, projectRoot, sidePanelWidth, demoAlertVisible } = this.props;
-    const prjName = projectName || projectRoot.split('/').pop();
+    // const { projectName, projectRoot, sidePanelWidth, demoAlertVisible } = this.props;
+    // const prjName = projectName || projectRoot.split('/').pop();
+    const sidePanelWidth = 300;
+    const demoAlertVisible = false;
+    const prjName = 'CRA';
     return (
       <div className="home-side-panel dark-theme" style={{ width: `${sidePanelWidth}px` }}>
         <div className="header">

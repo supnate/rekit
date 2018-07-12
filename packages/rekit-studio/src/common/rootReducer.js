@@ -7,10 +7,11 @@ import commonReducer from '../features/common/redux/reducer';
 import rekitCmdsReducer from '../features/rekit-cmds/redux/reducer';
 import diagramReducer from '../features/diagram/redux/reducer';
 import rekitToolsReducer from '../features/rekit-tools/redux/reducer';
-import extensionReducer from '../features/extension/redux/reducer';
+import pluginReducer from '../features/plugin/redux/reducer';
 import configReducer from '../features/config/redux/reducer';
 import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
+import pluginCraReducer from '../features/plugin-cra/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -25,10 +26,11 @@ const reducerMap = {
   rekitCmds: rekitCmdsReducer,
   diagram: diagramReducer,
   rekitTools: rekitToolsReducer,
-  extension: extensionReducer,
+  plugin: pluginReducer,
   config: configReducer,
   layout: layoutReducer,
   editor: editorReducer,
+  pluginCra: pluginCraReducer,
 };
 
 export default combineReducers(reducerMap);

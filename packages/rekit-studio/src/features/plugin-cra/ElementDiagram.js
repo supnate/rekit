@@ -4,16 +4,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 
-export class DefaultPage extends Component {
+export class ElementDiagram extends Component {
   static propTypes = {
-    extension: PropTypes.object.isRequired,
+    pluginCra: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   render() {
     return (
-      <div className="extension-default-page">
-        Page Content: extension/DefaultPage
+      <div className="plugin-cra-element-diagram">
+        Page Content: plugin-cra/ElementDiagram
       </div>
     );
   }
@@ -22,7 +22,7 @@ export class DefaultPage extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    extension: state.extension,
+    pluginCra: state.pluginCra,
   };
 }
 
@@ -36,4 +36,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DefaultPage);
+)(ElementDiagram);

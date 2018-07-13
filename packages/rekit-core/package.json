@@ -5,7 +5,7 @@
   "author": "Nate Wang <supnate@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/supnate/rekit",
-  "main": "core/index.js",
+  "main": "index.js",
   "keywords": [
     "rekit",
     "rekit-core",

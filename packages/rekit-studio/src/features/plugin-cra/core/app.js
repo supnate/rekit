@@ -1,10 +1,5 @@
 function getProjectData() {
-  return {
-    elementById: {
-      xxx: { type: 'file', icon: 'file', name: 'XXX' },
-    },
-    elements: ['xxx'],
-  };
+  return rekit.common.projectFiles.readDir();
 }
 
 module.exports = {

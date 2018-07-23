@@ -7,7 +7,7 @@ const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const Watchpack = require('watchpack');
-const rekitCore = require('rekit-core');
+const rekit = require('rekit-core');
 const fetchProjectData = require('./api/fetchProjectData');
 const getFileContent = require('./api/getFileContent');
 const execCmd = require('./api/execCmd');
@@ -22,7 +22,8 @@ const installPackage = require('./api/installPackage');
 const updatePackage = require('./api/updatePackage');
 const removePackage = require('./api/removePackage');
 
-const utils = rekitCore.utils;
+// const utils = rekitCore.utils;
+console.log('rekit: ', rekit.core.paths.getProjectRoot());
 
 // rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/app-hasura');
 // rekitCore.plugin.loadPlugins(rekitCore);
@@ -56,9 +57,9 @@ module.exports = () => {
   wp.watch(
     [],
     [
-      path.join(rekitCore.utils.getProjectRoot(), 'src'),
-      path.join(rekitCore.utils.getProjectRoot(), 'tests'),
-      path.join(rekitCore.utils.getProjectRoot(), 'coverage'),
+      path.join(rekit.core.paths.getProjectRoot(), 'src'),
+      path.join(rekit.core.paths.getProjectRoot(), 'tests'),
+      path.join(rekit.core.paths.getProjectRoot(), 'coverage'),
     ],
     Date.now() - 10
   );
@@ -67,7 +68,7 @@ module.exports = () => {
 
   wp.on('aggregated', changes => {
     // changes: an array of all changed files
-    rekitCore.vio.reset();
+    // rekit.vio.reset();
     // const newProjectData = fetchProjectData();
     // if (_.isEqual(newProjectData, lastProjectData)) return;
     // lastProjectData = newProjectData;
@@ -99,8 +100,8 @@ module.exports = () => {
   function rekitMiddleware(server, app, args) {
     args = args || {};
     setupSocketIo(server);
-    const prjRoot = rekitCore.utils.getProjectRoot();
-    app.use('/coverage', express.static(utils.joinPath(prjRoot, 'coverage'), { fallthrough: false }));
+    const prjRoot = rekit.core.paths.getProjectRoot();
+    app.use('/coverage', express.static(rekit.core.paths.join(prjRoot, 'coverage'), { fallthrough: false }));
     app.use(bodyParser.json({ limit: '5MB' }));
     app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -110,7 +111,7 @@ module.exports = () => {
       try {
         switch (p) {
           case '/api/project-data': {
-            lastProjectData = rekitCore.core.app.getProjectData();
+            lastProjectData = rekit.core.app.getProjectData();
             res.setHeader('content-type', 'application/json');
             res.write(
               JSON.stringify(
@@ -161,7 +162,7 @@ module.exports = () => {
               reply403(res);
               break;
             }
-            const absPath = utils.joinPath(prjRoot, req.body.file);
+            const absPath = rekit.core.paths.join(prjRoot, req.body.file);
             if (!_.startsWith(absPath, prjRoot)) {
               // prevent ../.. in req.query.file
               res.statusCode = 403;
@@ -186,7 +187,7 @@ module.exports = () => {
             break;
           }
           case '/api/file-content': {
-            const absPath = utils.joinPath(prjRoot, req.query.file);
+            const absPath = rekit.core.paths.join(prjRoot, req.query.file);
             if (!_.startsWith(absPath, prjRoot)) {
               // prevent ../.. in req.query.file
               res.statusCode = 403;

@@ -1,13 +1,13 @@
 const fs = require('fs');
 const path = require('path');
-const rekitCore = require('rekit-core');
+const rekit = require('rekit-core');
 
-const utils = rekitCore.utils;
+// const utils = rekitCore.utils;
 let usingYarn = false;
-let prjRoot = utils.getProjectRoot();
+let prjRoot = rekit.core.paths.getProjectRoot();
 let lastDir;
 while (prjRoot && prjRoot !== lastDir && fs.existsSync(prjRoot)) {
-  if (fs.existsSync(utils.joinPath(prjRoot, 'yarn.lock'))) {
+  if (fs.existsSync(rekit.core.paths.join(prjRoot, 'yarn.lock'))) {
     usingYarn = true;
     break;
   }

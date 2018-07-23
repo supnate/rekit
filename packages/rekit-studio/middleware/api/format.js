@@ -3,7 +3,7 @@
 const path = require('path');
 const prettier = require('prettier');
 const Watchpack = require('watchpack');
-const rekitCore = require('rekit-core');
+const rekit = require('rekit-core');
 
 const PRETTIER_CONFIG_FILES = [
   '.prettierrc',
@@ -35,7 +35,7 @@ const wp = new Watchpack({
 });
 // Watchpack.prototype.watch(string[] files, string[] directories, [number startTime])
 // Watch src files change only
-wp.watch(PRETTIER_CONFIG_FILES.map(f => path.join(rekitCore.utils.getProjectRoot(), f)), [], Date.now() - 10);
+wp.watch(PRETTIER_CONFIG_FILES.map(f => path.join(rekit.core.paths.getProjectRoot(), f)), [], Date.now() - 10);
 
 wp.on('aggregated', () => {
   prettier.clearConfigCache();
@@ -43,7 +43,7 @@ wp.on('aggregated', () => {
 
 function format(req, res) {
   const content = req.body.content;
-  const file = path.join(rekitCore.utils.getProjectRoot(), req.body.file);
+  const file = path.join(rekit.core.paths.getProjectRoot(), req.body.file);
 
   prettier
     .resolveConfig(file)

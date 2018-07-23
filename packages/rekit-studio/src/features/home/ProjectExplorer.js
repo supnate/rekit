@@ -35,7 +35,7 @@ export class ProjectExplorer extends Component {
 
   renderLoading() {
     return (
-      <div className="home-project-explorer-old">
+      <div className="home-project-explorer">
         <Spin />
       </div>
     );

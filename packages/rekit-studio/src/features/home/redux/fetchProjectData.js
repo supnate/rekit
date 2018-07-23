@@ -8,7 +8,7 @@ import {
   HOME_FETCH_PROJECT_DATA_DISMISS_ERROR,
 } from './constants';
 
-import plugin from '../../plugin/plugin';
+// import plugin from '../../plugin/plugin';
 
 export function fetchProjectData() {
   return (dispatch) => {
@@ -17,15 +17,15 @@ export function fetchProjectData() {
     });
 
     return new Promise((resolve, reject) => {
-      // axios.get('/rekit/api/project-data').then(
-      plugin.fetchProjectData().then(
-        (data) => {
+      axios.get('/api/project-data').then(
+      // plugin.fetchProjectData().then(
+        (res) => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_SUCCESS,
-            data,
+            data: res.data,
           });
-          resolve(data);
+          resolve(res.data);
         },
         (err) => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();

@@ -10,6 +10,7 @@ const getTreeNode = elementId => {
   const element = byId(elementId);
   return {
     ...element,
+    key: elementId,
     children: element.children && element.children.map(child => getTreeNode(child)),
   };
 };

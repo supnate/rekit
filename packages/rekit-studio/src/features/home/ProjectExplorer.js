@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import { Spin, Tree } from 'antd';
 import * as actions from './redux/actions';
 import { treeDataSelector } from './selectors/projectData';
+import { ProjectExplorerContextMenu } from './';
 
 const TreeNode = Tree.TreeNode;
 
 export class ProjectExplorer extends Component {
   static propTypes = {
     projectData: PropTypes.object,
-    treeData: PropTypes.object,
+    treeData: PropTypes.array,
     actions: PropTypes.object.isRequired,
   };
 
@@ -20,14 +21,15 @@ export class ProjectExplorer extends Component {
     treeData: null,
   };
 
+  handleContextMenu = (evt) => {
+    this.ctxMenu.handleContextMenu(evt);
+  }
+
+  assignCtxMenu = ctxMenu => this.ctxMenu = ctxMenu.getWrappedInstance();
+
   renderTreeNode = nodeData => {
     return (
-      <TreeNode
-        key={nodeData.key}
-        title={nodeData.name}
-        className={nodeData.className}
-        isLeaf={!nodeData.children}
-      >
+      <TreeNode key={nodeData.key} title={nodeData.name} className={nodeData.className} isLeaf={!nodeData.children}>
         {nodeData.children && nodeData.children.map(this.renderTreeNode)}
       </TreeNode>
     );
@@ -58,7 +60,12 @@ export class ProjectExplorer extends Component {
           this.rootNode = node;
         }}
       >
-        {treeNodes.length > 0 ? <Tree>{treeNodes}</Tree> : <div className="no-results">Project not found.</div>}
+        {treeNodes.length > 0 ? (
+          <Tree onRightClick={this.handleContextMenu}>{treeNodes}</Tree>
+        ) : (
+          <div className="no-results">Project not found.</div>
+        )}
+        <ProjectExplorerContextMenu ref={this.assignCtxMenu} />
       </div>
     );
   }

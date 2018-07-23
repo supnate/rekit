@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Dropdown, Menu } from 'antd';
 import * as actions from './redux/actions';
+import plugin from '../plugin/plugin';
 
 export class ProjectExplorerContextMenu extends Component {
   static propTypes = {
@@ -12,29 +14,39 @@ export class ProjectExplorerContextMenu extends Component {
     actions: PropTypes.object.isRequired,
   };
 
-  state = {
-    contextMenu: [{ name: 'Add Action', key: 'add-action' }],
-    targetId: null,
-  };
-
-  getMenuItems() {
-    return this.state.contextMenu;
+  constructor(props) {
+    super(props);
+    // Get all plugin's project explorer contribution
+    this.pluginMenus = plugin.plugins.filter(p => p.projectExplorerContextMenu).map(p => p.projectExplorerContextMenu);
   }
 
-  handleContextMenu = evt => {
-    const targetId = evt.node.props.eventKey;
-    const menus = this.getMenuItems(targetId);
+  state = {
+    contextMenu: [],
+    elementId: null,
+  };
 
-    console.log('context menu: ', this.props.elementById[targetId]);
+  getMenuItems(elementId) {
+    const menuItems = [];
+    this.pluginMenus.forEach(p => {
+      if (p.getMenuItems) {
+        menuItems.push.apply(menuItems, p.getMenuItems({ elementId }));
+      }
+    });
+    menuItems.sort((a, b) => (a.order || 10000) - (b.order || 10000));
+    return menuItems;
+  }
+
+  handleRightClick = evt => {
+    const elementId = evt.node.props.eventKey;
+    const menus = this.getMenuItems(elementId);
+
+    console.log('context menu: ', this.props.elementById[elementId]);
     if (!menus.length) return;
 
     this.setState({
       contextMenu: menus,
-      targetId,
+      elementId,
     });
-
-    // When right click, set the current tree node context
-    // this.createCmdContext(evt);
 
     this.contextMenuArchor.style.display = 'inline-block';
     const containerNode = ReactDOM.findDOMNode(this).parentNode; // eslint-disable-line
@@ -57,7 +69,9 @@ export class ProjectExplorerContextMenu extends Component {
   };
 
   handleMenuClick = evt => {
-    console.log('menu click: ', evt.key, this.state.targetId);
+    this.pluginMenus.forEach(p => {
+      if (p.handleMenuClick) p.handleMenuClick({ key: evt.key, elementId: this.state.elementId });
+    });
   };
 
   renderContextMenu() {

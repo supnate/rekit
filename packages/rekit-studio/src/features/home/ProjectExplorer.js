@@ -21,8 +21,8 @@ export class ProjectExplorer extends Component {
     treeData: null,
   };
 
-  handleContextMenu = (evt) => {
-    this.ctxMenu.handleContextMenu(evt);
+  handleRightClick = (evt) => {
+    this.ctxMenu.handleRightClick(evt);
   }
 
   assignCtxMenu = ctxMenu => this.ctxMenu = ctxMenu.getWrappedInstance();
@@ -61,7 +61,7 @@ export class ProjectExplorer extends Component {
         }}
       >
         {treeNodes.length > 0 ? (
-          <Tree onRightClick={this.handleContextMenu}>{treeNodes}</Tree>
+          <Tree onRightClick={this.handleRightClick}>{treeNodes}</Tree>
         ) : (
           <div className="no-results">Project not found.</div>
         )}

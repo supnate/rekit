@@ -11,3 +11,5 @@ export { setSidePanelWidth } from './setSidePanelWidth';
 export { codeChange } from './codeChange';
 export { stickTab } from './stickTab';
 export { updateProjectData } from './updateProjectData';
+export { showDialog } from './showDialog';
+export { hideDialog } from './hideDialog';

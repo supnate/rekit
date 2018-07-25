@@ -15,6 +15,7 @@ const saveFile = require('./api/saveFile');
 const runBuild = require('./api/runBuild');
 const runTest = require('./api/runTest');
 const lint = require('./api/lint');
+const element = require('./api/element');
 const format = require('./api/format');
 const fetchDeps = require('./api/fetchDeps');
 const fetchDepsRemote = require('./api/fetchDepsRemote');
@@ -110,6 +111,9 @@ module.exports = () => {
       const p = urlObject.pathname.replace(rootPath, '');
       try {
         switch (p) {
+          case '/api/element':
+            element(req, res);
+            break;
           case '/api/project-data': {
             lastProjectData = rekit.core.app.getProjectData();
             res.setHeader('content-type', 'application/json');

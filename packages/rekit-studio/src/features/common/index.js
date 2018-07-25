@@ -7,3 +7,4 @@ export { default as UnloadComponent } from './UnloadComponent';
 export { default as OutputPanel } from './OutputPanel';
 export { default as Resizer } from './Resizer';
 export { default as SvgIcon } from './SvgIcon';
+export { default as FormBuilder } from './FormBuilder';

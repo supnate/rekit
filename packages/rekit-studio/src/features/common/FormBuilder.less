@@ -1,0 +1,31 @@
+@import '../../styles/mixins';
+
+.form-builder-row-view-mode {
+  .ant-form-item-label {
+    text-align: left;
+    line-height: 150%;
+    label {
+      font-weight: bold;
+      padding-left: 5px;
+    }
+  }
+  .ant-form-item-control {
+    line-height: 150%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ant-form-item {
+    padding: 6px 0;
+    white-space: nowrap;
+    &:hover {
+      background-color: #f7f7f7;
+    }
+    
+  }
+}
+
+.ant-form-item-children {
+  .ant-input-number {
+    width: 100%;
+  }
+}

@@ -15,6 +15,8 @@ import { reducer as stickTabReducer } from './stickTab';
 import { getTabKey } from '../helpers';
 import { storage } from '../../common/utils';
 import { reducer as updateProjectDataReducer } from './updateProjectData';
+import { reducer as showDialogReducer } from './showDialog';
+import { reducer as hideDialogReducer } from './hideDialog';
 
 const reducers = [
   fetchProjectData,
@@ -28,6 +30,8 @@ const reducers = [
   codeChangeReducer,
   stickTabReducer,
   updateProjectDataReducer,
+  showDialogReducer,
+  hideDialogReducer,
 ];
 
 const pascalCase = _.flow(_.camelCase, _.upperFirst);

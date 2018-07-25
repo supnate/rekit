@@ -8,6 +8,7 @@ import { LocaleProvider, message, Modal, Spin } from 'antd';
 import { ErrorBoundary } from '../common';
 import { TabsBar, SidePanel, SidePanelResizer, QuickOpen } from './';
 import DialogPlace from '../rekit-cmds/DialogPlace';
+import { DialogContainer } from '../core';
 import { fetchProjectData } from './redux/actions';
 
 /*
@@ -24,28 +25,25 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.fetchProjectData().then(() => {
-      document.title = this.props.projectName;
-    }).catch(err => {
-      Modal.error({
-        title: 'Failed to load project data',
-        content: err && (err.message || err.toString()),
+    this.props.actions
+      .fetchProjectData()
+      .then(() => {
+        document.title = this.props.projectName;
+      })
+      .catch(err => {
+        Modal.error({
+          title: 'Failed to load project data',
+          content: err && (err.message || err.toString()),
+        });
       });
-    });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.projectDataNeedReload &&
-      !nextProps.fetchProjectDataError &&
-      !nextProps.fetchProjectDataPending
-    ) {
-      this.props.actions
-        .fetchProjectData()
-        .catch(e => {
-          console.log('failed to fetch project data: ', e);
-          message.error('Failed to refresh project data');
-        });
+    if (nextProps.projectDataNeedReload && !nextProps.fetchProjectDataError && !nextProps.fetchProjectDataPending) {
+      this.props.actions.fetchProjectData().catch(e => {
+        console.log('failed to fetch project data: ', e);
+        message.error('Failed to refresh project data');
+      });
     }
   }
 
@@ -73,6 +71,7 @@ export class App extends Component {
             <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           <DialogPlace />
+          <DialogContainer />
           <QuickOpen />
         </div>
       </LocaleProvider>
@@ -88,7 +87,6 @@ function mapStateToProps(state) {
     'projectDataNeedReload',
     'fetchProjectDataError',
     'fetchProjectDataPending',
-
   ]);
 }
 

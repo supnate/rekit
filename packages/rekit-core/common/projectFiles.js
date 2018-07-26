@@ -3,6 +3,7 @@
 const shell = require('shelljs');
 const path = require('path');
 const paths = require('../core/paths');
+// const vio = require('../core/vio');
 
 function sortElements(elements, elementById) {
   elements.sort((a, b) => {
@@ -34,7 +35,6 @@ function readDir(dir) {
       elementById[rFile] = {
         name: path.basename(file),
         type: 'folder',
-        icon: 'folder',
         id: rFile,
         children: res.elements,
       };
@@ -42,7 +42,7 @@ function readDir(dir) {
       elementById[rFile] = {
         name: path.basename(file),
         type: 'file',
-        icon: 'file',
+        ext: path.extname(file).replace('.', ''),
         id: rFile,
       };
     }

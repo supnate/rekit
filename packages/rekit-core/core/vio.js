@@ -8,20 +8,21 @@ const _ = require('lodash');
 const shell = require('shelljs');
 const jsdiff = require('diff');
 const colors = require('colors/safe');
-const babylon = require('babylon');
-const generate = require('babel-generator').default;
-const utils = require('./utils');
+// const babylon = require('babylon');
+// const generate = require('babel-generator').default;
+// const utils = require('./utils');
+const paths = require('./paths');
 
-const prjRoot = utils.getProjectRoot();
+const prjRoot = paths.getProjectRoot();
 
 let toSave = {};
 let toDel = {};
 let fileLines = {};
 let dirs = {};
-let asts = {};
+// let asts = {};
 let mvs = {}; // Files to move
 let mvDirs = {}; // Folders to move
-let failedToParse = {};
+// let failedToParse = {};
 
 function printDiff(diff) {
   diff.forEach(line => {
@@ -39,7 +40,7 @@ function log(label, color, filePath, toFilePath) {
   console.log(colors[color](label + p + (to ? ' to ' + to : '')));
 }
 
-function mapPathAfterMvDir() {}
+// function mapPathAfterMvDir() {}
 function getLines(filePath) {
   if (_.isArray(filePath)) {
     // If it's already lines, return the arg.
@@ -57,7 +58,7 @@ function getLines(filePath) {
     });
     // console.log('real file path: ', Object.keys(fileLines), realFilePath);
     if (!shell.test('-e', realFilePath)) {
-      utils.fatalError("Can't find such file: " + realFilePath);
+      throw new Error("Can't find such file: " + realFilePath);
     }
     fileLines[filePath] = shell.cat(realFilePath).split(/\r?\n/);
   }
@@ -68,55 +69,55 @@ function getContent(filePath) {
   return getLines(filePath).join('\n');
 }
 
-function getAst(filePath) {
-  if (_.startsWith(utils.getRelativePath(filePath), 'src/libs/')) return null; // ignore libs folder to parse
-  if (!asts[filePath]) {
-    const code = getLines(filePath).join('\n');
-    try {
-      const ast = babylon.parse(code, {
-        // parse in strict mode and allow module declarations
-        sourceType: 'module',
-        plugins: [
-          'jsx',
-          'flow',
-          'doExpressions',
-          'objectRestSpread',
-          'decorators',
-          'classProperties',
-          'exportExtensions',
-          'asyncGenerators',
-          'functionBind',
-          'functionSent',
-          'dynamicImport',
-        ],
-      });
-      if (!ast) {
-        failedToParse[filePath] = true;
-        return null;
-        // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
-      }
-      delete failedToParse[filePath];
-      asts[filePath] = ast;
-      ast._filePath = filePath;
-    } catch (e) {
-      failedToParse[filePath] = true;
-      return null;
-      // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
-    }
-  }
-  return asts[filePath];
-}
+// function getAst(filePath) {
+//   if (_.startsWith(utils.getRelativePath(filePath), 'src/libs/')) return null; // ignore libs folder to parse
+//   if (!asts[filePath]) {
+//     const code = getLines(filePath).join('\n');
+//     try {
+//       const ast = babylon.parse(code, {
+//         // parse in strict mode and allow module declarations
+//         sourceType: 'module',
+//         plugins: [
+//           'jsx',
+//           'flow',
+//           'doExpressions',
+//           'objectRestSpread',
+//           'decorators',
+//           'classProperties',
+//           'exportExtensions',
+//           'asyncGenerators',
+//           'functionBind',
+//           'functionSent',
+//           'dynamicImport',
+//         ],
+//       });
+//       if (!ast) {
+//         failedToParse[filePath] = true;
+//         return null;
+//         // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
+//       }
+//       delete failedToParse[filePath];
+//       asts[filePath] = ast;
+//       ast._filePath = filePath;
+//     } catch (e) {
+//       failedToParse[filePath] = true;
+//       return null;
+//       // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
+//     }
+//   }
+//   return asts[filePath];
+// }
 
-function assertAst(ast, filePath) {
-  if (!ast) {
-    reset(); // eslint-disable-line
-    utils.fatalError(`Failed to parse ${filePath}, please fix and try again.`);
-  }
-}
+// function assertAst(ast, filePath) {
+//   if (!ast) {
+//     reset(); // eslint-disable-line
+//     utils.fatalError(`Failed to parse ${filePath}, please fix and try again.`);
+//   }
+// }
 
-function getFilesFailedToParse() {
-  return failedToParse;
-}
+// function getFilesFailedToParse() {
+//   return failedToParse;
+// }
 
 function fileExists(filePath) {
   return ((!!fileLines[filePath] || !!toSave[filePath]) && !toDel[filePath]) || shell.test('-e', filePath);
@@ -143,7 +144,7 @@ function ensurePathDir(fullPath) {
 function put(filePath, lines) {
   if (typeof lines === 'string') lines = lines.split(/\r?\n/);
   fileLines[filePath] = lines;
-  delete asts[filePath]; // ast needs to be updated
+  // delete asts[filePath]; // ast needs to be updated
 }
 
 function mkdir(dir) {
@@ -157,11 +158,11 @@ function save(filePath, lines) {
   toSave[filePath] = true;
 }
 
-function saveAst(filePath, ast) {
-  asts[filePath] = ast;
-  // Update file lines when ast is changed
-  save(filePath, generate(ast).code.split(/\r?\n/));
-}
+// function saveAst(filePath, ast) {
+//   asts[filePath] = ast;
+//   // Update file lines when ast is changed
+//   save(filePath, generate(ast).code.split(/\r?\n/));
+// }
 
 function move(oldPath, newPath) {
   if (toDel[oldPath] || (!fileExists(oldPath) && !shell.test('-e', oldPath))) {
@@ -179,10 +180,10 @@ function move(oldPath, newPath) {
     delete fileLines[oldPath];
   }
 
-  if (asts[oldPath]) {
-    asts[newPath] = asts[oldPath];
-    delete asts[oldPath];
-  }
+  // if (asts[oldPath]) {
+  //   asts[newPath] = asts[oldPath];
+  //   delete asts[oldPath];
+  // }
 
   if (toSave[oldPath]) {
     toSave[newPath] = true;
@@ -213,9 +214,9 @@ function moveDir(oldPath, newPath) {
   updateKeys(toDel);
   updateKeys(fileLines);
   updateKeys(dirs);
-  updateKeys(asts);
+  // updateKeys(asts);
   updateKeys(mvs);
-  updateKeys(failedToParse);
+  // updateKeys(failedToParse);
 
   const invertedMvs = _.invert(mvs);
   updateKeys(invertedMvs);
@@ -242,7 +243,7 @@ function ls(folder) {
     });
   }
   if (shell.test('-e', realFolder)) {
-    diskFiles = shell.ls(realFolder).map(f => utils.joinPath(folder, f));
+    diskFiles = shell.ls(realFolder).map(f => paths.join(folder, f));
   }
   const memoFiles = Object.keys(toSave).filter(file => _.startsWith(file, folder) && !toDel[file]);
   return _.union(diskFiles, memoFiles);
@@ -257,7 +258,7 @@ function reset() {
   toDel = {};
   fileLines = {};
   dirs = {};
-  asts = {};
+  // asts = {};
   mvs = {};
   mvDirs = {};
 }
@@ -375,10 +376,10 @@ function flush() {
 module.exports = {
   getLines,
   getContent,
-  getAst,
-  assertAst,
-  getFilesFailedToParse,
-  saveAst,
+  // getAst,
+  // assertAst,
+  // getFilesFailedToParse,
+  // saveAst,
   fileExists,
   fileNotExists,
   dirExists,

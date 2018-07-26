@@ -1,10 +1,29 @@
 const _ = require('lodash');
 const shell = require('shelljs');
 
+const { paths, vio } = rekit.core;
+
 let elementById = {};
+let allFiles = null;
 
 function getComponents(feature) {
+  const components = [];
+  const eleById = allFiles.elementById;
+  const eleFolder = eleById[`src/features/${feature}`];
+  eleFolder.children.map(eid => eleById[eid]).forEach(ele => {    
+    if (ele.type === 'file' && /\.jsx?$/.test(ele.name)) {
+      components.push({
+        type: 'component',
+        id: `v:${ele.id}`,
+        name: ele.name.replace(/\.[^.]*$/, ''),
+        parts: [ele.id],
+      });
+    }
+  });
 
+  components.forEach(c => { elementById[c.id] = c; });
+  console.log(feature, components);
+  return components.map(c => c.id);
 }
 function getActions(feature) {}
 function getRoutes(feature) {}
@@ -17,7 +36,7 @@ function getMiscFiles(feature) {
 function getFeatures() {
   // return _.toArray(shell.ls(rekit.core.paths.map('src/features')));
   const elements = [];
-  shell.ls(rekit.core.paths.map('src/features')).forEach(f => {
+  shell.ls(paths.map('src/features')).forEach(f => {
     const id = `v:feature-${f}`;
     elements.push(id);
 
@@ -43,7 +62,8 @@ function getFeatures() {
 function getProjectData() {
   // return rekit.common.projectFiles.readDir();
   elementById = {};
-  
+  allFiles = rekit.common.projectFiles.readDir(paths.map('src'));
+
   const eleFeatures = {
     type: 'features',
     id: 'v:features',

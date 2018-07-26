@@ -1,4 +1,5 @@
 const app = require('./core/app');
+const element = require('./core/element');
 const plugin = require('./core/plugin');
 const paths = require('./core/paths');
 
@@ -11,6 +12,7 @@ global.rekit = {
     app,
     paths,
     plugin,
+    element,
   },
   common: {
     projectFiles,

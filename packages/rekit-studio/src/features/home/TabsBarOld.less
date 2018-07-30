@@ -1,0 +1,134 @@
+@import '../../styles/mixins';
+
+.home-tabs-bar-old {
+  margin-left: @side-panel-width;
+  height: 44px;
+  line-height: 44px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  color: #aaa;
+  background-color: #222;
+  white-space: nowrap;
+  border-left: 1px solid #000;
+  &::-webkit-scrollbar {
+    height: 3px;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  span.tab {
+    position: relative;
+    display: inline-block;
+    background-color: #333;
+    outline: none;
+    padding: 0 30px 0 10px;
+    border-left: 1px solid #1a1a1a;
+    border-right: 1px solid #1a1a1a;
+    margin-left: -1px;
+    cursor: pointer;
+    user-select: none;
+    label {
+      cursor: pointer;
+    }
+
+    &.is-dragging {
+      background-color: #2a2a2a;
+      border-right-color: rgba(0, 0, 0, 0);
+    }
+
+    &.is-temp {
+      font-style: italic;
+    }
+
+    .anticon-close,
+    .anticon-dot {
+      position: absolute;
+      font-weight: bold;
+      font-size: 13px;
+      top: 17px;
+      right: 3px;
+      visibility: hidden;
+      color: #ddd;
+    }
+    &:hover .anticon-close {
+      visibility: visible;
+    }
+
+    &-active {
+      color: #eee;
+      background-color: #1a1a1a;
+      .anticon-close {
+        visibility: visible;
+      }
+    }
+
+    .anticon {
+      min-width: 12px;
+      font-size: 12px;
+      margin-right: 6px;
+    }
+
+    .anticon-appstore-o {
+      color: #f08036;
+    }
+
+    .anticon-notification {
+      color: #ec407a;
+    }
+
+    .anticon-home {
+      color: #33cdff;
+      font-size: 14px;
+    }
+    .anticon-share-alt {
+      color: #26a69a;
+    }
+    .anticon-check-circle-o {
+      color: #8bc34a;
+    }
+    .anticon-pie-chart {
+      color: #fdd835;
+    }
+    .anticon-play-circle-o {
+      color: #66bb6a;
+    }
+    .anticon-profile {
+      color: #33cdff;
+    }
+    .anticon-dot {
+      visibility: visible;
+      &::before {
+        content: ' ';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background-color: #aaa;
+      }
+    }
+    &-has-change {
+      //   background: red;
+      .anticon-close {
+        visibility: visible;
+        &::before {
+          content: ' ';
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 5px;
+          background-color: #aaa;
+        }
+
+        &:hover::before {
+          content: '\E633';
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 0px;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}

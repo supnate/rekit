@@ -1,51 +1,196 @@
 const _ = require('lodash');
 const shell = require('shelljs');
+const traverse = require('babel-traverse').default;
 
 const { paths, vio } = rekit.core;
+const { ast, projectFiles } = rekit.common;
 
 let elementById = {};
-let allFiles = null;
+const filePropsCache = {};
+
+function getFileProps(file) {
+  if (filePropsCache[file] && filePropsCache[file].content === vio.getContent(file)) {
+    return filePropsCache[file].props;
+  }
+
+  const fileAst = ast.getAst(file);
+  const ff = {}; // File features
+
+  traverse(fileAst, {
+    ImportDeclaration(path) {
+      switch (path.node.source.value) {
+        case 'react':
+          ff.importReact = true;
+          break;
+        case 'redux':
+          ff.importRedux = true;
+          break;
+        case 'react-redux':
+          ff.importReactRedux = true;
+          break;
+        case './constants':
+          ff.importConstant = true;
+          ff.importMultipleConstants = path.node.specifiers.length > 3;
+          break;
+        default:
+          break;
+      }
+    },
+    ClassDeclaration(path) {
+      if (path.node.superClass && path.node.body.body.some(n => n.type === 'ClassMethod' && n.key.name === 'render')) {
+        ff.hasClassAndRenderMethod = true;
+      }
+    },
+    CallExpression(path) {
+      if (path.node.callee.name === 'connect') {
+        ff.connectCall = true;
+      }
+    },
+    ExportNamedDeclaration(path) {
+      if (_.get(path, 'node.declaration.id.name') === 'reducer') {
+        ff.exportReducer = true;
+      }
+    },
+  });
+  const props = {
+    component: ff.importReact &&
+      ff.hasClassAndRenderMethod && {
+        connectToStore: ff.importReactRedux && ff.connectCall,
+      },
+    action: ff.exportReducer &&
+      ff.importConstant && {
+        isAsync: ff.importMultipleConstants,
+      },
+  };
+
+  if (props.component) props.type = 'component';
+  else if (props.action) props.type = 'action';
+
+  filePropsCache[file] = {
+    content: vio.getContent(file),
+    props,
+  };
+  return props;
+}
 
 function getComponents(feature) {
   const components = [];
-  const eleById = allFiles.elementById;
-  const eleFolder = eleById[`src/features/${feature}`];
-  eleFolder.children.map(eid => eleById[eid]).forEach(ele => {    
-    if (ele.type === 'file' && /\.jsx?$/.test(ele.name)) {
+  const eleFolder = elementById[`src/features/${feature}`];
+  eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
+    if (ele.type === 'file' && /\.jsx?$/.test(ele.name) && getFileProps(ele.id).component) {
+      const parts = [
+        { name: 'code', target: ele.id },
+        { name: 'style', target: ele.id.replace(/\.jsx?$/, '.less') },
+        { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.jsx?$/, '.test.js') },
+      ];
+      const name = ele.name.replace(/\.[^.]*$/, '');
       components.push({
         type: 'component',
         id: `v:${ele.id}`,
-        name: ele.name.replace(/\.[^.]*$/, ''),
-        parts: [ele.id],
+        name,
+        props: getFileProps(ele.id).component,
+        parts,
       });
     }
   });
 
-  components.forEach(c => { elementById[c.id] = c; });
-  console.log(feature, components);
+  components.forEach(c => {
+    elementById[c.id] = c;
+  });
   return components.map(c => c.id);
 }
-function getActions(feature) {}
+
+function getActions(feature) {
+  const actions = [];
+  const eleFolder = elementById[`src/features/${feature}/redux`];
+  eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
+    if (ele.type === 'file' && /\.js$/.test(ele.name) && getFileProps(ele.id).action) {
+      const parts = [
+        { name: 'code', target: ele.id },
+        { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js') },
+      ];
+      actions.push({
+        type: 'action',
+        id: `v:${ele.id}`,
+        name: ele.name.replace(/\.[^.]*$/, ''),
+        props: getFileProps(ele.id).action,
+        parts,
+      });
+    }
+  });
+
+  actions.forEach(c => {
+    elementById[c.id] = c;
+  });
+  return actions.map(c => c.id);
+}
+
 function getRoutes(feature) {}
-function getMiscFiles(feature) {
-  const elements = [];
-  const elementById = {};
-  return elements;
+
+function getFiles(feature) {
+  const res = projectFiles.readDir(paths.map(`src/features/${feature}`));
+  Object.assign(elementById, res.elementById);
+  return res.elements;
+}
+
+function getInitialState(feature) {
+  const id = `v:${feature}-initial-state`;
+  const ele = {
+    id,
+    type: 'initial-state',
+    target: `src/features/${feature}/redux/initialState.js`,
+    name: 'initialState',
+  };
+  elementById[id] = ele;
+  return ele;
 }
 
 function getFeatures() {
   // return _.toArray(shell.ls(rekit.core.paths.map('src/features')));
   const elements = [];
   shell.ls(paths.map('src/features')).forEach(f => {
-    const id = `v:feature-${f}`;
-    elements.push(id);
+    const routes = getRoutes(f);
+    const actions = getActions(f);
+    const components = getComponents(f);
+
+    actions.unshift(getInitialState(f).id);
+
+    // const initialStateId = actions.unshift('initial-state');
+    // elementById['initial-state'] = {
+    //   id: `v:${f}-initial-state`,
+    //   type: 'initial-state',
+    //   target: `src/features/${f}/redux/initialState.js`,
+    //   name: 'initialState',
+    // };
+
+    const toRemoveFromMisc = {};
+    [...actions, ...components].map(eid => elementById[eid]).forEach(ele => {
+      if (ele.target) toRemoveFromMisc[ele.target] = true;
+      if (ele.parts) {
+        ele.parts.forEach(p => {
+          if (p.target) toRemoveFromMisc[p.target] = true;
+        });
+      }
+    });
+
+    const filterNonMisc = children => {
+      const filtered = children.filter(cid => !toRemoveFromMisc[cid]);
+      filtered.map(cid => elementById[cid]).forEach(c => {
+        if (c.children) c.children = filterNonMisc(c.children);
+      });
+      return filtered;
+    };
+
+    const misc = filterNonMisc(getFiles(f));
 
     const children = [
-      { id: `v:${f}-routes`, type: 'routes', name: 'Routes', children: getRoutes(f) },
-      { id: `v:${f}-actions`, type: 'actions', name: 'Actions', children: getActions(f) },
-      { id: `v:${f}-components`, type: 'components', name: 'Components', children: getComponents(f) },
-      { id: `v:${f}-misc`, type: 'misc', name: 'Misc', children: getMiscFiles(f) },
+      { id: `v:${f}-routes`, type: 'routes', name: 'Routes', children: routes },
+      { id: `v:${f}-actions`, type: 'actions', name: 'Actions', children: actions },
+      { id: `v:${f}-components`, type: 'components', name: 'Components', children: components },
+      { id: `v:${f}-misc`, type: 'misc', name: 'Misc', children: misc },
     ];
+    const id = `v:feature-${f}`;
+    elements.push(id);
     elementById[id] = {
       type: 'feature',
       id,
@@ -61,8 +206,8 @@ function getFeatures() {
 
 function getProjectData() {
   // return rekit.common.projectFiles.readDir();
-  elementById = {};
-  allFiles = rekit.common.projectFiles.readDir(paths.map('src'));
+  const allFiles = projectFiles.readDir(paths.map('src'));
+  elementById = allFiles.elementById;
 
   const eleFeatures = {
     type: 'features',
@@ -74,7 +219,7 @@ function getProjectData() {
     type: 'misc',
     id: 'v:root-misc',
     name: 'Misc',
-    children: getMiscFiles(),
+    children: allFiles.elements.filter(eid => eid !== 'src/features'),
   };
 
   const elements = [];

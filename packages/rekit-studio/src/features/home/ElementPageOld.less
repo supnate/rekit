@@ -1,0 +1,113 @@
+@import '../../styles/mixins.less';
+
+.home-element-page-old {
+  height: 100%;
+  background-color: #1e1e1e;
+  h2 {
+    margin-bottom: 0;
+    line-height: 44px;
+    font-weight: normal;
+    color: #ccc;
+    font-size: 16px;
+  }
+
+  .page-title {
+    padding-left: 20px;
+    background-color: #333;
+    .mark {
+      display: inline-block;
+      padding: 0;
+      width: 16px;
+      margin-left: 5px;
+      line-height: 16px;
+      border-radius: 2px;
+      font-size: 12px;
+      text-align: center;
+      transform: translateY(-2px);
+      color: #fff;
+      cursor: default;
+
+      &-c {
+        background-color: #42bd41;
+      }
+      &-r {
+        background-color: #ffb300;
+      }
+      &-a {
+        background-color: #4fc3f7;
+      }
+    }
+  }
+
+  .pic-wrapper {
+    text-align: center;
+    img {
+      margin-top: 20px;
+      max-width: 600px;
+    }
+  }
+
+  .ant-tabs-bar {
+    margin-bottom: 0;
+    border-bottom: 1px solid #000;
+    background-color: #222;
+  }
+
+  .ant-tabs-tab {
+    margin-left: 20px !important;
+    padding: 8px 12px !important;
+    color: #ccc;
+    &-active {
+      background-color: #444;
+    }
+  }
+
+  .ant-alert-error {
+    border: none;
+    background: none;
+    color: #aaa;
+  }
+
+  .diagram-element-diagram {
+    margin: 30px;
+  }
+
+  .rules-view {
+    padding: 30px;
+    height: ~'calc(100% - 36px)';
+    color: #ccc;
+    background-color: #333;
+    overflow: auto;
+    .scroll-style();
+    table {
+      margin-top: 20px;
+      th,
+      td {
+        padding: 10px;
+        min-width: 400px;
+        text-align: left;
+        border: 1px solid #666;
+        color: #ccc;
+        &:nth-child(2) {
+          min-width: 300px;
+        }
+      }
+      thead {
+        background-color: #444;
+        font-weight: bold;
+      }
+
+      tbody {
+        tr:hover {
+          // background-color: lighten(#e0f2f1, 5%);
+        }
+      }
+    }
+  }
+}
+
+// .home-app .page-container.full-screen {
+//   padding: 0;
+//   border-left: 1px solid #000;
+//   background-color: #1e1e1e;
+// }

@@ -17,6 +17,7 @@ import { storage } from '../../common/utils';
 import { reducer as updateProjectDataReducer } from './updateProjectData';
 import { reducer as showDialogReducer } from './showDialog';
 import { reducer as hideDialogReducer } from './hideDialog';
+import plugin from '../../plugin/plugin';
 
 const reducers = [
   fetchProjectData,
@@ -34,7 +35,10 @@ const reducers = [
   hideDialogReducer,
 ];
 
-const pascalCase = _.flow(_.camelCase, _.upperFirst);
+// const pascalCase = _.flow(
+//   _.camelCase,
+//   _.upperFirst
+// );
 
 export default function reducer(state = initialState, action) {
   let newState;
@@ -50,106 +54,137 @@ export default function reducer(state = initialState, action) {
 
     case '@@router/LOCATION_CHANGE': {
       // Open tab or switch tab type while url changes.
-      const { pathname } = action.payload;
-      const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
-      let { openTabs, historyTabs } = state;
-      let type, name, icon, feature; // eslint-disable-line
-      const key = getTabKey(pathname);
-      if (arr.length === 0) {
-        type = 'home';
-        name = 'Dashboard';
-        icon = 'home';
-      } else if (arr[1] === 'routes') {
-        type = 'routes';
-        name = _.capitalize(arr[0]);
-        icon = 'share-alt';
-      } else if (arr[0] === 'element') {
-        const ele = state.elementById[key];
-        if (!ele) {
-          newState = state; // Should only happens when after refreshing the page when project data is not fetched.
-          break;
-        }
-        type = 'element';
-        name = ele.name;
-        feature = ele.feature;
-        icon =
-          {
-            component: 'appstore-o',
-            action: 'notification',
-            misc: 'file',
-          }[ele.type] || 'file';
-        if (ele.name === 'route.js') {
-          icon = 'share-alt';
-          name = pascalCase(ele.feature);
-        }
-      } else if (arr[0] === 'tools' && arr[1] === 'tests') {
-        name = 'Run Tests';
-        type = 'tests';
-        icon = 'check-circle-o';
-      } else if (arr[0] === 'tools' && arr[1] === 'coverage') {
-        name = 'Test Coverage';
-        type = 'coverage';
-        icon = 'pie-chart';
-      } else if (arr[0] === 'tools' && arr[1] === 'build') {
-        name = 'Build';
-        type = 'build';
-        icon = 'play-circle-o';
-      } else if (arr[0] === 'config' && arr[1] === 'deps') {
-        name = 'Dependencies';
-        type = 'deps';
-        icon = 'profile';
-      } else {
-        // No tabs for other pages like '/blank'
+      const pathname = action.payload.pathname;
+      if (!state.elementById) {
         newState = state;
         break;
       }
-
-      const foundTab = _.find(openTabs, { key });
-      if (!foundTab) {
-        const isTemp = !/^#(home|tests|coverage|build|deps)$/.test(key);
-        const tabItem = { key, type, name, icon, pathname, isTemp };
-        if (type === 'element') {
-          tabItem.subTab = arr[2] || '';
-          tabItem.feature = feature;
-        }
-        if (isTemp) {
-          const currentTemp = _.find(openTabs, { isTemp: true });
-          if (currentTemp) {
-            const index = openTabs.indexOf(currentTemp);
-            openTabs = update(openTabs, { $splice: [[index, 1]] });
-            const keyIndex = historyTabs.indexOf(currentTemp.key);
-            historyTabs = update(historyTabs, { $splice: [[keyIndex, 1]] });
+      let tab;
+      plugin
+        .getPlugins()
+        .reverse()
+        .some(p => {
+          if (p.tab && p.tab.getTab) {
+            tab = p.tab.getTab(pathname);
           }
-        }
-        openTabs = [...openTabs, tabItem];
-        historyTabs = [key, ...historyTabs];
-      } else {
-        // Tab has been open, move it to top of history
-        historyTabs = [key, ..._.without(historyTabs, key)];
+          return !!tab;
+        });
 
-        if (type === 'element') {
-          const subTab = arr[2] || '';
-          // Check sub tab change for element page
-          if (foundTab.subTab !== subTab) {
-            // Tab type is changed.
-            const index = _.findIndex(openTabs, { key });
-            openTabs = update(openTabs, {
-              [index]: { subTab: { $set: subTab } },
-            });
-          }
-        }
-
-        if (type === 'tests' && foundTab.pathname !== pathname) {
-          const index = _.findIndex(openTabs, { key });
-          openTabs = update(openTabs, {
-            [index]: { pathname: { $set: pathname } },
-          });
-        }
+      if (!tab) {
+        tab = {
+          name: 'Not found',
+          key: 'rekit:not-found',
+        };
       }
+
+      let { openTabs, historyTabs } = state;
+      if (!openTabs.includes(tab.key)) {
+        openTabs = [...openTabs, tab.key];
+      }
+      historyTabs = [tab.key, _.without(historyTabs, tab.key)];
       newState = { ...state, openTabs, historyTabs };
       storage.session.setItem('openTabs', openTabs);
       storage.session.setItem('historyTabs', historyTabs);
       break;
+      // const arr = _.compact(pathname.split('/')).map(decodeURIComponent);
+      // let { openTabs, historyTabs } = state;
+      // let type, name, icon, feature; // eslint-disable-line
+      // const key = getTabKey(pathname);
+      // if (arr.length === 0) {
+      //   type = 'home';
+      //   name = 'Dashboard';
+      //   icon = 'home';
+      // } else if (arr[1] === 'routes') {
+      //   type = 'routes';
+      //   name = _.capitalize(arr[0]);
+      //   icon = 'share-alt';
+      // } else if (arr[0] === 'element') {
+      //   const ele = state.projectData ? state.projectData.elementById[key] : null;
+      //   if (!ele) {
+      //     newState = state; // Should only happens when after refreshing the page when project data is not fetched.
+      //     break;
+      //   }
+      //   type = 'element';
+      //   name = ele.name;
+      //   feature = ele.feature;
+      //   icon =
+      //     {
+      //       component: 'appstore-o',
+      //       action: 'notification',
+      //       misc: 'file',
+      //     }[ele.type] || 'file';
+      //   if (ele.name === 'route.js') {
+      //     icon = 'share-alt';
+      //     name = pascalCase(ele.feature);
+      //   }
+      // } else if (arr[0] === 'tools' && arr[1] === 'tests') {
+      //   name = 'Run Tests';
+      //   type = 'tests';
+      //   icon = 'check-circle-o';
+      // } else if (arr[0] === 'tools' && arr[1] === 'coverage') {
+      //   name = 'Test Coverage';
+      //   type = 'coverage';
+      //   icon = 'pie-chart';
+      // } else if (arr[0] === 'tools' && arr[1] === 'build') {
+      //   name = 'Build';
+      //   type = 'build';
+      //   icon = 'play-circle-o';
+      // } else if (arr[0] === 'config' && arr[1] === 'deps') {
+      //   name = 'Dependencies';
+      //   type = 'deps';
+      //   icon = 'profile';
+      // } else {
+      //   // No tabs for other pages like '/blank'
+      //   newState = state;
+      //   break;
+      // }
+
+      // const foundTab = _.find(openTabs, { key });
+      // if (!foundTab) {
+      //   const isTemp = !/^#(home|tests|coverage|build|deps)$/.test(key);
+      //   const tabItem = { key, type, name, icon, pathname, isTemp };
+      //   if (type === 'element') {
+      //     tabItem.subTab = arr[2] || '';
+      //     tabItem.feature = feature;
+      //   }
+      //   if (isTemp) {
+      //     const currentTemp = _.find(openTabs, { isTemp: true });
+      //     if (currentTemp) {
+      //       const index = openTabs.indexOf(currentTemp);
+      //       openTabs = update(openTabs, { $splice: [[index, 1]] });
+      //       const keyIndex = historyTabs.indexOf(currentTemp.key);
+      //       historyTabs = update(historyTabs, { $splice: [[keyIndex, 1]] });
+      //     }
+      //   }
+      //   openTabs = [...openTabs, tabItem];
+      //   historyTabs = [key, ...historyTabs];
+      // } else {
+      //   // Tab has been open, move it to top of history
+      //   historyTabs = [key, ..._.without(historyTabs, key)];
+
+      //   if (type === 'element') {
+      //     const subTab = arr[2] || '';
+      //     // Check sub tab change for element page
+      //     if (foundTab.subTab !== subTab) {
+      //       // Tab type is changed.
+      //       const index = _.findIndex(openTabs, { key });
+      //       openTabs = update(openTabs, {
+      //         [index]: { subTab: { $set: subTab } },
+      //       });
+      //     }
+      //   }
+
+      //   if (type === 'tests' && foundTab.pathname !== pathname) {
+      //     const index = _.findIndex(openTabs, { key });
+      //     openTabs = update(openTabs, {
+      //       [index]: { pathname: { $set: pathname } },
+      //     });
+      //   }
+      // }
+      // newState = { ...state, openTabs, historyTabs };
+      // storage.session.setItem('openTabs', openTabs);
+      // storage.session.setItem('historyTabs', historyTabs);
+      // break;
     }
 
     default:

@@ -2,11 +2,12 @@ const app = require('./core/app');
 const element = require('./core/element');
 const plugin = require('./core/plugin');
 const paths = require('./core/paths');
-const ast = require('./core/ast');
-
+const vio = require('./core/vio');
+const ast = require('./common/ast');
 const projectFiles = require('./common/projectFiles');
 
 paths.setProjectRoot('/Users/pwang7/workspace/app-next/');
+// paths.setProjectRoot('/Users/pwang7/workspace/rekit/packages/rekit-studio');
 
 global.rekit = {
   core: {
@@ -14,10 +15,11 @@ global.rekit = {
     paths,
     plugin,
     element,
-    ast,
+    vio,
   },
   common: {
     projectFiles,
+    ast,
   },
 };
 

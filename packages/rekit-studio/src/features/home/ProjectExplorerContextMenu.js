@@ -17,7 +17,7 @@ export class ProjectExplorerContextMenu extends Component {
   constructor(props) {
     super(props);
     // Get all plugin's project explorer contribution
-    this.pluginMenus = plugin.plugins.filter(p => p.projectExplorerContextMenu).map(p => p.projectExplorerContextMenu);
+    this.pluginMenus = plugin.getPlugins().filter(p => p.projectExplorerContextMenu).map(p => p.projectExplorerContextMenu);
   }
 
   state = {

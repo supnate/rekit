@@ -57,10 +57,11 @@ function getLines(filePath) {
       }
     });
     // console.log('real file path: ', Object.keys(fileLines), realFilePath);
-    if (!shell.test('-e', realFilePath)) {
+    const absPath = paths.map(realFilePath);
+    if (!shell.test('-e', absPath)) {
       throw new Error("Can't find such file: " + realFilePath);
     }
-    fileLines[filePath] = shell.cat(realFilePath).split(/\r?\n/);
+    fileLines[filePath] = shell.cat(absPath).split(/\r?\n/);
   }
   return fileLines[filePath];
 }

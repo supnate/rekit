@@ -13,7 +13,7 @@ export default {
     { name: 'Home page', component: HomePage, isIndex: true },
     { path: '/welcome', name: 'Welcome page', component: WelcomePage },
     { path: '/all-routes', name: 'All Routes', component: AllRoutesPage },
-    { path: '/element/:file/:type?', name: 'Element page old', component: ElementPage },
+    { path: '/element/:elementId/:part?', name: 'Element page', component: ElementPage },
     { path: '/:feature/routes/:type?', name: 'Routes page', component: RoutesPage },
   ],
 };

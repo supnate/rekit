@@ -15,29 +15,29 @@ export class ElementPage extends Component {
 
   getElement() {
     const { elementId } = this.props.match.params;
-    let { part } = this.props.match.params;
+    let { view } = this.props.match.params;
     const eleId = decodeURIComponent(elementId);
     const ele = this.byId(eleId);
-    if (!part && ele.parts && ele.parts.length > 0) {
-      part = (_.find(ele.parts, 'isDefault') || ele.parts[0]).name;
+    if (!view && ele.views && ele.views.length > 0) {
+      view = (_.find(ele.views, 'isDefault') || ele.views[0]).name;
     }
-    if (part) return this.byId(_.find(ele.parts, { name: part }).target);
+    if (view) return this.byId(_.find(ele.views, { name: view }).target);
     return ele;
   }
 
   getFileElement() {
-    const { elementId, part } = this.props.match.params;
+    const { elementId, view } = this.props.match.params;
     const eleId = decodeURIComponent(elementId);
     const ele = this.byId(eleId);
 
-    if (ele.parts && ele.parts.length) {
-      let partEle;
+    if (ele.views && ele.views.length) {
+      let viewEle;
 
-      if (!part) partEle = _.find(ele.parts, 'isDefault') || ele.parts[0];
-      else partEle = _.find(ele.parts, p => p.name === part);
+      if (!view) viewEle = _.find(ele.views, 'isDefault') || ele.views[0];
+      else viewEle = _.find(ele.views, p => p.name === view);
 
-      if (partEle) partEle = this.byId(partEle.target);
-      if (partEle) return partEle.type === 'file' ? partEle : null;
+      if (viewEle) viewEle = this.byId(viewEle.target);
+      if (viewEle) return viewEle.type === 'file' ? viewEle : null;
     } else if (ele.type === 'file') {
       return ele;
     }
@@ -49,6 +49,12 @@ export class ElementPage extends Component {
 
   render() {
     const fileEle = this.getFileElement();
+    if (!fileEle)
+      return (
+        <div className="home-element-page" style={{ color: 'red' }}>
+          No component to show the element.
+        </div>
+      );
     return <div className="home-element-page">{fileEle && <CodeEditor file={fileEle.id} />}</div>;
   }
 }

@@ -78,7 +78,7 @@ function getComponents(feature) {
   const eleFolder = elementById[`src/features/${feature}`];
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.jsx?$/.test(ele.name) && getFileProps(ele.id).component) {
-      const parts = [
+      const views = [
         { name: 'code', target: ele.id, isDefault: true },
         { name: 'style', target: ele.id.replace(/\.jsx?$/, '.less') },
         { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.jsx?$/, '.test.js') },
@@ -89,7 +89,7 @@ function getComponents(feature) {
         id: `v:${ele.id}`,
         name,
         props: getFileProps(ele.id).component,
-        parts,
+        views,
       });
     }
   });
@@ -105,7 +105,7 @@ function getActions(feature) {
   const eleFolder = elementById[`src/features/${feature}/redux`];
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.js$/.test(ele.name) && getFileProps(ele.id).action) {
-      const parts = [
+      const views = [
         { name: 'code', target: ele.id, isDefault: true },
         { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js') },
       ];
@@ -114,7 +114,7 @@ function getActions(feature) {
         id: `v:${ele.id}`,
         name: ele.name.replace(/\.[^.]*$/, ''),
         props: getFileProps(ele.id).action,
-        parts,
+        views,
       });
     }
   });
@@ -166,8 +166,8 @@ function getFeatures() {
     const toRemoveFromMisc = {};
     [...actions, ...components].map(eid => elementById[eid]).forEach(ele => {
       if (ele.target) toRemoveFromMisc[ele.target] = true;
-      if (ele.parts) {
-        ele.parts.forEach(p => {
+      if (ele.views) {
+        ele.views.forEach(p => {
           if (p.target) toRemoveFromMisc[p.target] = true;
         });
       }

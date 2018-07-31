@@ -19,7 +19,7 @@ export default {
 
     // Find element page
     match = matchPath(urlPath, {
-      path: '/element/:elementId/:part?',
+      path: '/element/:elementId/:view?',
       exact: true,
     });
     if (match) {
@@ -31,12 +31,12 @@ export default {
         key: ele.id,
         urlPath,
         subTabs:
-          ele.parts &&
-          ele.parts.map(part => ({
-            isDefault: part.isDefault,
-            name: _.capitalize(part.name),
-            key: part.name,
-            urlPath: `/element/${encodeURIComponent(ele.id)}/${encodeURIComponent(part.name)}`,
+          ele.views &&
+          ele.views.map(view => ({
+            isDefault: view.isDefault,
+            name: _.capitalize(view.name),
+            key: view.name,
+            urlPath: `/element/${encodeURIComponent(ele.id)}/${encodeURIComponent(view.name)}`,
           })),
       };
       return tab;

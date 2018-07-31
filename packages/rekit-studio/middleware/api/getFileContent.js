@@ -1,12 +1,11 @@
 'use strict';
 
-const rekitCore = require('rekit-core');
+const rekit = require('rekit-core');
 
-const vio = rekitCore.vio;
+const vio = rekit.core.vio;
 
 function getFileContent(file) {
   return vio.getContent(file);
 }
 
 module.exports = getFileContent;
-

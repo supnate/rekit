@@ -191,21 +191,21 @@ module.exports = () => {
             break;
           }
           case '/api/file-content': {
-            const absPath = rekit.core.paths.join(prjRoot, req.query.file);
-            if (!_.startsWith(absPath, prjRoot)) {
-              // prevent ../.. in req.query.file
-              res.statusCode = 403;
-              res.write('Forbidden: not allowed to access file out of the project.');
-              res.end();
-              break;
-            }
+            const absPath = rekit.core.paths.map(req.query.file);
+            // if (!_.startsWith(absPath, prjRoot)) {
+            //   // prevent ../.. in req.query.file
+            //   res.statusCode = 403;
+            //   res.write('Forbidden: not allowed to access file out of the project.');
+            //   res.end();
+            //   break;
+            // }
 
             if (!fs.existsSync(absPath)) {
               res.statusCode = 404;
               res.write(JSON.stringify({ error: 'Not found.' }));
               res.end();
             } else {
-              res.write(JSON.stringify({ content: getFileContent(absPath) }));
+              res.write(JSON.stringify({ content: getFileContent(req.query.file) }));
               res.end();
             }
             break;

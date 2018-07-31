@@ -18,8 +18,8 @@ const initialState = {
   filesHasSyntaxError: {},
 
   // Restore open tabs and history tabs from local storage
-  openTabs: [], //storage.session.getItem('openTabs', []),
-  historyTabs: [],//storage.session.getItem('historyTabs', []),
+  openTabs: storage.session.getItem('openTabs', []),
+  historyTabs: storage.session.getItem('historyTabs', []),
 
   demoAlertVisible: false,
   saveFilePending: false,

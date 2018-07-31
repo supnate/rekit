@@ -13,4 +13,3 @@ export { stickTab } from './stickTab';
 export { updateProjectData } from './updateProjectData';
 export { showDialog } from './showDialog';
 export { hideDialog } from './hideDialog';
-export { initTabs } from './initTabs';

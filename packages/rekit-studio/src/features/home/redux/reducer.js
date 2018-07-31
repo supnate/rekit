@@ -19,7 +19,6 @@ import { reducer as updateProjectDataReducer } from './updateProjectData';
 import { reducer as showDialogReducer } from './showDialog';
 import { reducer as hideDialogReducer } from './hideDialog';
 import plugin from '../../plugin/plugin';
-import { reducer as initTabsReducer } from './initTabs';
 
 const reducers = [
   fetchProjectData,
@@ -35,7 +34,6 @@ const reducers = [
   updateProjectDataReducer,
   showDialogReducer,
   hideDialogReducer,
-  initTabsReducer,
 ];
 
 // const pascalCase = _.flow(

@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { CodeEditor } from '../editor';
 import * as actions from './redux/actions';
 
 export class ElementPage extends Component {
   static propTypes = {
-    home: PropTypes.object.isRequired,
     elementById: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
   };
-
 
   getElement() {
     const { elementId } = this.props.match.params;
@@ -26,15 +25,31 @@ export class ElementPage extends Component {
     return ele;
   }
 
+  getFileElement() {
+    const { elementId, part } = this.props.match.params;
+    const eleId = decodeURIComponent(elementId);
+    const ele = this.byId(eleId);
+
+    if (ele.parts && ele.parts.length) {
+      let partEle;
+
+      if (!part) partEle = _.find(ele.parts, 'isDefault') || ele.parts[0];
+      else partEle = _.find(ele.parts, p => p.name === part);
+
+      if (partEle) partEle = this.byId(partEle.target);
+      if (partEle) return partEle.type === 'file' ? partEle : null;
+    } else if (ele.type === 'file') {
+      return ele;
+    }
+    return null;
+  }
+  // Get component to show the element
+  getComponent() {}
   byId = id => this.props.elementById[id];
 
   render() {
-    console.log('match:', this.props.match);
-    return (
-      <div className="home-element-page">
-        {this.getElement().id}
-      </div>
-    );
+    const fileEle = this.getFileElement();
+    return <div className="home-element-page">{fileEle && <CodeEditor file={fileEle.id} />}</div>;
   }
 }
 
@@ -48,7 +63,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators({ ...actions }, dispatch),
   };
 }
 

@@ -4,97 +4,178 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { Icon } from 'antd';
+import { Icon, Dropdown, Menu } from 'antd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
-import plugin from '../plugin/plugin';
-import * as actions from './redux/actions';
+import { initTabs, closeTab, stickTab, moveTab } from './redux/actions';
+import { tabsSelector } from './selectors/tabs';
+
+const getListStyle = () => ({
+  display: 'flex',
+  padding: 0,
+  overflow: 'auto',
+});
 
 export class TabsBar extends Component {
   static propTypes = {
     openTabs: PropTypes.array.isRequired,
+    historyTabs: PropTypes.array.isRequired,
     sidePanelWidth: PropTypes.number.isRequired,
     actions: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
   };
 
-  isCurrentTab(tab) {}
+  constructor(props) {
+    super(props);
+    this.props.dispatch({
+      type: '@@router/LOCATION_CHANGE',
+      payload: this.props.location,
+    });
+  }
+
   isChanged(tab) {}
 
-  getTab = (urlPath) => {
-    let tab = null;
-    plugin
-      .getPlugins()
-      .reverse()
-      .some(p => {
-        if (p.tab && p.tab.getTab) {
-          tab = p.tab.getTab(urlPath);
-        }
-        return !!tab;
-      });
-    return tab;
-  };
+  getCurrentTab() {
+    return _.find(this.props.openTabs, t => t.isActive);
+  }
 
   handleSelectTab = tab => {
     history.push(tab.urlPath);
-    // const tab = _.find(this.props.openTabs, { key });
-
-    // let path;
-    // switch (tab.type) {
-    //   case 'home':
-    //     path = '/';
-    //     break;
-    //   case 'element':
-    //     path = `/element/${encodeURIComponent(key)}/${tab.subTab}`;
-    //     break;
-    //   case 'routes':
-    //     path = `/${tab.key}/${tab.subTab || ''}`;
-    //     break;
-    //   case 'tests':
-    //   case 'coverage':
-    //   case 'build':
-    //   case 'deps':
-    //     path = tab.pathname;
-    //     break;
-    //   default:
-    //     console.error('unknown tab type: ', tab);
-    //     break;
-    // }
-    // if (document.location.pathname !== path) {
-    //   history.push(path);
-    // }
   };
 
-  handleSelectSubTab = subTab => {};
+  handleSelectSubTab = subTab => {
+    history.push(subTab.urlPath);
+  };
 
-  handleClose = (evt, tab) => {};
+  handleClose = (evt, tab) => {
+    if (evt && evt.stopPropagation) evt.stopPropagation();
 
-  renderTab = (tab) => {
+    const { openTabs, historyTabs } = this.props;
+    this.props.actions.closeTab(tab.key);
+    if (historyTabs.length === 1) {
+      history.push('/welcome');
+    } else if (tab.isActive) {
+      // Close the current one
+      const nextKey = historyTabs[1]; // at this point the props has not been updated.
+      const tab = _.find(openTabs, { key: nextKey });
+
+      history.push(tab.urlPath);
+    }
+  };
+
+  handleDragEnd = result => {
+    this.props.actions.moveTab(result);
+  };
+
+  handleMenuClick = (tab, menuKey) => {
+    const { openTabs } = this.props;
+    switch (menuKey) {
+      case 'close-others':
+        openTabs.filter(t => t.key !== tab.key).forEach(t => this.handleClose({}, t));
+        break;
+      case 'close-right':
+        openTabs.slice(_.findIndex(openTabs, { key: tab.key }) + 1).forEach(t => this.handleClose({}, t));
+        break;
+      case 'close-self':
+        this.handleClose({}, tab);
+        break;
+      default:
+        break;
+    }
+  };
+
+  assignRef = node => {
+    this.rootNode = node;
+  };
+
+  renderSubTabs = () => {
+    const { pathname } = this.props.location;
+    const currentTab = this.getCurrentTab();
+    const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
+    if (!hasSubTabs) return null;
+    let activeSubTabPath = pathname;
+    if (!currentTab.subTabs.some(t => t.urlPath === pathname)) {
+      activeSubTabPath = _.find(currentTab.subTabs, 'isDefault').urlPath;
+    }
+
     return (
-      <span
-        key={tab.key}
-        onClick={() => this.handleSelectTab(tab)}
-        onDoubleClick={() => this.props.actions.stickTab(tab.key)}
-        className={classnames('tab', {
-          'is-active': this.isCurrentTab(tab),
-          'has-change': this.isChanged(tab),
-          'is-temp': tab.isTemp,
-        })}
-      >
-        <SvgIcon type={tab.icon || 'file'} />
-        <label>{tab.name}</label>
-        <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
-      </span>
+      <div className="sub-tabs">
+        {currentTab.subTabs.map(subTab => (
+          <span
+            key={subTab.key}
+            className={classnames('sub-tab', { 'is-active': activeSubTabPath === subTab.urlPath })}
+            onClick={() => this.handleSelectSubTab(subTab)}
+          >
+            {subTab.name}
+          </span>
+        ))}
+      </div>
+    );
+  };
+
+  renderTab = (tab, index) => {
+    const getMenu = tab => (
+      <Menu onClick={args => this.handleMenuClick(tab, args.key)}>
+        <Menu.Item key="close-others">Close others</Menu.Item>
+        <Menu.Item key="close-right">Close to the right</Menu.Item>
+        <Menu.Item key="close-self">Close</Menu.Item>
+      </Menu>
+    );
+    return (
+      <Draggable key={tab.key} draggableId={tab.key} index={index}>
+        {provided => (
+          <Dropdown overlay={getMenu(tab)} trigger={['contextMenu']} key={tab.key}>
+            <span
+              key={tab.key}
+              onClick={() => this.handleSelectTab(tab)}
+              onDoubleClick={() => this.props.actions.stickTab(tab.key)}
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              className={classnames('tab', {
+                'is-active': tab.isActive,
+                'has-change': this.isChanged(tab),
+                'is-temp': tab.isTemp,
+              })}
+            >
+              <SvgIcon type={tab.icon || 'file'} />
+              <label>{tab.name}</label>
+              <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
+            </span>
+          </Dropdown>
+        )}
+      </Draggable>
     );
   };
 
   render() {
     const { openTabs, sidePanelWidth } = this.props;
-    console.log('open tabs: ', openTabs);
-    const tabs = _.compact(openTabs.map(this.getTab));
-    console.log('tabs: ', tabs);
+    const currentTab = this.getCurrentTab();
+    const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
     return (
-      <div className="home-tabs-bar" style={{ marginLeft: `${sidePanelWidth}px` }}>
-        {tabs.map(this.renderTab)}
+      <div
+        className={classnames('home-tabs-bar', { 'has-sub-tabs': hasSubTabs })}
+        style={{ marginLeft: `${sidePanelWidth}px` }}
+      >
+        <DragDropContext onDragEnd={this.handleDragEnd}>
+          <Droppable droppableId="droppable" direction="horizontal">
+            {provided => (
+              <div
+                className="main-tabs"
+                ref={node => {
+                  this.assignRef(node);
+                  provided.innerRef(node);
+                }}
+                style={{ ...getListStyle() }}
+              >
+                {openTabs.map(this.renderTab)}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        {this.renderSubTabs()}
       </div>
     );
   }
@@ -104,13 +185,17 @@ export class TabsBar extends Component {
 function mapStateToProps(state) {
   return {
     ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'sidePanelWidth']),
+    pathname: state.router.pathname,
+    tabs: tabsSelector(state),
+    location: state.router.location,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch),
+    actions: bindActionCreators({ initTabs, closeTab, stickTab, moveTab }, dispatch),
+    dispatch,
   };
 }
 

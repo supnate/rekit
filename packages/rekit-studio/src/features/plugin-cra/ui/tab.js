@@ -26,18 +26,20 @@ export default {
       // it's an element
       const ele = elementById[decodeURIComponent(match.params.elementId)];
       if (!ele) return null;
-      return {
+      const tab = {
         name: ele.name,
-        key: `/element/${encodeURIComponent(ele.id)}`,
+        key: ele.id,
         urlPath,
         subTabs:
           ele.parts &&
           ele.parts.map(part => ({
+            isDefault: part.isDefault,
             name: _.capitalize(part.name),
             key: part.name,
             urlPath: `/element/${encodeURIComponent(ele.id)}/${encodeURIComponent(part.name)}`,
           })),
       };
+      return tab;
     }
 
     // Find build page

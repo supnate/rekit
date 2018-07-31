@@ -79,7 +79,7 @@ function getComponents(feature) {
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.jsx?$/.test(ele.name) && getFileProps(ele.id).component) {
       const parts = [
-        { name: 'code', target: ele.id },
+        { name: 'code', target: ele.id, isDefault: true },
         { name: 'style', target: ele.id.replace(/\.jsx?$/, '.less') },
         { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.jsx?$/, '.test.js') },
       ];
@@ -106,7 +106,7 @@ function getActions(feature) {
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.js$/.test(ele.name) && getFileProps(ele.id).action) {
       const parts = [
-        { name: 'code', target: ele.id },
+        { name: 'code', target: ele.id, isDefault: true },
         { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js') },
       ];
       actions.push({

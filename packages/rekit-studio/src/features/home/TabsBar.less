@@ -4,18 +4,27 @@
   margin-left: @side-panel-width;
   height: 44px;
   line-height: 44px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   color: #aaa;
   background-color: #222;
   white-space: nowrap;
   border-left: 1px solid #000;
-  &::-webkit-scrollbar {
-    height: 3px;
-    background-color: rgba(0, 0, 0, 0.7);
+  &.has-sub-tabs {
+    height: 80px;
   }
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
+
+  .main-tabs {
+    height: 44px;
+    border-bottom: 1px solid #000;
+    overflow-x: auto;
+    overflow-y: hidden;
+    &::-webkit-scrollbar {
+      height: 3px;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
   }
   span.tab {
     position: relative;
@@ -55,7 +64,7 @@
       visibility: visible;
     }
 
-    &-active {
+    &.is-active {
       color: #eee;
       background-color: #1a1a1a;
       .anticon-close {
@@ -129,6 +138,35 @@
           background-color: transparent;
         }
       }
+    }
+  }
+
+  .sub-tabs {
+    position: relative;
+    left: 0;
+    height: 36px;
+    background-color: #222;
+    border-bottom: 1px solid #000;
+  }
+
+  span.sub-tab {
+    position: relative;
+    display: inline-block;
+    padding: 0 15px;
+    margin: 0;
+    margin-left: 20px;
+    top: -5px;
+    outline: none;
+    line-height: 36px;
+    color: #ddd;
+    cursor: pointer;
+    user-select: none;
+
+    &.is-active {
+      line-height: 34px;
+      border-bottom: 2px solid #108ee9;
+      background-color: #444;
+      color: #108ee9;
     }
   }
 }

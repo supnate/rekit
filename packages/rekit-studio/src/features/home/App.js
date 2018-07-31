@@ -22,6 +22,16 @@ export class App extends Component {
     // home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
+    elementById: PropTypes.object,
+    openTabs: PropTypes.array,
+    sidePanelWidth: PropTypes.number.isRequired,
+    // dispatch: PropTypes.func.isRequired,
+    // location: PropTypes.object.isRequired,
+  };
+
+  static defaultProps = {
+    elementById: null,
+    openTabs: [],
   };
 
   componentDidMount() {
@@ -29,6 +39,11 @@ export class App extends Component {
       .fetchProjectData()
       .then(() => {
         document.title = this.props.projectName;
+        // For rendering tabs bar
+        // this.props.dispatch({
+        //   type: '@@router/LOCATION_CHANGE',
+        //   payload: this.props.location,
+        // });
       })
       .catch(err => {
         Modal.error({
@@ -57,9 +72,17 @@ export class App extends Component {
   }
 
   render() {
-    // if (!this.props.features) {
-    //   return this.renderLoading();
-    // }
+    if (!this.props.elementById) {
+      return this.renderLoading();
+    }
+
+    const currentTab = _.find(this.props.openTabs, t => t.isActive);
+    const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
+
+    const pageContainerStyle = {
+      left: `${this.props.sidePanelWidth}px`,
+      top: hasSubTabs ? '80px' : '44px',
+    };
 
     return (
       <LocaleProvider locale={enUS}>
@@ -67,7 +90,7 @@ export class App extends Component {
           <SidePanel />
           <TabsBar />
           <SidePanelResizer />
-          <div id="page-container" className="page-container" style={{ left: `${this.props.sidePanelWidth}px` }}>
+          <div id="page-container" className="page-container" style={pageContainerStyle}>
             <ErrorBoundary>{this.props.children}</ErrorBoundary>
           </div>
           <DialogPlace />
@@ -80,20 +103,29 @@ export class App extends Component {
 }
 
 function mapStateToProps(state) {
-  return _.pick(state.home, [
-    'sidePanelWidth',
-    'projectName',
-    'features',
-    'projectDataNeedReload',
-    'fetchProjectDataError',
-    'fetchProjectDataPending',
-  ]);
+  return {
+    ..._.pick(state.home, [
+      'sidePanelWidth',
+      'projectName',
+      'elementById',
+      'features',
+      'openTabs',
+      'projectDataNeedReload',
+      'fetchProjectDataError',
+      'fetchProjectDataPending',
+    ]),
+    // location: state.router.location,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ fetchProjectData }, dispatch),
+    // dispatch,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

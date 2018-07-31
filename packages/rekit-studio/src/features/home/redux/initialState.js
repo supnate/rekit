@@ -26,6 +26,7 @@ const initialState = {
   saveFileError: null,
 
   codeChange: 0, // used to trigger UI re-render when typing
+  urlPathChanged: {},
 };
 
 export default initialState;

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import SplitPane from 'react-split-pane';
-import { fetchFileContent, saveFile, showDemoAlert, stickTab } from '../home/redux/actions';
+import { fetchFileContent, saveFile, showDemoAlert, stickTab, setUrlPathChanged } from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
@@ -18,6 +18,7 @@ export class CodeEditor extends Component {
   static propTypes = {
     outlineWidth: PropTypes.number.isRequired,
     elementById: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
     fileContentById: PropTypes.object.isRequired,
     fileContentNeedReload: PropTypes.object.isRequired,
     fetchFileContentPending: PropTypes.bool.isRequired, // eslint-disable-line
@@ -184,7 +185,6 @@ export class CodeEditor extends Component {
   hasChange() {
     // Whether the editor content is different from which in store.
     return modelManager.isChanged(this.props.file);
-    // return this.state.currentContent !== this.getFileContent();
   }
 
   checkAndFetchFileContent(props) {
@@ -210,7 +210,9 @@ export class CodeEditor extends Component {
   }
 
   handleEditorChange = () => {
-    this.props.actions.codeChange();
+    // const isChanged = modelManager.isChanged(this.props.file);
+    this.props.actions.setUrlPathChanged(this.props.location.pathname, this.hasChange());
+    // this.props.actions.codeChange();
     if (this.hasChange()) this.props.actions.stickTab();
   };
 
@@ -438,13 +440,14 @@ function mapStateToProps(state) {
     fileContentNeedReload: state.home.fileContentNeedReload,
     fetchFileContentPending: state.home.fetchFileContentPending,
     saveFilePending: state.home.saveFilePending,
+    location: state.router.location,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab }, dispatch),
+    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab, setUrlPathChanged }, dispatch),
   };
 }
 

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { Icon, Dropdown, Menu } from 'antd';
+import { Icon, Dropdown, Menu, Modal } from 'antd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
@@ -25,6 +25,7 @@ export class TabsBar extends Component {
     actions: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
+    urlPathChanged: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -35,11 +36,16 @@ export class TabsBar extends Component {
     });
   }
 
-  isChanged(tab) {}
-
   getCurrentTab() {
     return _.find(this.props.openTabs, t => t.isActive);
   }
+
+  isChanged(tab) {
+    if (tab.subTabs && tab.subTabs.length) return tab.subTabs.some(this.isSubTabChanged);
+    return this.props.urlPathChanged[tab.urlPath];
+  }
+
+  isSubTabChanged = subTab => this.props.urlPathChanged[subTab.urlPath];
 
   handleSelectTab = tab => {
     history.push(tab.urlPath);
@@ -105,10 +111,14 @@ export class TabsBar extends Component {
         {currentTab.subTabs.map(subTab => (
           <span
             key={subTab.key}
-            className={classnames('sub-tab', { 'is-active': activeSubTabPath === subTab.urlPath })}
+            className={classnames('sub-tab', {
+              'is-active': activeSubTabPath === subTab.urlPath,
+              'is-changed': this.isSubTabChanged(subTab),
+            })}
             onClick={() => this.handleSelectSubTab(subTab)}
           >
             {subTab.name}
+            {this.isSubTabChanged(subTab) ? <span style={{ color: '#108ee9' }}> *</span> : null}
           </span>
         ))}
       </div>
@@ -136,7 +146,7 @@ export class TabsBar extends Component {
               {...provided.dragHandleProps}
               className={classnames('tab', {
                 'is-active': tab.isActive,
-                'has-change': this.isChanged(tab),
+                'is-changed': this.isChanged(tab),
                 'is-temp': tab.isTemp,
               })}
             >
@@ -184,7 +194,7 @@ export class TabsBar extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'sidePanelWidth']),
+    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'sidePanelWidth', 'urlPathChanged']),
     pathname: state.router.pathname,
     tabs: tabsSelector(state),
     location: state.router.location,

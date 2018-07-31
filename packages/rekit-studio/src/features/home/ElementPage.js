@@ -13,18 +13,6 @@ export class ElementPage extends Component {
     match: PropTypes.object.isRequired,
   };
 
-  getElement() {
-    const { elementId } = this.props.match.params;
-    let { view } = this.props.match.params;
-    const eleId = decodeURIComponent(elementId);
-    const ele = this.byId(eleId);
-    if (!view && ele.views && ele.views.length > 0) {
-      view = (_.find(ele.views, 'isDefault') || ele.views[0]).name;
-    }
-    if (view) return this.byId(_.find(ele.views, { name: view }).target);
-    return ele;
-  }
-
   getFileElement() {
     const { elementId, view } = this.props.match.params;
     const eleId = decodeURIComponent(elementId);

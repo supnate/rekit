@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { Icon, Dropdown, Menu, Modal } from 'antd';
+import scrollIntoView from 'dom-scroll-into-view';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
@@ -25,7 +26,7 @@ export class TabsBar extends Component {
     actions: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
-    urlPathChanged: PropTypes.object.isRequired,
+    viewChanged: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -36,16 +37,38 @@ export class TabsBar extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      if (this.delayScroll) clearTimeout(this.delayScroll);
+      this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
+    }
+  }
+
   getCurrentTab() {
     return _.find(this.props.openTabs, t => t.isActive);
   }
 
   isChanged(tab) {
     if (tab.subTabs && tab.subTabs.length) return tab.subTabs.some(this.isSubTabChanged);
-    return this.props.urlPathChanged[tab.urlPath];
+    return this.props.viewChanged[tab.urlPath];
   }
 
-  isSubTabChanged = subTab => this.props.urlPathChanged[subTab.urlPath];
+  isSubTabChanged = subTab => this.props.viewChanged[subTab.urlPath];
+
+  scrollActiveTabIntoView = () => {
+    delete this.delayScroll;
+    if (!this.rootNode) return;
+    const node = this.rootNode.querySelector('.tab.is-active');
+    if (node) {
+      scrollIntoView(node, this.rootNode, {
+        allowHorizontalScroll: true,
+        onlyScrollIfNeeded: true,
+        offsetRight: 100,
+        offsetLeft: 100,
+      });
+    }
+    this.rootNode.scrollTop = 0; // Prevent vertical offset when switching tabs.
+  };
 
   handleSelectTab = tab => {
     history.push(tab.urlPath);
@@ -55,19 +78,44 @@ export class TabsBar extends Component {
     history.push(subTab.urlPath);
   };
 
-  handleClose = (evt, tab) => {
+  handleClose = (evt, tab, force) => {
     if (evt && evt.stopPropagation) evt.stopPropagation();
 
     const { openTabs, historyTabs } = this.props;
-    this.props.actions.closeTab(tab.key);
-    if (historyTabs.length === 1) {
-      history.push('/welcome');
-    } else if (tab.isActive) {
-      // Close the current one
-      const nextKey = historyTabs[1]; // at this point the props has not been updated.
-      const tab = _.find(openTabs, { key: nextKey });
 
-      history.push(tab.urlPath);
+    const doClose = () => {
+      // if (files) {
+      //   delete editorStateMap[files.code];
+      //   delete editorStateMap[files.style];
+      //   delete editorStateMap[files.test];
+      //   modelManager.reset(files.code);
+      //   modelManager.reset(files.style);
+      //   modelManager.reset(files.test);
+      // }
+
+      this.props.actions.closeTab(tab.key);
+      if (historyTabs.length === 1) {
+        history.push('/welcome');
+      } else if (tab.isActive) {
+        // Close the current one
+        const nextKey = historyTabs[1]; // at this point the props has not been updated.
+        const tab = _.find(openTabs, { key: nextKey });
+        history.push(tab.urlPath);
+      }
+    };
+
+    if (!force && this.isChanged(tab)) {
+      Modal.confirm({
+        title: 'Discard changes?',
+        content: `Do you want to discard changes you made to ${tab.name}?`,
+        okText: 'Discard',
+        onOk: () => {
+          doClose();
+        },
+        onCancel: () => {},
+      });
+    } else {
+      doClose();
     }
   };
 
@@ -194,7 +242,7 @@ export class TabsBar extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'sidePanelWidth', 'urlPathChanged']),
+    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'sidePanelWidth', 'viewChanged']),
     pathname: state.router.pathname,
     tabs: tabsSelector(state),
     location: state.router.location,

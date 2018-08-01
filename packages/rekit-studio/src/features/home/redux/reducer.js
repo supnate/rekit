@@ -19,7 +19,7 @@ import { reducer as updateProjectDataReducer } from './updateProjectData';
 import { reducer as showDialogReducer } from './showDialog';
 import { reducer as hideDialogReducer } from './hideDialog';
 import plugin from '../../plugin/plugin';
-import { reducer as setUrlPathChangedReducer } from './setUrlPathChanged';
+import { reducer as setViewChangedReducer } from './setViewChanged';
 
 const reducers = [
   fetchProjectData,
@@ -35,7 +35,7 @@ const reducers = [
   updateProjectDataReducer,
   showDialogReducer,
   hideDialogReducer,
-  setUrlPathChangedReducer,
+  setViewChangedReducer,
 ];
 
 // const pascalCase = _.flow(
@@ -99,7 +99,10 @@ export default function reducer(state = initialState, action) {
 
         openTabs = [...openTabs, tab];
         foundTab = tab;
+      } else {
+        foundTab = { ...tab, isTemp: foundTab.isTemp };
       }
+
       // If current url path doesn't match urlPath of element which has sub tabs,
       // redirect to the default/current url path of the element.
       if (foundTab.subTabs && foundTab.subTabs.length && !foundTab.subTabs.some(t => t.urlPath === pathname)) {
@@ -111,9 +114,8 @@ export default function reducer(state = initialState, action) {
         break;
       }
 
-      const foundIndex = _.indexOf(openTabs, foundTab);
+      const foundIndex = _.findIndex(openTabs, { key: foundTab.key });
       openTabs = update(openTabs, { [foundIndex]: { $set: { ...foundTab, urlPath: pathname, isActive: true } } });
-
       historyTabs = [tab.key, ..._.without(historyTabs, tab.key)];
       newState = { ...state, openTabs, historyTabs };
       storage.session.setItem('openTabs', openTabs);

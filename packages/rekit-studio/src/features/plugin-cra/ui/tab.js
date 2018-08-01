@@ -34,9 +34,9 @@ export default {
           ele.views &&
           ele.views.map(view => ({
             isDefault: view.isDefault,
-            name: _.capitalize(view.name),
-            key: view.name,
-            urlPath: `/element/${encodeURIComponent(ele.id)}/${encodeURIComponent(view.name)}`,
+            name: view.name,
+            key: view.key,
+            urlPath: `/element/${encodeURIComponent(ele.id)}/${encodeURIComponent(view.key)}`,
           })),
       };
       return tab;

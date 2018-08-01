@@ -9,6 +9,7 @@ export default {
       case 'component':
       case 'action':
       case 'initial-state':
+      case 'file':
         history.push(`/element/${encodeURIComponent(ele.id)}`);
         break;
       default:

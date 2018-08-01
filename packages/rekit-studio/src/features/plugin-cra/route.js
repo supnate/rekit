@@ -4,6 +4,5 @@
 export default {
   path: 'plugin-cra',
   name: 'Plugin cra',
-  childRoutes: [
-  ],
+  childRoutes: [],
 };

@@ -79,9 +79,10 @@ function getComponents(feature) {
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.jsx?$/.test(ele.name) && getFileProps(ele.id).component) {
       const views = [
-        { name: 'code', target: ele.id, isDefault: true },
-        { name: 'style', target: ele.id.replace(/\.jsx?$/, '.less') },
-        { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.jsx?$/, '.test.js') },
+        { key: 'diagram', name: 'Diagram' },
+        { key: 'code', name: 'Code', target: ele.id, isDefault: true },
+        { key: 'style', name: 'Style', target: ele.id.replace(/\.jsx?$/, '.less') },
+        { key: 'test', name: 'Test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.jsx?$/, '.test.js') },
       ];
       const name = ele.name.replace(/\.[^.]*$/, '');
       components.push({
@@ -106,8 +107,9 @@ function getActions(feature) {
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.js$/.test(ele.name) && getFileProps(ele.id).action) {
       const views = [
-        { name: 'code', target: ele.id, isDefault: true },
-        { name: 'test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js') },
+        { key: 'diagram', name: 'Diagram' },
+        { key: 'code', name: 'Code', target: ele.id, isDefault: true },
+        { key: 'test', name: 'Test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js') },
       ];
       actions.push({
         type: 'action',

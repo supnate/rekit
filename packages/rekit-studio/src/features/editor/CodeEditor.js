@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import SplitPane from 'react-split-pane';
-import { fetchFileContent, saveFile, showDemoAlert, stickTab, setUrlPathChanged } from '../home/redux/actions';
+import { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged } from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
@@ -23,6 +23,7 @@ export class CodeEditor extends Component {
     fileContentNeedReload: PropTypes.object.isRequired,
     fetchFileContentPending: PropTypes.bool.isRequired, // eslint-disable-line
     saveFilePending: PropTypes.bool.isRequired,
+    viewChanged: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     file: PropTypes.string.isRequired,
     onError: PropTypes.func,
@@ -211,9 +212,13 @@ export class CodeEditor extends Component {
 
   handleEditorChange = () => {
     // const isChanged = modelManager.isChanged(this.props.file);
-    this.props.actions.setUrlPathChanged(this.props.location.pathname, this.hasChange());
+    const hasChange = this.hasChange();
+    const key = this.props.location.pathname;
+    if (!!this.props.viewChanged[key] !== hasChange) {
+      this.props.actions.setViewChanged(this.props.location.pathname, this.hasChange());
+    }
     // this.props.actions.codeChange();
-    if (this.hasChange()) this.props.actions.stickTab();
+    // if (this.hasChange()) this.props.actions.stickTab();
   };
 
   handleOutlineSelect = nodeData => {
@@ -265,7 +270,7 @@ export class CodeEditor extends Component {
       .saveFile(this.props.file, this.editor.getValue())
       .then(() => {
         modelManager.setInitialValue(this.props.file, this.editor.getValue());
-        this.props.actions.codeChange();
+        this.props.actions.setViewChanged(this.props.location.pathname, false);
       })
       .catch(() => {
         if (process.env.REKIT_ENV === 'demo') {
@@ -441,14 +446,21 @@ function mapStateToProps(state) {
     fetchFileContentPending: state.home.fetchFileContentPending,
     saveFilePending: state.home.saveFilePending,
     location: state.router.location,
+    viewChanged: state.home.viewChanged,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab, setUrlPathChanged }, dispatch),
+    actions: bindActionCreators(
+      { fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab, setViewChanged },
+      dispatch
+    ),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CodeEditor);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CodeEditor);

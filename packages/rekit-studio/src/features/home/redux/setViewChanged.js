@@ -3,22 +3,22 @@
 // https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da
 
 // Set the content of some url path has changed.
-import { HOME_SET_URL_PATH_CHANGED } from './constants';
+import { HOME_SET_VIEW_CHANGED } from './constants';
 
-export function setUrlPathChanged(urlPath, changed) {
+export function setViewChanged(urlPath, changed) {
   return {
-    type: HOME_SET_URL_PATH_CHANGED,
+    type: HOME_SET_VIEW_CHANGED,
     payload: { urlPath, changed },
   };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
-    case HOME_SET_URL_PATH_CHANGED:
+    case HOME_SET_VIEW_CHANGED:
       return {
         ...state,
-        urlPathChanged: {
-          ...state.urlPathChanged,
+        viewChanged: {
+          ...state.viewChanged,
           [action.payload.urlPath]: action.payload.changed,
         },
       };

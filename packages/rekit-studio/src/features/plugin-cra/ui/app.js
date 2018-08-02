@@ -26,6 +26,7 @@ const iconMap = {
 
 export default {
   processProjectData(prjData) {
+    const byId = id => prjData.elementById[id];
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type === 'file' && ele.ext === 'js') {
         ele.icon = 'file_type_js';
@@ -40,6 +41,8 @@ export default {
       if (ele.type === 'actions') {
         ele.count = ele.children.length - 1;
       }
+
+      if (ele.children && ele.children.forEach) ele.children.map(byId).forEach(c => c.parent = ele.id);
     });
   },
 };

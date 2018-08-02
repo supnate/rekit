@@ -6,19 +6,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Dropdown, Menu } from 'antd';
 import * as actions from './redux/actions';
-import plugin from '../plugin/plugin';
+import plugin from '../../common/plugin';
 
 export class ProjectExplorerContextMenu extends Component {
   static propTypes = {
     elementById: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-    // Get all plugin's project explorer contribution
-    this.pluginMenus = plugin.getPlugins().filter(p => p.projectExplorerContextMenu).map(p => p.projectExplorerContextMenu);
-  }
 
   state = {
     contextMenu: [],
@@ -27,10 +21,8 @@ export class ProjectExplorerContextMenu extends Component {
 
   getMenuItems(elementId) {
     const menuItems = [];
-    this.pluginMenus.forEach(p => {
-      if (p.getMenuItems) {
-        menuItems.push.apply(menuItems, p.getMenuItems({ elementId }));
-      }
+    plugin.getPlugins('menu.contextMenu.fillMenuItems').forEach(p => {
+      p.menu.contextMenu.fillMenuItems(menuItems, { elementId });
     });
     menuItems.sort((a, b) => (a.order || 10000) - (b.order || 10000));
     return menuItems;
@@ -40,7 +32,6 @@ export class ProjectExplorerContextMenu extends Component {
     const elementId = evt.node.props.eventKey;
     const menus = this.getMenuItems(elementId);
 
-    console.log('context menu: ', this.props.elementById[elementId]);
     if (!menus.length) return;
 
     this.setState({
@@ -69,8 +60,8 @@ export class ProjectExplorerContextMenu extends Component {
   };
 
   handleMenuClick = evt => {
-    this.pluginMenus.forEach(p => {
-      if (p.handleMenuClick) p.handleMenuClick({ key: evt.key, elementId: this.state.elementId });
+    plugin.getPlugins('menu.contextMenu.handleMenuClick').forEach(p => {
+      p.menu.contextMenu.handleMenuClick({ key: evt.key, elementId: this.state.elementId });
     });
   };
 

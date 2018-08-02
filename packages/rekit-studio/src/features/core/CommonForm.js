@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Form, Modal } from 'antd';
 import { FormBuilder } from '../common';
 import { addElement, moveElement } from './redux/actions';
-import plugin from '../plugin/plugin';
+import plugin from '../../common/plugin';
 
 export class CommonForm extends Component {
   static propTypes = {
@@ -24,14 +24,6 @@ export class CommonForm extends Component {
     onCancel() {},
   };
 
-  constructor(props) {
-    super(props);
-    this.pluginForms = plugin
-      .getPlugins()
-      .filter(p => p.form)
-      .map(p => p.form);
-  }
-
   state = {
     pending: false,
     error: null,
@@ -44,9 +36,13 @@ export class CommonForm extends Component {
       disabled: this.state.pending,
       elements: [],
     };
-
-    this.pluginForms.forEach(
-      f => f.processMeta && f.processMeta({ formId: this.props.formId, meta, values: this.props.form.getFieldsValue() })
+    plugin.getPlugins('form.fillMeta').forEach(p =>
+      p.form.fillMeta({
+        context: this.props.context,
+        formId: this.props.formId,
+        meta,
+        values: this.props.form.getFieldsValue(),
+      })
     );
 
     return meta;
@@ -61,7 +57,6 @@ export class CommonForm extends Component {
       }
       console.log('Form submit: ', values);
       this.setState({ pending: true });
-      // this.props.onSubmit(values);
       if (/^add|move$/.test(context.action)) {
         this.props.actions[`${context.action}Element`]({ ...context, params: values })
           .then(() => {
@@ -78,6 +73,12 @@ export class CommonForm extends Component {
               content: <span style={{ color: 'red' }}>{err.toString ? err.toString() : 'Unknown error.'}</span>,
             });
           });
+      } else {
+        Modal.error({
+          title: 'Error',
+          content: <span style={{ color: 'red' }}>Unknown form action: {context.action}</span>,
+        });
+        this.setState({ pending: false });
       }
     });
   };
@@ -89,7 +90,9 @@ export class CommonForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <FormBuilder meta={this.getMeta()} form={this.props.form} />
           <div className="form-footer">
-            <Button onClick={this.props.onCancel} disabled={pending}>Cancel</Button>
+            <Button onClick={this.props.onCancel} disabled={pending}>
+              Cancel
+            </Button>
             <Button type="primary" htmlType="submit" loading={pending}>
               {pending ? 'Loading...' : 'Ok'}
             </Button>

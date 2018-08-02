@@ -9,7 +9,7 @@ import { storage } from '../common/utils';
 import * as actions from './redux/actions';
 import { treeDataSelector } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
-import plugin from '../plugin/plugin';
+import plugin from '../../common/plugin';
 
 const TreeNode = Tree.TreeNode;
 
@@ -57,10 +57,8 @@ export class ProjectExplorer extends Component {
     }
     storage.local.setItem('explorerExpandedKeys', expandedKeys);
 
-    plugin.getPlugins().forEach(p => {
-      if (p.projectExplorer && p.projectExplorer.handleSelect) {
-        p.projectExplorer.handleSelect(key);
-      }
+    plugin.getPlugins('projectExplorer.handleSelect').forEach(p => {
+      p.projectExplorer.handleSelect(key);
     });
 
     this.setState({
@@ -122,9 +120,8 @@ export class ProjectExplorer extends Component {
 
   render() {
     // const { features, srcFiles, featureById, treeData, searchKey } = this.props;
-    const prjData = this.props.projectData;
 
-    if (!prjData) {
+    if (!this.props.elementById) {
       return this.renderLoading();
     }
 

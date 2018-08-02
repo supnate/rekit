@@ -1,7 +1,6 @@
 /* eslint react/no-multi-comp: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Col, Form, Icon, Row, Tooltip, Input } from 'antd';
 
 const FormItem = Form.Item;
@@ -19,36 +18,20 @@ function pickProps(source, props) {
   return target;
 }
 
-let ID_SEED = 0;
-function getId() {
-  ID_SEED += 1;
-  return `form_builder_id_${ID_SEED}`;
-}
-
-// class TextWidget extends Component {
-//   static propTypes = {
-//     value: PropTypes.any,
-//   };
-//   static defaultProps = {
-//     value: '',
-//   };
-//   render() {
-//     return this.props.value;
-//   }
-// }
-
 class FormBuilder extends Component {
   static propTypes = {
     meta: PropTypes.object.isRequired,
     form: PropTypes.object,
     disabled: PropTypes.bool,
     viewMode: PropTypes.bool,
+    readonly: PropTypes.bool,
   };
 
   static defaultProps = {
     disabled: false,
     form: null,
     viewMode: false,
+    readonly: false,
   };
 
   constructor(props) {
@@ -157,7 +140,7 @@ class FormBuilder extends Component {
     return (
       <FormItem {...formItemProps}>
         {getFieldDecorator(element.id || element.key, fieldProps)(
-          <ElementWidget {...widgetProps}>{element.children || null}</ElementWidget>,
+          <ElementWidget {...widgetProps}>{element.children || null}</ElementWidget>
         )}
       </FormItem>
     );
@@ -177,7 +160,7 @@ class FormBuilder extends Component {
         cols.push(
           <Col key={j} span={(colspan * eleSpan).toString()}>
             {elements[i]}
-          </Col>,
+          </Col>
         );
         i += 1;
       }
@@ -188,17 +171,14 @@ class FormBuilder extends Component {
           className={`form-builder-row ${this.props.viewMode ? 'form-builder-row-view-mode' : ''}`}
         >
           {cols}
-        </Row>,
+        </Row>
       );
     }
     return rows;
   }
 
   render() {
-    return this.renderLayout(
-      this.getMeta().elements.map(this.renderElement),
-      this.getMeta().elements,
-    );
+    return this.renderLayout(this.getMeta().elements.map(this.renderElement), this.getMeta().elements);
   }
 }
 

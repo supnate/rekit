@@ -47,7 +47,7 @@ export default function reducer(state = initialState, action) {
   let newState;
   switch (action.type) {
     // Put global reducers here
-    case 'PROJECT_FILE_CHANGED':
+    case 'PROJECT_DATA_CHANGED':
     case REKIT_CMDS_EXEC_CMD_SUCCESS: // For quick project reoload.
       newState = {
         ...state,

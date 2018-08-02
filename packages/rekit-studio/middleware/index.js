@@ -23,18 +23,16 @@ const installPackage = require('./api/installPackage');
 const updatePackage = require('./api/updatePackage');
 const removePackage = require('./api/removePackage');
 
-// const utils = rekitCore.utils;
-console.log('rekit: ', rekit.core.paths.getProjectRoot());
-
 // rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/app-hasura');
 // rekitCore.plugin.loadPlugins(rekitCore);
 
+const { paths, vio } = rekit.core;
 let lastProjectData = null;
 module.exports = () => {
   // eslint-disable-line
   let io = null;
 
-  const bgProcesses = {};
+  // const bgProcesses = {};
 
   const wp = new Watchpack({
     // options:
@@ -48,31 +46,20 @@ module.exports = () => {
     // poll defaults to undefined, which prefer native watching methods
     // Note: enable polling when watching on a network path
 
-    ignored: /node_modules/,
+    // TODO: make ignored configurable
+    ignored: /node_modules|\.git/,
     // anymatch-compatible definition of files/paths to be ignored
     // see https://github.com/paulmillr/chokidar#path-filtering
   });
 
   // Watchpack.prototype.watch(string[] files, string[] directories, [number startTime])
-  // Watch src files change only
-  wp.watch(
-    [],
-    [
-      path.join(rekit.core.paths.getProjectRoot(), 'src'),
-      path.join(rekit.core.paths.getProjectRoot(), 'tests'),
-      path.join(rekit.core.paths.getProjectRoot(), 'coverage'),
-    ],
-    Date.now() - 10
-  );
+  wp.watch([], [paths.map('src'), paths.map('tests'), paths.map('coverage')], Date.now() - 10);
   // starts watching these files and directories
   // calling this again will override the files and directories
 
   wp.on('aggregated', changes => {
     // changes: an array of all changed files
-    // rekit.vio.reset();
-    // const newProjectData = fetchProjectData();
-    // if (_.isEqual(newProjectData, lastProjectData)) return;
-    // lastProjectData = newProjectData;
+    vio.reset();
     if (io) io.emit('fileChanged', changes);
   });
 
@@ -115,18 +102,8 @@ module.exports = () => {
             element(req, res);
             break;
           case '/api/project-data': {
-            lastProjectData = rekit.core.app.getProjectData();
             res.setHeader('content-type', 'application/json');
-            res.write(
-              JSON.stringify(
-                Object.assign(
-                  {
-                    bgProcesses,
-                  },
-                  lastProjectData
-                )
-              )
-            );
+            res.write(JSON.stringify(rekit.core.app.getProjectData()));
             res.end();
             break;
           }

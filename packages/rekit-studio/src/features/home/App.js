@@ -25,12 +25,16 @@ export class App extends Component {
     elementById: PropTypes.object,
     openTabs: PropTypes.array,
     sidePanelWidth: PropTypes.number.isRequired,
+    projectDataNeedReload: PropTypes.bool.isRequired,
+    fetchProjectDataError: PropTypes.any,
+    fetchProjectDataPending: PropTypes.bool.isRequired,
     // dispatch: PropTypes.func.isRequired,
     // location: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
     elementById: null,
+    fetchProjectDataError: null,
     openTabs: [],
   };
 
@@ -53,14 +57,27 @@ export class App extends Component {
       });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.projectDataNeedReload && !nextProps.fetchProjectDataError && !nextProps.fetchProjectDataPending) {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.projectDataNeedReload &&
+      !prevProps.projectDataNeedReload &&
+      !this.props.fetchProjectDataError &&
+      !this.props.fetchProjectDataPending
+    ) {
       this.props.actions.fetchProjectData().catch(e => {
         console.log('failed to fetch project data: ', e);
         message.error('Failed to refresh project data');
       });
     }
   }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.projectDataNeedReload && !nextProps.fetchProjectDataError && !nextProps.fetchProjectDataPending) {
+  //     this.props.actions.fetchProjectData().catch(e => {
+  //       console.log('failed to fetch project data: ', e);
+  //       message.error('Failed to refresh project data');
+  //     });
+  //   }
+  // }
 
   renderLoading() {
     return (

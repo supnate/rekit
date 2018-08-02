@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'test') {
 
   socket.on('fileChanged', (data) => {
     store.dispatch({
-      type: 'PROJECT_FILE_CHANGED',
+      type: 'PROJECT_DATA_CHANGED',
       data,
     });
   });

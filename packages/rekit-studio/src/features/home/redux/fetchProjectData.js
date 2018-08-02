@@ -99,9 +99,9 @@ export function reducer(state, action) {
         // fileContentNeedReload,
         // oldFileContentById: state.fileContentById,
         // features: action.data.features.map(f => f.key),
-        // projectDataNeedReload: false,
-        // fetchProjectDataPending: false,
-        // fetchProjectDataError: null,
+        projectDataNeedReload: false,
+        fetchProjectDataPending: false,
+        fetchProjectDataError: null,
       };
     }
     case HOME_FETCH_PROJECT_DATA_FAILURE:

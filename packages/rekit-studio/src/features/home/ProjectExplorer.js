@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Spin, Tree } from 'antd';
+import { SvgIcon } from '../common';
 import { storage } from '../common/utils';
 import * as actions from './redux/actions';
 import { treeDataSelector } from './selectors/projectData';
@@ -85,13 +86,31 @@ export class ProjectExplorer extends Component {
 
   assignCtxMenu = ctxMenu => (this.ctxMenu = ctxMenu.getWrappedInstance());
 
-  renderTreeNode = nodeData => {
+  renderTreeNodeTitle(nodeData) {
+    const iconStyle = {};
+    if (nodeData.iconColor) {
+      iconStyle.fill = nodeData.iconColor;
+    }
     return (
-      <TreeNode key={nodeData.key} title={nodeData.name} className={nodeData.className} isLeaf={!nodeData.children}>
-        {nodeData.children && nodeData.children.map(this.renderTreeNode)}
-      </TreeNode>
+      <span onDoubleClick={this.handleTreeNodeDoubleClick}>
+        {nodeData.icon && <SvgIcon type={nodeData.icon} style={iconStyle} />}
+        <label>
+          {nodeData.name}
+          {_.has(nodeData, 'count') ? ` (${nodeData.count})` : ''}
+        </label>
+      </span>
     );
-  };
+  }
+  renderTreeNode = nodeData => (
+    <TreeNode
+      key={nodeData.key}
+      title={this.renderTreeNodeTitle(nodeData)}
+      className={nodeData.className}
+      isLeaf={!nodeData.children}
+    >
+      {nodeData.children && nodeData.children.map(this.renderTreeNode)}
+    </TreeNode>
+  );
 
   renderLoading() {
     return (

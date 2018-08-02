@@ -181,6 +181,7 @@ export class TabsBar extends Component {
         <Menu.Item key="close-self">Close</Menu.Item>
       </Menu>
     );
+    const iconStyle = tab.iconColor ? { fill: tab.iconColor } : null;
     return (
       <Draggable key={tab.key} draggableId={tab.key} index={index}>
         {provided => (
@@ -198,7 +199,7 @@ export class TabsBar extends Component {
                 'is-temp': tab.isTemp,
               })}
             >
-              <SvgIcon type={tab.icon || 'file'} />
+              {tab.icon && <SvgIcon type={tab.icon} style={iconStyle} />}
               <label>{tab.name}</label>
               <Icon type="close" onClick={evt => this.handleClose(evt, tab)} />
             </span>

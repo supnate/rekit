@@ -1,15 +1,45 @@
-// import axios from 'axios';
-// import plugin from '../plugin/plugin';
+const colorMap = {
+  feature: '#0277bd',
+  action: '#ec407a',
+  actions: '#ec407a',
+  'initial-state': '#ec407a',
+  component: '#f08036',
+  components: '#f08036',
+  misc: '#8d6e63',
+  normal: '#888888',
+  routes: '#26a69a',
+};
 
-// export default {
-//   fetchProjectData() {
-//     return new Promise((resolve, reject) => {
-//       resolve({
-//         elementById: {
-//           xxx: { type: 'file', icon: 'file', name: 'XXX' },
-//         },
-//         elements: ['xxx'],
-//       });
-//     });
-//   },
-// };
+const iconMap = {
+  features: 'rekit',
+  feature: 'book',
+  action: 'notification',
+  actions: 'notification',
+  'initial-state': 'database',
+  component: 'appstore-o',
+  components: 'appstore-o',
+  misc: 'folder',
+  folder: 'folder',
+  file: 'file',
+  routes: 'sharealt',
+};
+
+export default {
+  processProjectData(prjData) {
+    Object.values(prjData.elementById).forEach(ele => {
+      if (ele.type === 'file' && ele.ext === 'js') {
+        ele.icon = 'file_type_js';
+      } else if (ele.type) {
+        ele.icon = iconMap[ele.type];
+        ele.iconColor = colorMap[ele.type];
+      }
+
+      if (ele.type === 'components') {
+        ele.count = ele.children.length;
+      }
+      if (ele.type === 'actions') {
+        ele.count = ele.children.length - 1;
+      }
+    });
+  },
+};

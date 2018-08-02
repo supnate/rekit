@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import axios from 'axios';
 
 import {
@@ -8,7 +7,7 @@ import {
   HOME_FETCH_PROJECT_DATA_DISMISS_ERROR,
 } from './constants';
 
-// import plugin from '../../plugin/plugin';
+import plugin from '../../../common/plugin';
 
 export function fetchProjectData() {
   return (dispatch) => {
@@ -18,14 +17,19 @@ export function fetchProjectData() {
 
     return new Promise((resolve, reject) => {
       axios.get('/api/project-data').then(
-      // plugin.fetchProjectData().then(
         (res) => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
+          const prjData = res.data;
+
+          plugin.getPlugins('app.processProjectData').forEach(p => {
+            p.app.processProjectData(prjData);
+          });
+
           dispatch({
             type: HOME_FETCH_PROJECT_DATA_SUCCESS,
-            data: res.data,
+            data: prjData,
           });
-          resolve(res.data);
+          resolve(prjData);
         },
         (err) => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();

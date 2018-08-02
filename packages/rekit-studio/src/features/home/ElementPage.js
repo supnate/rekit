@@ -71,6 +71,10 @@ export class ElementPage extends Component {
 
     const viewEle = this.getViewElement(ele);
 
+    if (viewEle && viewEle.target && !this.byId(viewEle.target)) {
+      return this.renderNotFound();
+    }
+
     const View = this.getView(ele, viewEle);
     if (!View) {
       return this.renderNotSupported();

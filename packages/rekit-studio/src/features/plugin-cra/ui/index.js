@@ -2,3 +2,4 @@ export { default as projectExplorerContextMenu } from './projectExplorerContextM
 export { default as projectExplorer } from './projectExplorer';
 export { default as form } from './form';
 export { default as tab } from './tab';
+export { default as app } from './app';

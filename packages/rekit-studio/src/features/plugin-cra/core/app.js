@@ -186,9 +186,24 @@ function getFeatures() {
     const misc = filterNonMisc(getFiles(f));
 
     const children = [
-      { id: `v:${f}-routes`, type: 'routes', name: 'Routes', children: routes },
-      { id: `v:${f}-actions`, type: 'actions', name: 'Actions', children: actions },
-      { id: `v:${f}-components`, type: 'components', name: 'Components', children: components },
+      {
+        id: `v:${f}-routes`,
+        type: 'routes',
+        name: 'Routes',
+        children: routes,
+      },
+      {
+        id: `v:${f}-actions`,
+        type: 'actions',
+        name: 'Actions',
+        children: actions,
+      },
+      {
+        id: `v:${f}-components`,
+        type: 'components',
+        name: 'Components',
+        children: components,
+      },
       { id: `v:${f}-misc`, type: 'misc', name: 'Misc', children: misc },
     ];
     const id = `v:feature-${f}`;

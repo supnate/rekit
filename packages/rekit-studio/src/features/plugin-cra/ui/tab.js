@@ -30,6 +30,8 @@ export default {
         name: ele.name,
         key: ele.id,
         urlPath,
+        icon: ele.icon,
+        iconColor: ele.tabIconColor || ele.iconColor,
         subTabs:
           ele.views &&
           ele.views.map(view => ({

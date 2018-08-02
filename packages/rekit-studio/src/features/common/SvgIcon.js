@@ -9,10 +9,14 @@ export default class SvgIcon extends Component {
   static propTypes = {
     type: PropTypes.string.isRequired,
     size: PropTypes.number,
+    className: PropTypes.string,
+    style: PropTypes.object,
   };
 
   static defaultProps = {
     size: null,
+    className: '',
+    style: null,
   };
 
   render() {
@@ -28,7 +32,7 @@ export default class SvgIcon extends Component {
         height: `${size}px`,
       };
     }
-    const cssCls = `common-svg-icon ${this.props.className || ''}`;
+    const cssCls = `common-svg-icon common-svg-icon-${type} ${this.props.className || ''}`;
     return (
       <svg className={cssCls} xmlns="http://www.w3.org/2000/svg" {...props}>
         <use xlinkHref={`#${type}`} />

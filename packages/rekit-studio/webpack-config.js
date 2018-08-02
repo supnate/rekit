@@ -133,7 +133,7 @@ module.exports = type => {
         {
           test: /\.svg$/,
           loader: 'svg-sprite-loader',
-          options: {}
+          options: {},
         },
         {
           test: /\.(ttf|eot|woff)$/,
@@ -149,7 +149,7 @@ module.exports = type => {
           test: /\.css$/,
           loader: 'style-loader!css-loader',
         },
-        
+
         {
           test: /\.json$/,
           loader: 'json-loader',

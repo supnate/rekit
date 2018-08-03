@@ -5,7 +5,7 @@ function add(type, name, args) {
   console.log('adding element: ', type, name, args);
   const thePlugin = _.findLast(plugin.getPlugins(), p => p.elements && p.elements[type] && p.elements[type].add);
   if (!thePlugin) throw new Error(`Can't find a plugin which could add an element of type ${type}`);
-  return thePlugin.elements[type].add(type, name, args);
+  return thePlugin.elements[type].add(name, args);
 }
 function move(type, source, target, args) {
   console.log('moving element: ', type, source, target, args);
@@ -17,7 +17,7 @@ function remove(type, name, args) {
   console.log('removeing element: ', type, name, args);
   const thePlugin = _.findLast(plugin.getPlugins(), p => p.elements && p.elements[type] && p.elements[type].remove);
   if (!thePlugin) throw new Error(`Can't find a plugin which could remove an element of type ${type}`);
-  return thePlugin.elements[type].remove(type, name, args);
+  return thePlugin.elements[type].remove(name, args);
 }
 
 module.exports = {

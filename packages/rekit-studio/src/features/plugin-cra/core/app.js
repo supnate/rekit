@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const shell = require('shelljs');
+// const shell = require('shelljs');
 const traverse = require('babel-traverse').default;
 
 const { paths, vio } = rekit.core;
@@ -150,20 +150,20 @@ function getInitialState(feature) {
 function getFeatures() {
   // return _.toArray(shell.ls(rekit.core.paths.map('src/features')));
   const elements = [];
-  shell.ls(paths.map('src/features')).forEach(f => {
+  const eles = elementById['src/features'].children.map(eid => elementById[eid]);
+  eles.forEach(ele => {
+    if (ele.type !== 'folder') {
+      elements.push(ele.id);
+      return;
+    }
+    // feature name
+    const f = ele.id.split('/').pop();
+
     const routes = getRoutes(f);
     const actions = getActions(f);
     const components = getComponents(f);
 
     actions.unshift(getInitialState(f).id);
-
-    // const initialStateId = actions.unshift('initial-state');
-    // elementById['initial-state'] = {
-    //   id: `v:${f}-initial-state`,
-    //   type: 'initial-state',
-    //   target: `src/features/${f}/redux/initialState.js`,
-    //   name: 'initialState',
-    // };
 
     const toRemoveFromMisc = {};
     [...actions, ...components].map(eid => elementById[eid]).forEach(ele => {

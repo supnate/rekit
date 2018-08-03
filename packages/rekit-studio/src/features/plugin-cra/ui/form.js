@@ -13,7 +13,7 @@ const parentElement = id => byId(byId(id).parent);
 const getFeatures = () =>
   byId('v:features')
     .children.map(byId)
-    .map(f => ({ name: f.name, value: f.id }));
+    .map(f => ({ name: f.name, value: f.name }));
 
 const getInitialFeature = args => {
   const { context } = args;
@@ -24,10 +24,10 @@ const getInitialFeature = args => {
       return targetEle.id;
     }
     if (/^actions|components$/.test(targetEle.type)) {
-      return parentElement(targetEle.id).id;
+      return parentElement(targetEle.id).name;
     }
     if (/^action|component$/.test(targetEle.type)) {
-      return parentElement(parentElement(targetEle.id).id).id;
+      return parentElement(parentElement(targetEle.id).id).name;
     }
   }
 

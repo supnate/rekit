@@ -3,6 +3,7 @@ const element = require('./core/element');
 const plugin = require('./core/plugin');
 const paths = require('./core/paths');
 const vio = require('./core/vio');
+const template = require('./core/template');
 const ast = require('./common/ast');
 const projectFiles = require('./common/projectFiles');
 
@@ -16,6 +17,7 @@ global.rekit = {
     plugin,
     element,
     vio,
+    template,
   },
   common: {
     projectFiles,

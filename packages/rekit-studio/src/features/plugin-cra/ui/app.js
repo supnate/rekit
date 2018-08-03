@@ -28,11 +28,21 @@ export default {
   processProjectData(prjData) {
     const byId = id => prjData.elementById[id];
     Object.values(prjData.elementById).forEach(ele => {
-      if (ele.type === 'file' && ele.ext === 'js') {
-        ele.icon = 'file_type_js';
-      } else if (ele.type) {
+      if (ele.type && iconMap[ele.type]) {
         ele.icon = iconMap[ele.type];
         ele.iconColor = colorMap[ele.type];
+      }
+
+      if (ele.type === 'file') {
+        switch (ele.ext) {
+          case 'js':
+          case 'svg':
+          case 'less':
+            ele.icon = `file_type_${ele.ext}`;
+            break;
+          default:
+            break;
+        }
       }
 
       if (ele.type === 'components') {
@@ -42,7 +52,10 @@ export default {
         ele.count = ele.children.length - 1;
       }
 
-      if (ele.children && ele.children.forEach) ele.children.map(byId).forEach(c => c.parent = ele.id);
+      if (ele.children && ele.children.forEach)
+        ele.children.map(byId).forEach(c => {
+          c.parent = ele.id;
+        });
     });
   },
 };

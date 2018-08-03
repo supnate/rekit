@@ -4,7 +4,9 @@ const plugin = require('./core/plugin');
 const paths = require('./core/paths');
 const vio = require('./core/vio');
 const template = require('./core/template');
-const ast = require('./common/ast');
+const config = require('./core/config');
+const ast = require('./core/ast');
+const refactor = require('./core/refactor');
 const projectFiles = require('./common/projectFiles');
 
 paths.setProjectRoot('/Users/pwang7/workspace/app-next/');
@@ -18,10 +20,12 @@ global.rekit = {
     element,
     vio,
     template,
+    config,
+    refactor,
+    ast,
   },
   common: {
     projectFiles,
-    ast,
   },
 };
 

@@ -52,10 +52,11 @@ export default {
         ele.count = ele.children.length - 1;
       }
 
-      if (ele.children && ele.children.forEach)
+      if (ele.children && ele.children.forEach) {
         ele.children.map(byId).forEach(c => {
-          c.parent = ele.id;
+          if (c) c.parent = ele.id;
         });
+      }
     });
   },
 };

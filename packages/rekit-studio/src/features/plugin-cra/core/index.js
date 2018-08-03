@@ -1,15 +1,13 @@
+const app = require('./app');
 const component = require('./component');
 const action = require('./action');
+const hooks = require('./hooks');
 
 module.exports = {
-  app: require('./app'),
+  app,
+  hooks,
   elements: {
     component,
     action,
-  },
-  hooks: {
-    beforeAddComponent() {
-      console.log('before add component');
-    }
   },
 };

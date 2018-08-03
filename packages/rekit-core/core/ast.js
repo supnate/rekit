@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const babylon = require('babylon');
-const vio = require('./vio');
+const vio = require('../core/vio');
 
 let cache = [];
 const failedToParse = {};

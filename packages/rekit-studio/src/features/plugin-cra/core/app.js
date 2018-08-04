@@ -2,8 +2,8 @@ const _ = require('lodash');
 // const shell = require('shelljs');
 const traverse = require('babel-traverse').default;
 
-const { paths, vio } = rekit.core;
-const { ast, projectFiles } = rekit.common;
+const { ast, paths, vio } = rekit.core;
+const { projectFiles } = rekit.common;
 
 let elementById = {};
 const filePropsCache = {};

@@ -1,4 +1,4 @@
 // Load rekit configuration from package.json
-export default {
+module.exports = {
   css: 'less',
 };

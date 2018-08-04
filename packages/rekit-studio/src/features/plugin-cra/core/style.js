@@ -3,7 +3,7 @@
 /**
  * Style manager. It manage style files for components. Usually used with component manage.
  * @module
-**/
+ **/
 const path = require('path');
 const _ = require('lodash');
 
@@ -22,23 +22,28 @@ const cssExt = config.css;
  *
  * // create a file named 'Hello.less' in feature 'home'.
  * style.add('home', 'Hello');
-**/
-function add(filePath, args) {
+ **/
+function add(elePath, args) {
   // Create style file for a component
   // args = args || {};
-  const arr = filePath.split('/');
+  const arr = elePath.split('/');
   const name = _.pascalCase(arr.pop());
   const prefix = arr.join('-');
-  template.generate(paths.map(`${filePath}.${cssExt}`), Object.assign({}, args, {
-    templateFile: path.join(__dirname, './templates/Component.less.tpl'),
-    context: Object.assign({
-      feature,
-      component,
-      depth: 2,
-    }, args.context || {}),
-  }));
+  template.generate(
+    paths.map(`src/features/${arr.join('/')}/${name}.${cssExt}`),
+    Object.assign({}, args, {
+      templateFile: path.join(__dirname, './templates/Component.less.tpl'),
+      context: Object.assign(
+        {
+          name,
+          prefix,
+        },
+        args.context || {}
+      ),
+    })
+  );
 
-  entry.addToStyle(feature, component);
+  // entry.addToStyle(feature, component);
 }
 
 /**
@@ -47,7 +52,7 @@ function add(filePath, args) {
  * @param {string} component - The component name.
  * @alias module:style.remove
  *
-**/
+ **/
 function remove(feature, component) {
   // Remove style file of a component
   vio.del(utils.mapComponent(feature, component) + '.' + utils.getCssExt());
@@ -60,7 +65,7 @@ function remove(feature, component) {
  * @param {string} component - The component name.
  * @alias module:style.remove
  *
-**/
+ **/
 function move(source, target) {
   // 1. Move File.less to the destination
   // 2. Rename css class name
@@ -95,4 +100,3 @@ module.exports = {
   move,
   remove,
 };
-

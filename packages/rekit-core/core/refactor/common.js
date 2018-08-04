@@ -4,6 +4,7 @@ const path = require('path');
 const _ = require('lodash');
 const utils = require('../utils');
 const vio = require('../vio');
+const ast = require('../ast');
 
 function updateSourceCode(code, changes) {
   // Summary:
@@ -11,20 +12,24 @@ function updateSourceCode(code, changes) {
 
   changes.sort((c1, c2) => c2.start - c1.start);
   // Remove same or overlapped changes
-  const newChanges = _.reduce(changes, (cleanChanges, curr) => {
-    const last = _.last(cleanChanges);
+  const newChanges = _.reduce(
+    changes,
+    (cleanChanges, curr) => {
+      const last = _.last(cleanChanges);
 
-    if (!cleanChanges.length || last.start > curr.end) {
-      cleanChanges.push(curr);
-    } else if (last.start === last.end && last.end === curr.start && curr.start === curr.end) {
-      // insert code at the same position, merge them
-      last.replacement += curr.replacement;
-    }
-    return cleanChanges;
-  }, []);
+      if (!cleanChanges.length || last.start > curr.end) {
+        cleanChanges.push(curr);
+      } else if (last.start === last.end && last.end === curr.start && curr.start === curr.end) {
+        // insert code at the same position, merge them
+        last.replacement += curr.replacement;
+      }
+      return cleanChanges;
+    },
+    []
+  );
 
   const chars = code.split('');
-  newChanges.forEach((c) => {
+  newChanges.forEach(c => {
     // Special case: after the change, two empty lines occurs, should delete one line
     if (c.replacement === '' && (c.start === 0 || chars[c.start - 1] === '\n') && chars[c.end] === '\n') {
       c.end += 1;
@@ -66,7 +71,7 @@ function getModuleResolverAlias() {
  * Check if a module is local module. It will check alias defined by babel plugin module-resolver.
  * @param {string} modulePath - The module path. i.e.: import * from './abc'; './abc' is the module path.
  * @alias module:common.isLocalModule
-**/
+ **/
 function isLocalModule(modulePath) {
   // TODO: handle alias module path like src
   const alias = getModuleResolverAlias();
@@ -78,7 +83,7 @@ function isLocalModule(modulePath) {
  * @param {string} relativeTo - Relative to which file to resolve. That is the file in which import the module.
  * @param {string} modulePath - The relative module path.
  * @alias module:common.resolveModulePath
-**/
+ **/
 function resolveModulePath(relativeToFile, modulePath) {
   if (!isLocalModule(modulePath)) {
     return modulePath;
@@ -109,20 +114,20 @@ function isSameModuleSource(s1, s2, contextFilePath) {
   return resolveModulePath(contextFilePath, s1) === resolveModulePath(contextFilePath, s2);
 }
 
-
 function acceptFilePathForAst(func) {
   // Summary:
   //  Wrapper a function that accepts ast also accepts file path.
   //  If it's file path, then update the file immediately.
 
-  return function(file) { // eslint-disable-line
-    let ast = file;
+  return function(file) {
+    // eslint-disable-line
+    let theAst = file;
     if (_.isString(file)) {
-      ast = vio.getAst(file);
-      vio.assertAst(ast, file);
+      theAst = ast.getAst(file);
+      vio.assertAst(theAst, file);
     }
     const args = _.toArray(arguments);
-    args[0] = ast;
+    args[0] = theAst;
 
     const changes = func.apply(null, args);
 
@@ -139,7 +144,8 @@ function acceptFilePathForLines(func) {
   //  Wrapper a function that accepts lines also accepts file path.
   //  If it's file path, then update the file immediately.
 
-  return function(file) { // eslint-disable-line
+  return function(file) {
+    // eslint-disable-line
     let lines = file;
     if (_.isString(file)) {
       lines = vio.getLines(file);

@@ -8,6 +8,7 @@ const colorMap = {
   misc: '#8d6e63',
   normal: '#888888',
   routes: '#26a69a',
+  plugin: '#00BCD4',
 };
 
 const iconMap = {
@@ -22,6 +23,7 @@ const iconMap = {
   folder: 'folder',
   file: 'file',
   routes: 'sharealt',
+  plugin: 'plugin',
 };
 
 export default {
@@ -50,6 +52,11 @@ export default {
       }
       if (ele.type === 'actions') {
         ele.count = ele.children.length - 1;
+      }
+
+      if (ele.type === 'feature' && byId(`src/features/${ele.name}/core`) && byId(`src/features/${ele.name}/ui`)) {
+        ele.icon = iconMap.plugin;
+        ele.iconColor = colorMap.plugin;
       }
 
       if (ele.children && ele.children.forEach) {

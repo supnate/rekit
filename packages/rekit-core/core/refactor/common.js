@@ -2,9 +2,11 @@
 
 const path = require('path');
 const _ = require('lodash');
-const utils = require('../utils');
+// const utils = require('../utils');
 const vio = require('../vio');
 const ast = require('../ast');
+const paths = require('../paths');
+const utils = require('../../common/utils');
 
 function updateSourceCode(code, changes) {
   // Summary:
@@ -44,9 +46,9 @@ function updateFile(filePath, changes) {
   //  Update the source file by changes.
 
   if (_.isFunction(changes)) {
-    const ast = vio.getAst(filePath);
-    vio.assertAst(ast, filePath);
-    changes = changes(ast);
+    const ast1 = ast.getAst(filePath);
+    vio.assertAst(ast1, filePath);
+    changes = changes(ast1);
   }
   let code = vio.getContent(filePath);
   code = updateSourceCode(code, changes);
@@ -119,7 +121,7 @@ function acceptFilePathForAst(func) {
   //  Wrapper a function that accepts ast also accepts file path.
   //  If it's file path, then update the file immediately.
 
-  return function(file) {
+  return file => {
     // eslint-disable-line
     let theAst = file;
     if (_.isString(file)) {
@@ -144,7 +146,7 @@ function acceptFilePathForLines(func) {
   //  Wrapper a function that accepts lines also accepts file path.
   //  If it's file path, then update the file immediately.
 
-  return function(file) {
+  return file => {
     // eslint-disable-line
     let lines = file;
     if (_.isString(file)) {

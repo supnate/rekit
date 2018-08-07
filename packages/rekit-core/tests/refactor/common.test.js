@@ -1,11 +1,13 @@
 'use strict';
 
 const expect = require('chai').expect;
-const utils = require('../../core/utils');
+// const utils = require('../../core/utils');
+const paths = require('../../core/paths');
 const vio = require('../../core/vio');
-const refactor = require('../../core/refactor');
+const refactorCommon = require('../../core/refactor/common');
 
-describe('refactor common tests', function() { // eslint-disable-line
+describe('refactor common tests', function() {
+  // eslint-disable-line
   before(() => {
     vio.reset();
   });
@@ -19,16 +21,16 @@ describe('refactor common tests', function() { // eslint-disable-line
             {
               alias: {
                 src: './src',
-              }
-            }
-          ]
+              },
+            },
+          ],
         ],
-      }
+      },
     });
 
-    expect(refactor.isLocalModule('../f-2/redux/actions')).to.be.true;
-    expect(refactor.isLocalModule('src/common/routeConfig')).to.be.true;
-    expect(refactor.isLocalModule('react')).to.be.false;
+    expect(refactorCommon.isLocalModule('../f-2/redux/actions')).to.be.true;
+    expect(refactorCommon.isLocalModule('src/common/routeConfig')).to.be.true;
+    expect(refactorCommon.isLocalModule('react')).to.be.false;
   });
 
   it('resolveModulePath', () => {
@@ -40,24 +42,23 @@ describe('refactor common tests', function() { // eslint-disable-line
             {
               alias: {
                 src: './src',
-              }
-            }
-          ]
+              },
+            },
+          ],
         ],
-      }
+      },
     });
 
-    const file = utils.mapSrcFile('features/f-1/Test.js');
-    const p1 = refactor.resolveModulePath(file, '../f-2/redux/actions');
-    const p2 = refactor.resolveModulePath(file, 'src/common/routeConfig');
-    const p3 = refactor.resolveModulePath(file, './M1');
-    const p4 = refactor.resolveModulePath(file, 'react');
-    const p5 = refactor.resolveModulePath(file, '../f-3');
-    expect(p1).to.equal(utils.mapSrcFile('features/f-2/redux/actions'));
-    expect(p2).to.equal(utils.mapSrcFile('common/routeConfig'));
-    expect(p3).to.equal(utils.mapSrcFile('features/f-1/M1'));
+    const file = paths.map('src/features/f-1/Test.js');
+    const p1 = refactorCommon.resolveModulePath(file, '../f-2/redux/actions');
+    const p2 = refactorCommon.resolveModulePath(file, 'src/common/routeConfig');
+    const p3 = refactorCommon.resolveModulePath(file, './M1');
+    const p4 = refactorCommon.resolveModulePath(file, 'react');
+    const p5 = refactorCommon.resolveModulePath(file, '../f-3');
+    expect(p1).to.equal(paths.map('src/features/f-2/redux/actions'));
+    expect(p2).to.equal(paths.map('src/common/routeConfig'));
+    expect(p3).to.equal(paths.map('src/features/f-1/M1'));
     expect(p4).to.equal('react');
-    expect(p5).to.equal(utils.mapSrcFile('features/f-3/index'));
+    expect(p5).to.equal(paths.map('src/features/f-3/index'));
   });
 });
-

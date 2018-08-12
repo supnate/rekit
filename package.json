@@ -1,9 +1,7 @@
 {
   "private": true,
   "name": "rekit-packages",
-  "workspaces": [
-    "packages/*"
-  ],
+  
   "scripts": {
     "docs:prepare": "gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",

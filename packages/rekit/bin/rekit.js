@@ -40,11 +40,11 @@ function getLocalRekitCore() {
       return null;
     }
   }
-
+  console.log(resolveCwd('rekit-core'));
   return require(resolveCwd('rekit-core'));
 }
 
-const rekitCore = getLocalRekitCore();
+const rekit = getLocalRekitCore();
 
 const parser = new ArgumentParser({
   version: rekitPkgJson.version,
@@ -181,11 +181,11 @@ mvCmd.addArgument('target', {
     "The target element to reach, in format of <feature>/<name>, e.g.: 'rekit move component user/list-view employee/list'. Name is unnecessary if move a feature.",
 });
 
-if (rekitCore) {
-  rekitCore.plugin.getPlugins(rekitCore).forEach(p => {
-    if (p.config.defineArgs) p.config.defineArgs(addCmd, mvCmd, rmCmd);
-  });
-}
+// if (rekitCore) {
+//   rekitCore.plugin.getPlugins(rekitCore).forEach(p => {
+//     if (p.config.defineArgs) p.config.defineArgs(addCmd, mvCmd, rmCmd);
+//   });
+// }
 
 const args = parser.parseArgs();
 
@@ -204,22 +204,22 @@ switch (args.commandName) {
     createApp(args);
     break;
   case 'create-plugin':
-    createPlugin(args, rekitCore);
+    createPlugin(args, rekitt);
     console.timeEnd('😃  Done'); // create command doesn't need time end.
     break;
   case 'install':
-    installPlugin(args, rekitCore);
+    installPlugin(args, rekit);
     break;
   case 'uninstall':
     break;
   default:
     // Other command are handled by rekit-core
-    if (!rekitCore) {
+    if (!rekit) {
       console.log('Error: please ensure rekit-core is installed for the project.');
       process.exit(1);
     }
-    rekitCore.handleCommand(args);
-    rekitCore.vio.flush();
+    rekit.core.handleCommand(args);
+    rekit.core.vio.flush();
     console.timeEnd('😃  Done'); // create command doesn't need time end.
     break;
 }

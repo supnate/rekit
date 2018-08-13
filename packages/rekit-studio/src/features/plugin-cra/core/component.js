@@ -1,11 +1,8 @@
 const path = require('path');
 const _ = require('lodash');
-const entry = require('./entry');
-const refactor = require('./refactor');
 const style = require('./style');
 
-const { vio, template, paths } = rekit.core;
-const { utils } = rekit.common;
+const { vio, template, paths, refactor } = rekit.core;
 
 _.pascalCase = _.flow(
   _.camelCase,
@@ -30,11 +27,16 @@ function add(elePath, args) {
     context: Object.assign({ prefix, elePath, name }, args.context || {}),
   });
 
+  // Add style file
   style.add(elePath, args);
+
   // Add to index.js, should this be optional?
-  const indexPath = `src/features/${arr[0]}/index.js}`;
-  refactor.addExportFrom(paths.map(indexPath), utils.relative(indexPath, targetPath).replace(/\.js$/, ''), name);
+  const indexPath = `src/features/${arr[0]}/index.js`;
+  refactor.addExportFrom(indexPath, paths.relative(indexPath, targetPath).replace(/\.js$/, ''), name);
+
+  // Add to route.js if urlPath exists
 }
+
 function move(source, target, args) {
   console.log('moving component: ', source, target, args);
 }
@@ -46,4 +48,5 @@ function remove(name, args) {
 module.exports = {
   add,
   remove,
+  move,
 };

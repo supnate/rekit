@@ -7,8 +7,8 @@ const template = require('./core/template');
 const config = require('./core/config');
 const ast = require('./core/ast');
 const refactor = require('./core/refactor');
+const handleCommand = require('./core/handleCommand');
 const projectFiles = require('./common/projectFiles');
-const utils = require('./common/utils');
 
 paths.setProjectRoot('/Users/pwang7/workspace/app-next/');
 // paths.setProjectRoot('/Users/pwang7/workspace/rekit/packages/rekit-studio');
@@ -24,10 +24,10 @@ global.rekit = {
     config,
     refactor,
     ast,
+    handleCommand,
   },
   common: {
     projectFiles,
-    utils,
   },
 };
 

@@ -2,6 +2,7 @@
   "extends": "airbnb-base",
   "rules": {
     "func-names": 0,
+    "space-before-function-paren": 0,
     "function-paren-newline": 0,
     "no-use-before-define": 0,
     "no-confusing-arrow": 0,

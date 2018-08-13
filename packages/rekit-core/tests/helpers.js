@@ -5,16 +5,17 @@ const path = require('path');
 const expect = require('chai').expect;
 const shell = require('shelljs');
 const _ = require('lodash');
-const utils = require('../core/utils');
+// const utils = require('../core/utils');
+const paths = require('../core/paths');
 const vio = require('../core/vio');
+const logger = require('../core/logger');
 
-const TEST_FEATURE_NAME = 'a-feature';
-const TEST_FEATURE_NAME_2 = 'another-feature';
+// const TEST_FEATURE_NAME = 'a-feature';
+// const TEST_FEATURE_NAME_2 = 'another-feature';
 
 // For testing, use a fake project root
-utils.setProjectRoot(path.join(__dirname, './test-prj'));
-
-utils.setSilent(true);
+// paths.setProjectRoot(path.join(__dirname, './test-prj'));
+// logger.setSilent(true);
 
 // function mapFile(file) {
 //   return path.join(__dirname, '../../src', file);
@@ -41,7 +42,9 @@ function exec(cmd) {
 }
 
 function pureExecTool(script, args) {
-  return shell.exec(`"${process.execPath}" "${path.join(__dirname, '../../tools/cli', script)}" ${args || ''}`, { silent: true });
+  return shell.exec(`"${process.execPath}" "${path.join(__dirname, '../../tools/cli', script)}" ${args || ''}`, {
+    silent: true,
+  });
 }
 
 function execTool(script, args) {
@@ -109,7 +112,7 @@ module.exports = {
   expectNoLine,
   expectLines,
   expectNoLines,
-  TEST_FEATURE_NAME,
-  TEST_FEATURE_NAME_2,
+  // TEST_FEATURE_NAME,
+  // TEST_FEATURE_NAME_2,
   escapeRegExp,
 };

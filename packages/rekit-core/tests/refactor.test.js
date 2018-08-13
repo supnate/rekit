@@ -8,26 +8,10 @@ const refactor = require('../core/refactor');
 const array = require('../core/refactor/array');
 const helpers = require('./helpers');
 
-const expectFile = helpers.expectFile;
-const expectFiles = helpers.expectFiles;
-const expectNoFile = helpers.expectNoFile;
-const expectNoFiles = helpers.expectNoFiles;
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
 
 const V_FILE = '/vio-temp-file';
-
-const CODE_1 = `\
-export { a } from './a';
-export b from './b';
-export c, { d } from './d';
-
-const v = 1;
-`;
-
-const CODE_2 = `\
-const v = 1;
-`;
 
 const CODE_3 = `\
 import A from './A';
@@ -40,7 +24,8 @@ import {
 } from './G';
 `;
 
-describe('reafctor', function() { // eslint-disable-line
+describe('reafctor', function() {
+  // eslint-disable-line
   before(() => {
     vio.reset();
   });
@@ -114,9 +99,9 @@ const otherCode = 1;
         "import L, { L1 } from './L';",
         "import { M1 } from './M';",
         "import N, { N1, N2 } from './N';",
-        "  G4,",
-        "  G5,",
-        "  H1,",
+        '  G4,',
+        '  G5,',
+        '  H1,',
         "import A, * as all from './A';",
         "import * as AllX from './X';",
       ]);
@@ -137,9 +122,7 @@ export default {
       `;
       vio.put(V_FILE, code);
       refactor.addImportFrom(V_FILE, './', '', 'A');
-      expectLines(V_FILE, [
-        '  A,',
-      ]);
+      expectLines(V_FILE, ['  A,']);
     });
 
     it('should add import specifier(s) when module exist', () => {
@@ -237,11 +220,7 @@ const e = E;
       refactor.renameImportSpecifier(V_FILE, 'E', 'E1', './E');
       refactor.renameImportSpecifier(V_FILE, 'E', 'E2', './EE');
 
-      expectLines(V_FILE, [
-        "import { E1 } from './E';",
-        "import { E2 as EE } from './EE';",
-        'const e = E1;',
-      ]);
+      expectLines(V_FILE, ["import { E1 } from './E';", "import { E2 as EE } from './EE';", 'const e = E1;']);
     });
   });
 
@@ -256,20 +235,14 @@ export { default as F } from './F';
       vio.put(V_FILE, CODE);
       refactor.renameExportSpecifier(V_FILE, 'A', 'A1');
       refactor.renameExportSpecifier(V_FILE, 'D', 'D1');
-      expectLines(V_FILE, [
-        "export { default as A1 } from './A';",
-        "export { C, D1, Z } from './D';",
-      ]);
+      expectLines(V_FILE, ["export { default as A1 } from './A';", "export { C, D1, Z } from './D';"]);
     });
 
     it('renames export specifier when module source is specified', () => {
       vio.put(V_FILE, CODE);
       refactor.renameExportSpecifier(V_FILE, 'A', 'A1', './A');
       refactor.renameExportSpecifier(V_FILE, 'E', 'E1', './C');
-      expectLines(V_FILE, [
-        "export { default as A1 } from './A';",
-        "export { E } from './E';",
-      ]);
+      expectLines(V_FILE, ["export { default as A1 } from './A';", "export { E } from './E';"]);
     });
   });
 
@@ -288,17 +261,8 @@ import {
     it('should remove give import specifier', () => {
       vio.put(V_FILE, CODE);
       refactor.removeImportSpecifier(V_FILE, ['E', 'D', 'G1', 'AllX']);
-      expectLines(V_FILE, [
-        "import { C, Z } from './D';",
-        "import {",
-        "  G2,",
-        "} from './G';",
-      ]);
-      expectNoLines(V_FILE, [
-        "import { E } from './E';",
-        "AllX",
-        "  G1,",
-      ]);
+      expectLines(V_FILE, ["import { C, Z } from './D';", 'import {', '  G2,', "} from './G';"]);
+      expectNoLines(V_FILE, ["import { E } from './E';", 'AllX', '  G1,']);
     });
   });
 
@@ -306,12 +270,8 @@ import {
     it('should remove give export specifier', () => {
       vio.put(V_FILE, CODE_3);
       refactor.removeImportSpecifier(V_FILE, ['E', 'D']);
-      expectLines(V_FILE, [
-        "import { C, Z } from './D';",
-      ]);
-      expectNoLines(V_FILE, [
-        "import { E } from './E';",
-      ]);
+      expectLines(V_FILE, ["import { C, Z } from './D';"]);
+      expectNoLines(V_FILE, ["import { E } from './E';"]);
     });
   });
 
@@ -320,10 +280,7 @@ import {
       vio.put(V_FILE, CODE_3);
       refactor.removeImportBySource(V_FILE, './A');
       refactor.removeImportBySource(V_FILE, './D');
-      expectNoLines(V_FILE, [
-        "import A from './A';",
-        "import { C, D, Z } from './D';",
-      ]);
+      expectNoLines(V_FILE, ["import A from './A';", "import { C, D, Z } from './D';"]);
     });
   });
 
@@ -348,45 +305,33 @@ const c = obj.p1;
     it('addObjectProperty should add new property when not exist', () => {
       vio.put(V_FILE, CODE);
       refactor.addObjectProperty(V_FILE, 'obj', 'p5', 'true');
-      expectLines(V_FILE, [
-        "  p5: true,",
-      ]);
+      expectLines(V_FILE, ['  p5: true,']);
     });
 
     it('addObjectProperty should not add new property when already exist', () => {
       vio.put(V_FILE, CODE);
       refactor.addObjectProperty(V_FILE, 'obj', 'p4', 'false');
-      expectLines(V_FILE, [
-        "  p4: true,",
-      ]);
+      expectLines(V_FILE, ['  p4: true,']);
     });
 
     it('addObjectProperty should handle one line object declaration', () => {
       vio.put(V_FILE, CODE);
       refactor.addObjectProperty(V_FILE, 'obj2', 'p2', 'true');
       refactor.addObjectProperty(V_FILE, 'obj3', 'p', "'abc'");
-      expectLines(V_FILE, [
-        "const obj2 = { p: 1, p2: true };",
-        "const obj3 = { p: 'abc' };",
-      ]);
+      expectLines(V_FILE, ['const obj2 = { p: 1, p2: true };', "const obj3 = { p: 'abc' };"]);
     });
 
     it('setObjectProperty should set the new value', () => {
       vio.put(V_FILE, CODE);
       refactor.setObjectProperty(V_FILE, 'obj', 'p2', '345');
-      expectLines(V_FILE, [
-        "  p2: 345,",
-      ]);
+      expectLines(V_FILE, ['  p2: 345,']);
     });
 
     it('renameObjectProperty should rename property correctly', () => {
       vio.put(V_FILE, CODE);
       refactor.renameObjectProperty(V_FILE, 'obj', 'p1', 'n1');
       refactor.renameObjectProperty(V_FILE, 'obj2', 'p', 'n');
-      expectLines(V_FILE, [
-        "  n1: 1,",
-        "const obj2 = { n: 1 };",
-      ]);
+      expectLines(V_FILE, ['  n1: 1,', 'const obj2 = { n: 1 };']);
     });
 
     it('removeObjectProperty should rename property correctly', () => {
@@ -394,25 +339,16 @@ const c = obj.p1;
       refactor.removeObjectProperty(V_FILE, 'obj', 'p1');
       refactor.removeObjectProperty(V_FILE, 'obj', 'p3');
       refactor.removeObjectProperty(V_FILE, 'obj4', 'p2');
-      expectNoLines(V_FILE, [
-        "  p1: 1,",
-        "  p3: 'abc',",
-      ]);
+      expectNoLines(V_FILE, ['  p1: 1,', "  p3: 'abc',"]);
 
-      expectLines(V_FILE, [
-        "const obj4 = { p1: 1, p3: 3 };",
-      ]);
+      expectLines(V_FILE, ['const obj4 = { p1: 1, p3: 3 };']);
 
       refactor.removeObjectProperty(V_FILE, 'obj4', 'p1');
 
-      expectLines(V_FILE, [
-        "const obj4 = { p3: 3 };",
-      ]);
+      expectLines(V_FILE, ['const obj4 = { p3: 3 };']);
 
       refactor.removeObjectProperty(V_FILE, 'obj4', 'p3');
-      expectLines(V_FILE, [
-        "const obj4 = { };",
-      ]);
+      expectLines(V_FILE, ['const obj4 = { };']);
     });
   });
 
@@ -435,10 +371,7 @@ export default Hello;
     it('rename es6 class name', () => {
       vio.put(V_FILE, CODE);
       refactor.renameClassName(V_FILE, 'Hello', 'NewHello');
-      expectLines(V_FILE, [
-        "export class NewHello extends PureComponent {",
-        "export default NewHello;",
-      ]);
+      expectLines(V_FILE, ['export class NewHello extends PureComponent {', 'export default NewHello;']);
     });
   });
 
@@ -501,7 +434,7 @@ const arr6 = [
           const node = path.node;
           node.init._filePath = ast._filePath;
           arrs[node.id.name] = node.init;
-        }
+        },
       });
 
       const changes = [].concat(
@@ -540,7 +473,7 @@ const arr6 = [
           const node = path.node;
           node.init._filePath = ast._filePath;
           arrs[node.id.name] = node.init;
-        }
+        },
       });
 
       const changes = [].concat(
@@ -568,34 +501,20 @@ const arr6 = [
         '];',
       ]);
 
-      expectNoLines(V_FILE, [
-        '  1,',
-        '  { p: 1 },',
-        '  6',
-        '    abc: 1',
-      ]);
+      expectNoLines(V_FILE, ['  1,', '  { p: 1 },', '  6', '    abc: 1']);
     });
 
     it('addToArray', () => {
       refactor.addToArray(V_FILE, 'arr1', 'x');
       refactor.addToArray(V_FILE, 'arr2', 'y');
       refactor.addToArray(V_FILE, 'arr5', 'z');
-      expectLines(V_FILE, [
-        'const arr1 = [x];',
-        'const arr2 = [a, b, 1, y];',
-        '  5,',
-        '  z',
-      ]);
+      expectLines(V_FILE, ['const arr1 = [x];', 'const arr2 = [a, b, 1, y];', '  5,', '  z']);
     });
     it('removeFromArray', () => {
       refactor.removeFromArray(V_FILE, 'arr1', 'x');
       refactor.removeFromArray(V_FILE, 'arr2', 'y');
       refactor.removeFromArray(V_FILE, 'arr5', 'z');
-      expectLines(V_FILE, [
-        'const arr1 = [];',
-        'const arr2 = [a, b, 1];',
-        '  5',
-      ]);
+      expectLines(V_FILE, ['const arr1 = [];', 'const arr2 = [a, b, 1];', '  5']);
     });
   });
 
@@ -631,21 +550,15 @@ const jsx = (
     it('should only replace full string when fullMatch === true', () => {
       vio.put(V_FILE, code);
       refactor.replaceStringLiteral(V_FILE, 'abcdefg', 'new-str');
-      expectLines(V_FILE, [
-        "const str1 = 'new-str';",
-      ]);
+      expectLines(V_FILE, ["const str1 = 'new-str';"]);
       refactor.replaceStringLiteral(V_FILE, 'new', 'xxx');
-      expectLines(V_FILE, [
-        "const str1 = 'new-str';",
-      ]);
+      expectLines(V_FILE, ["const str1 = 'new-str';"]);
     });
 
     it('should only replace full string when fullMatch === false', () => {
       vio.put(V_FILE, code);
       refactor.replaceStringLiteral(V_FILE, 'sub-title', 'second-title', false);
-      expectLines(V_FILE, [
-        '    <h2 className="second-title-2">sub-title</h2>',
-      ]);
+      expectLines(V_FILE, ['    <h2 className="second-title-2">sub-title</h2>']);
     });
   });
 });

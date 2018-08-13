@@ -2,11 +2,11 @@
 
 const path = require('path');
 const _ = require('lodash');
-// const utils = require('../utils');
 const vio = require('../vio');
 const ast = require('../ast');
 const paths = require('../paths');
-const utils = require('../../common/utils');
+const config = require('../config');
+// const utils = require('../../common/utils');
 
 function updateSourceCode(code, changes) {
   // Summary:
@@ -47,7 +47,7 @@ function updateFile(filePath, changes) {
 
   if (_.isFunction(changes)) {
     const ast1 = ast.getAst(filePath);
-    vio.assertAst(ast1, filePath);
+    // vio.assertAst(ast1, filePath);
     changes = changes(ast1);
   }
   let code = vio.getContent(filePath);
@@ -56,13 +56,14 @@ function updateFile(filePath, changes) {
 }
 
 // find module alias
+// TODO: support .babelrc
 function getModuleResolverAlias() {
-  const thePkgJson = utils.getPkgJson();
+  const thePkgJson = config.getPkgJson();
   const babelPlugins = _.get(thePkgJson, 'babel.plugins');
   let alias = {};
   if (_.isArray(babelPlugins)) {
     const moduleResolver = babelPlugins.filter(p => p[0] === 'module-resolver');
-    if (moduleResolver.length) {
+    if (moduleResolver.length && moduleResolver[0][1]) {
       alias = moduleResolver[0][1].alias;
     }
   }
@@ -97,17 +98,19 @@ function resolveModulePath(relativeToFile, modulePath) {
   let res = null;
   if (matched) {
     const resolveTo = alias[matched];
-
-    const relativePath = modulePath.replace(matched, '').replace(/^\//, '');
-    res = utils.joinPath(utils.getProjectRoot(), resolveTo, relativePath);
+    const relativePath = modulePath.replace(new RegExp(`^${matched}`), '').replace(/^\//, '');
+    res = paths.map(resolveTo, relativePath);
+    // res = utils.joinPath(utils.getProjectRoot(), resolveTo, relativePath);
   } else {
-    res = utils.joinPath(path.dirname(relativeToFile), modulePath);
+    res = paths.join(path.dirname(relativeToFile), modulePath);
   }
 
-  if (/src\/features\/[^/]+\/?$/.test(res)) {
-    // if import from a feature folder, then resolve to index.js
-    res = res.replace(/\/$/, '') + '/index';
-  }
+  // TODO: if import from a folder, resolve to index.js
+
+  // if (/src\/features\/[^/]+\/?$/.test(res)) {
+  //   // if import from a folder, then resolve to index.js
+  //   res = res.replace(/\/$/, '') + '/index';
+  // }
 
   return res;
 }
@@ -126,7 +129,7 @@ function acceptFilePathForAst(func) {
     let theAst = file;
     if (_.isString(file)) {
       theAst = ast.getAst(file);
-      vio.assertAst(theAst, file);
+      // vio.assertAst(theAst, file);
     }
     const args = _.toArray(arguments);
     args[0] = theAst;

@@ -36,10 +36,15 @@ function map() {
   return join.apply(null, args);
 }
 
+function relative(from, to) {
+  return path.relative(from, to).replace(/\\/g, '/');
+}
+
 module.exports = {
   join,
   map,
   setProjectRoot,
   getProjectRoot,
+  relative,
   getLocalPluginRoot: () => map('tools/plugins'),
 };

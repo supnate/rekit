@@ -35,6 +35,9 @@ function add(elePath, args) {
   refactor.addExportFrom(indexPath, paths.relative(indexPath, targetPath).replace(/\.js$/, ''), name);
 
   // Add to route.js if urlPath exists
+  if (urlPath) {
+    // const routePath = `src/features/${arr[0]}/route.js`;
+  }
 }
 
 function move(source, target, args) {

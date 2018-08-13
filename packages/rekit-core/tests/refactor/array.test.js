@@ -2,6 +2,7 @@
 
 const traverse = require('babel-traverse').default;
 const vio = require('../../core/vio');
+const ast = require('../../core/ast');
 const refactor = require('../../core/refactor');
 const helpers = require('../helpers');
 
@@ -10,7 +11,8 @@ const V_FILE = '/vio-temp-file';
 const expectLines = helpers.expectLines;
 const expectNoLines = helpers.expectNoLines;
 
-describe('refactor array tests', function() { // eslint-disable-line
+describe('refactor array tests', function() {
+  // eslint-disable-line
   before(() => {
     vio.reset();
   });
@@ -44,14 +46,14 @@ const arr7 = [
 
   it(`addToArrayByNode`, () => {
     vio.put(V_FILE, CODE);
-    const ast = vio.getAst(V_FILE);
+    const ast1 = ast.getAst(V_FILE);
     const arrs = {};
-    traverse(ast, {
+    traverse(ast1, {
       VariableDeclarator(path) {
         const node = path.node;
-        node.init._filePath = ast._filePath;
+        node.init._filePath = ast1._filePath;
         arrs[node.id.name] = node.init;
-      }
+      },
     });
 
     const changes = [].concat(
@@ -83,14 +85,14 @@ const arr7 = [
   });
 
   it(`removeFromArrayByNode`, () => {
-    const ast = vio.getAst(V_FILE);
+    const ast1 = ast.getAst(V_FILE);
     const arrs = {};
-    traverse(ast, {
+    traverse(ast1, {
       VariableDeclarator(path) {
         const node = path.node;
-        node.init._filePath = ast._filePath;
+        node.init._filePath = ast1._filePath;
         arrs[node.id.name] = node.init;
-      }
+      },
     });
 
     const changes = [].concat(
@@ -104,7 +106,6 @@ const arr7 = [
 
     const code = refactor.updateSourceCode(vio.getContent(V_FILE), changes);
     vio.put(V_FILE, code);
-
     expectLines(V_FILE, [
       'const arr1 = [];',
       'const arr2 = [a, b, 1];',
@@ -118,38 +119,21 @@ const arr7 = [
       '];',
     ]);
 
-    expectNoLines(V_FILE, [
-      '  1,',
-      '  { p: 1 },',
-      '  6',
-      '    abc: 1',
-    ]);
+    expectNoLines(V_FILE, ['  1,', '  { p: 1 },', '  6', '    abc: 1']);
   });
 
   it('addToArray', () => {
     refactor.addToArray(V_FILE, 'arr1', 'x');
     refactor.addToArray(V_FILE, 'arr2', 'y');
     refactor.addToArray(V_FILE, 'arr5', 'z');
-    expectLines(V_FILE, [
-      'const arr1 = [x];',
-      'const arr2 = [a, b, 1, y];',
-      '  5,',
-      '  z',
-    ]);
+    expectLines(V_FILE, ['const arr1 = [x];', 'const arr2 = [a, b, 1, y];', '  5,', '  z']);
   });
   it('removeFromArray', () => {
     refactor.removeFromArray(V_FILE, 'arr1', 'x');
     refactor.removeFromArray(V_FILE, 'arr2', 'y');
     refactor.removeFromArray(V_FILE, 'arr5', 'z');
     refactor.removeFromArray(V_FILE, 'arr7', 'abc');
-    expectNoLines(V_FILE, [
-      'const arr7 = [,',
-    ]);
-    expectLines(V_FILE, [
-      'const arr1 = [];',
-      'const arr2 = [a, b, 1];',
-      '  5',
-    ]);
+    expectNoLines(V_FILE, ['const arr7 = [,']);
+    expectLines(V_FILE, ['const arr1 = [];', 'const arr2 = [a, b, 1];', '  5']);
   });
 });
-

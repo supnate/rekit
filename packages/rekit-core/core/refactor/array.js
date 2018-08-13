@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const traverse = require('babel-traverse').default;
-const utils = require('../utils');
+const logger = require('../logger');
 const vio = require('../vio');
 const common = require('./common');
 
@@ -14,7 +14,7 @@ const common = require('./common');
  * @param {string} str - The string to to search.
  * @index {number} index - From which index start to find
  * @
-**/
+ **/
 function nearestCharBefore(char, str, index) {
   // Find the nearest char index before given index. skip white space strings
   // If not found, return -1
@@ -35,7 +35,7 @@ function nearestCharBefore(char, str, index) {
  * @param {string} str - The string to to search.
  * @index {number} index - From which index start to find
  * @
-**/
+ **/
 function nearestCharAfter(char, str, index) {
   // Find the nearest char index before given index. skip white space strings
   // If not found, return -1
@@ -54,7 +54,7 @@ function nearestCharAfter(char, str, index) {
  * @param {string} code - The code to append to the array.
  * @alias module:refactor.addToArrayByNode
  * @
-**/
+ **/
 function addToArrayByNode(node, code) {
   // node: the arr expression node
   // code: added as the last element of the array
@@ -82,11 +82,13 @@ function addToArrayByNode(node, code) {
       replacement = `, ${code}`;
     }
   }
-  return [{
-    start: insertPos,
-    end: insertPos,
-    replacement,
-  }];
+  return [
+    {
+      start: insertPos,
+      end: insertPos,
+      replacement,
+    },
+  ];
 }
 
 /**
@@ -95,21 +97,22 @@ function addToArrayByNode(node, code) {
  * @param {object} eleNode - The ast node to be removed.
  * @alias module:refactor.removeFromArrayByNode
  * @
-**/
+ **/
 function removeFromArrayByNode(node, eleNode) {
   const elements = node.elements;
 
   if (!elements.includes(eleNode)) {
-    utils.warn('Failed to find element when trying to remove element from array.');
+    logger.warn('Failed to find element when trying to remove element from array.');
     return [];
   }
 
   if (!node._filePath) {
-    utils.fatalError('No _filePath property found on node when removing element from array');
+    logger.fatalError('No _filePath property found on node when removing element from array');
     return null;
   }
 
   const content = vio.getContent(node._filePath);
+
   let startPos = nearestCharBefore(',', content, eleNode.start);
   let isFirstElement = false;
   if (startPos < 0) {
@@ -126,11 +129,13 @@ function removeFromArrayByNode(node, eleNode) {
     if (nextComma >= 0) endPos = nextComma + 1;
   }
 
-  return [{
-    start: startPos,
-    end: endPos,
-    replacement: '',
-  }];
+  return [
+    {
+      start: startPos,
+      end: endPos,
+      replacement: '',
+    },
+  ];
 }
 
 /**
@@ -147,7 +152,7 @@ function removeFromArrayByNode(node, eleNode) {
  * // code in ast: const arr = [a, b, c];
  * refactor.addToArray(file, 'arr', 'd');
  * // code changes to: const arr = [a, b, c, d];
-**/
+ **/
 function addToArray(ast, varName, identifierName) {
   let changes = [];
   traverse(ast, {
@@ -157,7 +162,7 @@ function addToArray(ast, varName, identifierName) {
       node.init._filePath = ast._filePath;
       changes = addToArrayByNode(node.init, identifierName);
       path.stop();
-    }
+    },
   });
   return changes;
 }
@@ -176,7 +181,7 @@ function addToArray(ast, varName, identifierName) {
  * // code in ast: const arr = [a, b, c];
  * refactor.removeFromArray(file, 'arr', 'a');
  * // code changes to: const arr = [b, c];
-**/
+ **/
 function removeFromArray(ast, varName, identifierName) {
   let changes = [];
   traverse(ast, {
@@ -187,7 +192,7 @@ function removeFromArray(ast, varName, identifierName) {
       const toRemove = _.find(node.init.elements, ele => ele.name === identifierName);
       changes = removeFromArrayByNode(node.init, toRemove);
       path.stop();
-    }
+    },
   });
   return changes;
 }

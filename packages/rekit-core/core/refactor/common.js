@@ -124,7 +124,7 @@ function acceptFilePathForAst(func) {
   //  Wrapper a function that accepts ast also accepts file path.
   //  If it's file path, then update the file immediately.
 
-  return file => {
+  return function(file) {
     // eslint-disable-line
     let theAst = file;
     if (_.isString(file)) {
@@ -149,7 +149,7 @@ function acceptFilePathForLines(func) {
   //  Wrapper a function that accepts lines also accepts file path.
   //  If it's file path, then update the file immediately.
 
-  return file => {
+  return function(file) {
     // eslint-disable-line
     let lines = file;
     if (_.isString(file)) {

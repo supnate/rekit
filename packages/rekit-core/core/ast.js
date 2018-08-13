@@ -2,14 +2,15 @@ const _ = require('lodash');
 const babylon = require('babylon');
 const vio = require('../core/vio');
 
-let cache = [];
+let cache = {};
 const failedToParse = {};
 
 function getAst(filePath) {
   // Todo: make src/libs configurable
   if (_.startsWith(filePath, 'src/libs/')) return null; // ignore libs folder to parse
-  if (!cache[filePath]) {
-    const code = vio.getContent(filePath);
+  const code = vio.getContent(filePath);
+
+  if (!cache[filePath] || cache[filePath].code !== code) {
     try {
       const ast = babylon.parse(code, {
         // parse in strict mode and allow module declarations
@@ -34,14 +35,14 @@ function getAst(filePath) {
         // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
       }
       delete failedToParse[filePath];
-      cache[filePath] = ast;
+      cache[filePath] = { ast, code };
       ast._filePath = filePath;
     } catch (e) {
       failedToParse[filePath] = true;
       return null;
     }
   }
-  return cache[filePath];
+  return cache[filePath].ast;
 }
 
 // function assertAst(ast, filePath) {

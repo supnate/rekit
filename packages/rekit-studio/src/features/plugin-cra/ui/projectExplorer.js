@@ -12,6 +12,9 @@ export default {
       case 'file':
         history.push(`/element/${encodeURIComponent(ele.id)}`);
         break;
+      case 'routes':
+        history.push(`/element/${encodeURIComponent('src/features/' + ele.feature + '/route.js')}`);
+        break;
       default:
         break;
     }

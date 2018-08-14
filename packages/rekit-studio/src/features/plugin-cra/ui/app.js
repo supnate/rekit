@@ -47,6 +47,20 @@ export default {
         }
       }
 
+      switch (ele.type) {
+        case 'components':
+          ele.count = ele.children.length;
+          break;
+        case 'actions':
+          ele.count = ele.children.length - 1;
+          break;
+        case 'routes':
+          ele.count = ele.routes.length;
+          break;
+        default:
+          break;
+      }
+
       if (ele.type === 'components') {
         ele.count = ele.children.length;
       }

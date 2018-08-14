@@ -128,7 +128,92 @@ function getActions(feature) {
   return actions.map(c => c.id);
 }
 
-function getRoutes(feature) {}
+function getRootRoutePath() {
+  const targetPath = 'src/common/routeConfig.js';
+  const theAst = ast.getAst(targetPath);
+  let rootPath = '';
+  traverse(theAst, {
+    ObjectExpression(path) {
+      const node = path.node;
+      const props = node.properties;
+      if (!props.length) return;
+      const obj = {};
+      props.forEach(p => {
+        if (_.has(p, 'key.name') && !p.computed) {
+          obj[p.key.name] = p;
+        }
+      });
+      if (obj.path && obj.childRoutes && !rootPath) {
+        rootPath = _.get(obj.path, 'value.value');
+      }
+    },
+  });
+  return rootPath;
+}
+
+/**
+ * Get route rules defined in a feature.
+ * @param {string} feature - The feature name.
+ */
+function getRoutes(feature) {
+  const targetPath = `src/features/${feature}/route.js`;//utils.mapFeatureFile(feature, 'route.js');
+  if (vio.fileNotExists(targetPath)) return [];
+  const theAst = ast.getAst(targetPath);
+  const arr = [];
+  let rootPath = '';
+  let indexRoute = null;
+
+  traverse(theAst, {
+    ObjectExpression(path) {
+      const node = path.node;
+      const props = node.properties;
+      if (!props.length) return;
+      const obj = {};
+      props.forEach(p => {
+        if (_.has(p, 'key.name') && !p.computed) {
+          obj[p.key.name] = p;
+        }
+      });
+      if (obj.path && obj.component) {
+        // in a route config, if an object expression has both 'path' and 'component' property, then it's a route config
+        arr.push({
+          path: _.get(obj.path, 'value.value'), // only string literal supported
+          component: _.get(obj.component, 'value.name'), // only identifier supported
+          isIndex: !!obj.isIndex && _.get(obj.isIndex, 'value.value'), // suppose to be boolean
+          node: {
+            start: node.start,
+            end: node.end,
+          },
+        });
+      }
+      if (obj.isIndex && obj.component && !indexRoute) {
+        // only find the first index route
+        indexRoute = {
+          component: _.get(obj.component, 'value.name'),
+        };
+      }
+      if (obj.path && obj.childRoutes && !rootPath) {
+        rootPath = _.get(obj.path, 'value.value');
+        if (!rootPath) rootPath = '$none'; // only find the first rootPath
+      }
+    },
+  });
+  const prjRootPath = getRootRoutePath();
+  if (rootPath === '$none') rootPath = prjRootPath;
+  else if (!/^\//.test(rootPath)) rootPath = prjRootPath + '/' + rootPath;
+  rootPath = rootPath.replace(/\/+/, '/');
+  arr.forEach(item => {
+    if (!/^\//.test(item.path)) {
+      item.path = (rootPath + '/' + item.path).replace(/\/+/, '/');
+    }
+  });
+  if (indexRoute) {
+    indexRoute.path = rootPath;
+    arr.unshift(indexRoute);
+  }
+  return arr;
+}
+
 
 function getFiles(feature) {
   const res = projectFiles.readDir(paths.map(`src/features/${feature}`));
@@ -192,7 +277,8 @@ function getFeatures() {
         id: `v:${f}-routes`,
         type: 'routes',
         name: 'Routes',
-        children: routes,
+        feature: f,
+        routes,
       },
       {
         id: `v:${f}-actions`,

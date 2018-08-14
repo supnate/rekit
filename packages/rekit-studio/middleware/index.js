@@ -288,6 +288,7 @@ module.exports = () => {
       } catch (e) {
         res.statusCode = 500;
         res.write(e.toString());
+        if (e.stack) res.write(e.stack);
         res.end();
       }
     };

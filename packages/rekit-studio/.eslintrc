@@ -17,6 +17,7 @@
     }
   },
   "rules": {
+    "prefer-template": 0,
     "strict": 0,
     "no-shadow": 0,
     "guard-for-in": 0,

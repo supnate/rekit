@@ -1,5 +1,7 @@
 const path = require('path');
 const _ = require('lodash');
+const entry = require('./entry');
+const route = require('./route');
 const style = require('./style');
 
 const { vio, template, paths, refactor } = rekit.core;
@@ -24,19 +26,18 @@ function add(elePath, args) {
   const tplFile = connected ? './templates/ConnectedComponent.js.tpl' : './templates/Component.js.tpl';
   template.generate(paths.map(targetPath), {
     templateFile: path.join(__dirname, tplFile),
-    context: Object.assign({ prefix, elePath, name }, args.context || {}),
+    context: Object.assign({ prefix, targetPath, name }, args.context || {}),
   });
 
   // Add style file
   style.add(elePath, args);
 
-  // Add to index.js, should this be optional?
-  const indexPath = `src/features/${arr[0]}/index.js`;
-  refactor.addExportFrom(indexPath, paths.relative(indexPath, targetPath).replace(/\.js$/, ''), name);
+  // Add to index.s in the same folder, should this be optional?
+  entry.addToIndex(targetPath, args);
 
-  // Add to route.js if urlPath exists
   if (urlPath) {
-    // const routePath = `src/features/${arr[0]}/route.js`;
+    // Add to route.js if urlPath exists
+    route.add(targetPath, args);
   }
 }
 

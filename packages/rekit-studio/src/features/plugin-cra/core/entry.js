@@ -3,20 +3,39 @@
 // Summary
 //  Modify entry files to add/remove entries for page, component, action, etc...
 
+const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 
-const { vio, paths, refactor } = rekit.core;
+
+const { vio, paths, refactor, logger } = rekit.core;
 
 module.exports = {
-  addToIndex(feature, name) {
-    const targetPath = paths.map(`src/features/${feature}/index.js`);
-    refactor.addExportFrom(targetPath, `./${name}`, name);
+  addToIndex(filePath) {
+    // Add to index.js in the same folder of the element
+    const name = path.basename(filePath).replace(/\.\w+$/, '');
+
+    const indexPath = path.dirname(filePath) + '/index.js';
+    const absIndexPath = paths.map(indexPath);
+
+    if (!fs.existsSync(absIndexPath)) {
+      fs.writeFileSync(absIndexPath, '');
+    }
+
+    refactor.addExportFrom(indexPath, `./${name}`, name);
   },
 
-  removeFromIndex(feature, name) {
-    const targetPath = utils.mapFeatureFile(feature, 'index.js');
-    refactor.removeImportBySource(targetPath, `./${name}`);
+  removeFromIndex(filePath) {
+    const name = path.basename(filePath).replace(/\.\w+$/, '');
+
+    const indexPath = path.dirname(filePath) + '/index.js';
+    const absIndexPath = paths.map(indexPath);
+
+    if (!fs.existsSync(absIndexPath)) {
+      logger.warn(`WARN [entry.removeFromIndex] index.js not found: ${indexPath}`);
+      return;
+    }
+    refactor.removeImportBySource(indexPath, `./${name}`);
   },
 
   renameInIndex(feature, oldName, newName) {

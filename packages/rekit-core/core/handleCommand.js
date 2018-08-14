@@ -9,6 +9,9 @@ module.exports = function(args) {
     case 'move':
       element.move(args.type, args.source, args.target, args);
       break;
+    case 'update':
+      element.update(args.type, args.name, args);
+      break;
     default:
       console.error('Unknown command: ', args.commandName, args);
       throw new Error(`Unknown command: ${args.commandName}`);

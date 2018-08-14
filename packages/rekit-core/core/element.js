@@ -20,9 +20,9 @@ function remove(type, name, args) {
   return thePlugin.elements[type].remove(name, args);
 }
 
-module.exports = {
-  add,
-};
+function update(type, name, args) {
+  console.log('updating element: ', type, name, args);
+}
 
 function byId(id) {
   return id;
@@ -32,6 +32,7 @@ module.exports = {
   add,
   move,
   remove,
+  update,
   byId,
 };
 // function handleAction(args) {

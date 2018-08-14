@@ -36,16 +36,27 @@ function add(elePath, args) {
 
   if (urlPath) {
     // Add to route.js if urlPath exists
-    route.add(targetPath, args);
+    // route.add(targetPath, args);
   }
+}
+
+function remove(elePath, args) {
+  // Remove component module
+  const arr = elePath.split('/');
+  const name = _.pascalCase(arr.pop());
+
+  const targetPath = `src/features/${arr.join('/')}/${name}.js`;
+  vio.del(targetPath);
+
+  // Remove style file
+  style.remove(elePath, args);
+
+  // Remove from index.js
+  entry.removeFromIndex(targetPath, args);
 }
 
 function move(source, target, args) {
   console.log('moving component: ', source, target, args);
-}
-function remove(name, args) {
-  const { feature } = args;
-  vio.del(paths.map(`src/features/${feature}/${name}.js`));
 }
 
 module.exports = {

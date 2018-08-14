@@ -53,10 +53,12 @@ function add(elePath, args) {
  * @alias module:style.remove
  *
  **/
-function remove(feature, component) {
+function remove(elePath) {
   // Remove style file of a component
-  vio.del(utils.mapComponent(feature, component) + '.' + utils.getCssExt());
-  entry.removeFromStyle(feature, component);
+  const arr = elePath.split('/');
+  const name = _.pascalCase(arr.pop());
+  vio.del(`src/features/${arr.join('/')}/${name}.${cssExt}`);
+  // entry.removeFromStyle(feature, component);
 }
 
 /**

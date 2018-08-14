@@ -302,19 +302,20 @@ function flush() {
 
   // Delete files
   Object.keys(toDel).forEach(filePath => {
-    if (!shell.test('-e', filePath)) {
+    const absFilePath = paths.map(filePath);
+    if (!fs.existsSync(absFilePath)) {
       log('Warning: no file to delete: ', 'yellow', filePath);
       res.push({
         type: 'del-file-warning',
         warning: 'no-file',
-        file: filePath.replace(prjRoot, ''),
+        file: filePath,
       });
     } else {
-      shell.rm('-rf', filePath);
+      fs.unlinkSync(absFilePath);
       log('Deleted: ', 'magenta', filePath);
       res.push({
         type: 'del-file',
-        file: filePath.replace(prjRoot, ''),
+        file: filePath,
       });
     }
   });
@@ -342,7 +343,6 @@ function flush() {
 
   // Create/update files
   Object.keys(toSave).forEach(filePath => {
-    console.log('to save: ', filePath);
     const newContent = getLines(filePath).join('\n');
     const absFilePath = paths.map(filePath);
     if (fs.existsSync(absFilePath)) {

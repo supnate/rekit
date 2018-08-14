@@ -7,7 +7,7 @@
 const path = require('path');
 const _ = require('lodash');
 
-const { vio, template, config, paths } = rekit.core;
+const { vio, template, config } = rekit.core;
 const entry = require('./entry');
 
 const cssExt = config.css;
@@ -43,7 +43,7 @@ function add(elePath, args) {
     })
   );
 
-  // entry.addToStyle(feature, component);
+  entry.addToStyle(`${arr.join('/')}/${name}`);
 }
 
 /**
@@ -58,7 +58,7 @@ function remove(elePath) {
   const arr = elePath.split('/');
   const name = _.pascalCase(arr.pop());
   vio.del(`src/features/${arr.join('/')}/${name}.${cssExt}`);
-  // entry.removeFromStyle(feature, component);
+  entry.removeFromStyle(`${arr.join('/')}/${name}`);
 }
 
 /**

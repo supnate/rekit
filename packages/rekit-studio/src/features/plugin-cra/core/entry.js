@@ -7,7 +7,7 @@ const path = require('path');
 const _ = require('lodash');
 
 
-const { vio, refactor, logger } = rekit.core;
+const { vio, refactor, logger, config } = rekit.core;
 
 module.exports = {
   addToIndex(filePath) {
@@ -236,14 +236,20 @@ module.exports = {
     ));
   },
 
-  addToStyle(feature, name) {
-    const targetPath = utils.mapFeatureFile(feature, 'style.' + utils.getCssExt());
-    refactor.addStyleImport(targetPath, `./${name}`);
+  addToStyle(elePath) {
+    // elePath: home/MyComponent, home/subFolder/MyComponent2
+    console.log(elePath);
+    const arr = elePath.split('/');
+    const feature = arr.shift();
+    const targetPath = `src/features/${feature}/style.${config.style}`;
+    refactor.addStyleImport(targetPath, `./${arr.join('/')}`);
   },
 
-  removeFromStyle(feature, name) {
-    const targetPath = utils.mapFeatureFile(feature, 'style.' + utils.getCssExt());
-    refactor.removeStyleImport(targetPath, `./${name}`);
+  removeFromStyle(elePath) {
+    const arr = elePath.split('/');
+    const feature = arr.shift();
+    const targetPath = `src/features/${feature}/style.${config.style}`;
+    refactor.removeStyleImport(targetPath, `./${arr.join('/')}`);
   },
 
   renameInStyle(feature, oldName, newName) {

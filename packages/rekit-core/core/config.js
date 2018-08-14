@@ -8,5 +8,6 @@ function getPkgJson(noCache) {
 // Load rekit configuration from package.json
 module.exports = {
   css: 'less',
+  style: 'less',
   getPkgJson,
 };

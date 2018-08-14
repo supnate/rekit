@@ -7,6 +7,6 @@ console.time('test');
 rekit.core.app.getProjectData();
 
 // rekit.core.element.add('action', 'a1');
-rekit.core.element.add('component', 'home/c1', {});
-rekit.core.vio.flush();
+// rekit.core.element.add('component', 'home/c1', {});
+// rekit.core.vio.flush();
 console.timeEnd('test');

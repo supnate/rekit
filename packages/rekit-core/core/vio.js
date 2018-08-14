@@ -3,6 +3,7 @@
 // Virtual IO, create, update and delete files in memory until flush to the disk.
 // NOTE: it only supports text files.
 
+const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 const shell = require('shelljs');
@@ -13,7 +14,7 @@ const colors = require('colors/safe');
 // const utils = require('./utils');
 const paths = require('./paths');
 
-const prjRoot = paths.getProjectRoot();
+// const prjRoot = paths.getProjectRoot();
 
 let toSave = {};
 let toDel = {};
@@ -35,6 +36,7 @@ function printDiff(diff) {
 }
 
 function log(label, color, filePath, toFilePath) {
+  const prjRoot = paths.getProjectRoot();
   const p = filePath.replace(prjRoot, '');
   const to = toFilePath ? toFilePath.replace(prjRoot, '') : '';
   console.log(colors[color](label + p + (to ? ' to ' + to : '')));
@@ -121,7 +123,7 @@ function getContent(filePath) {
 // }
 
 function fileExists(filePath) {
-  return ((!!fileLines[filePath] || !!toSave[filePath]) && !toDel[filePath]) || shell.test('-e', filePath);
+  return ((!!fileLines[filePath] || !!toSave[filePath]) && !toDel[filePath]) || shell.test('-e', paths.map(filePath));
 }
 
 function fileNotExists(filePath) {
@@ -137,8 +139,9 @@ function dirNotExists(dir) {
 }
 
 function ensurePathDir(fullPath) {
-  if (!shell.test('-e', path.dirname(fullPath))) {
-    shell.mkdir('-p', path.dirname(fullPath));
+  const absPath = paths.map(fullPath);
+  if (!shell.test('-e', path.dirname(absPath))) {
+    shell.mkdir('-p', path.dirname(absPath));
   }
 }
 
@@ -265,6 +268,7 @@ function reset() {
 }
 
 function flush() {
+  const prjRoot = paths.getProjectRoot();
   const res = [];
   Object.keys(dirs).forEach(dir => {
     if (!shell.test('-e', dir)) {
@@ -317,12 +321,13 @@ function flush() {
 
   // Move files
   Object.keys(mvs).forEach(filePath => {
-    if (!shell.test('-e', filePath)) {
-      log('Warning: no file to move: ', 'yellow', filePath);
+    const absFilePath = paths.map(filePath);
+    if (!shell.test('-e', absFilePath)) {
+      log('Warning: no file to move: ', 'yellow', absFilePath);
       res.push({
         type: 'mv-file-warning',
         warning: 'no-file',
-        file: filePath.replace(prjRoot, ''),
+        file: filePath,
       });
     } else {
       ensurePathDir(mvs[filePath]);
@@ -337,19 +342,16 @@ function flush() {
 
   // Create/update files
   Object.keys(toSave).forEach(filePath => {
+    console.log('to save: ', filePath);
     const newContent = getLines(filePath).join('\n');
-    if (shell.test('-e', filePath)) {
-      const oldContent = shell
-        .cat(filePath)
+    const absFilePath = paths.map(filePath);
+    if (fs.existsSync(absFilePath)) {
+      const oldContent = fs
+        .readFileSync(absFilePath)
+        .toString()
         .split(/\r?\n/)
         .join('\n');
       if (oldContent === newContent) {
-        // log('Warning: nothing is changed for: ', 'yellow', filePath);
-        // res.push({
-        //   type: 'update-file-warning',
-        //   warning: 'no-change',
-        //   file: filePath.replace(prjRoot, ''),
-        // });
         return;
       }
       log('Updated: ', 'cyan', filePath);
@@ -357,7 +359,7 @@ function flush() {
       res.push({
         type: 'update-file',
         diff,
-        file: filePath.replace(prjRoot, ''),
+        file: filePath,
       });
       printDiff(diff);
     } else {
@@ -365,10 +367,11 @@ function flush() {
       log('Created: ', 'blue', filePath);
       res.push({
         type: 'create-file',
-        file: filePath.replace(prjRoot, ''),
+        file: filePath,
       });
     }
-    shell.ShellString(newContent).to(filePath);
+    fs.writeFileSync(absFilePath, newContent);
+    // shell.ShellString(newContent).to(filePath);
   });
 
   return res;

@@ -14,12 +14,10 @@ module.exports = {
   addToIndex(filePath) {
     // Add to index.js in the same folder of the element
     const name = path.basename(filePath).replace(/\.\w+$/, '');
-
     const indexPath = path.dirname(filePath) + '/index.js';
-    const absIndexPath = paths.map(indexPath);
 
-    if (!fs.existsSync(absIndexPath)) {
-      fs.writeFileSync(absIndexPath, '');
+    if (!vio.fileExists(indexPath)) {
+      vio.save(indexPath, '');
     }
 
     refactor.addExportFrom(indexPath, `./${name}`, name);

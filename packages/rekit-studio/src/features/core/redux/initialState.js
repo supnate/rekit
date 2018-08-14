@@ -17,6 +17,10 @@ const initialState = {
   moveElementError: null,
   removeElementPending: false,
   removeElementError: null,
+  handleCoreCommandPending: false,
+  handleCoreCommandError: null,
+  execCoreCommandPending: false,
+  execCoreCommandError: null,
 };
 
 export default initialState;

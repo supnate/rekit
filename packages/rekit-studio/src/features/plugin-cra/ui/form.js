@@ -52,7 +52,6 @@ const nameMeta = () => ({
 
 export default {
   fillMeta(args) {
-    console.log('process meta: ', args);
     switch (args.formId) {
       case 'core.element.add.component':
         args.meta.elements.push(
@@ -89,7 +88,19 @@ export default {
         break;
     }
   },
-  handleSubmit() {
-    return Promise.resolve();
+  processValues(args) {
+    const { context, values, formId } = args;
+    switch (formId) {
+      case 'core.element.add.component':
+        return {
+          ...values,
+          commandName: context.action,
+          type: context.elementType,
+          name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
+        };
+      default:
+        break;
+    }
+    return args;
   },
 };

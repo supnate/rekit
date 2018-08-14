@@ -98,6 +98,13 @@ module.exports = () => {
       const p = urlObject.pathname.replace(rootPath, '');
       try {
         switch (p) {
+          case '/api/core-command':
+            res.setHeader('content-type', 'application/json');
+            rekit.core.handleCommand(req.body);
+            rekit.core.vio.flush();
+            res.write(JSON.stringify(req.body));
+            res.end();
+            break;
           case '/api/element':
             element(req, res);
             break;

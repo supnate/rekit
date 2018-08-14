@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Form, Modal } from 'antd';
 import { FormBuilder } from '../common';
-import { addElement, moveElement } from './redux/actions';
+import { execCoreCommand } from './redux/actions';
 import plugin from '../../common/plugin';
 
 export class CommonForm extends Component {
@@ -50,36 +50,43 @@ export class CommonForm extends Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
-    const { context } = this.props;
+    const { context, formId } = this.props;
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (errors) {
         return;
       }
       console.log('Form submit: ', values);
+
+      let command = { commandName: context.action, context, formId, values };
+      plugin.getPlugins('form.processValues').forEach(p => {
+        command = p.form.processValues(command);
+      });
+
       this.setState({ pending: true });
-      if (/^add|move$/.test(context.action)) {
-        this.props.actions[`${context.action}Element`]({ ...context, params: values })
-          .then(() => {
-            this.props.onSubmit();
-            this.setState({ pending: false });
-            // Show notification
-            //
-          })
-          .catch(err => {
-            // Show error
-            this.setState({ pending: false });
-            Modal.error({
-              title: 'Failed',
-              content: <span style={{ color: 'red' }}>{err.toString ? err.toString() : 'Unknown error.'}</span>,
-            });
+      // if (/^add|move|update$/.test(context.action)) {
+      this.props.actions
+        .execCoreCommand(command)
+        .then(() => {
+          this.props.onSubmit();
+          this.setState({ pending: false });
+          // Show notification
+          //
+        })
+        .catch(err => {
+          // Show error
+          this.setState({ pending: false });
+          Modal.error({
+            title: 'Failed',
+            content: <span style={{ color: 'red' }}>{err.toString ? err.toString() : 'Unknown error.'}</span>,
           });
-      } else {
-        Modal.error({
-          title: 'Error',
-          content: <span style={{ color: 'red' }}>Unknown form action: {context.action}</span>,
         });
-        this.setState({ pending: false });
-      }
+      // } else {
+      //   Modal.error({
+      //     title: 'Error',
+      //     content: <span style={{ color: 'red' }}>Unknown form action: {context.action}</span>,
+      //   });
+      //   this.setState({ pending: false });
+      // }
     });
   };
 
@@ -113,7 +120,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ addElement, moveElement }, dispatch),
+    actions: bindActionCreators({ execCoreCommand }, dispatch),
   };
 }
 

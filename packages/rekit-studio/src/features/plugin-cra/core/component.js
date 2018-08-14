@@ -4,7 +4,7 @@ const entry = require('./entry');
 const route = require('./route');
 const style = require('./style');
 
-const { vio, template, paths, refactor } = rekit.core;
+const { vio, template, paths } = rekit.core;
 
 _.pascalCase = _.flow(
   _.camelCase,
@@ -22,9 +22,8 @@ function add(elePath, args) {
   const prefix = arr.join('-');
 
   const targetPath = `src/features/${arr.join('/')}/${name}.js`;
-
   const tplFile = connected ? './templates/ConnectedComponent.js.tpl' : './templates/Component.js.tpl';
-  template.generate(paths.map(targetPath), {
+  template.generate(targetPath, {
     templateFile: path.join(__dirname, tplFile),
     context: Object.assign({ prefix, targetPath, name }, args.context || {}),
   });

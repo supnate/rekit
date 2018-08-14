@@ -12,6 +12,8 @@ import { reducer as hideDialogReducer } from './hideDialog';
 import { reducer as addElementReducer } from './addElement';
 import { reducer as moveElementReducer } from './moveElement';
 import { reducer as removeElementReducer } from './removeElement';
+import { reducer as handleCoreCommandReducer } from './handleCoreCommand';
+import { reducer as execCoreCommandReducer } from './execCoreCommand';
 
 const reducers = [
   showDialogReducer,
@@ -19,6 +21,8 @@ const reducers = [
   addElementReducer,
   moveElementReducer,
   removeElementReducer,
+  handleCoreCommandReducer,
+  execCoreCommandReducer,
 ];
 
 export default function reducer(state = initialState, action) {

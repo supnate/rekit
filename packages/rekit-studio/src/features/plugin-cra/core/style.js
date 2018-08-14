@@ -30,7 +30,7 @@ function add(elePath, args) {
   const name = _.pascalCase(arr.pop());
   const prefix = arr.join('-');
   template.generate(
-    paths.map(`src/features/${arr.join('/')}/${name}.${cssExt}`),
+    `src/features/${arr.join('/')}/${name}.${cssExt}`,
     Object.assign({}, args, {
       templateFile: path.join(__dirname, './templates/Component.less.tpl'),
       context: Object.assign(

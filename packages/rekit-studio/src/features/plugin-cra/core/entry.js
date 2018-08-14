@@ -3,12 +3,11 @@
 // Summary
 //  Modify entry files to add/remove entries for page, component, action, etc...
 
-const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 
 
-const { vio, paths, refactor, logger } = rekit.core;
+const { vio, refactor, logger } = rekit.core;
 
 module.exports = {
   addToIndex(filePath) {
@@ -25,14 +24,13 @@ module.exports = {
 
   removeFromIndex(filePath) {
     const name = path.basename(filePath).replace(/\.\w+$/, '');
-
     const indexPath = path.dirname(filePath) + '/index.js';
-    const absIndexPath = paths.map(indexPath);
 
-    if (!fs.existsSync(absIndexPath)) {
+    if (!vio.fileExists(indexPath)) {
       logger.warn(`WARN [entry.removeFromIndex] index.js not found: ${indexPath}`);
       return;
     }
+
     refactor.removeImportBySource(indexPath, `./${name}`);
   },
 

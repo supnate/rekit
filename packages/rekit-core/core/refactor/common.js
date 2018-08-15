@@ -130,6 +130,9 @@ function acceptFilePathForAst(func) {
     if (_.isString(file)) {
       theAst = ast.getAst(file);
       // vio.assertAst(theAst, file);
+      if (!theAst) {
+        throw new Error(`Failed to parse ${file}, please check syntax and retry.`);
+      }
     }
     const args = _.toArray(arguments);
     args[0] = theAst;

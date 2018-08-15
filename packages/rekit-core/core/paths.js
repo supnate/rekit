@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const _ = require('lodash');
 
 function join() {
   // A consistent and normalized version of path.join cross platforms
@@ -40,11 +41,21 @@ function relative(from, to) {
   return path.relative(from, to).replace(/\\/g, '/');
 }
 
+// get the module source of 'to' from 'from' file.
+// e.g: import to from '../to';
+function relativeModuleSource(from, to) {
+  const p = join(relative(path.dirname(from), path.dirname(to)), path.basename(to).replace(/\.\w+$/, ''));
+
+  if (!_.startsWith(p, '.')) return './' + p;
+  return p;
+}
+
 module.exports = {
   join,
   map,
   setProjectRoot,
   getProjectRoot,
   relative,
+  relativeModuleSource,
   getLocalPluginRoot: () => map('tools/plugins'),
 };

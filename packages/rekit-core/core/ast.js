@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const babylon = require('babylon');
 const vio = require('../core/vio');
+const logger = require('../core/logger');
 
 let cache = {};
 const failedToParse = {};
@@ -31,14 +32,15 @@ function getAst(filePath) {
       });
       if (!ast) {
         failedToParse[filePath] = true;
+        logger.warn(`Failed to parse ast, please check syntax: ${filePath}`);
         return null;
-        // utils.fatalError(`Error: failed to parse ${filePath}, please check syntax.`);
       }
       delete failedToParse[filePath];
       cache[filePath] = { ast, code };
       ast._filePath = filePath;
     } catch (e) {
       failedToParse[filePath] = true;
+      logger.warn(`Failed to parse ast, please check syntax: ${filePath}`);
       return null;
     }
   }

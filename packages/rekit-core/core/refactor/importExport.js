@@ -49,7 +49,7 @@ function formatMultilineImport(importCode) {
  * const refactor = require('rekit-core').refactor;
  * refactor.addImportFrom(file, './some-module', 'SomeModule', ['method1', 'method2']);
  * // it generates: import SomeModule, { method1, method2 } from './some-module';
-**/
+ **/
 function addImportFrom(ast, moduleSource, defaultImport, namedImport, namespaceImport) {
   // Summary:
   //  Add import from source module. Such as import { xxx } from './x';
@@ -90,7 +90,7 @@ function addImportFrom(ast, moduleSource, defaultImport, namedImport, namespaceI
 
       if (newNames.length > 0) {
         const newSpecifiers = [].concat(node.specifiers);
-        newNames.forEach((n) => {
+        newNames.forEach(n => {
           const local = t.identifier(n);
           const imported = local; // TODO: doesn't support local alias.
           if (n === defaultImport) {
@@ -114,7 +114,7 @@ function addImportFrom(ast, moduleSource, defaultImport, namedImport, namespaceI
           replacement: newCode,
         });
       }
-    }
+    },
   });
 
   if (changes.length === 0 && !sourceExisted) {
@@ -127,7 +127,7 @@ function addImportFrom(ast, moduleSource, defaultImport, namedImport, namespaceI
       specifiers.push(t.importNamespaceSpecifier(t.identifier(namespaceImport)));
     }
 
-    names.forEach((n) => {
+    names.forEach(n => {
       const local = t.identifier(n);
       const imported = local;
       specifiers.push(t.importSpecifier(local, imported));
@@ -152,7 +152,7 @@ function addImportFrom(ast, moduleSource, defaultImport, namedImport, namespaceI
  * @index {string} defaultExport - The default import. If not need, pass it as null. The module should haven't import the default.
  * @index {string|array} namedExport - The named imports. If has imported, then do nothing.
  * @alias module:refactor.addExportFrom
-**/
+ **/
 function addExportFrom(ast, moduleSource, defaultExport, namedExport) {
   // Summary:
   //  Add export from source module. Such as export { xxx } from './x';
@@ -184,11 +184,13 @@ function addExportFrom(ast, moduleSource, defaultExport, namedExport) {
       newNames = newNames.concat(names);
 
       // only add names which don't exist
-      newNames = newNames.filter(n => !_.find(node.specifiers, s => (_.get(s, 'exported.name') || _.get(s, 'local.name')) === n));
+      newNames = newNames.filter(
+        n => !_.find(node.specifiers, s => (_.get(s, 'exported.name') || _.get(s, 'local.name')) === n)
+      );
 
       if (newNames.length > 0) {
         const newSpecifiers = [].concat(node.specifiers);
-        newNames.forEach((n) => {
+        newNames.forEach(n => {
           const local = t.identifier(n);
           const exported = local; // TODO: doesn't support local alias.
           if (n === defaultExport) {
@@ -206,7 +208,7 @@ function addExportFrom(ast, moduleSource, defaultExport, namedExport) {
           replacement: newCode,
         });
       }
-    }
+    },
   });
 
   if (changes.length === 0 && !sourceExisted) {
@@ -215,7 +217,7 @@ function addExportFrom(ast, moduleSource, defaultExport, namedExport) {
       specifiers.push(t.exportSpecifier(t.identifier('default'), t.identifier(defaultExport)));
     }
 
-    names.forEach((n) => {
+    names.forEach(n => {
       const local = t.identifier(n);
       const exported = local;
       specifiers.push(t.exportSpecifier(local, exported));
@@ -242,7 +244,7 @@ function renameImportAsSpecifier(ast, oldName, newName) {
       if (_.get(path.node, 'local.name') === oldName) {
         defNode = path.node.local;
       }
-    }
+    },
   });
   if (defNode) {
     changes = changes.concat(identifier.renameIdentifier(ast, oldName, newName, defNode));
@@ -266,10 +268,10 @@ function renameImportSpecifier(ast, oldName, newName, moduleSource) {
     ImportDeclaration(path) {
       const node = path.node;
       if (moduleSource && _.get(node, 'source.value') !== moduleSource) return;
-      node.specifiers.forEach((specifier) => {
+      node.specifiers.forEach(specifier => {
         if (
-          (specifier.type === 'ImportDefaultSpecifier' || specifier.type === 'ImportNamespaceSpecifier')
-          && _.get(specifier, 'local.name') === oldName
+          (specifier.type === 'ImportDefaultSpecifier' || specifier.type === 'ImportNamespaceSpecifier') &&
+          _.get(specifier, 'local.name') === oldName
         ) {
           defNode = specifier.local;
         }
@@ -287,7 +289,7 @@ function renameImportSpecifier(ast, oldName, newName, moduleSource) {
           }
         }
       });
-    }
+    },
   });
   if (defNode) {
     changes = changes.concat(identifier.renameIdentifier(ast, oldName, newName, defNode));
@@ -316,7 +318,7 @@ function renameExportSpecifier(ast, oldName, newName, moduleSource) {
           replacement: newName,
         });
       }
-    }
+    },
   });
   return changes;
 }
@@ -379,7 +381,7 @@ function removeImportSpecifier(ast, name) {
           replacement: newCode,
         });
       }
-    }
+    },
   });
 
   return changes;

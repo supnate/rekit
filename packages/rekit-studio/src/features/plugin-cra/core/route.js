@@ -2,77 +2,79 @@
 
 const _ = require('lodash');
 const traverse = require('babel-traverse').default;
-const { refactor, vio } = rekit.core;
-// const refactor = require('./refactor');
-// const utils = require('./utils');
-// const vio = require('./vio');
-// const assert = require('./assert');
+const utils = require('./utils');
 
-function getChildRoutesNode(ast) {
+const { ast, refactor, vio } = rekit.core;
+
+function getChildRoutesNode(ast1) {
   let arrNode = null;
-  traverse(ast, {
+  traverse(ast1, {
     ObjectProperty(path) {
       const node = path.node;
       if (_.get(node, 'key.name') === 'childRoutes' && _.get(node, 'value.type') === 'ArrayExpression') {
         arrNode = node.value;
-        arrNode._filePath = ast._filePath;
+        arrNode._filePath = ast1._filePath;
         path.stop();
       }
-    }
+    },
   });
   return arrNode;
 }
 // Add component to a route.js under a feature.
-function add(elePath, args = {}) {
-  const feature = elePath.split('/')[2];
-    if (!_.startsWith(elePath, 'src/features/')) {
-      throw new Error(`entry.addToIndex argument should be under a feature: ${filePath}`);
-    }
-    const indexPath = `src/features/${feature}/index.js`;
+// It imports all component from index.js
+function add(elePath, args) {
+  const ele = utils.parseElePath(elePath, 'component');
+  const routePath = `src/features/${ele.feature}/route.js`;
+  if (!vio.fileExists(routePath)) {
+    throw new Error(`route.add failed: file not found ${routePath}`);
+  }
 
-    if (!vio.fileExists(indexPath)) {
-      throw new Error(`entry.addToIndex failed: file not found ${indexPath}`);
-    }
-  // assert.notEmpty(feature, 'feature');
-  // assert.notEmpty(component, 'component name');
-  // assert.featureExist(feature);
-  args = args || {};
-  const urlPath = args.urlPath || _.kebabCase(component);
-  const targetPath = utils.mapFeatureFile(feature, 'route.js');
-  refactor.addImportFrom(targetPath, './', '', _.pascalCase(component));
+  const { urlPath } = args;
+  refactor.addImportFrom(routePath, './', '', ele.name);
 
-  const ast = vio.getAst(targetPath);
-  vio.assertAst(ast, targetPath);
-  const arrNode = getChildRoutesNode(ast);
+  const ast1 = ast.getAst(routePath, true);
+  const arrNode = getChildRoutesNode(ast1);
   if (arrNode) {
-    const rule = `{ path: '${urlPath}', name: '${args.pageName || _.upperFirst(_.lowerCase(component))}', component: ${_.pascalCase(component)}${args.isIndex ? ', isIndex: true' : ''} }`;
+    const rule = `{ path: '${urlPath}', component: ${ele.name}${args.isIndex ? ', isIndex: true' : ''} }`;
     const changes = refactor.addToArrayByNode(arrNode, rule);
-    const code = refactor.updateSourceCode(vio.getContent(targetPath), changes);
-    vio.save(targetPath, code);
+    const code = refactor.updateSourceCode(vio.getContent(routePath), changes);
+    vio.save(routePath, code);
   } else {
-    utils.fatal(`You are adding a route rule, but can't find childRoutes property in 'src/features/${feature}/route.js', please check.`);
+    throw new Error(
+      `You are adding a route rule, but can't find childRoutes property in '${routePath}', please check.`
+    );
   }
 }
 
-function remove(feature, component) {
-  assert.notEmpty(feature, 'feature');
-  assert.notEmpty(component, 'component name');
-  assert.featureExist(feature);
+function remove(elePath) {
+  const ele = utils.parseElePath(elePath, 'component');
+  const routePath = `src/features/${ele.feature}/route.js`;
+  if (!vio.fileExists(routePath)) {
+    throw new Error(`route.add failed: file not found ${routePath}`);
+  }
 
-  const targetPath = utils.mapFeatureFile(feature, 'route.js');
-  refactor.removeImportSpecifier(targetPath, _.pascalCase(component));
-  const ast = vio.getAst(targetPath);
-  vio.assertAst(ast, targetPath);
-  const arrNode = getChildRoutesNode(ast);
+  refactor.removeImportSpecifier(routePath, ele.name);
+
+  const ast1 = ast.getAst(routePath, true);
+  const arrNode = getChildRoutesNode(ast1);
   if (arrNode) {
     let changes = [];
     arrNode.elements
-      .filter(ele => _.find(ele.properties, p => _.get(p, 'key.name') === 'component' && _.get(p, 'value.name') === _.pascalCase(component)))
-      .forEach((ele) => { changes = changes.concat(refactor.removeFromArrayByNode(arrNode, ele)); });
-    const code = refactor.updateSourceCode(vio.getContent(targetPath), changes);
-    vio.save(targetPath, code);
+      .filter(element =>
+        _.find(
+          element.properties,
+          p => _.get(p, 'key.name') === 'component' && _.get(p, 'value.name') === ele.name
+        )
+      )
+      .forEach(element => {
+        changes = changes.concat(refactor.removeFromArrayByNode(arrNode, element));
+      });
+    const code = refactor.updateSourceCode(vio.getContent(routePath), changes);
+    vio.save(routePath, code);
   } else {
-    utils.fatal(`You are removing a route rule, but can't find childRoutes property in 'src/features/${feature}/route.js', please check.`);
+    utils.fatal(
+      `You are removing a route rule, but can't find childRoutes property in '${routePath}', please check.`
+    );
   }
 }
 
@@ -83,11 +85,13 @@ function move(source, target) {
   const newName = _.pascalCase(target.name);
   if (source.feature === target.feature) {
     // If in the same feature, rename imported component name
-    refactor.updateFile(targetPath, ast => [].concat(
-      refactor.renameImportSpecifier(ast, oldName, newName),
-      refactor.renameStringLiteral(ast, _.kebabCase(oldName), _.kebabCase(newName)), // Rename path
-      refactor.renameStringLiteral(ast, _.upperFirst(_.lowerCase(oldName)), _.upperFirst(_.lowerCase(newName))) // Rename name
-    ));
+    refactor.updateFile(targetPath, ast =>
+      [].concat(
+        refactor.renameImportSpecifier(ast, oldName, newName),
+        refactor.renameStringLiteral(ast, _.kebabCase(oldName), _.kebabCase(newName)), // Rename path
+        refactor.renameStringLiteral(ast, _.upperFirst(_.lowerCase(oldName)), _.upperFirst(_.lowerCase(newName))) // Rename name
+      )
+    );
   } else {
     const ast = vio.getAst(targetPath);
     vio.assertAst(ast, targetPath);
@@ -100,26 +104,33 @@ function move(source, target) {
           // it's in array and component is oldName
           ruleNodes.push(node);
         }
-      }
+      },
     });
 
     const oldContent = vio.getContent(targetPath);
-    ruleNodes.forEach((ruleNode) => {
+    ruleNodes.forEach(ruleNode => {
       const ast2 = vio.getAst(targetPath2);
       vio.assertAst(ast2, targetPath2);
       const arrNode = getChildRoutesNode(ast2);
 
       // move route rule to the target route.js
-      refactor.updateFile(targetPath2, astArg => [].concat(
-        refactor.addImportFrom(astArg, './', '', newName),
-        refactor.addToArrayByNode(arrNode, oldContent.substring(ruleNode.start, ruleNode.end).replace(`component: ${oldName}`, `component: ${newName}`))
-      ));
+      refactor.updateFile(targetPath2, astArg =>
+        [].concat(
+          refactor.addImportFrom(astArg, './', '', newName),
+          refactor.addToArrayByNode(
+            arrNode,
+            oldContent.substring(ruleNode.start, ruleNode.end).replace(`component: ${oldName}`, `component: ${newName}`)
+          )
+        )
+      );
 
       // rename string literals if needed
-      refactor.updateFile(targetPath2, astArg => [].concat(
-        refactor.renameStringLiteral(astArg, _.kebabCase(oldName), _.kebabCase(newName)), // Rename path
-        refactor.renameStringLiteral(astArg, _.upperFirst(_.lowerCase(oldName)), _.upperFirst(_.lowerCase(newName))) // Rename name
-      ));
+      refactor.updateFile(targetPath2, astArg =>
+        [].concat(
+          refactor.renameStringLiteral(astArg, _.kebabCase(oldName), _.kebabCase(newName)), // Rename path
+          refactor.renameStringLiteral(astArg, _.upperFirst(_.lowerCase(oldName)), _.upperFirst(_.lowerCase(newName))) // Rename name
+        )
+      );
     });
 
     remove(source.feature, source.name);

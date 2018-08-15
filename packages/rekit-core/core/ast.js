@@ -6,10 +6,14 @@ const logger = require('../core/logger');
 let cache = {};
 const failedToParse = {};
 
-function getAst(filePath) {
+function getAst(filePath, throwIfError) {
   // Todo: make src/libs configurable
   if (_.startsWith(filePath, 'src/libs/')) return null; // ignore libs folder to parse
   const code = vio.getContent(filePath);
+
+  const checkAst = ast => {
+    if (!ast && throwIfError) throw new Error(`Failed to parse ast, please check syntax: ${filePath}`);
+  };
 
   if (!cache[filePath] || cache[filePath].code !== code) {
     try {
@@ -30,6 +34,9 @@ function getAst(filePath) {
           'dynamicImport',
         ],
       });
+
+      checkAst(ast);
+
       if (!ast) {
         failedToParse[filePath] = true;
         logger.warn(`Failed to parse ast, please check syntax: ${filePath}`);
@@ -39,6 +46,7 @@ function getAst(filePath) {
       cache[filePath] = { ast, code };
       ast._filePath = filePath;
     } catch (e) {
+      checkAst(null);
       failedToParse[filePath] = true;
       logger.warn(`Failed to parse ast, please check syntax: ${filePath}`);
       return null;

@@ -10,10 +10,8 @@ export default {
       case 'action':
       case 'initial-state':
       case 'file':
-        history.push(`/element/${encodeURIComponent(ele.id)}`);
-        break;
       case 'routes':
-        history.push(`/element/${encodeURIComponent('src/features/' + ele.feature + '/route.js')}`);
+        history.push(`/element/${encodeURIComponent(ele.id)}`);
         break;
       default:
         break;

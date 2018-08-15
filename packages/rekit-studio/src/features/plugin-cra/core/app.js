@@ -156,7 +156,7 @@ function getRootRoutePath() {
  * @param {string} feature - The feature name.
  */
 function getRoutes(feature) {
-  const targetPath = `src/features/${feature}/route.js`;//utils.mapFeatureFile(feature, 'route.js');
+  const targetPath = `src/features/${feature}/route.js`; //utils.mapFeatureFile(feature, 'route.js');
   if (vio.fileNotExists(targetPath)) return [];
   const theAst = ast.getAst(targetPath);
   const arr = [];
@@ -213,7 +213,6 @@ function getRoutes(feature) {
   }
   return arr;
 }
-
 
 function getFiles(feature) {
   const res = projectFiles.readDir(paths.map(`src/features/${feature}`));
@@ -276,8 +275,13 @@ function getFeatures() {
       {
         id: `v:${f}-routes`,
         type: 'routes',
-        name: 'Routes',
+        name: f,
         feature: f,
+        views: [
+          { key: 'diagram', name: 'Diagram' },
+          { key: 'rules', name: 'Rules' },
+          { key: 'code', name: 'Code', target: `src/features/${f}/route.js`, isDefault: true }
+        ],
         routes,
       },
       {

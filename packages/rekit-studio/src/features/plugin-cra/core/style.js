@@ -6,11 +6,11 @@
  **/
 const path = require('path');
 const _ = require('lodash');
-
-const { vio, template, config } = rekit.core;
 const entry = require('./entry');
+const utils = require('./utils');
 
-const cssExt = config.css;
+const { vio, template } = rekit.core;
+
 /**
  * Add a style file for a component. It create the style file with the extension 'cssExt' configured in 'rekit' section of package.json.
  * @param {string} feature - The feature name.
@@ -25,25 +25,21 @@ const cssExt = config.css;
  **/
 function add(elePath, args) {
   // Create style file for a component
-  // args = args || {};
-  const arr = elePath.split('/');
-  const name = _.pascalCase(arr.pop());
-  const prefix = arr.join('-');
+  const ele = utils.parseElePath(elePath, 'style');
   template.generate(
-    `src/features/${arr.join('/')}/${name}.${cssExt}`,
+    ele.stylePath,
     Object.assign({}, args, {
       templateFile: path.join(__dirname, './templates/Component.less.tpl'),
       context: Object.assign(
         {
-          name,
-          prefix,
+          ele,
         },
         args.context || {}
       ),
     })
   );
 
-  entry.addToStyle(`${arr.join('/')}/${name}`);
+  entry.addToStyle(ele.path);
 }
 
 /**
@@ -55,10 +51,9 @@ function add(elePath, args) {
  **/
 function remove(elePath) {
   // Remove style file of a component
-  const arr = elePath.split('/');
-  const name = _.pascalCase(arr.pop());
-  vio.del(`src/features/${arr.join('/')}/${name}.${cssExt}`);
-  entry.removeFromStyle(`${arr.join('/')}/${name}`);
+  const ele = utils.parseElePath(elePath, 'style');
+  vio.del(ele.stylePath);
+  entry.removeFromStyle(elePath);
 }
 
 /**

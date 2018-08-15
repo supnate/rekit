@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
-export default class ${name} extends Component {
+export default class ${ele.name} extends Component {
   static propTypes = {
 
   };
 
   render() {
     return (
-      <div className="${prefix + '-' + name}">
-        Component content: ${prefix}/${name}
+      <div className="${_.kebabCase(ele.path)}">
+        Component content: ${ele.path}
       </div>
     );
   }

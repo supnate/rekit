@@ -22,11 +22,20 @@ function getChildRoutesNode(ast) {
   });
   return arrNode;
 }
+// Add component to a route.js under a feature.
+function add(elePath, args = {}) {
+  const feature = elePath.split('/')[2];
+    if (!_.startsWith(elePath, 'src/features/')) {
+      throw new Error(`entry.addToIndex argument should be under a feature: ${filePath}`);
+    }
+    const indexPath = `src/features/${feature}/index.js`;
 
-function add(feature, component, args) {
-  assert.notEmpty(feature, 'feature');
-  assert.notEmpty(component, 'component name');
-  assert.featureExist(feature);
+    if (!vio.fileExists(indexPath)) {
+      throw new Error(`entry.addToIndex failed: file not found ${indexPath}`);
+    }
+  // assert.notEmpty(feature, 'feature');
+  // assert.notEmpty(component, 'component name');
+  // assert.featureExist(feature);
   args = args || {};
   const urlPath = args.urlPath || _.kebabCase(component);
   const targetPath = utils.mapFeatureFile(feature, 'route.js');

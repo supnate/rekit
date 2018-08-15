@@ -40,7 +40,6 @@ function getLocalRekitCore() {
       return null;
     }
   }
-  console.log(resolveCwd('rekit-core'));
   return require(resolveCwd('rekit-core'));
 }
 

@@ -7,6 +7,7 @@ const template = require('./core/template');
 const config = require('./core/config');
 const ast = require('./core/ast');
 const refactor = require('./core/refactor');
+const deps = require('./core/deps');
 const handleCommand = require('./core/handleCommand');
 const projectFiles = require('./common/projectFiles');
 
@@ -24,6 +25,7 @@ global.rekit = {
     config,
     refactor,
     ast,
+    deps,
     handleCommand,
   },
   common: {

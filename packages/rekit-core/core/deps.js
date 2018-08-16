@@ -3,7 +3,6 @@ const traverse = require('babel-traverse').default;
 const t = require('babel-types');
 const vio = require('./vio');
 const ast = require('./ast');
-const paths = require('./paths');
 const refactor = require('./refactor');
 
 const depsCache = {};
@@ -79,8 +78,35 @@ function getDeps(filePath, originalFilePath) {
 
   // Flatten deps
   // If a module use 'export ... from ...' then should direct to the real target module.
-
-  return deps;
+  // e.g.
+  // currentModule: import { a, b } from './someModule';
+  // someModule: export { default as a, b } from './anotherModule';
+  // then: currentModule depends on anotherrModule
+  return deps.reduce((prev, dep) => {
+    if (dep.imported && dep.imported.length) {
+      const depsOfDep = getDeps(dep.id, originalFilePath || filePath);
+      const imported = [...dep.imported];
+      dep.imported.forEach(importedName => {
+        depsOfDep.forEach(theDep => {
+          if (theDep.exported && theDep.exported.includes(importedName)) {
+            _.pull(imported, importedName);
+            let dep2 = _.find(prev, { id: theDep.id });
+            if (!dep2) dep2 = { id: theDep.id };
+            if (!dep2.imported) dep2.imported = [];
+            dep2.imported.push(importedName);
+            prev.push(dep2);
+          }
+        });
+      });
+      if (imported.length) {
+        prev.push({
+          ...dep,
+          imported,
+        });
+      }
+    } else prev.push(dep);
+    return prev;
+  }, []);
 }
 
 module.exports = {

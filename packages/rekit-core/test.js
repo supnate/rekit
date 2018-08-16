@@ -9,6 +9,10 @@ console.time('test');
 // rekit.core.element.add('action', 'a1');
 // rekit.core.element.add('component', 'home/c1', {});
 // rekit.core.vio.flush();
-const toDeps = ['src/abc/core/component.js', 'src/features/home/index.js'];
+const toDeps = [
+  'src/abc/core/component.js',
+  'src/features/examples/redux/actions.js',
+  'src/features/examples/RedditListPage.js',
+];
 toDeps.forEach(f => console.log(f, rekit.core.deps.getDeps(f)));
 console.timeEnd('test');

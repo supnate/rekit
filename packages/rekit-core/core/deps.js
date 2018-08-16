@@ -10,12 +10,15 @@ const depsCache = {};
 function getDeps(filePath, originalFilePath) {
   // Summary:
   //   Get dependencies of a module
-  // originalFilePath is used to avoid circle loop
+  //   originalFilePath is used to avoid circle loop
+
   if (originalFilePath === filePath) return [];
 
   if (depsCache[filePath] && depsCache[filePath].content === vio.getContent(filePath)) {
     return depsCache[filePath].deps;
   }
+
+  if (!vio.fileExists(filePath)) return [];
 
   const deps = [];
 
@@ -69,10 +72,10 @@ function getDeps(filePath, originalFilePath) {
         }
       });
 
-      pushModuleSource(moduleSource, {
-        imported,
-        defaultImport,
-      });
+      const args = {};
+      if (imported.length) args.imported = imported;
+      args.defaultImport = defaultImport;
+      pushModuleSource(moduleSource, args);
     },
   });
 
@@ -91,7 +94,7 @@ function getDeps(filePath, originalFilePath) {
           if (theDep.exported && theDep.exported.includes(importedName)) {
             _.pull(imported, importedName);
             let dep2 = _.find(prev, { id: theDep.id });
-            if (!dep2) dep2 = { id: theDep.id };
+            if (!dep2) dep2 = { id: theDep.id, type: theDep.type };
             if (!dep2.imported) dep2.imported = [];
             dep2.imported.push(importedName);
             prev.push(dep2);

@@ -9,11 +9,16 @@ const failedToParse = {};
 function getAst(filePath, throwIfError) {
   // Todo: make src/libs configurable
   if (_.startsWith(filePath, 'src/libs/')) return null; // ignore libs folder to parse
-  const code = vio.getContent(filePath);
-
   const checkAst = ast => {
     if (!ast && throwIfError) throw new Error(`Failed to parse ast, please check syntax: ${filePath}`);
   };
+
+  if (!vio.fileExists(filePath)) {
+    checkAst(null);
+    return null;
+  }
+
+  const code = vio.getContent(filePath);
 
   if (!cache[filePath] || cache[filePath].code !== code) {
     try {

@@ -3,6 +3,7 @@
     "func-names": 0,
     "prefer-arrow-callback": 0,
     "no-unused-expressions": 0,
+    "object-curly-newline": 0,
     "import/no-extraneous-dependencies": 0
   },
   "globals": {

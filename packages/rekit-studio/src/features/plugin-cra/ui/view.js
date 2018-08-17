@@ -6,6 +6,10 @@ export default {
       return RouteRulesView;
     }
 
+    if (['component', 'action'].includes(element.type) && view === 'diagram') {
+      return ElementDiagram;
+    }
+
     return null;
   },
 };

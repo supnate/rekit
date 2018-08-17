@@ -1,7 +1,9 @@
 const _ = require('lodash');
 const shell = require('shelljs');
 const path = require('path');
-const paths = require('../core/paths');
+const fs = require('fs');
+const paths = require('./paths');
+const deps = require('./deps');
 
 const plugin = require('./plugin');
 
@@ -48,12 +50,19 @@ function readDir(dir) {
         children: res.elements,
       };
     } else {
-      elementById[rFile] = {
+      const ext = path.extname(file).replace('.', '');
+      const size = fs.statSync(file).size;
+      const fileEle = {
         name: path.basename(file),
         type: 'file',
-        ext: path.extname(file).replace('.', ''),
+        ext,
+        size,
         id: rFile,
       };
+      if ((ext === 'js' || ext === 'jsx') && size < 50000) {
+        fileEle.deps = deps.getDeps(rFile);
+      }
+      elementById[rFile] = fileEle;
     }
   });
   sortElements(elements, elementById);

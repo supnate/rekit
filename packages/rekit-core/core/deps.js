@@ -135,10 +135,11 @@ function getDeps(filePath, originalFilePath) {
       byId[dep.id] = dep;
       dep2 = dep;
     } else {
+      console.log(dep2);
       const merged = {
         id: dep.id,
         defaultImport: dep.defaultImport || dep2.defaultImport,
-        imported: _.uniq([...dep2.imported, ...dep.imported]),
+        imported: _.uniq([...(dep2.imported || []), ...(dep.imported || [])]),
         exported: { ...dep.exported, ...dep2.exported },
         isImport: dep.isImport || dep2.isImport,
         isRequire: dep.isRequire || dep2.isRequire,

@@ -2,8 +2,7 @@ const _ = require('lodash');
 // const shell = require('shelljs');
 const traverse = require('babel-traverse').default;
 
-const { ast, paths, vio } = rekit.core;
-const { projectFiles } = rekit.common;
+const { ast, paths, vio, app } = rekit.core;
 
 let elementById = {};
 const filePropsCache = {};
@@ -215,7 +214,7 @@ function getRoutes(feature) {
 }
 
 function getFiles(feature) {
-  const res = projectFiles.readDir(paths.map(`src/features/${feature}`));
+  const res = app.readDir(paths.map(`src/features/${feature}`));
   Object.assign(elementById, res.elementById);
   return res.elements;
 }
@@ -280,7 +279,7 @@ function getFeatures() {
         views: [
           { key: 'diagram', name: 'Diagram' },
           { key: 'rules', name: 'Rules' },
-          { key: 'code', name: 'Code', target: `src/features/${f}/route.js`, isDefault: true }
+          { key: 'code', name: 'Code', target: `src/features/${f}/route.js`, isDefault: true },
         ],
         routes,
       },
@@ -314,8 +313,7 @@ function getFeatures() {
 }
 
 function getProjectData() {
-  // return rekit.common.projectFiles.readDir();
-  const allFiles = projectFiles.readDir(paths.map('src'));
+  const allFiles = app.readDir(paths.map('src'));
   elementById = allFiles.elementById;
 
   const eleFeatures = {

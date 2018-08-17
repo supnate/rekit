@@ -77,19 +77,28 @@ function getComponents(feature) {
   const eleFolder = elementById[`src/features/${feature}`];
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.jsx?$/.test(ele.name) && getFileProps(ele.id).component) {
+      const styleFile = ele.id.replace(/\.jsx?$/, `.${rekit.core.config.style}`);
+      const testFile = ele.id.replace(/^src\//, 'tests/').replace(/\.jsx?$/, '.test.js');
       const views = [
         { key: 'diagram', name: 'Diagram' },
         { key: 'code', name: 'Code', target: ele.id, isDefault: true },
-        { key: 'style', name: 'Style', target: ele.id.replace(/\.jsx?$/, '.less') },
-        { key: 'test', name: 'Test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.jsx?$/, '.test.js') },
+        { key: 'style', name: 'Style', target: styleFile },
+        { key: 'test', name: 'Test', target: testFile },
       ];
+      const id = `v:${ele.id}`;
+      const parts = [ele.id, styleFile, testFile];
+      parts.forEach(part => {
+        const p = elementById[part];
+        if (p) p.owner = id;
+      });
       const name = ele.name.replace(/\.[^.]*$/, '');
       components.push({
         type: 'component',
-        id: `v:${ele.id}`,
+        id,
         name,
         props: getFileProps(ele.id).component,
         views,
+        parts,
       });
     }
   });
@@ -106,17 +115,25 @@ function getActions(feature) {
   if (!eleFolder) return [];
   eleFolder.children.map(eid => elementById[eid]).forEach(ele => {
     if (ele.type === 'file' && /\.js$/.test(ele.name) && getFileProps(ele.id).action) {
+      const testFile = ele.id.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js');
       const views = [
         { key: 'diagram', name: 'Diagram' },
         { key: 'code', name: 'Code', target: ele.id, isDefault: true },
-        { key: 'test', name: 'Test', target: ele.id.replace(/^src\//, 'tests/').replace(/\.js$/, '.test.js') },
+        { key: 'test', name: 'Test', target: testFile },
       ];
+      const id = `v:${ele.id}`;
+      const parts = [ele.id, testFile];
+      parts.forEach(part => {
+        const p = elementById[part];
+        if (p) p.owner = id;
+      });
       actions.push({
         type: 'action',
-        id: `v:${ele.id}`,
+        id,
         name: ele.name.replace(/\.[^.]*$/, ''),
         props: getFileProps(ele.id).action,
         views,
+        parts,
       });
     }
   });
@@ -213,11 +230,11 @@ function getRoutes(feature) {
   return arr;
 }
 
-function getFiles(feature) {
-  const res = app.readDir(paths.map(`src/features/${feature}`));
-  Object.assign(elementById, res.elementById);
-  return res.elements;
-}
+// function getFiles(feature) {
+//   const res = app.readDir(paths.map(`src/features/${feature}`));
+//   Object.assign(elementById, res.elementById);
+//   return res.elements;
+// }
 
 function getInitialState(feature) {
   const id = `v:${feature}-initial-state`;
@@ -243,7 +260,6 @@ function getFeatures() {
     }
     // feature name
     const f = ele.id.split('/').pop();
-
     const routes = getRoutes(f);
     const actions = getActions(f);
     const components = getComponents(f);
@@ -253,9 +269,9 @@ function getFeatures() {
     const toRemoveFromMisc = {};
     [...actions, ...components].map(eid => elementById[eid]).forEach(ele => {
       if (ele.target) toRemoveFromMisc[ele.target] = true;
-      if (ele.views) {
-        ele.views.forEach(p => {
-          if (p.target) toRemoveFromMisc[p.target] = true;
+      if (ele.parts) {
+        ele.parts.forEach(p => {
+          toRemoveFromMisc[p] = true;
         });
       }
     });
@@ -268,7 +284,7 @@ function getFeatures() {
       return filtered;
     };
 
-    const misc = filterNonMisc(getFiles(f));
+    const misc = filterNonMisc(elementById[`src/features/${f}`].children);
 
     const children = [
       {
@@ -297,6 +313,7 @@ function getFeatures() {
       },
       { id: `v:${f}-misc`, type: 'misc', name: 'Misc', children: misc },
     ];
+
     const id = `v:feature-${f}`;
     elements.push(id);
     elementById[id] = {
@@ -313,8 +330,9 @@ function getFeatures() {
 }
 
 function getProjectData() {
-  const allFiles = app.readDir(paths.map('src'));
-  elementById = allFiles.elementById;
+  const srcFiles = app.readDir(paths.map('src'));
+  const testFiles = app.readDir(paths.map('tests'));
+  elementById = { ...srcFiles.elementById, ...testFiles.elementById };
 
   const eleFeatures = {
     type: 'features',
@@ -322,11 +340,12 @@ function getProjectData() {
     name: 'Features',
     children: getFeatures(),
   };
+
   const eleMisc = {
     type: 'misc',
     id: 'v:root-misc',
     name: 'Misc',
-    children: allFiles.elements.filter(eid => eid !== 'src/features'),
+    children: srcFiles.elements.filter(eid => eid !== 'src/features'),
   };
 
   const elements = [];
@@ -335,7 +354,6 @@ function getProjectData() {
     elements.push(ele.id);
     elementById[ele.id] = ele;
   });
-
   return { elements, elementById };
 }
 

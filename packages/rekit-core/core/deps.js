@@ -135,7 +135,6 @@ function getDeps(filePath, originalFilePath) {
       byId[dep.id] = dep;
       dep2 = dep;
     } else {
-      console.log(dep2);
       const merged = {
         id: dep.id,
         defaultImport: dep.defaultImport || dep2.defaultImport,

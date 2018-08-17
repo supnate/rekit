@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const expect = require('chai').expect;
 
 const paths = require('../core/paths');
@@ -74,12 +73,12 @@ describe('deps', function() {
     ]);
   });
 
-  it('computes export from', () => {
+  it('handle export from', () => {
     vio.put(moduleIndex, `export { default as A, A1, A2 as AA2 } from './moduleA'; `);
     expect(deps.getDeps(moduleIndex)).to.deep.equal([
       {
         id: moduleA,
-        exported: ['A', 'A1', 'AA2'],
+        exported: { A: 'default', A1: 'A1', AA2: 'A2' },
         type: 'file',
       },
     ]);
@@ -103,6 +102,23 @@ describe('deps', function() {
         id: moduleB,
         type: 'file',
         isImport: true,
+      },
+    ]);
+  });
+
+  it('merges import from', () => {
+    vio.put(
+      moduleA,
+      `
+        import { B1 } from './moduleB';
+        import { B2 } from './moduleB';`
+    );
+    expect(deps.getDeps(moduleA)).to.deep.equal([
+      {
+        id: moduleB,
+        type: 'file',
+        imported: ['B1', 'B2'],
+        defaultImport: false,
       },
     ]);
   });
@@ -131,19 +147,25 @@ describe('deps', function() {
   });
 
   it(`computes deps via index entry`, () => {
-    vio.put(moduleA, `import { B, C } from './index';`);
+    vio.put(moduleA, `import foo, { B1, BB2, C } from './index';`);
+    vio.put(moduleB, `import { A, D } from './index';`);
     vio.put(
       moduleIndex,
       `
       export { default as A } from './moduleA';
-      export { default as B } from './moduleB';
+      export { default as B, B1, B2 as BB2 } from './moduleB';
       export { default as C } from './moduleC';
     `
     );
-    const resDeps = deps.getDeps(moduleA);
-    expect(resDeps).to.deep.equal([
-      { id: moduleB, imported: ['B'], type: 'file' },
-      { id: moduleC, imported: ['C'], type: 'file' },
+    expect(deps.getDeps(moduleA)).to.deep.equal([
+      { id: moduleB, defaultImport: false, imported: ['B1', 'B2'], type: 'file' },
+      { id: moduleC, defaultImport: true, type: 'file' },
+      { id: moduleIndex, defaultImport: true, type: 'file' },
+    ]);
+
+    expect(deps.getDeps(moduleB)).to.deep.equal([
+      { id: moduleA, defaultImport: true, type: 'file' },
+      { id: moduleIndex, defaultImport: false, imported: ['D'], type: 'file' },
     ]);
   });
 

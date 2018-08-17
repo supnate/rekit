@@ -40,7 +40,10 @@ function getDeps(filePath, originalFilePath) {
   traverse(ast.getAst(filePath), {
     ExportNamedDeclaration(path) {
       const moduleSource = _.get(path, 'node.source.value');
-      const exported = _.get(path, 'node.specifiers').map(specifier => _.get(specifier, 'exported.name'));
+      const exported = _.get(path, 'node.specifiers').reduce((prev, specifier) => {
+        prev[_.get(specifier, 'exported.name')] = _.get(specifier, 'local.name');
+        return prev;
+      }, {});
       pushModuleSource(moduleSource, { exported });
     },
     ExportAllDeclaration(path) {
@@ -91,18 +94,21 @@ function getDeps(filePath, originalFilePath) {
   // currentModule: import { a, b } from './someModule';
   // someModule: export { default as a, b } from './anotherModule';
   // then: currentModule depends on anotherrModule
-  return deps.reduce((prev, dep) => {
+  const realDeps = deps.reduce((prev, dep) => {
     if (dep.imported && dep.imported.length) {
       const depsOfDep = getDeps(dep.id, originalFilePath || filePath);
       const imported = [...dep.imported];
       dep.imported.forEach(importedName => {
         depsOfDep.forEach(theDep => {
-          if (theDep.exported && theDep.exported.includes(importedName)) {
+          if (theDep.exported && theDep.exported[importedName]) {
             _.pull(imported, importedName);
-            let dep2 = _.find(prev, { id: theDep.id });
-            if (!dep2) dep2 = { id: theDep.id, type: theDep.type };
-            if (!dep2.imported) dep2.imported = [];
-            dep2.imported.push(importedName);
+            const dep2 = { id: theDep.id, type: theDep.type };
+            const realImported = theDep.exported[importedName];
+            if (realImported === 'default') dep2.defaultImport = true;
+            else {
+              dep2.imported = [realImported];
+              dep2.defaultImport = false;
+            }
             prev.push(dep2);
           }
         });
@@ -112,10 +118,42 @@ function getDeps(filePath, originalFilePath) {
           ...dep,
           imported,
         });
+      } else if (dep.defaultImport) {
+        const dep2 = { ...dep };
+        delete dep2.imported;
+        prev.push(dep2);
       }
     } else prev.push(dep);
     return prev;
   }, []);
+
+  // Merge deps
+  const byId = {};
+  realDeps.forEach(dep => {
+    let dep2 = byId[dep.id];
+    if (!dep2) {
+      byId[dep.id] = dep;
+      dep2 = dep;
+    } else {
+      const merged = {
+        id: dep.id,
+        defaultImport: dep.defaultImport || dep2.defaultImport,
+        imported: _.uniq([...dep2.imported, ...dep.imported]),
+        exported: { ...dep.exported, ...dep2.exported },
+        isImport: dep.isImport || dep2.isImport,
+        isRequire: dep.isRequire || dep2.isRequire,
+        type: dep.type,
+      };
+      if (!merged.imported.length) delete merged.imported;
+      if (!merged.isImport) delete merged.isImport;
+      if (!merged.isRequire) delete merged.isRequire;
+      if (!Object.keys(merged.exported).length) delete merged.exported;
+
+      byId[dep.id] = merged;
+    }
+  });
+
+  return Object.values(byId);
 }
 
 module.exports = {

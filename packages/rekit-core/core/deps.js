@@ -28,6 +28,7 @@ function getDeps(filePath, originalFilePath) {
       deps.push({
         id: moduleSource,
         type: 'npm',
+        ...args,
       });
       return;
     }
@@ -47,22 +48,26 @@ function getDeps(filePath, originalFilePath) {
       pushModuleSource(moduleSource);
     },
     CallExpression(path) {
-      if (
-        (_.get(path, 'node.callee.name') === 'require' || _.get(path, 'node.callee.type') === 'Import') &&
-        t.isStringLiteral(_.get(path, 'node.arguments[0]'))
-      ) {
+      const isRequire = _.get(path, 'node.callee.name') === 'require';
+      const isImport = _.get(path, 'node.callee.type') === 'Import';
+      if ((isRequire || isImport) && t.isStringLiteral(_.get(path, 'node.arguments[0]'))) {
         const moduleSource = _.get(path, 'node.arguments[0].value');
-        pushModuleSource(moduleSource);
+        const args = {};
+        if (isRequire) args.isRequire = true;
+        if (isImport) args.isImport = true;
+        pushModuleSource(moduleSource, args);
       }
     },
     ImportDeclaration(path) {
       const moduleSource = _.get(path, 'node.source.value');
       const imported = [];
       let defaultImport = false;
+      let nsImport = false;
       path.node.specifiers.forEach(specifier => {
         if (specifier.type === 'ImportNamespaceSpecifier') {
           // imported.push('*');
           // TODO: try to analyze namespace import
+          nsImport = true;
         }
         if (specifier.type === 'ImportSpecifier') {
           imported.push(specifier.imported.name);
@@ -74,6 +79,7 @@ function getDeps(filePath, originalFilePath) {
 
       const args = {};
       if (imported.length) args.imported = imported;
+      if (nsImport) args.nsImport = true;
       args.defaultImport = defaultImport;
       pushModuleSource(moduleSource, args);
     },

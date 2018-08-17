@@ -9,7 +9,7 @@ import { getElementUrl } from '../home/helpers';
 const iconMap = {
   misc: 'file',
   component: 'appstore-o',
-  action: 'notification'
+  action: 'notification',
 };
 
 export class DepsView extends Component {
@@ -22,12 +22,15 @@ export class DepsView extends Component {
     const ele = this.props.home.elementById[dep];
     return (
       <dd key={ele.file}>
-        <Link title={ele.file} to={getElementUrl(ele)}><Icon type={iconMap[ele.type] || 'file'} /> {ele.name}</Link>
+        <Link title={ele.file} to={getElementUrl(ele)}>
+          <Icon type={iconMap[ele.type] || 'file'} /> {ele.name}
+        </Link>
       </dd>
     );
   };
 
   render() {
+    return 'todo';
     const { home, file } = this.props;
     const diagramData = getElementDiagramData(home, file);
     const links = diagramData.links;
@@ -52,13 +55,17 @@ export class DepsView extends Component {
       <div className="editor-deps-view">
         {dependencies.length > 0 && (
           <dl className="dependencies">
-            <dt><Icon type="arrow-right" /> Dependencies</dt>
+            <dt>
+              <Icon type="arrow-right" /> Dependencies
+            </dt>
             {dependencies.map(this.renderLink)}
           </dl>
         )}
         {dependents.length > 0 && (
           <dl className="dependents">
-            <dt><Icon type="arrow-left" /> Dependents</dt>
+            <dt>
+              <Icon type="arrow-left" /> Dependents
+            </dt>
             {dependents.map(this.renderLink)}
           </dl>
         )}

@@ -131,7 +131,7 @@ function fileNotExists(filePath) {
 }
 
 function dirExists(dir) {
-  return (!!dirs[dir] && !toDel[dir]) || shell.test('-e', dir);
+  return (!!dirs[dir] && !toDel[dir]) || (shell.test('-e', paths.map(dir)) && shell.test('-d', paths.map(dir)));
 }
 
 function dirNotExists(dir) {

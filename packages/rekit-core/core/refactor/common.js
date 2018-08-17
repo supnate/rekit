@@ -105,14 +105,12 @@ function resolveModulePath(relativeToFile, modulePath) {
     res = paths.join(path.dirname(relativeToFile), modulePath);
   }
 
-  // TODO: if import from a folder, resolve to index.js
-
-  // if (/src\/features\/[^/]+\/?$/.test(res)) {
-  //   // if import from a folder, then resolve to index.js
-  //   res = res.replace(/\/$/, '') + '/index';
-  // }
-
-  return res;
+  let relPath = res.replace(paths.getProjectRoot(), '').replace(/^\/?/, '');
+  if (vio.dirExists(relPath)) {
+    // if import from a folder, then resolve to index.js
+    relPath = paths.join(relPath, 'index');
+  }
+  return relPath;
 }
 
 function isSameModuleSource(s1, s2, contextFilePath) {

@@ -50,12 +50,12 @@ describe('refactor common tests', function() {
     const p22 = refactorCommon.resolveModulePath(file, 'src/common/routeConfig.js');
     const p3 = refactorCommon.resolveModulePath(file, './M1');
     const p4 = refactorCommon.resolveModulePath(file, 'react');
-    // const p5 = refactorCommon.resolveModulePath(file, '../f-3');
-    expect(p1).to.equal(paths.map('src/features/f-2/redux/actions'));
-    expect(p2).to.equal(paths.map('src/common/routeConfig'));
-    expect(p22).to.equal(paths.map('src/common/routeConfig.js'));
-    expect(p3).to.equal(paths.map('src/features/f-1/M1'));
+    const p5 = refactorCommon.resolveModulePath(file, 'src/common');
+    expect(p1).to.equal('src/features/f-2/redux/actions');
+    expect(p2).to.equal('src/common/routeConfig');
+    expect(p22).to.equal('src/common/routeConfig.js');
+    expect(p3).to.equal('src/features/f-1/M1');
     expect(p4).to.equal('react');
-    // expect(p5).to.equal(paths.map('src/features/f-3/index'));
+    expect(p5).to.equal('src/common/index');
   });
 });

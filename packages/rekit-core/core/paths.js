@@ -50,9 +50,14 @@ function relativeModuleSource(from, to) {
   return p;
 }
 
+function getFileId(filePath) {
+  return filePath.replace(getProjectRoot()).replace(/^\/?/, '');
+}
+
 module.exports = {
   join,
   map,
+  getFileId,
   setProjectRoot,
   getProjectRoot,
   relative,

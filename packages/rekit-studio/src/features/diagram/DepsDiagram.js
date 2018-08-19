@@ -5,9 +5,6 @@ import history from '../../common/history';
 import { getDepsDiagramData } from './selectors/getDepsDiagramData';
 import { colors } from '../common';
 
-// let chartWidth = 600;
-// let chartHeight = 500;
-
 export default class DepsDiagram extends PureComponent {
   static propTypes = {
     elementById: PropTypes.object.isRequired,
@@ -22,6 +19,8 @@ export default class DepsDiagram extends PureComponent {
   };
 
   componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize);
+
     const size = this.getChartSize();
     this.svg = d3
       .select(this.d3Node)
@@ -64,7 +63,6 @@ export default class DepsDiagram extends PureComponent {
       )
       .force('charge', d3.forceManyBody())
       .force('center', d3.forceCenter(size.width / 2, size.height / 2))
-      // .alphaTarget(1)
       .on('tick', this.handleOnTick);
 
     this.linksGroup = this.svg.append('g');
@@ -86,19 +84,24 @@ export default class DepsDiagram extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize);
+  }
+
   getDiagramData() {
     const { elementById, elementId } = this.props;
-    console.log(elementId, elementById);
     return getDepsDiagramData(elementById, elementId);
   }
 
   getChartSize() {
     const containerNode = this.d3Node.parentNode.parentNode;
 
-    return {
-      width: Math.max(containerNode.offsetWidth, 400),
-      height: Math.max(containerNode.offsetHeight, 400),
-    };
+    return (
+      this.props.size || {
+        width: Math.max(containerNode.offsetWidth, 400),
+        height: Math.max(containerNode.offsetHeight, 400),
+      }
+    );
   }
 
   dragstarted = d => {
@@ -233,6 +236,10 @@ export default class DepsDiagram extends PureComponent {
     if (ele.type !== 'feature') {
       history.push(`/element/${encodeURIComponent(ele.file)}/diagram`);
     }
+  };
+
+  handleWindowResize = () => {
+    this.updateDiagram();
   };
 
   render() {

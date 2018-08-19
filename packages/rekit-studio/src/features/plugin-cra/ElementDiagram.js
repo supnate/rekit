@@ -10,7 +10,7 @@ export class ElementDiagram extends Component {
     pluginCra: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     elementById: PropTypes.object.isRequired,
-    element: PropTypes.string.isRequired,
+    element: PropTypes.object.isRequired,
   };
 
   getElementId() {

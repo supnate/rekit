@@ -36,11 +36,14 @@ export class ElementPage extends Component {
     let View = null;
 
     // TODO: get view from plugins
-    plugin.getPlugins('view.getView').reverse().some(p => {
-      View = p.view.getView(ele, viewEle.key);
-      if (View) return true;
-      return false;
-    });
+    plugin
+      .getPlugins('view.getView')
+      .reverse()
+      .some(p => {
+        View = p.view.getView(ele, viewEle.key);
+        if (View) return true;
+        return false;
+      });
 
     // By default use code editor for text files
 

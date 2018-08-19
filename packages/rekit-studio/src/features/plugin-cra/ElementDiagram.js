@@ -33,7 +33,9 @@ export class ElementDiagram extends Component {
     const { elementById } = this.props;
     return (
       <div className="plugin-cra-element-diagram">
-        <DepsDiagram elementById={elementById} elementId={this.getElementId()} />
+        <div className="diagram-container">
+          <DepsDiagram elementById={elementById} elementId={this.getElementId()} />
+        </div>
       </div>
     );
   }

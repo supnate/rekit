@@ -12,16 +12,13 @@ export default class DepsDiagram extends PureComponent {
   static propTypes = {
     elementById: PropTypes.object.isRequired,
     elementId: PropTypes.string.isRequired, // eslint-disable-line
-    size: PropTypes.object.isRequired,
+    size: PropTypes.object,
     showLabels: PropTypes.bool,
   };
 
   static defaultProps = {
     showLabels: true,
-  };
-
-  state = {
-    showText: true,
+    size: null,
   };
 
   componentDidMount() {
@@ -91,15 +88,16 @@ export default class DepsDiagram extends PureComponent {
 
   getDiagramData() {
     const { elementById, elementId } = this.props;
-
     console.log(elementId, elementById);
     return getDepsDiagramData(elementById, elementId);
   }
 
   getChartSize() {
+    const containerNode = this.d3Node.parentNode.parentNode;
+
     return {
-      width: 500,
-      height: 500,
+      width: Math.max(containerNode.offsetWidth, 400),
+      height: Math.max(containerNode.offsetHeight, 400),
     };
   }
 
@@ -209,7 +207,6 @@ export default class DepsDiagram extends PureComponent {
     };
 
     this.sim.nodes(dataNodes);
-    console.log(dataLinks);
     this.sim
       .force('link')
       .links(dataLinks)
@@ -219,7 +216,6 @@ export default class DepsDiagram extends PureComponent {
 
   handleOnTick = () => {
     this.nodes.attr('cx', d => d.x).attr('cy', d => d.y);
-
     this.bgNodes.attr('cx', d => d.x).attr('cy', d => d.y);
 
     this.links
@@ -232,24 +228,18 @@ export default class DepsDiagram extends PureComponent {
   };
 
   handleNodeClick = node => {
-    const home = this.props.homeStore;
-    const ele = home.elementById[node.id];
+    const { elementById } = this.props;
+    const ele = elementById[node.id];
     if (ele.type !== 'feature') {
       history.push(`/element/${encodeURIComponent(ele.file)}/diagram`);
     }
-  };
-
-  handleToggleText = evt => {
-    this.setState({
-      showText: evt.target.checked,
-    });
   };
 
   render() {
     return (
       <div className="diagram-deps-diagram">
         <div
-          className={`d3-node ${!this.state.showText ? 'no-text' : ''}`}
+          className={`d3-node ${!this.props.showLabels ? 'no-text' : ''}`}
           ref={node => {
             this.d3Node = node;
           }}

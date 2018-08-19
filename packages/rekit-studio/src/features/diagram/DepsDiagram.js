@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Checkbox, Col, Icon, Popover, Row } from 'antd';
 import history from '../../common/history';
 import { getDepsDiagramData } from './selectors/getDepsDiagramData';
 import { colors } from '../common';
@@ -20,11 +19,10 @@ export default class DepsDiagram extends PureComponent {
   static defaultProps = {
     showLabels: true,
   };
+
   state = {
     showText: true,
   };
-
-  
 
   componentDidMount() {
     const size = this.getChartSize();
@@ -92,7 +90,6 @@ export default class DepsDiagram extends PureComponent {
   }
 
   getDiagramData() {
-
     const { elementById, elementId } = this.props;
 
     console.log(elementId, elementById);
@@ -124,7 +121,7 @@ export default class DepsDiagram extends PureComponent {
   };
 
   updateDiagram() {
-    const { homeStore, elementId } = this.props;
+    const { elementId } = this.props;
     const diagramData = this.getDiagramData();
     const dataNodes = diagramData.nodes;
     const dataLinks = _.cloneDeep(diagramData.links);
@@ -159,7 +156,7 @@ export default class DepsDiagram extends PureComponent {
         .attr('stroke-width', d => (d.type === 'feature' ? 1 : 0))
         .attr('stroke', '#eee')
         .attr('cursor', 'pointer')
-        .attr('fill', d => colors[d.type])
+        .attr('fill', d => colors[d.type] || '#FFB14A')
         .on('click', this.handleNodeClick)
         .call(
           d3
@@ -212,6 +209,7 @@ export default class DepsDiagram extends PureComponent {
     };
 
     this.sim.nodes(dataNodes);
+    console.log(dataLinks);
     this.sim
       .force('link')
       .links(dataLinks)

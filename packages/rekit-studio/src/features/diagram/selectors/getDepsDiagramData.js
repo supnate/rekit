@@ -28,13 +28,21 @@ export const getDepsDiagramData = createSelector(
         if (dep.type !== 'file') return;
         if (item.id === ele.id) {
           // it's element itself
+          const depEle = elementById[dep.id];
+
+          nodes.push({
+            name: depEle.name,
+            id: depEle.id,
+            type: depEle.type,
+            r: 14,
+          });
+
           links.push({
             source: ele.id,
             target: dep.id,
             type: 'dep',
           });
-        } else
-        if (dep.id === ele.id) {
+        } else if (dep.id === ele.id) {
           // if other depends on the ele
           nodes.push({
             name: item.name,

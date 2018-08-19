@@ -24,7 +24,12 @@ export default class DepsDiagram extends PureComponent {
     showText: true,
   };
 
-  componentDidMount() {
+  getDiagramData() {
+    const { elementById, elementId } = this.props;
+    console.log(elementId, elementById);
+  }
+
+  componentDidMount() {return;
     const size = this.getChartSize();
     this.svg = d3
       .select(this.d3Node)
@@ -238,6 +243,7 @@ export default class DepsDiagram extends PureComponent {
   };
 
   render() {
+    console.log(this.getDiagramData());
     return 'DepsDiagram';
     return (
       <div className="diagram-element-diagram">

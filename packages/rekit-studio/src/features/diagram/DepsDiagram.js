@@ -24,12 +24,9 @@ export default class DepsDiagram extends PureComponent {
     showText: true,
   };
 
-  getDiagramData() {
-    const { elementById, elementId } = this.props;
-    console.log(elementId, elementById);
-  }
+  
 
-  componentDidMount() {return;
+  componentDidMount() {
     const size = this.getChartSize();
     this.svg = d3
       .select(this.d3Node)
@@ -94,10 +91,18 @@ export default class DepsDiagram extends PureComponent {
     }
   }
 
+  getDiagramData() {
+
+    const { elementById, elementId } = this.props;
+
+    console.log(elementId, elementById);
+    return getDepsDiagramData(elementById, elementId);
+  }
+
   getChartSize() {
     return {
-      width: Math.max(this.props.size.width - 60, 400),
-      height: Math.max(this.props.size.height - 100, 400),
+      width: 500,
+      height: 500,
     };
   }
 
@@ -120,7 +125,7 @@ export default class DepsDiagram extends PureComponent {
 
   updateDiagram() {
     const { homeStore, elementId } = this.props;
-    const diagramData = getElementDiagramData(homeStore, elementId);
+    const diagramData = this.getDiagramData();
     const dataNodes = diagramData.nodes;
     const dataLinks = _.cloneDeep(diagramData.links);
 
@@ -243,29 +248,8 @@ export default class DepsDiagram extends PureComponent {
   };
 
   render() {
-    console.log(this.getDiagramData());
-    return 'DepsDiagram';
     return (
-      <div className="diagram-element-diagram">
-        <div className="diagram-header">
-          <Row>
-            <Col span="18">
-              <Checkbox checked={this.state.showText} onChange={this.handleToggleText}>
-                Show labels
-              </Checkbox>
-            </Col>
-            <Col span="6" style={{ textAlign: 'right' }}>
-              <Popover
-                placement="leftTop"
-                title={<span style={{ fontSize: 18, lineHeight: '40px' }}>Element diagram</span>}
-                content={this.renderContextHelp()}
-              >
-                {' '}
-                &nbsp;<Icon style={{ color: '#108ee9', fontSize: 16 }} type="question-circle-o" />
-              </Popover>
-            </Col>
-          </Row>
-        </div>
+      <div className="diagram-deps-diagram">
         <div
           className={`d3-node ${!this.state.showText ? 'no-text' : ''}`}
           ref={node => {

@@ -108,7 +108,7 @@ export class App extends Component {
           <TabsBar />
           <SidePanelResizer />
           <div id="page-container" className="page-container" style={pageContainerStyle}>
-            <ErrorBoundary>{this.props.children}</ErrorBoundary>
+            {this.props.children}
           </div>
           <DialogPlace />
           <DialogContainer />

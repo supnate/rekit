@@ -96,6 +96,18 @@ export class ProjectExplorer extends Component {
           {nodeData.name}
           {_.has(nodeData, 'count') ? ` (${nodeData.count})` : ''}
         </label>
+        {nodeData.marks &&
+          nodeData.marks.length &&
+          nodeData.marks.map(mark => (
+            <span
+              key={mark.name}
+              title={mark.description}
+              className="mark"
+              style={{ backgroundColor: mark.bgColor, ...mark.style }}
+            >
+              {mark.name}
+            </span>
+          ))}
       </span>
     );
   }

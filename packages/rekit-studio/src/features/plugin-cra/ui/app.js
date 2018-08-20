@@ -60,9 +60,32 @@ export default {
       switch (ele.type) {
         case 'components':
           ele.count = ele.children.length;
+
           break;
         case 'actions':
           ele.count = ele.children.length - 1;
+          if (ele.props && ele.props.isAsync) {
+            ele.marks = [{ name: 'A', description: 'Async action', bgColor: '#4fc3f7' }];
+          }
+          break;
+        case 'component':
+          // Uses Redux store
+          if (ele.props && ele.props.connectToStore) {
+            ele.marks = [{ name: 'C', description: 'Connected to Redux Store', bgColor: '#42bd41' }];
+          }
+
+          // Used in react router
+          if (ele.props && ele.props.router) {
+            ele.marks = [
+              ...(ele.marks || []),
+              { name: 'R', description: 'Connected to Redux Store', bgColor: '#ffb300' },
+            ];
+          }
+          break;
+        case 'action':
+          if (ele.props && ele.props.isAsync) {
+            ele.marks = [{ name: 'A', description: 'Async action', bgColor: '#4fc3f7' }];
+          }
           break;
         case 'routes':
           ele.count = ele.routes.length;

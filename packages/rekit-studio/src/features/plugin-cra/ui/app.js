@@ -33,6 +33,17 @@ const getFeature = file => {
 export default {
   processProjectData(prjData) {
     const byId = id => prjData.elementById[id];
+    const features = Object.values(prjData.elementById).filter(ele => ele.type === 'feature');
+    const allRoutesDepsMap = features.map(f => `src/features/${f.name}/route.js`).reduce((depsMap, routeFile) => {
+      const ele = byId(routeFile);
+      if (ele && ele.deps && ele.deps.length) {
+        ele.deps.forEach(d => {
+          depsMap[d.id] = true;
+        });
+      }
+      return depsMap;
+    }, {});
+    console.log(allRoutesDepsMap);
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type && iconMap[ele.type]) {
         ele.icon = iconMap[ele.type];
@@ -75,10 +86,11 @@ export default {
           }
 
           // Used in react router
-          if (ele.props && ele.props.router) {
+          if (ele.parts && ele.parts[0] && allRoutesDepsMap[ele.parts[0]]) {
+            ele.isInRoute = true;
             ele.marks = [
               ...(ele.marks || []),
-              { name: 'R', description: 'Connected to Redux Store', bgColor: '#ffb300' },
+              { name: 'R', description: 'Used in route config', bgColor: '#ffb300' },
             ];
           }
           break;

@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import { DepsDiagram } from '../diagram';
+import { getElementDiagramData } from './selectors/getElementDiagramData';
 
 export class ElementDiagram extends Component {
   static propTypes = {
-    pluginCra: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     elementById: PropTypes.object.isRequired,
     element: PropTypes.object.isRequired,
@@ -29,12 +29,22 @@ export class ElementDiagram extends Component {
     return elementId;
   }
 
-  render() {
+  getDiagramData() {
     const { elementById } = this.props;
+    const { nodes, links } = getElementDiagramData(elementById, this.getElementId());
+
+    return { nodes, links };
+  }
+
+  handleNodeClick = node => {};
+
+  render() {
+    const targetId = this.getElementId();
+    const { nodes, links } = this.getDiagramData();
     return (
       <div className="plugin-cra-element-diagram">
         <div className="diagram-container">
-          <DepsDiagram elementById={elementById} elementId={this.getElementId()} />
+          <DepsDiagram nodes={nodes} links={links} targetId={targetId} handleNodeClick={this.handleNodeClick} />
         </div>
       </div>
     );
@@ -44,7 +54,6 @@ export class ElementDiagram extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    pluginCra: state.pluginCra,
     elementById: state.home.elementById,
   };
 }

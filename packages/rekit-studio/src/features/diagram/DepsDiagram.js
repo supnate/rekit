@@ -2,15 +2,15 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import history from '../../common/history';
-import { getDepsDiagramData } from './selectors/getDepsDiagramData';
 import { colors } from '../common';
 
 export default class DepsDiagram extends PureComponent {
   static propTypes = {
-    elementById: PropTypes.object.isRequired,
-    elementId: PropTypes.string.isRequired, // eslint-disable-line
     size: PropTypes.object,
     showLabels: PropTypes.bool,
+    nodes: PropTypes.array.isRequired,
+    links: PropTypes.array.isRequired,
+    targetId: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -76,8 +76,9 @@ export default class DepsDiagram extends PureComponent {
   componentDidUpdate(prevProps) {
     const props = this.props;
     if (
-      prevProps.homeStore !== props.homeStore ||
-      prevProps.elementId !== props.elementId ||
+      prevProps.nodes !== props.nodes ||
+      prevProps.links !== props.links ||
+      prevProps.targetId !== props.targetId ||
       prevProps.size !== props.size
     ) {
       this.updateDiagram();
@@ -86,11 +87,6 @@ export default class DepsDiagram extends PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize);
-  }
-
-  getDiagramData() {
-    const { elementById, elementId } = this.props;
-    return getDepsDiagramData(elementById, elementId);
   }
 
   getChartSize() {
@@ -122,10 +118,11 @@ export default class DepsDiagram extends PureComponent {
   };
 
   updateDiagram() {
-    const { elementId } = this.props;
-    const diagramData = this.getDiagramData();
-    const dataNodes = diagramData.nodes;
-    const dataLinks = _.cloneDeep(diagramData.links);
+    const { targetId } = this.props;
+
+    const dataNodes = this.props.nodes;
+    const dataLinks = _.cloneDeep(this.props.links);
+    console.log(this.props);
 
     const size = this.getChartSize();
     this.svg.attr('width', size.width).attr('height', size.height);
@@ -175,8 +172,8 @@ export default class DepsDiagram extends PureComponent {
       d3Selection
         .attr('class', 'line')
         .attr('stroke', '#ddd')
-        .attr('stroke-dasharray', d => (d.target === elementId ? '3, 3' : ''))
-        .attr('marker-end', l => (l.type === 'dep' ? `url(#${l.source === elementId ? 'dep-on' : 'dep-by'})` : ''));
+        .attr('stroke-dasharray', d => (d.target === targetId ? '3, 3' : ''))
+        .attr('marker-end', l => (l.type === 'dep' ? `url(#${l.source === targetId ? 'dep-on' : 'dep-by'})` : ''));
     const links = this.linksGroup.selectAll('line').data(dataLinks.filter(l => l.type !== 'no-line'));
     links.exit().remove();
     this.links = drawLink(links);
@@ -184,7 +181,7 @@ export default class DepsDiagram extends PureComponent {
 
     const drawNodeLabel = d3Selection =>
       d3Selection
-        .attr('class', d => `element-node-text ${d.id !== elementId && d.type !== 'feature' ? 'dep-node' : ''}`)
+        .attr('class', d => `element-node-text ${d.id !== targetId && d.type !== 'feature' ? 'dep-node' : ''}`)
         .attr('transform', 'translate(0, 2)')
         .attr('text-anchor', 'middle')
         .attr('cursor', 'pointer')

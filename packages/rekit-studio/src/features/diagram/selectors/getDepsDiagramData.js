@@ -7,9 +7,9 @@ const elementIdSelector = (elementById, elementId) => elementId;
 export const getDepsDiagramData = createSelector(
   elementByIdSelector,
   elementIdSelector,
-  (elementById, elementId) => {console.log('get deps diagram data')
+  (elementById, elementId) => {
     const ele = elementById[elementId];
-
+console.log(elementById, elementId);
     let links = [];
     let nodes = [];
 

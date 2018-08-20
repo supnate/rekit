@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import history from '../../common/history';
-import { colors } from '../common';
 
 export default class DepsDiagram extends PureComponent {
   static propTypes = {
@@ -130,11 +129,11 @@ export default class DepsDiagram extends PureComponent {
 
     const drawBgNode = d3Selection =>
       d3Selection
-        .attr('r', d => d.r + 3)
-        .attr('stroke-width', 1)
-        .attr('stroke', '#ccc')
-        .attr('cursor', 'pointer')
-        .attr('fill', '#222')
+        .attr('r', d => d.outerRadius || (d.radius + 3))
+        .attr('stroke-width', d => d.outerBorderWidth || 1)
+        .attr('stroke', d => d.outerBorderColor || '#ccc')
+        .attr('cursor', d => d.cursor || 'pointer')
+        .attr('fill', d => d.outerBgColor || '#222')
         .on('click', this.handleNodeClick)
         .call(
           d3
@@ -143,18 +142,18 @@ export default class DepsDiagram extends PureComponent {
             .on('drag', this.dragged)
             .on('end', this.dragended)
         );
-    const bgNodes = this.bgNodesGroup.selectAll('circle').data(dataNodes.filter(n => n.type === 'feature'));
+    const bgNodes = this.bgNodesGroup.selectAll('circle').data(dataNodes.filter(n => n.doubleCircle));
     bgNodes.exit().remove();
     this.bgNodes = drawBgNode(bgNodes);
     this.bgNodes = drawBgNode(bgNodes.enter().append('circle')).merge(this.bgNodes);
 
     const drawNode = d3Selection =>
       d3Selection
-        .attr('r', d => d.r)
-        .attr('stroke-width', d => (d.type === 'feature' ? 1 : 0))
-        .attr('stroke', '#eee')
-        .attr('cursor', 'pointer')
-        .attr('fill', d => colors[d.type] || '#FFB14A')
+        .attr('r', d => d.radius)
+        .attr('stroke-width', d => d.borderWidth || 0)
+        .attr('stroke', d => d.borderColor || '#eee')
+        .attr('cursor', d => d.cursor || 'pointer')
+        .attr('fill', d => d.bgColor || '#FFB14A')
         .on('click', this.handleNodeClick)
         .call(
           d3
@@ -171,8 +170,8 @@ export default class DepsDiagram extends PureComponent {
     const drawLink = d3Selection =>
       d3Selection
         .attr('class', 'line')
-        .attr('stroke', '#ddd')
-        .attr('stroke-dasharray', d => (d.target === targetId ? '3, 3' : ''))
+        .attr('stroke', d => d.color || '#ddd')
+        .attr('stroke-dasharray', d => d.dashed || (d.target === targetId ? '3, 3' : ''))
         .attr('marker-end', l => (l.type === 'dep' ? `url(#${l.source === targetId ? 'dep-on' : 'dep-by'})` : ''));
     const links = this.linksGroup.selectAll('line').data(dataLinks.filter(l => l.type !== 'no-line'));
     links.exit().remove();
@@ -210,7 +209,7 @@ export default class DepsDiagram extends PureComponent {
     this.sim
       .force('link')
       .links(dataLinks)
-      .distance(d => distanceMap[d.type] || 50);
+      .distance(d => d.length || distanceMap[d.type] || 50);
     this.sim.alpha(1).restart();
   }
 
@@ -228,10 +227,8 @@ export default class DepsDiagram extends PureComponent {
   };
 
   handleNodeClick = node => {
-    const { elementById } = this.props;
-    const ele = elementById[node.id];
-    if (ele.type !== 'feature') {
-      history.push(`/element/${encodeURIComponent(ele.file)}/diagram`);
+    if (node.id) {
+      history.push(`/element/${encodeURIComponent(node.id)}/diagram`);
     }
   };
 

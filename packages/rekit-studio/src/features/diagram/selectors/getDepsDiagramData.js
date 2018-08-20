@@ -17,8 +17,7 @@ console.log(elementById, elementId);
     nodes.push({
       name: ele.name,
       id: ele.id,
-      type: ele.type,
-      r: 50,
+      radius: 50,
     });
 
     _.values(elementById).forEach((item) => {
@@ -33,8 +32,7 @@ console.log(elementById, elementId);
           nodes.push({
             name: depEle.name,
             id: depEle.id,
-            type: depEle.type,
-            r: 14,
+            radius: 14,
           });
 
           links.push({
@@ -47,8 +45,7 @@ console.log(elementById, elementId);
           nodes.push({
             name: item.name,
             id: item.id,
-            type: item.type,
-            r: 14,
+            radius: 14,
           });
           links.push({
             source: item.id,

@@ -26,6 +26,7 @@ const iconMap = {
   plugin: 'plugin',
 };
 
+
 const getFeature = file => {
   return /^src\/features\/\w+\//.test(file) ? file.split('/')[2] : null;
 };
@@ -43,7 +44,7 @@ export default {
       }
       return depsMap;
     }, {});
-    console.log(allRoutesDepsMap);
+
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type && iconMap[ele.type]) {
         ele.icon = iconMap[ele.type];

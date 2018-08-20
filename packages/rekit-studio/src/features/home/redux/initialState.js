@@ -8,6 +8,7 @@ const initialState = {
   elementById: null,
   fileContentById: {},
   oldFileContentById: {},
+  fileContentNeedReload: {},
   features: null,
   projectDataNeedReload: false,
   projectFileChanged: false,

@@ -26,6 +26,9 @@ export class ElementDiagram extends Component {
       case 'action':
         elementId = element.parts[0];
         break;
+      case 'file':
+        elementId = element.id;
+        break;
       default:
         throw new Error('Unknown element type: ' + element.type);
     }

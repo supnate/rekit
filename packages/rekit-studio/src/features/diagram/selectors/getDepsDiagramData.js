@@ -46,6 +46,7 @@ export const getDepsDiagramData = createSelector(
             name: item.name,
             id: item.id,
             radius: 14,
+            bgColor: '#03A9F4',
           });
           links.push({
             source: item.id,

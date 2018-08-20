@@ -6,10 +6,13 @@ import { connect } from 'react-redux';
 import { CodeEditor } from '../editor';
 import * as actions from './redux/actions';
 import plugin from '../plugin/plugin';
+import { DepsDiagramView } from '../diagram';
 import { ImageView } from './';
 
-const CodeView = ({ element, viewElement }) => <CodeEditor file={viewElement && viewElement.target || element.id} />;
-const DepsDiagramView = () => 'abc';
+const CodeView = ({ element, viewElement }) => <CodeEditor file={(viewElement && viewElement.target) || element.id} />;
+const DepsDiagramViewWrapper = ({ element, viewElement, elementById }) => (
+  <DepsDiagramView elementId={element.id} elementById={elementById} />
+);
 
 export class ElementPage extends Component {
   static propTypes = {
@@ -51,8 +54,9 @@ export class ElementPage extends Component {
         if (ele.size < 100000) return CodeView;
       }
       return null;
-    } else if (viewEle.key === 'diagram') {
-      return DepsDiagramView;
+    } else if (viewEle.key === 'diagram' && ele.type === 'file' && /^jsx?$/.test(ele.ext)) {
+      // Show default deps diagram for normal js files
+      return DepsDiagramViewWrapper;
     } else {
       return CodeView;
     }
@@ -69,6 +73,7 @@ export class ElementPage extends Component {
   }
 
   render() {
+    const { elementById } = this.props;
     const ele = this.getElement();
     if (!ele) {
       return this.renderNotFound();
@@ -86,7 +91,7 @@ export class ElementPage extends Component {
     }
     return (
       <div className="home-element-page">
-        <View element={ele} viewElement={viewEle} match={this.props.match} />
+        <View elementById={elementById} element={ele} viewElement={viewEle} match={this.props.match} />
       </div>
     );
   }

@@ -87,7 +87,7 @@ export class HomePage extends Component {
     );
   }
 
-  render() {
+  render() {return 'HomePage';
     const { features, featureById } = this.props.home;
     const overviewStat = getOverviewStat({ features, featureById });
     return (

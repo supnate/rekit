@@ -6,7 +6,7 @@ export default {
       return RouteRulesView;
     }
 
-    if (['component', 'action'].includes(element.type) && view === 'diagram') {
+    if ((['component', 'action'].includes(element.type) || /^jsx?$/.test(element.ext)) && view === 'diagram') {
       return ElementDiagram;
     }
 

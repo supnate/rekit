@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import { CodeEditor } from '../editor';
 import * as actions from './redux/actions';
 import plugin from '../plugin/plugin';
-import { ImageView, SvgView } from './';
+import { ImageView } from './';
 
-const CodeView = ({ viewElement }) => <CodeEditor file={viewElement.target || viewElement.id} />;
+const CodeView = ({ element, viewElement }) => <CodeEditor file={viewElement && viewElement.target || element.id} />;
 const DepsDiagramView = () => 'abc';
 
 export class ElementPage extends Component {
@@ -48,30 +48,14 @@ export class ElementPage extends Component {
     if (!viewEle) {
       if (ele.type === 'file') {
         if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(ele.ext)) return ImageView;
-        return CodeView;
-      } else {
-        return null;
+        if (ele.size < 100000) return CodeView;
       }
+      return null;
     } else if (viewEle.key === 'diagram') {
       return DepsDiagramView;
-    } else if (viewEle.key === 'code') {
+    } else {
       return CodeView;
     }
-
-    // By default use code editor for text files
-
-    if (!View) {
-      // Default view to show file
-      let targetEle = ele;
-      if (viewEle.target) {
-        targetEle = this.byId(viewEle.target);
-        if (!targetEle) return null;
-      }
-      if (targetEle.type === 'file' && targetEle.id) {
-        View = CodeView;
-      }
-    }
-    return View;
   }
 
   byId = id => this.props.elementById[id];
@@ -81,7 +65,7 @@ export class ElementPage extends Component {
   }
 
   renderNotSupported() {
-    return <div className="home-element-page error">The current view of the element is not supported to show.</div>;
+    return <div className="home-element-page error">The element is not supported or size is too large.</div>;
   }
 
   render() {

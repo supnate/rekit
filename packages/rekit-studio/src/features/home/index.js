@@ -17,3 +17,5 @@ export { default as ProjectExplorerContextMenu } from './ProjectExplorerContextM
 export { default as DialogManager } from './DialogManager';
 export { default as TabsBar } from './TabsBar';
 export { default as ElementPage } from './ElementPage';
+export { default as ImageView } from './ImageView';
+export { default as SvgView } from './SvgView';

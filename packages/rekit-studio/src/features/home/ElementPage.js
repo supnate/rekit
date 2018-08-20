@@ -6,8 +6,10 @@ import { connect } from 'react-redux';
 import { CodeEditor } from '../editor';
 import * as actions from './redux/actions';
 import plugin from '../plugin/plugin';
+import { ImageView, SvgView } from './';
 
 const CodeView = ({ viewElement }) => <CodeEditor file={viewElement.target || viewElement.id} />;
+const DepsDiagramView = () => 'abc';
 
 export class ElementPage extends Component {
   static propTypes = {
@@ -22,28 +24,39 @@ export class ElementPage extends Component {
     return this.byId(eleId);
   }
   getViewElement(ele) {
-    const { view } = this.props.match.params;
     if (!ele.views || !ele.views.length) {
-      return view ? null : ele;
+      return null;
     }
+    const { view } = this.props.match.params;
     if (!view) return _.find(ele.views, 'isDefault') || ele.views[0];
     else return _.find(ele.views, p => p.key === view);
   }
   // Get the view component to show the element
   getView(ele, viewEle) {
-    if (!viewEle) return null;
-
     let View = null;
-
-    // TODO: get view from plugins
+    // Get view from plugins
     plugin
       .getPlugins('view.getView')
       .reverse()
       .some(p => {
-        View = p.view.getView(ele, viewEle.key);
+        View = p.view.getView(ele, viewEle ? viewEle.key : null);
         if (View) return true;
         return false;
       });
+    if (View) return View;
+
+    if (!viewEle) {
+      if (ele.type === 'file') {
+        if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(ele.ext)) return ImageView;
+        return CodeView;
+      } else {
+        return null;
+      }
+    } else if (viewEle.key === 'diagram') {
+      return DepsDiagramView;
+    } else if (viewEle.key === 'code') {
+      return CodeView;
+    }
 
     // By default use code editor for text files
 

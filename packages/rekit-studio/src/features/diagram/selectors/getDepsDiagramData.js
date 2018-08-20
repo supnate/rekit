@@ -9,7 +9,7 @@ export const getDepsDiagramData = createSelector(
   elementIdSelector,
   (elementById, elementId) => {
     const ele = elementById[elementId];
-console.log(elementById, elementId);
+
     let links = [];
     let nodes = [];
 
@@ -59,49 +59,6 @@ console.log(elementById, elementId);
     // remove duplicated nodes
     nodes = _.uniqBy(nodes, 'id');
     links = _.uniqBy(links, l => `${l.source}->${l.target}`);
-
-    // add features node
-    // nodes.forEach((n) => {
-    //   const ele = elementById[n.id];
-    //   if (n.type === 'constant') {
-    //     n.name = 'constants';
-    //     n.type = 'misc';
-    //   }
-    //   if (ele && ele.feature && ele.feature !== element.feature) {
-    //     if (!_.find(nodes, { id: ele.feature })) {
-    //       nodes.push({
-    //         name: featureById[ele.feature].name,
-    //         id: ele.feature,
-    //         type: 'feature',
-    //         r: 22,
-    //       });
-
-    //       links.push({
-    //         source: element.file,
-    //         target: ele.feature,
-    //         type: 'no-line',
-    //       });
-    //     }
-    //     links.push({
-    //       source: ele.feature,
-    //       target: n.id,
-    //       type: 'child',
-    //     });
-    //   }
-    // });
-
-    // const featureNodes = nodes.filter(n => n.type === 'feature');
-
-    // // Third, add links of features
-    // for (let i = 0; i < featureNodes.length; i++) {
-    //   for (let j = i + 1; j < featureNodes.length; j++) {
-    //     links.push({
-    //       source: featureNodes[i],
-    //       target: featureNodes[j],
-    //       type: 'no-line',
-    //     });
-    //   }
-    // }
 
     return { nodes, links };
   },

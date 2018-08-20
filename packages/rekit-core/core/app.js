@@ -59,8 +59,12 @@ function readDir(dir) {
         size,
         id: rFile,
       };
-      if ((ext === 'js' || ext === 'jsx') && size < 50000) {
-        fileEle.deps = deps.getDeps(rFile);
+      if (ext === 'js' || ext === 'jsx') {
+        fileEle.views = [
+          { key: 'diagram', name: 'Diagram' },
+          { key: 'code', name: 'Code', target: rFile, isDefault: true },
+        ];
+        if (size < 50000) fileEle.deps = deps.getDeps(rFile);
       }
       elementById[rFile] = fileEle;
     }

@@ -46,6 +46,12 @@ export default {
           case 'less':
             ele.icon = `file_type_${ele.ext}`;
             break;
+          case 'png':
+          case 'jpg':
+          case 'jpeg':
+          case 'gif':
+            ele.icon = 'file_type_image';
+            break;
           default:
             break;
         }

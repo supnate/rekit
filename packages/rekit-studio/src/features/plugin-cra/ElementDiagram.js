@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import history from '../../common/history';
 import * as actions from './redux/actions';
 import { DepsDiagram } from '../diagram';
 import { getElementDiagramData } from './selectors/getElementDiagramData';
@@ -55,7 +56,7 @@ export class ElementDiagram extends Component {
       }
 
       if (ele.feature && ele.feature !== targetFeature) {
-        const fid = 'v:feature:' + ele.feature;
+        const fid = 'v:feature-' + ele.feature;
         if (!_.find(featureNodes, { id: fid })) {
           featureNodes.push({
             id: fid,
@@ -63,6 +64,8 @@ export class ElementDiagram extends Component {
             radius: 20,
             bgColor: colors.feature,
             doubleCircle: true,
+            cursor: 'default',
+            noClick: true,
           });
         }
         links.push({
@@ -84,7 +87,14 @@ export class ElementDiagram extends Component {
     return { nodes, links };
   }
 
-  handleNodeClick = node => {};
+  handleNodeClick = node => {
+    const byId = id => this.props.elementById[id];
+
+    let ele = byId(node.id);
+    if (ele.owner) ele = byId(ele.owner);
+
+    history.push(`/element/${encodeURIComponent(ele.id)}/diagram`);
+  };
 
   render() {
     const targetId = this.getElementId();

@@ -10,11 +10,13 @@ export default class DepsDiagram extends PureComponent {
     nodes: PropTypes.array.isRequired,
     links: PropTypes.array.isRequired,
     targetId: PropTypes.string.isRequired,
+    handleNodeClick: PropTypes.func,
   };
 
   static defaultProps = {
     showLabels: true,
     size: null,
+    handleNodeClick: null,
   };
 
   componentDidMount() {
@@ -121,7 +123,6 @@ export default class DepsDiagram extends PureComponent {
 
     const dataNodes = this.props.nodes;
     const dataLinks = _.cloneDeep(this.props.links);
-    console.log(this.props);
 
     const size = this.getChartSize();
     this.svg.attr('width', size.width).attr('height', size.height);
@@ -129,7 +130,7 @@ export default class DepsDiagram extends PureComponent {
 
     const drawBgNode = d3Selection =>
       d3Selection
-        .attr('r', d => d.outerRadius || (d.radius + 3))
+        .attr('r', d => d.outerRadius || d.radius + 3)
         .attr('stroke-width', d => d.outerBorderWidth || 1)
         .attr('stroke', d => d.outerBorderColor || '#ccc')
         .attr('cursor', d => d.cursor || 'pointer')
@@ -183,7 +184,7 @@ export default class DepsDiagram extends PureComponent {
         .attr('class', d => `element-node-text ${d.id !== targetId && d.type !== 'feature' ? 'dep-node' : ''}`)
         .attr('transform', 'translate(0, 2)')
         .attr('text-anchor', 'middle')
-        .attr('cursor', 'pointer')
+        .attr('cursor', d => d.cursor || 'pointer')
         .on('click', this.handleNodeClick)
         .text(d => d.name)
         .call(
@@ -227,7 +228,9 @@ export default class DepsDiagram extends PureComponent {
   };
 
   handleNodeClick = node => {
-    if (node.id) {
+    if (node.noClick) return;
+    if (this.props.handleNodeClick) this.props.handleNodeClick(node);
+    else if (node.id) {
       history.push(`/element/${encodeURIComponent(node.id)}/diagram`);
     }
   };

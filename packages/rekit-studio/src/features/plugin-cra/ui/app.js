@@ -26,6 +26,10 @@ const iconMap = {
   plugin: 'plugin',
 };
 
+const getFeature = file => {
+  return /^src\/features\/\w+\//.test(file) ? file.split('/')[2] : null;
+};
+
 export default {
   processProjectData(prjData) {
     const byId = id => prjData.elementById[id];
@@ -56,6 +60,10 @@ export default {
           break;
         case 'routes':
           ele.count = ele.routes.length;
+          break;
+        case 'file':
+        case 'folder':
+          ele.feature = getFeature(ele.id);
           break;
         default:
           break;

@@ -217,7 +217,7 @@ export class CodeEditor extends Component {
       this.props.actions.setViewChanged(this.props.location.pathname, this.hasChange());
     }
     // this.props.actions.codeChange();
-    this.props.actions.stickTab();
+    if (hasChange) this.props.actions.stickTab();
   };
 
   handleOutlineSelect = nodeData => {

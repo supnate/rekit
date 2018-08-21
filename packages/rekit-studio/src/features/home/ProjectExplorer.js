@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Spin, Tree } from 'antd';
 import { SvgIcon } from '../common';
 import { storage } from '../common/utils';
-import * as actions from './redux/actions';
+import { stickTab } from './redux/actions';
 import { getTreeData } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
@@ -80,6 +80,10 @@ export class ProjectExplorer extends Component {
     this.setState({
       expandedKeys,
     });
+  };
+
+  handleTreeNodeDoubleClick = () => {
+    setTimeout(this.props.actions.stickTab, 50);
   };
 
   assignCtxMenu = ctxMenu => (this.ctxMenu = ctxMenu.getWrappedInstance());
@@ -179,7 +183,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch),
+    actions: bindActionCreators({ stickTab }, dispatch),
   };
 }
 

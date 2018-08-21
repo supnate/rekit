@@ -211,14 +211,13 @@ export class CodeEditor extends Component {
   }
 
   handleEditorChange = () => {
-    // const isChanged = modelManager.isChanged(this.props.file);
     const hasChange = this.hasChange();
     const key = this.props.location.pathname;
     if (!!this.props.viewChanged[key] !== hasChange) {
       this.props.actions.setViewChanged(this.props.location.pathname, this.hasChange());
     }
     // this.props.actions.codeChange();
-    // if (this.hasChange()) this.props.actions.stickTab();
+    this.props.actions.stickTab();
   };
 
   handleOutlineSelect = nodeData => {

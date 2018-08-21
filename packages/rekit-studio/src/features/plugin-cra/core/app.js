@@ -266,36 +266,18 @@ function getFeatures() {
 
     actions.unshift(getInitialState(f).id);
 
-    const toRemoveFromMisc = {};
-    [...actions, ...components].map(eid => elementById[eid]).forEach(ele => {
-      if (ele.target) toRemoveFromMisc[ele.target] = true;
-      if (ele.parts) {
-        ele.parts.forEach(p => {
-          toRemoveFromMisc[p] = true;
-        });
-      }
-    });
-
-    const filterNonMisc = children => {
-      const filtered = children.filter(cid => !toRemoveFromMisc[cid]);
-      filtered.map(cid => elementById[cid]).forEach(c => {
-        if (c.children) c.children = filterNonMisc(c.children);
-      });
-      return filtered;
-    };
-
-    const misc = filterNonMisc(elementById[`src/features/${f}`].children);
-
+    const routeFilePath = `src/features/${f}/route.js`;
     const children = [
       {
         id: `v:${f}-routes`,
         type: 'routes',
         name: f,
         feature: f,
+        parts: [routeFilePath],
         views: [
           { key: 'diagram', name: 'Diagram' },
           { key: 'rules', name: 'Rules' },
-          { key: 'code', name: 'Code', target: `src/features/${f}/route.js`, isDefault: true },
+          { key: 'code', name: 'Code', target: routeFilePath, isDefault: true },
         ],
         routes,
       },
@@ -311,8 +293,25 @@ function getFeatures() {
         name: 'Components',
         children: components,
       },
-      { id: `v:${f}-misc`, type: 'misc', name: 'Misc', children: misc },
     ];
+
+    const toRemoveFromMisc = {};
+    children.map(eid => (typeof eid === 'string' ? elementById[eid] : eid)).forEach(ele => {
+      if (ele.parts) {
+        ele.parts.forEach(p => {
+          toRemoveFromMisc[p] = true;
+        });
+      }
+    });
+    const filterNonMisc = children => {
+      const filtered = children.filter(cid => !toRemoveFromMisc[cid]);
+      filtered.map(cid => elementById[cid]).forEach(c => {
+        if (c.children) c.children = filterNonMisc(c.children);
+      });
+      return filtered;
+    };
+    const misc = filterNonMisc(elementById[`src/features/${f}`].children);
+    children.push({ id: `v:${f}-misc`, type: 'misc', name: 'Misc', children: misc });
 
     const id = `v:feature-${f}`;
     elements.push(id);

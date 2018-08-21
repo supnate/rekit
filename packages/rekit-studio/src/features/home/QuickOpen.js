@@ -83,11 +83,14 @@ export class QuickOpen extends Component {
     }
 
     const { elementById, elements } = this.props;
-    const list = getProjectElements({ elements, elementById }).map(ele => ({
-      ...ele,
-      position: ele.id,
-      toSearch: `${ele.id}`,
-    }));
+    const list = getProjectElements({ elements, elementById }).map(ele => {
+      const position = ele.position || (ele.parts && ele.parts[0]) || ele.id;
+      return {
+        ...ele,
+        position,
+        toSearch: position,
+      };
+    });
 
     // const list = Object.keys(elementById)
     //   .map(k => {

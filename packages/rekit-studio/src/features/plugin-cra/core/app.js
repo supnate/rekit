@@ -238,10 +238,12 @@ function getRoutes(feature) {
 
 function getInitialState(feature) {
   const id = `v:${feature}-initial-state`;
+  const codeFile = `src/features/${feature}/redux/initialState.js`;
   const ele = {
     id,
     type: 'initial-state',
-    target: `src/features/${feature}/redux/initialState.js`,
+    target: codeFile,
+    parts: [codeFile],
     name: 'initialState',
   };
   elementById[id] = ele;
@@ -296,13 +298,17 @@ function getFeatures() {
     ];
 
     const toRemoveFromMisc = {};
-    children.map(eid => (typeof eid === 'string' ? elementById[eid] : eid)).forEach(ele => {
-      if (ele.parts) {
-        ele.parts.forEach(p => {
-          toRemoveFromMisc[p] = true;
-        });
-      }
-    });
+    const generateToRemoveFromMisc = children =>
+      children.map(eid => (typeof eid === 'string' ? elementById[eid] : eid)).forEach(ele => {
+        if (ele.parts) {
+          ele.parts.forEach(p => {
+            toRemoveFromMisc[p] = true;
+          });
+        }
+        if (ele.children) generateToRemoveFromMisc(ele.children);
+      });
+    generateToRemoveFromMisc(children);
+
     const filterNonMisc = children => {
       const filtered = children.filter(cid => !toRemoveFromMisc[cid]);
       filtered.map(cid => elementById[cid]).forEach(c => {

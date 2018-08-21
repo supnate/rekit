@@ -9,7 +9,7 @@ import plugin from '../plugin/plugin';
 import { DepsDiagramView } from '../diagram';
 import { ImageView } from './';
 
-const CodeView = ({ element, viewElement }) => <CodeEditor file={(viewElement && viewElement.target) || element.id} />;
+const CodeView = ({ element, viewElement }) => <CodeEditor file={(viewElement && viewElement.target) || element.target || element.id} />;
 const DepsDiagramViewWrapper = ({ element, viewElement, elementById }) => (
   <DepsDiagramView elementId={element.id} elementById={elementById} />
 );
@@ -49,9 +49,11 @@ export class ElementPage extends Component {
     if (View) return View;
 
     if (!viewEle) {
-      if (ele.type === 'file') {
-        if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(ele.ext)) return ImageView;
-        if (ele.size < 100000) return CodeView;
+      console.log('ele: ', ele);
+      const realEle = ele.target ? this.byId(ele.target) : ele;
+      if (realEle.type === 'file') {
+        if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(realEle.ext)) return ImageView;
+        if (realEle.size < 100000) return CodeView;
       }
       return null;
     } else if (viewEle.key === 'diagram' && ele.type === 'file' && /^jsx?$/.test(ele.ext)) {

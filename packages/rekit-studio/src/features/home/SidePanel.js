@@ -7,9 +7,10 @@ import { connect } from 'react-redux';
 import { Dropdown, Icon, Menu, Modal } from 'antd';
 import * as actions from './redux/actions';
 import history from '../../common/history';
-import { SearchInput } from '../common';
+import { SearchInput, SvgIcon } from '../common';
 import { showCmdDialog } from '../rekit-cmds/redux/actions';
 import { About, DemoAlert, ProjectExplorer } from './';
+import plugin from '../../common/plugin';
 
 export class SidePanel extends Component {
   static propTypes = {
@@ -26,15 +27,27 @@ export class SidePanel extends Component {
     this.setState({
       aboutDialogVisible: true,
     });
-  }
+  };
 
   hideAbout = () => {
     this.setState({
       aboutDialogVisible: false,
     });
+  };
+
+  getMenuItems() {
+    const menuItems = [
+      { icon: 'book', iconColor: '#29b6f6', text: 'Add Feature', key: 'add-feature' },
+      { icon: 'notification', iconColor: '#ec407a', text: 'Add Action', key: 'add-action' },
+      { icon: 'appstore-o', iconColor: '#F08036', text: 'Add Component', key: 'add-component' },
+    ];
+    plugin.getPlugins('menu.mainMenu.fillMenuItems').forEach(p => {
+      p.fillMenuItems(menuItems);
+    });
+    return menuItems;
   }
 
-  handleMainMenuClick = (evt) => {
+  handleMainMenuClick = evt => {
     switch (evt.key) {
       case 'add-feature':
       case 'add-component':
@@ -62,20 +75,27 @@ export class SidePanel extends Component {
       default:
         break;
     }
-  }
+  };
 
-  handleSearch = (key) => {
+  handleSearch = key => {
     this.setState({
       searchKey: key,
     });
-  }
+  };
 
   renderMainMenu = () => {
     return (
-      <Menu onClick={this.handleMainMenuClick}>
-        <Menu.Item key="add-feature">
-          <Icon type="book" style={{ color: '#29b6f6' }} /> &nbsp;Add Feature
-        </Menu.Item>
+      <Menu onClick={this.handleMainMenuClick} className="main-menu">
+        {this.getMenuItems().map(mi => (
+          <Menu.Item key={mi.key}>
+            {mi.icon && (
+              <span>
+                <SvgIcon type={mi.icon} style={{ fill: mi.iconColor }} />
+                {mi.text}
+              </span>
+            )}
+          </Menu.Item>
+        ))}
         <Menu.Item key="add-action">
           <Icon type="notification" style={{ color: '#ec407a' }} /> &nbsp;Add Action
         </Menu.Item>
@@ -146,12 +166,7 @@ export class SidePanel extends Component {
 
 /* istanbul ignore next */
 function mapStateToProps(state) {
-  return _.pick(state.home, [
-    'projectName',
-    'projectRoot',
-    'sidePanelWidth',
-    'demoAlertVisible',
-  ]);
+  return _.pick(state.home, ['projectName', 'projectRoot', 'sidePanelWidth', 'demoAlertVisible']);
 }
 
 /* istanbul ignore next */
@@ -161,4 +176,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SidePanel);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SidePanel);

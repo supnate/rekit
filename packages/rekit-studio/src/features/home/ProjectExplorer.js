@@ -7,7 +7,7 @@ import { Spin, Tree } from 'antd';
 import { SvgIcon } from '../common';
 import { storage } from '../common/utils';
 import * as actions from './redux/actions';
-import { treeDataSelector } from './selectors/projectData';
+import { getTreeData } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
 
@@ -172,7 +172,7 @@ function mapStateToProps(state) {
   return {
     projectData: prjData,
     elementById: prjData && prjData.elementById,
-    treeData: prjData ? treeDataSelector(prjData) : null,
+    treeData: prjData ? getTreeData(prjData) : null,
   };
 }
 

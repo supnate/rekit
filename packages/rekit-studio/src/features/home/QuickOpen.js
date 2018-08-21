@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Icon } from 'antd';
 import fuzzysort from 'fuzzysort';
 import scrollIntoView from 'dom-scroll-into-view';
 import history from '../../common/history';
-import * as actions from './redux/actions';
+import { SvgIcon } from '../common';
+import { getProjectElements } from './selectors/projectData';
 
 export class QuickOpen extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
+    elementById: PropTypes.object.isRequired,
+    elements: PropTypes.array.isRequired,
   };
 
   state = {
@@ -81,22 +82,28 @@ export class QuickOpen extends Component {
       return;
     }
 
-    const { elementById } = this.props.home;
-    const list = Object.keys(elementById)
-      .map(k => {
-        const item = {
-          ...elementById[k],
-        };
-        if (/component|action|misc/.test(item.type)) {
-          item.position = item.file
-            .split('/')
-            .slice(0, -1)
-            .join('/');
-          item.toSearch = `${item.position}/${item.name}`;
-        }
-        return item;
-      })
-      .filter(e => /component|action|misc/.test(e.type));
+    const { elementById, elements } = this.props;
+    const list = getProjectElements({ elements, elementById }).map(ele => ({
+      ...ele,
+      position: ele.id,
+      toSearch: `${ele.id}`,
+    }));
+
+    // const list = Object.keys(elementById)
+    //   .map(k => {
+    //     const item = {
+    //       ...elementById[k],
+    //     };
+    //     if (/component|action|misc/.test(item.type)) {
+    //       item.position = item.file
+    //         .split('/')
+    //         .slice(0, -1)
+    //         .join('/');
+    //       item.toSearch = `${item.position}/${item.name}`;
+    //     }
+    //     return item;
+    //   })
+    //   .filter(e => /component|action|misc/.test(e.type));
 
     const results = fuzzysort.go(evt.target.value, list, { key: 'toSearch' });
     this.setState({ results, selectedIndex: 0 });
@@ -115,16 +122,21 @@ export class QuickOpen extends Component {
         break;
       case 'ArrowUp':
         evt.preventDefault();
-        this.setState({
-          selectedIndex: this.state.selectedIndex < 1 ? this.state.results.length - 1 : this.state.selectedIndex - 1,
-        }, scrollToSelected);
-        
+        this.setState(
+          {
+            selectedIndex: this.state.selectedIndex < 1 ? this.state.results.length - 1 : this.state.selectedIndex - 1,
+          },
+          scrollToSelected
+        );
         break;
       case 'ArrowDown':
         evt.preventDefault();
-        this.setState({
-          selectedIndex: this.state.selectedIndex < this.state.results.length - 1 ? this.state.selectedIndex + 1 : 0,
-        }, scrollToSelected);
+        this.setState(
+          {
+            selectedIndex: this.state.selectedIndex < this.state.results.length - 1 ? this.state.selectedIndex + 1 : 0,
+          },
+          scrollToSelected
+        );
         break;
       default:
         break;
@@ -134,17 +146,11 @@ export class QuickOpen extends Component {
   handleItemClick = index => {
     this.setState({ visible: false });
     const item = this.state.results[index];
-    history.push(`/element/${encodeURIComponent(item.obj.file)}/code`);
+    history.push(`/element/${encodeURIComponent(item.obj.id)}/code`);
   };
   render() {
     if (!this.state.visible) return null;
 
-    const iconTypes = {
-      component: 'appstore-o',
-      action: 'notification',
-      misc: 'file',
-      file: 'file',
-    };
     return (
       <div className="home-quick-open">
         <div className="input-container">
@@ -166,7 +172,7 @@ export class QuickOpen extends Component {
                 key={item.obj.file}
                 onClick={() => this.handleItemClick(i)}
               >
-                <Icon type={iconTypes[item.obj.type]} />
+                {item.obj.icon && <SvgIcon type={item.obj.icon} style={{ fill: item.obj.iconColor || '#ccc' }} />}
                 <span dangerouslySetInnerHTML={{ __html: this.highlightMatch(item) }} />
               </li>
             ))}
@@ -181,14 +187,9 @@ export class QuickOpen extends Component {
 function mapStateToProps(state) {
   return {
     home: state.home,
+    elementById: state.home.elementById,
+    elements: state.home.elements,
   };
 }
 
-/* istanbul ignore next */
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({ ...actions }, dispatch),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuickOpen);
+export default connect(mapStateToProps)(QuickOpen);

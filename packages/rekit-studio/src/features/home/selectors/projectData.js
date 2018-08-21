@@ -1,4 +1,4 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 import { createSelector } from 'reselect';
 
 const elementsSelector = state => state.elements;
@@ -15,12 +15,24 @@ const getTreeNode = elementId => {
   };
 };
 
-export const treeDataSelector = createSelector(
-  elementsSelector,
-  elementByIdSelector,
-  (elements, elementById) => {
-    byId = id => elementById[id] || null;
-    const treeData = elements.map(getTreeNode);
-    return treeData;
+export const getTreeData = createSelector(elementsSelector, elementByIdSelector, (elements, elementById) => {
+  byId = id => elementById[id] || null;
+  const treeData = elements.map(getTreeNode);
+  return treeData;
+});
+
+export const getProjectElements = createSelector(elementsSelector, elementByIdSelector, (elements, elementById) => {
+  const left = [...elements];
+  const all = [];
+  while (left.length) {
+    const ele = elementById[left.pop()];
+    if (ele) {
+      if (ele.children) {
+        left.push.apply(left, ele.children);
+      } else {
+        all.push(ele);
+      }
+    }
   }
-);
+  return all;
+});

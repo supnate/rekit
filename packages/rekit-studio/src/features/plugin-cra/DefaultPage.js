@@ -13,7 +13,7 @@ export class DefaultPage extends Component {
   render() {
     return (
       <div className="plugin-cra-default-page">
-        Page Content: plugin-cra/DefaultPage
+        Page Content: plugin-cra/DefaultPage23
       </div>
     );
   }

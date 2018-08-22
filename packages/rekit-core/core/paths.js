@@ -9,7 +9,7 @@ function join() {
 
 let projectRoot;
 function setProjectRoot(prjRoot) {
-  projectRoot = prjRoot;
+  projectRoot = /\/$/.test(prjRoot) ? prjRoot : prjRoot + '/';
 }
 
 function getProjectRoot() {

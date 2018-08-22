@@ -8,7 +8,7 @@ const colorMap = {
   misc: '#8d6e63',
   normal: '#888888',
   routes: '#26a69a',
-  plugin: '#00BCD4',
+  plugin: '#AB47BC',
 };
 
 const iconMap = {

@@ -17,6 +17,7 @@ const DepsDiagramViewWrapper = ({ element, viewElement, elementById }) => (
 export class ElementPage extends Component {
   static propTypes = {
     elementById: PropTypes.object.isRequired,
+    elements: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
   };
@@ -102,7 +103,7 @@ export class ElementPage extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['elementById']),
+    ..._.pick(state.home, ['elementById', 'elements']),
   };
 }
 

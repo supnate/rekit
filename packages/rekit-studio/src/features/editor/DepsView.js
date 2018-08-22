@@ -50,7 +50,7 @@ export class DepsView extends Component {
         {dependencies.length > 0 && (
           <dl className="dependencies">
             <dt>
-              <SvgIcon type="arrow-right" /> Dependencies
+              <SvgIcon type="arrow-right" />Dependencies
             </dt>
             {dependencies.map(this.renderLink)}
           </dl>
@@ -58,7 +58,7 @@ export class DepsView extends Component {
         {dependents.length > 0 && (
           <dl className="dependents">
             <dt>
-              <SvgIcon type="arrow-left" /> Dependents
+              <SvgIcon type="arrow-left" />Dependents
             </dt>
             {dependents.map(this.renderLink)}
           </dl>

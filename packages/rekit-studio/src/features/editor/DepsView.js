@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { SvgIcon } from '../common';
-import { getDepsDiagramData } from '../diagram/selectors/getDepsDiagramData';
+import { getDepsData } from '../home/selectors/projectData';
 
 export class DepsView extends Component {
   static propTypes = {
     elementById: PropTypes.object.isRequired,
+    elements: PropTypes.array.isRequired,
     file: PropTypes.string.isRequired,
   };
 
@@ -18,27 +19,21 @@ export class DepsView extends Component {
     return (
       <dd key={ele.id}>
         <Link title={ele.id} to={`/element/${encodeURIComponent(ele.id)}`}>
-          <SvgIcon type={ele.icon} style={{ fill: ele.iconColor }} />{ele.name}
+          <SvgIcon type={ele.icon} style={{ fill: ele.iconColor }} />
+          {ele.name}
         </Link>
       </dd>
     );
   };
 
   render() {
-    const { elementById, file } = this.props;
+    const { elements, elementById, file } = this.props;
+    const depsData = getDepsData({ elements, elementById });
     const byId = id => elementById[id];
-    const { links } = getDepsDiagramData(elementById, file);
-
-    let dependencies = [];
-    let dependents = [];
-    links.filter(link => link.type === 'dep').forEach(link => {
-      if (link.source === file) dependencies.push(link.target);
-      else if (link.target === file) dependents.push(link.source);
-    });
-
-    const filterOutSelf = deps => deps.filter(dep => byId(dep).owner !== byId(file).owner);
-    dependencies = filterOutSelf(dependencies);
-    dependents = filterOutSelf(dependents);
+    const ele = byId(file);
+    const eid = ele.owner || ele.id;
+    const dependencies = depsData.dependencies[eid] || [];
+    const dependents = depsData.dependents[eid] || [];
 
     const sort = deps => {
       deps.sort((dep1, dep2) => {
@@ -78,6 +73,7 @@ function mapStateToProps(state) {
   return {
     editor: state.editor,
     elementById: state.home.elementById,
+    elements: state.home.elements,
   };
 }
 

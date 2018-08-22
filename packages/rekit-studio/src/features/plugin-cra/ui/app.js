@@ -51,6 +51,12 @@ export default {
         ele.iconColor = colorMap[ele.type];
       }
 
+      if (ele.parts) {
+        ele.parts.forEach(part => {
+          if (byId(part)) byId(part).owner = ele.id;
+        });
+      }
+
       if (ele.type === 'file') {
         switch (ele.ext) {
           case 'js':

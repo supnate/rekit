@@ -87,10 +87,6 @@ function getComponents(feature) {
       ];
       const id = `v:${ele.id}`;
       const parts = [ele.id, styleFile, testFile];
-      parts.forEach(part => {
-        const p = elementById[part];
-        if (p) p.owner = id;
-      });
       const name = ele.name.replace(/\.[^.]*$/, '');
       components.push({
         type: 'component',
@@ -123,10 +119,6 @@ function getActions(feature) {
       ];
       const id = `v:${ele.id}`;
       const parts = [ele.id, testFile];
-      parts.forEach(part => {
-        const p = elementById[part];
-        if (p) p.owner = id;
-      });
       actions.push({
         type: 'action',
         id,

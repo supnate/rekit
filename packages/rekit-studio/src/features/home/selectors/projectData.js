@@ -1,26 +1,25 @@
 // import _ from 'lodash';
 import { createSelector } from 'reselect';
+import _ from 'lodash';
 
 const elementsSelector = state => state.elements;
 const elementByIdSelector = state => state.elementById;
 
-let byId;
-
-const getTreeNode = elementId => {
-  const element = byId(elementId);
-  return {
-    ...element,
-    key: elementId,
-    children: element.children && element.children.map(child => getTreeNode(child)),
-  };
-};
-
 export const getTreeData = createSelector(elementsSelector, elementByIdSelector, (elements, elementById) => {
-  byId = id => elementById[id] || null;
+  const byId = id => elementById[id] || null;
+  const getTreeNode = elementId => {
+    const element = byId(elementId);
+    return {
+      ...element,
+      key: elementId,
+      children: element.children && element.children.map(child => getTreeNode(child)),
+    };
+  };
   const treeData = elements.map(getTreeNode);
   return treeData;
 });
 
+// Get all project elements which displayed in project explorer
 export const getProjectElements = createSelector(elementsSelector, elementByIdSelector, (elements, elementById) => {
   const left = [...elements];
   const all = [];
@@ -35,4 +34,36 @@ export const getProjectElements = createSelector(elementsSelector, elementByIdSe
     }
   }
   return all;
+});
+
+export const getDepsData = createSelector(elementByIdSelector, getProjectElements, (elementById, prjElements) => {
+  const byId = id => elementById[id] || null;
+  const dependencies = {};
+  const dependents = {};
+  const ensuareArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
+  prjElements.forEach(ele => {
+    if (ele.target) ele = byId(ele.target);
+    let eleDeps = ele.parts
+      ? ele.parts.reduce((prev, part) => {
+          if (byId(part) && byId(part).deps) {
+            prev.push.apply(prev, byId(part).deps);
+          }
+          return prev;
+        }, [])
+      : ele.deps || [];
+
+    // deps should not in parts and uniq
+    eleDeps = eleDeps.filter(d => (d.type === 'file' && (!ele.parts || !ele.parts.includes(d.id)))).map(d => d.id);
+    eleDeps = _.uniq(eleDeps);
+    eleDeps.forEach(dep => {
+      dep = byId(dep);
+      if (!dep) return;
+      if (dep.owner) dep = byId(dep.owner);
+      if (!dep || dep.id === ele.id) return;
+      ensuareArray(dependencies, ele.id).push(dep.id);
+      ensuareArray(dependents, dep.id).push(ele.id);
+    });
+  });
+
+  return { dependencies, dependents };
 });

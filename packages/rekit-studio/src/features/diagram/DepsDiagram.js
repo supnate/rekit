@@ -154,7 +154,7 @@ export default class DepsDiagram extends PureComponent {
         .attr('stroke-width', d => d.borderWidth || 0)
         .attr('stroke', d => d.borderColor || '#eee')
         .attr('cursor', d => d.cursor || 'pointer')
-        .attr('fill', d => d.bgColor || '#FFB14A')
+        .attr('fill', d => d.bgColor || '#78909C')
         .on('click', this.handleNodeClick)
         .call(
           d3

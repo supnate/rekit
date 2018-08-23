@@ -1,6 +1,6 @@
 {
   "name": "rekit-studio",
-  "version": "2.4.1",
+  "version": "3.0.0",
   "description": "Web IDE for Rekit projects.",
   "keywords": [
     "rekit",
@@ -160,6 +160,7 @@
     "prop-types": "^15.5.10",
     "react": "^16.2.0",
     "react-addons-test-utils": "^15.5.1",
+    "react-app": "^1.1.2",
     "react-beautiful-dnd": "^7.1.0",
     "react-dev-utils": "^5.0.2",
     "react-dom": "^16.2.0",

@@ -45,19 +45,23 @@ function startDevServer() {
   const server = http.createServer(app);
   const devConfig = getConfig('dev');
 
-  devConfig.plugins.push(new webpack.DllReferencePlugin({
-    context: srcPath,
-    manifest: require(manifestPath), // eslint-disable-line
-  }));
+  devConfig.plugins.push(
+    new webpack.DllReferencePlugin({
+      context: srcPath,
+      manifest: require(manifestPath), // eslint-disable-line
+    })
+  );
 
   const compiler = webpack(devConfig);
 
   app.use(rekitMiddleWare()(server, app, { readonly: args.readonly }));
 
-  app.use(devMiddleware(compiler, {
-    publicPath: devConfig.output.publicPath,
-    historyApiFallback: true,
-  }));
+  app.use(
+    devMiddleware(compiler, {
+      publicPath: devConfig.output.publicPath,
+      historyApiFallback: true,
+    })
+  );
 
   app.use(hotMiddleware(compiler));
 
@@ -76,7 +80,7 @@ function startDevServer() {
     res.sendStatus(404);
   });
 
-  server.listen(pkgJson.rekit.devPort, (err) => {
+  server.listen(pkgJson.rekit.devPort, err => {
     if (err) {
       console.error(err);
     }
@@ -102,7 +106,7 @@ function startBuildServer() {
   });
 
   const port = args.build_port || pkgJson.rekit.buildPort;
-  server.listen(port, (err) => {
+  server.listen(port, err => {
     if (err) {
       console.error(err);
     }
@@ -116,10 +120,12 @@ function buildDevDll() {
   const dllConfig = getConfig('dll');
 
   // Get snapshot hash for all dll entries versions.
-  const nameVersions = dllConfig.entry['dev-vendors'].map((pkgName) => {
-    const pkg = require(path.join(pkgName.split('/')[0], 'package.json')); // eslint-disable-line
-    return `${pkg.name}_${pkg.version}`;
-  }).join('-');
+  const nameVersions = dllConfig.entry['dev-vendors']
+    .map(pkgName => {
+      const pkg = require(path.join(pkgName.split('/')[0], 'package.json')); // eslint-disable-line
+      return `${pkg.name}_${pkg.version}`;
+    })
+    .join('-');
 
   const dllHash = crypto
     .createHash('md5')
@@ -129,8 +135,8 @@ function buildDevDll() {
 
   // If dll doesn't exist or version changed, then rebuild it
   if (
-    !shell.test('-e', manifestPath)
-    || require(manifestPath).name !== dllName // eslint-disable-line
+    !shell.test('-e', manifestPath) ||
+    require(manifestPath).name !== dllName // eslint-disable-line
   ) {
     delete require.cache[manifestPath]; // force reload the new manifest
     console.log('Dev vendors have changed, rebuilding dll...');
@@ -138,14 +144,16 @@ function buildDevDll() {
 
     dllConfig.output.library = dllName;
     dllConfig.output.path = path.join(__dirname, '../.tmp');
-    dllConfig.plugins.push(new webpack.DllPlugin({
-      path: manifestPath,
-      name: dllName,
-      context: srcPath,
-    }));
+    dllConfig.plugins.push(
+      new webpack.DllPlugin({
+        path: manifestPath,
+        name: dllName,
+        context: srcPath,
+      })
+    );
 
     return new Promise((resolve, reject) => {
-      webpack(dllConfig, (err) => {
+      webpack(dllConfig, err => {
         if (err) {
           console.log('dll build failed:');
           console.log(err.stack || err);

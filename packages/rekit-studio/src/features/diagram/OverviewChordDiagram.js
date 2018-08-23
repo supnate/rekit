@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { autobind } from 'core-decorators';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import d3Tip from 'd3-tip';
@@ -310,8 +309,7 @@ export class OverviewChordDiagram extends PureComponent {
     }
   }
 
-  @autobind
-  handleSvgMousemove(_1, _2, targets) {
+  handleSvgMousemove = (_1, _2, targets) => {
     const { home, size } = this.props;
     const diagramData = getOverviewChordDiagramData(home, size, this.state.selectedFeatures);
     const [x, y] = d3.mouse(targets[0]);
@@ -324,20 +322,18 @@ export class OverviewChordDiagram extends PureComponent {
     }
   }
 
-  @autobind
-  handleGroupMouseover(d, target) {
+  handleGroupMouseover = (d, target) => {
     if (d.type === 'file') this.tooltip.show(d, target);
     this.setState({
       highlightedGroup: d,
     });
   }
-  @autobind
-  handleGroupMouseout(d) {
+
+  handleGroupMouseout = (d) => {
     this.tooltip.hide(d);
   }
 
-  @autobind
-  handleGroupClick(d) {
+  handleGroupClick = (d) => {
     this.tooltip.hide();
     if (d.type === 'file') {
       const { elementById, projectRoot } = this.props.home;
@@ -347,22 +343,20 @@ export class OverviewChordDiagram extends PureComponent {
     }
   }
 
-  @autobind
-  handleToggleSameFeatureDepsVisible(evt) {
+  handleToggleSameFeatureDepsVisible = (evt) => {
     this.setState({
       sameFeatureDepsVisible: evt.target.checked,
     });
-  }
+  };
 
-  @autobind
-  handleSelectFeature(fid, selected) {
+  handleSelectFeature = (fid, selected) => {
     const newSelected = [...this.state.selectedFeatures];
     if (!selected) _.pull(newSelected, fid);
     else newSelected.push(fid);
     this.setState({
       selectedFeatures: newSelected,
     });
-  }
+  };
 
   renderFeaturesSelect() {
     const { features, featureById } = this.props.home;

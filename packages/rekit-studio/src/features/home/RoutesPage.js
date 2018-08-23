@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { autobind } from 'core-decorators';
 import { connect } from 'react-redux';
 import { Alert, Icon, Tabs } from 'antd';
 import history from '../../common/history';
@@ -18,8 +17,7 @@ export class RoutesPage extends Component {
     codeChanged: false,
   };
 
-  @autobind
-  handleTabChange(tabKey) {
+  handleTabChange = (tabKey) => {
     const fid = this.props.match.params.feature;
     switch (tabKey) {
       case 'rules':

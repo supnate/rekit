@@ -14,39 +14,13 @@
   },
   "babel": {
     "presets": [
-      "es2015",
-      "react",
-      "babel-preset-stage-0"
+      "react-app"
     ],
     "plugins": [
       "react-hot-loader/babel",
-      "transform-decorators-legacy",
-      "lodash",
-      [
-        "import",
-        {
-          "libraryName": "antd"
-        }
-      ],
-      [
-        "module-resolver",
-        {
-          "alias": {
-            "src": "./src"
-          }
-        }
-      ]
-    ],
-    "env": {
-      "dev": {
-        "plugins": []
-      },
-      "test": {
-        "plugins": [
-          "istanbul"
-        ]
-      }
-    }
+      "syntax-dynamic-import",
+      "lodash"
+    ]
   },
   "nyc": {
     "include": [

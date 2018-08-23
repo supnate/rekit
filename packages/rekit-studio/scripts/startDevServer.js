@@ -24,7 +24,7 @@ function startDevServer(port) {
   // Create a webpack compiler that is configured with custom messages.
   const compiler = createCompiler(webpack, devConfig, appName, urls, useYarn);
   compiler.plugin('done', stats => {
-    console.log(chalk.bold(`To use Rekit Studio, access: http://localhost:${studioPort}`));
+    console.log(chalk.bold(`To use Rekit Studio, access: http://localhost:${port}`));
     console.log();
   });
   // Load proxy config
@@ -40,7 +40,7 @@ function startDevServer(port) {
       return console.log(err);
     }
     if (isInteractive) {
-      clearConsole();
+      // clearConsole();
     }
     console.log(chalk.cyan('Starting the development server...\n'));
     openBrowser(urls.localUrlForBrowser);

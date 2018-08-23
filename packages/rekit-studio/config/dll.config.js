@@ -17,5 +17,5 @@ const commonDll = [
 ];
 module.exports = {
   'dev-dll': ['react-hot-loader', ...commonDll],
-  'dist-dll': [...commonDll],
+  'prod-dll': [...commonDll],
 };

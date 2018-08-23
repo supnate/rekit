@@ -62,8 +62,6 @@ if (process.env.HOST) {
   console.log();
 }
 
-const dllManifestPath = paths.resolveApp('.tmp/dev-vendors-manifest.json'); //path.join(__dirname, '../.tmp/dev-vendors-manifest.json');
-
 // Start Rekit Studio
 const studioPort = require(paths.appPackageJson).rekit.studioPort;
 startRekitStudio(studioPort).then(() =>

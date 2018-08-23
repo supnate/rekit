@@ -1,12 +1,19 @@
+process.env.NODE_ENV = 'development';
+
+const fs = require('fs');
 const crypto = require('crypto');
+const webpack = require('webpack');
 const paths = require('../config/paths');
 const dllConfig = require('../config/dll.config');
 
-process.env.NODE_ENV = 'development';
+const devConfigPath = '../config/webpack.config.dev';
+const prodConfigPath = '../config/webpack.config.prod';
+
+const isDev = () => process.env.NODE_ENV === 'development';
 
 function getDllName() {
-  const isDev = process.env.NODE_ENV === 'development';
-  if (isDev) {
+  const rsVersion = require(paths.appPackageJson).version;
+  if (isDev()) {
     const nameVersions = dllConfig['dev-dll']
       .map(pkgName => {
         const pkg = require(`${pkgName}/package.json`);
@@ -18,63 +25,59 @@ function getDllName() {
       .createHash('md5')
       .update(nameVersions)
       .digest('hex');
-    const dllName = `dev-dll-${dllHash}`;
+    const dllName = `dev_dll_${dllHash}`;
     return dllName;
   }
-  return `rekit-dll-${require(paths.appPackageJson).version}`;
+  return `rsdll_${rsVersion.replace(/\./g, '_')}`;
 }
 
 function buildDll() {
-  // const dllConfig = getConfig('dll');
+  const dllName = getDllName();
+  const dllManifestPath = paths.resolveApp('.tmp/dev-vendors-manifest.json');
 
-  // Get snapshot hash for all dll entries versions.
-  const nameVersions = dllConfig.entry['dev-vendors']
-    .map(pkgName => {
-      const pkg = require(path.join(pkgName.split('/')[0], 'package.json')); // eslint-disable-line
-      return `${pkg.name}_${pkg.version}`;
-    })
-    .join('-');
+  delete require.cache[dllManifestPath];
 
-  const dllHash = crypto
-    .createHash('md5')
-    .update(nameVersions)
-    .digest('hex');
-  const dllName = `devVendors_${dllHash}`;
-
-  // If dll doesn't exist or version changed, then rebuild it
-  if (
-    !shell.test('-e', manifestPath) ||
-    require(manifestPath).name !== dllName // eslint-disable-line
-  ) {
-    delete require.cache[manifestPath]; // force reload the new manifest
+  let wpConfig;
+  if (isDev()) {
+    if (require(dllManifestPath).name === dllName) {
+      console.log('Dev dll is up to date, no need to build.');
+      return Promise.resolve();
+    }
     console.log('Dev vendors have changed, rebuilding dll...');
-    console.time('Dll build success');
-
-    dllConfig.output.library = dllName;
-    dllConfig.output.path = path.join(__dirname, '../.tmp');
-    dllConfig.plugins.push(
-      new webpack.DllPlugin({
-        path: manifestPath,
-        name: dllName,
-        context: srcPath,
-      })
-    );
-
-    return new Promise((resolve, reject) => {
-      webpack(dllConfig, err => {
-        if (err) {
-          console.log('dll build failed:');
-          console.log(err.stack || err);
-          reject();
-          return;
-        }
-        console.timeEnd('Dll build success');
-        resolve();
-      });
-    });
+    wpConfig = require(devConfigPath);
+    wpConfig.entry = dllConfig['dev-dll'];
+    wpConfig.output.path = paths.resolveApp('.tmp');
+    wpConfig.output.filename = 'dev-dll.js';
+  } else {
+    console.log('Building dll...');
+    wpConfig = require(prodConfigPath);
+    wpConfig.entry = dllConfig['prod-dll'];
+    wpConfig.output.filename = `static/js/${dllName}.js`;
   }
-  console.log('The dev-vendors bundle is up to date, no need to rebuild.');
-  return Promise.resolve();
+  wpConfig.output.library = dllName;
+  wpConfig.plugins.push(
+    new webpack.DllPlugin({
+      path: dllManifestPath,
+      name: dllName,
+      context: paths.appSrc,
+    })
+  );
+
+  console.log('Dev vendors have changed, rebuilding dll...');
+  console.time('Dll build success');
+
+  return new Promise((resolve, reject) => {
+    webpack(wpConfig, err => {
+      if (err) {
+        console.log('dll build failed:');
+        console.log(err.stack || err);
+        reject();
+        return;
+      }
+      console.timeEnd('Dll build success');
+      resolve();
+    });
+  });
 }
 
-console.log(getDllName());
+buildDll();

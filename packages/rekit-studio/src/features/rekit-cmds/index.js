@@ -1,6 +1,6 @@
-export DialogPlace from './DialogPlace';
-export LogViewer from './LogViewer';
-export LogViewerDialog from './LogViewerDialog';
-export CmdForm from './CmdForm';
-export cmdSuccessNotification from './cmdSuccessNotification';
+export { default as DialogPlace } from './DialogPlace';
+export { default as LogViewer } from './LogViewer';
+export { default as LogViewerDialog } from './LogViewerDialog';
+export { default as CmdForm } from './CmdForm';
+export { default as cmdSuccessNotification } from './cmdSuccessNotification';
 

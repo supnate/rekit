@@ -9,7 +9,7 @@ import scrollIntoView from 'dom-scroll-into-view';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import history from '../../common/history';
 import { SvgIcon } from '../common';
-import { initTabs, closeTab, stickTab, moveTab } from './redux/actions';
+import { closeTab, stickTab, moveTab } from './redux/actions';
 import { tabsSelector } from './selectors/tabs';
 
 const getListStyle = () => ({
@@ -253,7 +253,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ initTabs, closeTab, stickTab, moveTab }, dispatch),
+    actions: bindActionCreators({ closeTab, stickTab, moveTab }, dispatch),
     dispatch,
   };
 }

@@ -12,41 +12,41 @@ import store from './common/store';
 // const store = configStore();
 // const history = syncHistoryWithStore(browserHistory, store);
 
-if (process.env.NODE_ENV !== 'test') {
+if (0 && process.env.NODE_ENV !== 'test') {
   const socket = io();
   socket.on('connect', () => {
     console.log('[STUDIO] connected.');
   });
 
-  socket.on('fileChanged', (data) => {
+  socket.on('fileChanged', data => {
     store.dispatch({
       type: 'PROJECT_DATA_CHANGED',
       data,
     });
   });
 
-  socket.on('output', (data) => {
+  socket.on('output', data => {
     store.dispatch({
       type: 'REKIT_STUDIO_OUTPUT',
       data,
     });
   });
 
-  socket.on('task-finished', (data) => {
+  socket.on('task-finished', data => {
     store.dispatch({
       type: 'REKIT_TASK_FINISHED',
       data,
     });
   });
 
-  socket.on('build-finished', (data) => {
+  socket.on('build-finished', data => {
     store.dispatch({
       type: 'REKIT_TOOLS_BUILD_FINISHED',
       data,
     });
   });
 
-  socket.on('test-finished', (data) => {
+  socket.on('test-finished', data => {
     store.dispatch({
       type: 'REKIT_TOOLS_TEST_FINISHED',
       data,
@@ -66,12 +66,7 @@ if (!root) {
 }
 
 function renderApp(app) {
-  render(
-    <AppContainer>
-      {app}
-    </AppContainer>,
-    root,
-  );
+  render(<AppContainer>{app}</AppContainer>, root);
 }
 
 renderApp(<Root store={store} routeConfig={routeConfig} />);

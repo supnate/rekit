@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import * as d3 from 'd3';
 import { colors } from '../common';
 import { getOverviewDiagramData } from './selectors/getOverviewDiagramData';
 

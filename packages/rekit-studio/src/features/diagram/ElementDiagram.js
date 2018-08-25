@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Checkbox, Col, Icon, Popover, Row } from 'antd';
+import * as d3 from 'd3';
 import history from '../../common/history';
 import { getElementDiagramData } from './selectors/getElementDiagramData';
 import { colors } from '../common';

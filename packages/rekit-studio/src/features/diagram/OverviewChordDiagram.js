@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import { Checkbox, Col, Icon, Popover, Row, Tooltip } from 'antd';
 import history from '../../common/history';
 import { getOverviewChordDiagramData } from './selectors/getOverviewChordDiagramData';
 
-d3.tip = d3Tip;
+// d3.tip = d3Tip;
 
 let uidSeed = 0;
 const uidHash = {};
@@ -145,7 +146,7 @@ export class OverviewChordDiagram extends PureComponent {
     this.elementNodesGroup = this.svg.append('svg:g');
     this.fileNodesGroup = this.svg.append('svg:g');
 
-    this.tooltip = d3.tip()
+    this.tooltip = d3Tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(d => this.props.home.elementById[d.id].name)

@@ -7,7 +7,6 @@
     "monaco": true,
     "sessionStorage": true,
     "localStorage": true,
-    "requestAnimationFrame": true,
-    "d3": true
+    "requestAnimationFrame": true
   }
 }

@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import * as monaco from 'monaco-editor';
 import configMonacoEditor from './configMonacoEditor';
 import modelManager from './modelManager';
 

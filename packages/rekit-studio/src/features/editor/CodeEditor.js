@@ -418,11 +418,11 @@ export class CodeEditor extends Component {
             editorDidMount={this.handleEditorDidMount}
           />
         </div>
-        {this.hasOutline() &&
+        {this.editor && this.hasOutline() &&
           this.state.showOutline && (
             <EditorSider
               file={this.props.file}
-              code={''}
+              code={this.editor.getValue()}
               width={this.getOutlineWidth()}
               onSelectNode={this.handleOutlineSelect}
               showDepsView={!!this.props.elementById[this.props.file]}

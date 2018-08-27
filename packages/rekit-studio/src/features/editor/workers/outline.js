@@ -6,7 +6,10 @@ function getScopeNodes(scope, contextKey) {
   contextKey = contextKey || '';
   const arr = [];
   scope.body.forEach(node => {
-    if (node.declaration && /^(ClassDeclaration|FunctionDeclaration|VariableDeclaration)$/.test(node.declaration.type)) {
+    if (
+      node.declaration &&
+      /^(ClassDeclaration|FunctionDeclaration|VariableDeclaration)$/.test(node.declaration.type)
+    ) {
       node = node.declaration;
     }
     if (node.type === 'ClassDeclaration') {
@@ -84,7 +87,6 @@ self.addEventListener('message', event => {
       label: 'Root',
       children: getScopeNodes(ast.program),
     };
-
     self.postMessage({ root });
   } catch (e) {
     // console.log('failed to parse ast: ', e);

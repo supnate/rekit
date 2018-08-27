@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import SplitPane from 'react-split-pane';
+// import SplitPane from 'react-split-pane';
+import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
 import { Button, Icon } from 'antd';
 import history from '../../common/history';
@@ -16,15 +17,19 @@ export default class EditorSider extends Component {
     showDepsView: PropTypes.bool.isRequired,
   };
 
-  handleResizeEnd = (sizes) => {
-    storage.local.setItem('editorSiderSizes', sizes);
+  componentDidMount() {
+    console.log('editor sider did mount');
   }
+
+  handleResizeEnd = sizes => {
+    storage.local.setItem('editorSiderSizes', sizes);
+  };
 
   render() {
     const { width, code, onSelectNode } = this.props;
     const sizes = storage.local.getItem('editorSiderSizes') || [];
     const panes = [
-      <Pane key="outlineview" className="pane" minSize="100px" size={sizes[0] || 1} >
+      <Pane key="outlineview" className="pane" minSize="100px" size={sizes[0] || 1}>
         <div className="pane-header">Outline</div>
         <OutlineView code={code} onSelectNode={onSelectNode} />
       </Pane>,
@@ -47,9 +52,11 @@ export default class EditorSider extends Component {
       // splitPaneProps.default
     }
     return (
-      <div className="editor-editor-sider" style={{ width: `${width}px` }}>aaa
+      <div className="editor-editor-sider" style={{ width: `${width}px` }}>
+        <SplitPane split="horizontal" {...splitPaneProps}>
+          {panes}
+        </SplitPane>
       </div>
     );
   }
 }
-        // <SplitPane split="horizontal" {...splitPaneProps}>{panes}</SplitPane>

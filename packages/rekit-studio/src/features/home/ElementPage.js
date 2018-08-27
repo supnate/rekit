@@ -50,7 +50,6 @@ export class ElementPage extends Component {
     if (View) return View;
 
     if (!viewEle) {
-      console.log('ele: ', ele);
       const realEle = ele.target ? this.byId(ele.target) : ele;
       if (realEle.type === 'file') {
         if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(realEle.ext)) return ImageView;

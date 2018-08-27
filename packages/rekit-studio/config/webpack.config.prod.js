@@ -56,7 +56,14 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs, paths.appIndexStyle, paths.antdIndexStyle],
+  entry: {
+    app: [require.resolve('./polyfills'), paths.appIndexJs, paths.appIndexStyle, paths.antdIndexStyle],
+    'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+    'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
+    'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
+    'html.worker': 'monaco-editor/esm/vs/language/html/html.worker',
+    'ts.worker': 'monaco-editor/esm/vs/language/typescript/ts.worker',
+  },
   output: {
     // The build folder.
     path: paths.appBuild,

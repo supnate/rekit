@@ -47,9 +47,9 @@ export default class EditorSider extends Component {
       // splitPaneProps.default
     }
     return (
-      <div className="editor-editor-sider" style={{ width: `${width}px` }}>
-        <SplitPane split="horizontal" {...splitPaneProps}>{panes}</SplitPane>
+      <div className="editor-editor-sider" style={{ width: `${width}px` }}>aaa
       </div>
     );
   }
 }
+        // <SplitPane split="horizontal" {...splitPaneProps}>{panes}</SplitPane>

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as monaco from 'monaco-editor';
 
 const initialContent = {};
 

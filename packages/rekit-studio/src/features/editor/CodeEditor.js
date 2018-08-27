@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import SplitPane from 'react-split-pane';
+import * as monaco from 'monaco-editor';
 import { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged } from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
@@ -51,7 +52,6 @@ export class CodeEditor extends Component {
   state = {
     notFound: false,
     loadingFile: false,
-    loadingEditor: true,
     cursorPos: {
       lineNumber: 1,
       column: 1,
@@ -405,7 +405,7 @@ export class CodeEditor extends Component {
             )}
           </div>
         </div>
-        {(this.state.loadingFile || this.state.loadingEditor) && (
+        {this.state.loadingFile && (
           <div className="loading-container" style={{ marginRight: `${this.getOutlineWidth()}px` }}>
             <Spin size="large" />
           </div>
@@ -418,12 +418,11 @@ export class CodeEditor extends Component {
             editorDidMount={this.handleEditorDidMount}
           />
         </div>
-        {this.editor &&
-          this.hasOutline() &&
+        {this.hasOutline() &&
           this.state.showOutline && (
             <EditorSider
               file={this.props.file}
-              code={this.editor.getValue()}
+              code={''}
               width={this.getOutlineWidth()}
               onSelectNode={this.handleOutlineSelect}
               showDepsView={!!this.props.elementById[this.props.file]}

@@ -16,8 +16,8 @@ function configureMonacoEditor(editor, monaco) {
     typeRoots: ['node_modules/@types']
   };
 
-  monaco.languages.typescript.typescriptDefaults.setMaximunWorkerIdleTime(-1);
-  monaco.languages.typescript.javascriptDefaults.setMaximunWorkerIdleTime(-1);
+  monaco.languages.typescript.typescriptDefaults.setMaximumWorkerIdleTime(-1);
+  monaco.languages.typescript.javascriptDefaults.setMaximumWorkerIdleTime(-1);
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
     compilerDefaults
   );

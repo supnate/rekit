@@ -39,7 +39,7 @@ function buildDll() {
 
   let wpConfig;
   if (isDev()) {
-    if (require(dllManifestPath).name === dllName) {
+    if (fs.existsSync(dllManifestPath) && require(dllManifestPath).name === dllName) {
       console.log('Dev dll is up to date, no need to build.');
       return Promise.resolve();
     }
@@ -63,7 +63,6 @@ function buildDll() {
     })
   );
 
-  console.log('Dev vendors have changed, rebuilding dll...');
   console.time('Dll build success');
 
   return new Promise((resolve, reject) => {
@@ -80,4 +79,4 @@ function buildDll() {
   });
 }
 
-buildDll();
+module.exports = buildDll;

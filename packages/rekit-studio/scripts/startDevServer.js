@@ -4,20 +4,35 @@ const fs = require('fs');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const chalk = require('chalk');
 // const fallback = require('express-history-api-fallback');
-const { createCompiler, prepareProxy, prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
+const {
+  createCompiler,
+  prepareProxy,
+  prepareUrls,
+} = require('react-dev-utils/WebpackDevServerUtils');
 // const openBrowser = require('react-dev-utils/openBrowser');
 const rekitMiddleWare = require('../middleware');
 const paths = require('../config/paths');
 const createDevServerConfig = require('../config/webpackDevServer.config');
+const buildDll = require('./buildDll');
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const HOST = process.env.HOST || '0.0.0.0';
 const isInteractive = process.stdout.isTTY;
 
-function startDevServer(port) {
+function _startDevServer(port) {
   const devConfig = require('../config/webpack.config.dev');
+  const dllManifestPath = paths.resolveApp('.tmp/dev-vendors-manifest.json');
+
+  devConfig.plugins.push(
+    new webpack.DllReferencePlugin({
+      context: paths.appSrc,
+      manifest: require(dllManifestPath),
+    }),
+    new AddAssetHtmlPlugin({ filepath: paths.resolveApp('.tmp/dev-dll.js') })
+  );
   const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
   const appName = require(paths.appPackageJson).name;
   const urls = prepareUrls(protocol, HOST, port);
@@ -53,6 +68,10 @@ function startDevServer(port) {
       process.exit();
     });
   });
+}
+
+function startDevServer(port) {
+  buildDll().then(() => _startDevServer(port));
 }
 
 module.exports = startDevServer;

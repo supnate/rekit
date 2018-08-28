@@ -20,7 +20,12 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const { choosePort, createCompiler, prepareProxy, prepareUrls } = require('react-dev-utils/WebpackDevServerUtils');
+const {
+  choosePort,
+  createCompiler,
+  prepareProxy,
+  prepareUrls,
+} = require('react-dev-utils/WebpackDevServerUtils');
 const openBrowser = require('react-dev-utils/openBrowser');
 const ArgumentParser = require('argparse').ArgumentParser;
 const paths = require('../config/paths');
@@ -51,12 +56,17 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs, paths.appIndexStyle]))
 }
 
 // Tools like Cloud9 rely on this.
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || require(paths.appPackageJson).rekit.devPort || 3000;
+const DEFAULT_PORT =
+  parseInt(process.env.PORT, 10) || require(paths.appPackageJson).rekit.devPort || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 if (process.env.HOST) {
   console.log(
-    chalk.cyan(`Attempting to bind to HOST environment variable: ${chalk.yellow(chalk.bold(process.env.HOST))}`)
+    chalk.cyan(
+      `Attempting to bind to HOST environment variable: ${chalk.yellow(
+        chalk.bold(process.env.HOST)
+      )}`
+    )
   );
   console.log(`If this was unintentional, check that you haven't mistakenly set it in your shell.`);
   console.log(`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`);

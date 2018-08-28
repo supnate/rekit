@@ -17,10 +17,6 @@ export default class EditorSider extends Component {
     showDepsView: PropTypes.bool.isRequired,
   };
 
-  componentDidMount() {
-    console.log('editor sider did mount');
-  }
-
   handleResizeEnd = sizes => {
     storage.local.setItem('editorSiderSizes', sizes);
   };

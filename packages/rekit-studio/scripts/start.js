@@ -3,7 +3,7 @@
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
-
+console.time('loading modules...');
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
@@ -13,7 +13,6 @@ process.on('unhandledRejection', err => {
 
 // Ensure environment variables are read.
 require('../config/env');
-
 const fs = require('fs');
 const chalk = require('chalk');
 const webpack = require('webpack');
@@ -31,9 +30,9 @@ const ArgumentParser = require('argparse').ArgumentParser;
 const paths = require('../config/paths');
 const config = require('../config/webpack.config.dev');
 const createDevServerConfig = require('../config/webpackDevServer.config');
+
 const startDevServer = require('./startDevServer');
 // const startRekitStudio = require('./startRekitStudio');
-
 const parser = new ArgumentParser({
   addHelp: true,
   description: 'Start express server for dev or build result.',
@@ -72,6 +71,7 @@ if (process.env.HOST) {
   console.log(`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`);
   console.log();
 }
+console.timeEnd('loading modules...');
 
 // We attempt to use the default port but if it is busy, we offer the user to
 // run on a different port. `choosePort()` Promise resolves to the next free port.
@@ -81,6 +81,7 @@ choosePort(HOST, DEFAULT_PORT)
       // We have not found a port.
       return;
     }
+
     startDevServer(port);
   })
   .catch(err => {

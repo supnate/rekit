@@ -80,8 +80,13 @@ export default class MonacoEditor extends Component {
       this.initMonaco();
       return;
     }
-    const loaderUrl = 'vs/loader.js';
+    const loaderUrl = '/static/vs/loader.js';
     const onGotAmdLoader = () => {
+      window.require.config({
+        paths: {
+          vs: '/static/vs',
+        }
+      });
       // Load monaco
       window.require(['vs/editor/editor.main'], () => {
         this.initMonaco();

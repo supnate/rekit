@@ -86,12 +86,16 @@ export class App extends Component {
     return storage.local.getItem('layoutSizes') || {};
   }
 
-  handleResizeEnd(paneId, sizes) {
+  handleResize = () => {
+    window.dispatchEvent(new window.Event('resize'));
+  };
+
+  handleResizeEnd = (paneId, sizes) => {
     const sizesState = this.getSizesState();
     sizesState[paneId] = sizes;
     storage.local.setItem('layoutSizes', sizesState);
     console.log('resize: ', paneId, sizes);
-  }
+  };
 
   renderLoading() {
     return (
@@ -107,31 +111,33 @@ export class App extends Component {
       return this.renderLoading();
     }
 
-    // const currentTab = _.find(this.props.openTabs, t => t.isActive);
-    // const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
-
-    // const pageContainerStyle = {
-    //   left: `${this.props.sidePanelWidth}px`,
-    //   top: hasSubTabs ? '80px' : '44px',
-    // };
-
     const sizes = this.getSizesState();
     const mainVerticalSizes = sizes['main-vertical'] || [];
     const rightHorizontalSizes = sizes['right-horizontal'] || [];
     return (
       <LocaleProvider locale={enUS}>
         <div className="home-app">
-          <SplitPane split="vertical" onResizeEnd={sizes => this.handleResizeEnd('main-vertical', sizes)}>
-            <Pane size={mainVerticalSizes[0] || '300px'}>
+          <SplitPane
+            split="vertical"
+            onChange={this.handleResize}
+            onResizeEnd={sizes => this.handleResizeEnd('main-vertical', sizes)}
+          >
+            <Pane minSize="50px" maxSize="800px" size={mainVerticalSizes[0] || '300px'}>
               <SidePanel />
             </Pane>
             <Pane size={mainVerticalSizes[1] || 70000}>
               <div className="header">
                 <TabsBar />
               </div>
-              <SplitPane split="horizontal"  onResizeEnd={sizes => this.handleResizeEnd('right-horizontal', sizes)}>
+              <SplitPane
+                split="horizontal"
+                onChange={this.handleResize}
+                onResizeEnd={sizes => this.handleResizeEnd('right-horizontal', sizes)}
+              >
                 <Pane size={rightHorizontalSizes[0] || 60000}>{this.props.children}</Pane>
-                <Pane size={rightHorizontalSizes[1] || '280px'}>ccc</Pane>
+                <Pane size={rightHorizontalSizes[1] || '280px'} minSize="50px" maxSize="800px">
+                  ccc
+                </Pane>
               </SplitPane>
             </Pane>
           </SplitPane>
@@ -168,6 +174,7 @@ function mapStateToProps(state) {
       'fetchProjectDataError',
       'fetchProjectDataPending',
     ]),
+    router: state.router,
     // location: state.router.location,
   };
 }

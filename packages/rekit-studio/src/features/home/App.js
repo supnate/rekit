@@ -82,7 +82,16 @@ export class App extends Component {
   //   }
   // }
 
-  handleResizeEnd(paneId, size) {}
+  getSizesState() {
+    return storage.local.getItem('layoutSizes') || {};
+  }
+
+  handleResizeEnd(paneId, sizes) {
+    const sizesState = this.getSizesState();
+    sizesState[paneId] = sizes;
+    storage.local.setItem('layoutSizes', sizesState);
+    console.log('resize: ', paneId, sizes);
+  }
 
   renderLoading() {
     return (
@@ -106,20 +115,23 @@ export class App extends Component {
     //   top: hasSubTabs ? '80px' : '44px',
     // };
 
+    const sizes = this.getSizesState();
+    const mainVerticalSizes = sizes['main-vertical'] || [];
+    const rightHorizontalSizes = sizes['right-horizontal'] || [];
     return (
       <LocaleProvider locale={enUS}>
         <div className="home-app">
-          <SplitPane split="vertical" onResizeEnd={args => this.handleResizeEnd('main-vertical', args)}>
-            <Pane>
+          <SplitPane split="vertical" onResizeEnd={sizes => this.handleResizeEnd('main-vertical', sizes)}>
+            <Pane size={mainVerticalSizes[0] || '300px'}>
               <SidePanel />
             </Pane>
-            <Pane>
+            <Pane size={mainVerticalSizes[1] || 70000}>
               <div className="header">
                 <TabsBar />
               </div>
-              <SplitPane split="horizontal">
-                <Pane>{this.props.children}</Pane>
-                <Pane>ccc</Pane>
+              <SplitPane split="horizontal"  onResizeEnd={sizes => this.handleResizeEnd('right-horizontal', sizes)}>
+                <Pane size={rightHorizontalSizes[0] || 60000}>{this.props.children}</Pane>
+                <Pane size={rightHorizontalSizes[1] || '280px'}>ccc</Pane>
               </SplitPane>
             </Pane>
           </SplitPane>

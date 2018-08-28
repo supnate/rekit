@@ -36,8 +36,6 @@ function buildDll() {
   const dllName = getDllName();
   const dllManifestPath = paths.resolveApp('.tmp/dev-vendors-manifest.json');
 
-  delete require.cache[dllManifestPath];
-
   let wpConfig;
   if (isDev()) {
     if (fs.existsSync(dllManifestPath) && require(dllManifestPath).name === dllName) {
@@ -46,12 +44,22 @@ function buildDll() {
     }
     console.log('Dev vendors have changed, rebuilding dll...');
     wpConfig = require(devConfigPath);
+    wpConfig = {
+      ...wpConfig,
+      output: { ...wpConfig.output },
+      plugins: [...wpConfig.plugins],
+    };
     wpConfig.entry = dllConfig['dev-dll'];
     wpConfig.output.path = paths.resolveApp('.tmp');
     wpConfig.output.filename = 'dev-dll.js';
   } else {
     console.log('Building dll...');
     wpConfig = require(prodConfigPath);
+    wpConfig = {
+      ...wpConfig,
+      output: { ...wpConfig.output },
+      plugins: [...wpConfig.plugins],
+    };
     wpConfig.entry = dllConfig['prod-dll'];
     wpConfig.output.filename = `static/js/${dllName}.js`;
   }

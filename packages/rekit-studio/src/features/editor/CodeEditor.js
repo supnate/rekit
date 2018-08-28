@@ -7,8 +7,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import SplitPane from 'react-split-pane';
-import * as monaco from 'monaco-editor';
-import { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged } from '../home/redux/actions';
+import { fetchFileContent, saveFile, showDemoAlert, stickTab } from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
@@ -19,12 +18,10 @@ export class CodeEditor extends Component {
   static propTypes = {
     outlineWidth: PropTypes.number.isRequired,
     elementById: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
     fileContentById: PropTypes.object.isRequired,
     fileContentNeedReload: PropTypes.object.isRequired,
     fetchFileContentPending: PropTypes.bool.isRequired, // eslint-disable-line
     saveFilePending: PropTypes.bool.isRequired,
-    viewChanged: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     file: PropTypes.string.isRequired,
     onError: PropTypes.func,
@@ -52,6 +49,7 @@ export class CodeEditor extends Component {
   state = {
     notFound: false,
     loadingFile: false,
+    loadingEditor: true,
     cursorPos: {
       lineNumber: 1,
       column: 1,
@@ -137,7 +135,6 @@ export class CodeEditor extends Component {
     const { lineNumber, column } = this.editor.getPosition();
     const cursorOffset = lines.slice(0, lineNumber - 1).reduce((c, line) => c + line.length + 1, 0) + column - 1;
 
-    const formattingFile = this.props.file;
     axios
       .post('/rekit/api/format-code', {
         content: modelManager.getValue(this.props.file),
@@ -145,7 +142,6 @@ export class CodeEditor extends Component {
         cursorOffset,
       })
       .then(res => {
-        if (this.props.file !== formattingFile) return;
         if (res.data.error || !res.data.content.formatted) {
           this.setState({ loadingFile: false });
           return;
@@ -186,6 +182,7 @@ export class CodeEditor extends Component {
   hasChange() {
     // Whether the editor content is different from which in store.
     return modelManager.isChanged(this.props.file);
+    // return this.state.currentContent !== this.getFileContent();
   }
 
   checkAndFetchFileContent(props) {
@@ -211,13 +208,8 @@ export class CodeEditor extends Component {
   }
 
   handleEditorChange = () => {
-    const hasChange = this.hasChange();
-    const key = this.props.location.pathname;
-    if (!!this.props.viewChanged[key] !== hasChange) {
-      this.props.actions.setViewChanged(this.props.location.pathname, this.hasChange());
-    }
-    // this.props.actions.codeChange();
-    if (hasChange) this.props.actions.stickTab();
+    this.props.actions.codeChange();
+    if (this.hasChange()) this.props.actions.stickTab();
   };
 
   handleOutlineSelect = nodeData => {
@@ -269,7 +261,7 @@ export class CodeEditor extends Component {
       .saveFile(this.props.file, this.editor.getValue())
       .then(() => {
         modelManager.setInitialValue(this.props.file, this.editor.getValue());
-        this.props.actions.setViewChanged(this.props.location.pathname, false);
+        this.props.actions.codeChange();
       })
       .catch(() => {
         if (process.env.REKIT_ENV === 'demo') {
@@ -405,7 +397,7 @@ export class CodeEditor extends Component {
             )}
           </div>
         </div>
-        {this.state.loadingFile && (
+        {(this.state.loadingFile || this.state.loadingEditor) && (
           <div className="loading-container" style={{ marginRight: `${this.getOutlineWidth()}px` }}>
             <Spin size="large" />
           </div>
@@ -418,7 +410,8 @@ export class CodeEditor extends Component {
             editorDidMount={this.handleEditorDidMount}
           />
         </div>
-        {this.editor && this.hasOutline() &&
+        {this.editor &&
+          this.hasOutline() &&
           this.state.showOutline && (
             <EditorSider
               file={this.props.file}
@@ -443,22 +436,14 @@ function mapStateToProps(state) {
     fileContentNeedReload: state.home.fileContentNeedReload,
     fetchFileContentPending: state.home.fetchFileContentPending,
     saveFilePending: state.home.saveFilePending,
-    location: state.router.location,
-    viewChanged: state.home.viewChanged,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(
-      { fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab, setViewChanged },
-      dispatch
-    ),
+    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab }, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CodeEditor);
+export default connect(mapStateToProps, mapDispatchToProps)(CodeEditor);

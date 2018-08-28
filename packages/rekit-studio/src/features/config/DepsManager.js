@@ -20,7 +20,10 @@ export class DepsManager extends Component {
   };
 
   componentDidMount() {
-    if ((!this.props.config.deps || this.props.config.depsNeedReload) && !this.props.config.fetchDepsPending) {
+    if (
+      (!this.props.config.deps || this.props.config.depsNeedReload) &&
+      !this.props.config.fetchDepsPending
+    ) {
       this.refresh();
     }
   }
@@ -84,12 +87,13 @@ export class DepsManager extends Component {
           <DepsList deps={this.getData('dev')} depsType="devDeps" onShowOutput={this.showOutput} />
           <br />
           <p className="note">
-            NOTE 1: The latest version of npm package is cached for two hours. If you want to force refresh the latest
-            version, please restart Rekit Studio.
+            NOTE 1: The latest version of npm package is cached for two hours. If you want to force
+            refresh the latest version, please restart Rekit Studio.
           </p>
           <p className="note">
-            NOTE 2: Rekit uses yarn if yarn.lock exists otherwise uses npm to install/update/remove packages. If you use
-            neither npm nor yarn to manage packages you can't install/update/remove packages from this page.
+            NOTE 2: Rekit uses yarn if yarn.lock exists otherwise uses npm to install/update/remove
+            packages. If you use neither npm nor yarn to manage packages you can't
+            install/update/remove packages from this page.
           </p>
         </div>
         {outputVisible && (
@@ -129,4 +133,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepsManager);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DepsManager);

@@ -3,33 +3,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import * as monaco from 'monaco-editor';
 import configMonacoEditor from './configMonacoEditor';
 import modelManager from './modelManager';
 
 function noop() {}
-
-self.MonacoEnvironment = { // eslint-disable-line
-  getWorkerUrl: function (moduleId, label) {
-    if (label === 'json') {
-      return '/static/js/json.worker.bundle.js';
-    }
-    if (/^css|less|scss$/.test(label)) {
-      return '/static/js/css.worker.bundle.js';
-    }
-    if (label === 'less') {
-      return '/static/js/css.worker.bundle.js';
-    }
-    if (label === 'html') {
-      return '/static/js/html.worker.bundle.js';
-    }
-    if (label === 'typescript' || label === 'javascript') {
-      return '/static/js/ts.worker.bundle.js';
-    }
-    return '/static/js/editor.worker.bundle.js';
-  }
-}
-
 let editorInstance = null; // Only one global monaco editor.
 const getEditorNode = () => editorInstance && editorInstance.getDomNode() && editorInstance.getDomNode().parentNode;
 
@@ -58,7 +35,7 @@ export default class MonacoEditor extends Component {
   }
 
   componentDidMount() {
-    this.initEditor();
+    this.afterViewInit();
     window.addEventListener('resize', this.handleWindowResize);
   }
 
@@ -77,13 +54,14 @@ export default class MonacoEditor extends Component {
     window.removeEventListener('resize', this.handleWindowResize);
   }
 
-  editorWillMount() {
+  editorWillMount(monaco) {
     const { editorWillMount } = this.props;
-    editorWillMount();
+    editorWillMount(monaco);
   }
 
-  editorDidMount(editor) {
-    this.props.editorDidMount(editor);
+  editorDidMount(editor, monaco) {
+    this.props.editorDidMount(editor, monaco);
+    this.handleWindowResize();
     this.monacoListeners.push(
       editor.onDidChangeModelContent(event => {
         const value = editor.getValue();
@@ -97,9 +75,60 @@ export default class MonacoEditor extends Component {
     );
   }
 
-  initEditor() {
+  afterViewInit() {
+    if (window.monaco !== undefined) {
+      this.initMonaco();
+      return;
+    }
+    const loaderUrl = 'vs/loader.js';
+    const onGotAmdLoader = () => {
+      // Load monaco
+      window.require(['vs/editor/editor.main'], () => {
+        this.initMonaco();
+      });
+
+      // Call the delayed callbacks when AMD loader has been loaded
+      if (window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__) {
+        window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__ = false;
+        const loaderCallbacks = window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__;
+
+        if (loaderCallbacks && loaderCallbacks.length) {
+          let currentCallback = loaderCallbacks.shift();
+
+          while (currentCallback) {
+            currentCallback.fn.call(currentCallback.context);
+            currentCallback = loaderCallbacks.shift();
+          }
+        }
+      }
+    };
+
+    // Load AMD loader if necessary
+    if (window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__) {
+      // We need to avoid loading multiple loader.js when there are multiple editors loading
+      // concurrently, delay to call callbacks except the first one
+      // eslint-disable-next-line max-len
+      window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ =
+        window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__ || [];
+      window.__REACT_MONACO_EDITOR_LOADER_CALLBACKS__.push({
+        window: this,
+        fn: onGotAmdLoader
+      });
+    } else if (typeof window.require === 'undefined') {
+      const loaderScript = window.document.createElement('script');
+      loaderScript.type = 'text/javascript';
+      loaderScript.src = loaderUrl;
+      loaderScript.addEventListener('load', onGotAmdLoader);
+      window.document.body.appendChild(loaderScript);
+      window.__REACT_MONACO_EDITOR_LOADER_ISPENDING__ = true;
+    } else {
+      onGotAmdLoader();
+    }
+  }
+
+  initMonaco() {
     const { theme, options, file } = this.props;
-    this.editorWillMount();
+    this.editorWillMount(monaco);
     if (!editorInstance) {
       const domNode = document.createElement('div');
       domNode.className = 'monaco-editor-node';
@@ -116,7 +145,8 @@ export default class MonacoEditor extends Component {
     monaco.editor.setTheme(theme);
     this.editor = editorInstance;
     this.editor._editingFile = this.props.file;
-    this.editorDidMount(this.editor);
+    this.monaco = monaco;
+    this.editorDidMount(this.editor, monaco);
   }
 
   assignRef = component => {

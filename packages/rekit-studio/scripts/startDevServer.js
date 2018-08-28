@@ -25,6 +25,7 @@ const isInteractive = process.stdout.isTTY;
 function _startDevServer(port) {
   const devConfig = require('../config/webpack.config.dev');
   const dllManifestPath = paths.resolveApp('.tmp/dev-vendors-manifest.json');
+  delete require.cache[dllManifestPath];
 
   devConfig.plugins.push(
     new webpack.DllReferencePlugin({

@@ -4,6 +4,7 @@ const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
@@ -55,11 +56,11 @@ module.exports = {
       // initialization, it doesn't blow up the WebpackDevServer client, and
       // changing JS code would still trigger a refresh.
     ],
-    'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
-    'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
-    'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
-    'html.worker': 'monaco-editor/esm/vs/language/html/html.worker',
-    'ts.worker': 'monaco-editor/esm/vs/language/typescript/ts.worker',
+    // 'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+    // 'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
+    // 'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
+    // 'html.worker': 'monaco-editor/esm/vs/language/html/html.worker',
+    // 'ts.worker': 'monaco-editor/esm/vs/language/typescript/ts.worker',
   },
   output: {
     // Add /* filename */ comments to generated require()s in the output.
@@ -244,6 +245,27 @@ module.exports = {
       chunks: ['app'],
       template: paths.appHtml,
     }),
+    new CopyWebpackPlugin([
+      {
+        from: '../../node_modules/monaco-editor/min/vs',
+        to: 'static/vs',
+      },
+    ]),
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: '../../../node_modules/monaco-editor/esm/vs',
+    //     to: 'vs',
+    //   },
+    //   // 'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
+    //   // 'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
+    //   // 'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
+    //   // 'html.worker': 'monaco-editor/esm/vs/language/html/html.worker',
+    //   // 'ts.worker': 'monaco-editor/esm/vs/language/typescript/ts.worker',
+    //   {
+    //     from: './libs',
+    //     to: 'libs',
+    //   },
+    // ]),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
     // Makes some environment variables available to the JS code, for example:

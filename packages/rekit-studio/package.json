@@ -19,7 +19,15 @@
     "plugins": [
       "react-hot-loader/babel",
       "syntax-dynamic-import",
-      "lodash"
+      "lodash",
+      [
+        "module-resolver",
+        {
+          "alias": {
+            "src": "./src"
+          }
+        }
+      ]
     ]
   },
   "nyc": {

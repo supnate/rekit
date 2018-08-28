@@ -216,7 +216,6 @@ export class TabsBar extends Component {
     return (
       <div
         className={classnames('home-tabs-bar', { 'has-sub-tabs': hasSubTabs })}
-        style={{ marginLeft: `${sidePanelWidth}px` }}
       >
         <DragDropContext onDragEnd={this.handleDragEnd}>
           <Droppable droppableId="droppable" direction="horizontal">

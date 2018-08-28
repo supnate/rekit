@@ -128,7 +128,7 @@ export class SidePanel extends Component {
     const demoAlertVisible = false;
     const prjName = 'CRA';
     return (
-      <div className="home-side-panel dark-theme" style={{ width: `${sidePanelWidth}px` }}>
+      <div className="home-side-panel dark-theme">
         <div className="header">
           <Link className="home-link" to="/" title={this.props.projectRoot}>
             <h5>

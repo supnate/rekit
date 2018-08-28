@@ -5,11 +5,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import enUS from 'antd/lib/locale-provider/en_US';
 import { LocaleProvider, message, Modal, Spin } from 'antd';
+import SplitPane from 'react-split-pane/lib/SplitPane';
+import Pane from 'react-split-pane/lib/Pane';
 import { ErrorBoundary } from '../common';
+import { storage } from '../common/utils';
 import { TabsBar, SidePanel, SidePanelResizer, QuickOpen } from './';
 import DialogPlace from '../rekit-cmds/DialogPlace';
 import { DialogContainer } from '../core';
-import { fetchProjectData } from './redux/actions';
+import { fetchProjectData, resizePane } from './redux/actions';
 
 /*
   This is the root component of your app. Here you define the overall layout
@@ -79,6 +82,8 @@ export class App extends Component {
   //   }
   // }
 
+  handleResizeEnd(paneId, size) {}
+
   renderLoading() {
     return (
       <div className="home-app loading">
@@ -93,24 +98,31 @@ export class App extends Component {
       return this.renderLoading();
     }
 
-    const currentTab = _.find(this.props.openTabs, t => t.isActive);
-    const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
+    // const currentTab = _.find(this.props.openTabs, t => t.isActive);
+    // const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
 
-    const pageContainerStyle = {
-      left: `${this.props.sidePanelWidth}px`,
-      top: hasSubTabs ? '80px' : '44px',
-    };
+    // const pageContainerStyle = {
+    //   left: `${this.props.sidePanelWidth}px`,
+    //   top: hasSubTabs ? '80px' : '44px',
+    // };
 
     return (
       <LocaleProvider locale={enUS}>
         <div className="home-app">
-          <SidePanel />
-          <TabsBar />
-          <SidePanelResizer />
-          <div id="page-container" className="page-container" style={pageContainerStyle}>
-            {this.props.children}
-          </div>
-          <DialogPlace />
+          <SplitPane split="vertical" onResizeEnd={args => this.handleResizeEnd('main-vertical', args)}>
+            <Pane>
+              <SidePanel />
+            </Pane>
+            <Pane>
+              <div className="header">
+                <TabsBar />
+              </div>
+              <SplitPane split="horizontal">
+                <Pane>{this.props.children}</Pane>
+                <Pane>ccc</Pane>
+              </SplitPane>
+            </Pane>
+          </SplitPane>
           <DialogContainer />
           <QuickOpen />
         </div>
@@ -118,7 +130,20 @@ export class App extends Component {
     );
   }
 }
+// <SplitPane className="home-app">
 
+//           <SidePanel />
+//           <Pane className="header">
+//           <TabsBar />
+//           </Pane>
+//           <SidePanelResizer />
+//           <div id="page-container" className="page-container" style={pageContainerStyle}>
+//             {this.props.children}
+//           </div>
+//           <DialogPlace />
+//           <DialogContainer />
+//           <QuickOpen />
+//         </SplitPane>
 function mapStateToProps(state) {
   return {
     ..._.pick(state.home, [
@@ -137,7 +162,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchProjectData }, dispatch),
+    actions: bindActionCreators({ fetchProjectData, resizePane }, dispatch),
     // dispatch,
   };
 }

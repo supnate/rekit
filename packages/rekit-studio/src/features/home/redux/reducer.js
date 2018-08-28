@@ -20,6 +20,7 @@ import { reducer as showDialogReducer } from './showDialog';
 import { reducer as hideDialogReducer } from './hideDialog';
 import plugin from '../../plugin/plugin';
 import { reducer as setViewChangedReducer } from './setViewChanged';
+import { reducer as resizePaneReducer } from './resizePane';
 
 const reducers = [
   fetchProjectData,
@@ -36,6 +37,7 @@ const reducers = [
   showDialogReducer,
   hideDialogReducer,
   setViewChangedReducer,
+  resizePaneReducer,
 ];
 
 // const pascalCase = _.flow(

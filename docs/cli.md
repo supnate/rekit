@@ -5,10 +5,10 @@ Rekit provides a set of command line tools to manage components, actions and rou
 ### Create an app
 You can use below command to create an app:
 ```
-rekit create <app-name> [--sass] [--clean]
+rekit create <app-name> [--sass]
 ```
 
-This will create an app named `app-name` under the current directory. The flag `--sass` allows to use [sass](https://sass-lang.com) instead of [less](http://lesscss.org) as the css transpiler. The flag `--clean` is used to create a clean project without samples.
+This will create an app named `app-name` under the current directory. The flag `--sass` allows to use [sass](https://sass-lang.com) instead of [less](http://lesscss.org) as the css transpiler.
 
 ### Create a plugin
 You can use below command to create a plugin:

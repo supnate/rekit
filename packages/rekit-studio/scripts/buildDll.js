@@ -15,6 +15,7 @@ function getDllName() {
   const rsVersion = require(paths.appPackageJson).version;
   if (isDev()) {
     const nameVersions = dllConfig['dev-dll']
+      .map(m => m.split('/')[0])
       .map(pkgName => {
         const pkg = require(`${pkgName}/package.json`);
         return `${pkg.name}_${pkg.version}`;

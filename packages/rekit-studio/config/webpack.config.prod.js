@@ -57,7 +57,12 @@ module.exports = {
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
   entry: {
-    app: [require.resolve('./polyfills'), paths.appIndexJs, paths.appIndexStyle, paths.antdIndexStyle],
+    app: [
+      require.resolve('./polyfills'),
+      paths.appIndexJs,
+      paths.appIndexStyle,
+      paths.antdIndexStyle,
+    ],
     'editor.worker': 'monaco-editor/esm/vs/editor/editor.worker.js',
     'json.worker': 'monaco-editor/esm/vs/language/json/json.worker',
     'css.worker': 'monaco-editor/esm/vs/language/css/css.worker',
@@ -75,7 +80,8 @@ module.exports = {
     // We inferred the "public path" (such as / or /my-project) from homepage.
     publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info => path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/'),
+    devtoolModuleFilenameTemplate: info =>
+      path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.

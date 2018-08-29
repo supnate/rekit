@@ -12,7 +12,6 @@ import { reducer as moveTabReducer } from './moveTab';
 import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
 import { reducer as codeChangeReducer } from './codeChange';
 import { reducer as stickTabReducer } from './stickTab';
-import { getTabKey } from '../helpers';
 import { storage } from '../../common/utils';
 import { reducer as updateProjectDataReducer } from './updateProjectData';
 import { reducer as showDialogReducer } from './showDialog';
@@ -66,24 +65,30 @@ export default function reducer(state = initialState, action) {
       }
       let tab;
       plugin
-        .getPlugins()
+        .getPlugins('tab.getTab')
         .reverse()
         .some(p => {
-          if (p.tab && p.tab.getTab) {
-            tab = { ...p.tab.getTab(pathname) };
-          }
-          return !!tab;
+          const t = p.tab.getTab(pathname);
+          if (!t) return false;
+          tab = { ...p.tab.getTab(pathname) };
+          return true;
         });
+      let { openTabs, historyTabs } = state;
 
       if (!tab) {
-        tab = {
-          name: 'Not found',
-          key: 'rekit:not-found',
-        };
+        openTabs = openTabs.map(t => (t.isActive ? { ...t, isActive: false } : t));
+        newState = { ...state, openTabs };
+        storage.session.setItem('openTabs', openTabs);
+        break;
+        // tab = {
+        //   name: 'No Tab',
+        //   key: 'rekit:not-found',
+        //   icon: 'not-found',
+        //   iconColor: 'red',
+        // };
       }
       tab.isTemp = !tab.noPreview;
 
-      let { openTabs, historyTabs } = state;
       openTabs = openTabs.map(t => ({ ...t, isActive: false }));
 
       let foundTab = _.find(openTabs, { key: tab.key });
@@ -107,17 +112,25 @@ export default function reducer(state = initialState, action) {
 
       // If current url path doesn't match urlPath of element which has sub tabs,
       // redirect to the default/current url path of the element.
-      if (foundTab.subTabs && foundTab.subTabs.length && !foundTab.subTabs.some(t => t.urlPath === pathname)) {
+      if (
+        foundTab.subTabs &&
+        foundTab.subTabs.length &&
+        !foundTab.subTabs.some(t => t.urlPath === pathname)
+      ) {
         let redirectUrlPath;
-        if (foundTab.subTabs.some(t => t.urlPath === foundTab.urlPath)) redirectUrlPath = foundTab.urlPath;
-        else redirectUrlPath = (_.find(foundTab.subTabs, 'isDefault') || foundTab.subTabs[0]).urlPath;
+        if (foundTab.subTabs.some(t => t.urlPath === foundTab.urlPath))
+          redirectUrlPath = foundTab.urlPath;
+        else
+          redirectUrlPath = (_.find(foundTab.subTabs, 'isDefault') || foundTab.subTabs[0]).urlPath;
         requestAnimationFrame(() => history.replace(redirectUrlPath));
         newState = state;
         break;
       }
 
       const foundIndex = _.findIndex(openTabs, { key: foundTab.key });
-      openTabs = update(openTabs, { [foundIndex]: { $set: { ...foundTab, urlPath: pathname, isActive: true } } });
+      openTabs = update(openTabs, {
+        [foundIndex]: { $set: { ...foundTab, urlPath: pathname, isActive: true } },
+      });
       historyTabs = [tab.key, ..._.without(historyTabs, tab.key)];
       newState = { ...state, openTabs, historyTabs };
       storage.session.setItem('openTabs', openTabs);

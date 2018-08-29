@@ -125,11 +125,11 @@ export class App extends Component {
             <Pane minSize="50px" maxSize="800px" size={mainVerticalSizes[0] || '300px'}>
               <SidePanel />
             </Pane>
-            <Pane size={mainVerticalSizes[1] || 70000}>
-              <div className="header">
-                <TabsBar />
-              </div>
+            <Pane className="right-pane" size={mainVerticalSizes[1] || 70000}>
+              <TabsBar />
+
               <SplitPane
+                className="right-split-pane"
                 split="horizontal"
                 onChange={this.handleResize}
                 onResizeEnd={sizes => this.handleResizeEnd('right-horizontal', sizes)}
@@ -174,7 +174,7 @@ function mapStateToProps(state) {
       'fetchProjectDataError',
       'fetchProjectDataPending',
     ]),
-    router: state.router,
+    // router: state.router,
     // location: state.router.location,
   };
 }

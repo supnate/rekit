@@ -9,8 +9,7 @@ import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
 import { ErrorBoundary } from '../common';
 import { storage } from '../common/utils';
-import { TabsBar, SidePanel, SidePanelResizer, QuickOpen } from './';
-import DialogPlace from '../rekit-cmds/DialogPlace';
+import { TabsBar, SidePanel, QuickOpen } from './';
 import { DialogContainer } from '../core';
 import { fetchProjectData, resizePane } from './redux/actions';
 

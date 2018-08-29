@@ -9,7 +9,6 @@ import { reducer as hideDemoAlertReducer } from './hideDemoAlert';
 import { reducer as saveFileReducer } from './saveFile';
 import { reducer as closeTabReducer } from './closeTab';
 import { reducer as moveTabReducer } from './moveTab';
-import { reducer as setSidePanelWidthReducer } from './setSidePanelWidth';
 import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
 import { reducer as codeChangeReducer } from './codeChange';
 import { reducer as stickTabReducer } from './stickTab';
@@ -30,7 +29,6 @@ const reducers = [
   saveFileReducer,
   closeTabReducer,
   moveTabReducer,
-  setSidePanelWidthReducer,
   codeChangeReducer,
   stickTabReducer,
   updateProjectDataReducer,

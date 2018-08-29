@@ -27,6 +27,8 @@ const initialState = {
   codeChange: 0, // used to trigger UI re-render when typing
   viewChanged: {},
   paneSize: {},
+
+  bottomDrawerVisible: true,
 };
 
 export default initialState;

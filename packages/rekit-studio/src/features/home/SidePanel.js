@@ -40,11 +40,16 @@ export class SidePanel extends Component {
       { icon: 'book', iconColor: '#29b6f6', text: 'Add Feature', key: 'add-feature' },
       { icon: 'notification', iconColor: '#ec407a', text: 'Add Action', key: 'add-action' },
       { icon: 'appstore-o', iconColor: '#F08036', text: 'Add Component', key: 'add-component' },
+      { icon: 'code-o', iconColor: '#555', text: 'Show Output', key: 'show-output' },
     ];
     plugin.getPlugins('menu.mainMenu.fillMenuItems').forEach(p => {
       p.fillMenuItems(menuItems);
     });
     return menuItems;
+  }
+  showOutput() {
+    this.props.actions.setBottomDrawerVisible(true);
+    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
   }
 
   handleMainMenuClick = evt => {
@@ -56,6 +61,9 @@ export class SidePanel extends Component {
           type: evt.key,
           ...this.cmdContext,
         });
+        break;
+      case 'show-output':
+        this.showOutput();
         break;
       case 'deps':
         history.push('/config/deps');
@@ -97,25 +105,25 @@ export class SidePanel extends Component {
           </Menu.Item>
         ))}
         <Menu.Item key="add-action">
-          <Icon type="notification" style={{ color: '#ec407a' }} /> &nbsp;Add Action
+          <Icon type="notification" style={{ color: '#ec407a' }} />Add Action
         </Menu.Item>
         <Menu.Item key="add-component">
-          <Icon type="appstore-o" style={{ color: '#F08036' }} /> &nbsp;Add Component
+          <Icon type="appstore-o" style={{ color: '#F08036' }} />Add Component
         </Menu.Item>
         <Menu.Item key="deps">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Dependencies
+          <Icon type="appstore-o" style={{ color: 'transparent' }} />Dependencies
         </Menu.Item>
         <Menu.Item key="tests">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Run Tests
+          <Icon type="appstore-o" style={{ color: 'transparent' }} />Run Tests
         </Menu.Item>
         <Menu.Item key="test-coverage">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Test Coverage
+          <Icon type="appstore-o" style={{ color: 'transparent' }} />Test Coverage
         </Menu.Item>
         <Menu.Item key="build">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;Build
+          <Icon type="appstore-o" style={{ color: 'transparent' }} />Build
         </Menu.Item>
         <Menu.Item key="about">
-          <Icon type="appstore-o" style={{ color: 'transparent' }} /> &nbsp;About
+          <Icon type="appstore-o" style={{ color: 'transparent' }} />About
         </Menu.Item>
       </Menu>
     );

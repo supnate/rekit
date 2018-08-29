@@ -18,3 +18,4 @@ export { default as TabsBar } from './TabsBar';
 export { default as ElementPage } from './ElementPage';
 export { default as ImageView } from './ImageView';
 export { default as SvgView } from './SvgView';
+export { default as BottomDrawer } from './BottomDrawer';

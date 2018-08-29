@@ -9,9 +9,9 @@ import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
 import { ErrorBoundary } from '../common';
 import { storage } from '../common/utils';
-import { TabsBar, SidePanel, QuickOpen } from './';
+import { BottomDrawer, TabsBar, SidePanel, QuickOpen } from './';
 import { DialogContainer } from '../core';
-import { fetchProjectData, resizePane } from './redux/actions';
+import { fetchProjectData, resizePane, setBottomDrawerVisible } from './redux/actions';
 
 /*
   This is the root component of your app. Here you define the overall layout
@@ -30,6 +30,7 @@ export class App extends Component {
     projectDataNeedReload: PropTypes.bool.isRequired,
     fetchProjectDataError: PropTypes.any,
     fetchProjectDataPending: PropTypes.bool.isRequired,
+    bottomDrawerVisible: PropTypes.bool.isRequired,
     // dispatch: PropTypes.func.isRequired,
     // location: PropTypes.object.isRequired,
   };
@@ -85,6 +86,11 @@ export class App extends Component {
     return storage.local.getItem('layoutSizes') || {};
   }
 
+  hideDrawer = () => {
+    this.props.actions.setBottomDrawerVisible(false)
+    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
+  };
+
   handleResize = () => {
     window.dispatchEvent(new window.Event('resize'));
   };
@@ -110,6 +116,8 @@ export class App extends Component {
       return this.renderLoading();
     }
 
+    const { bottomDrawerVisible } = this.props;
+
     const sizes = this.getSizesState();
     const mainVerticalSizes = sizes['main-vertical'] || [];
     const rightHorizontalSizes = sizes['right-horizontal'] || [];
@@ -124,7 +132,7 @@ export class App extends Component {
             <Pane minSize="50px" maxSize="60%" size={mainVerticalSizes[0] || '300px'}>
               <SidePanel />
             </Pane>
-            <Pane className="right-pane" size={mainVerticalSizes[1] || 70000}>
+            <Pane className="right-pane" size={mainVerticalSizes[1] || 1}>
               <TabsBar />
 
               <SplitPane
@@ -133,10 +141,12 @@ export class App extends Component {
                 onChange={this.handleResize}
                 onResizeEnd={sizes => this.handleResizeEnd('right-horizontal', sizes)}
               >
-                <Pane size={rightHorizontalSizes[0] || 60000}>{this.props.children}</Pane>
-                <Pane size={rightHorizontalSizes[1] || '280px'} minSize="50px" maxSize="80%">
-                  ccc
-                </Pane>
+                <Pane size={rightHorizontalSizes[0] || 1}>{this.props.children}</Pane>
+                {bottomDrawerVisible && (
+                  <Pane size={rightHorizontalSizes[1] || '280px'} minSize="50px" maxSize="80%">
+                    <BottomDrawer hideDrawer={this.hideDrawer} />
+                  </Pane>
+                )}
               </SplitPane>
             </Pane>
           </SplitPane>
@@ -147,20 +157,7 @@ export class App extends Component {
     );
   }
 }
-// <SplitPane className="home-app">
 
-//           <SidePanel />
-//           <Pane className="header">
-//           <TabsBar />
-//           </Pane>
-//           <SidePanelResizer />
-//           <div id="page-container" className="page-container" style={pageContainerStyle}>
-//             {this.props.children}
-//           </div>
-//           <DialogPlace />
-//           <DialogContainer />
-//           <QuickOpen />
-//         </SplitPane>
 function mapStateToProps(state) {
   return {
     ..._.pick(state.home, [
@@ -172,6 +169,7 @@ function mapStateToProps(state) {
       'projectDataNeedReload',
       'fetchProjectDataError',
       'fetchProjectDataPending',
+      'bottomDrawerVisible',
     ]),
     // router: state.router,
     // location: state.router.location,
@@ -180,7 +178,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchProjectData, resizePane }, dispatch),
+    actions: bindActionCreators({ fetchProjectData, resizePane, setBottomDrawerVisible }, dispatch),
     // dispatch,
   };
 }

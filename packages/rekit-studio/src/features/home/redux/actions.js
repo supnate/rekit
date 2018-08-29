@@ -14,3 +14,4 @@ export { showDialog } from './showDialog';
 export { hideDialog } from './hideDialog';
 export { setViewChanged } from './setViewChanged';
 export { resizePane } from './resizePane';
+export { setBottomDrawerVisible } from './setBottomDrawerVisible';

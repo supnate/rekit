@@ -1,0 +1,64 @@
+@import '../../styles/mixins';
+
+.home-bottom-drawer {
+  height: 100%;
+  color: #ddd;
+  display: flex;
+  flex-direction: column;
+  .toolbar {
+    display: flex;
+    height: 30px;
+    border-top: 1px solid #333;
+    background-color: #111;
+
+    .toolbar-tabs {
+      flex-grow: 1;
+      background-color: #111;
+
+      .toolbar-tab {
+        display: inline-block;
+        line-height: 28px;
+        padding: 0 15px;
+        color: #bbb;
+        font-size: 13px;
+        cursor: pointer;
+        &.is-active {
+          border-bottom: 1px solid #108ee9;
+          color: #108ee9;
+        }
+      }
+    }
+
+    .toolbar-buttons {
+      padding-right: 10px;
+
+      .ant-btn {
+        background-color: transparent;
+        width: 20px;
+        height: 20px;
+        margin-top: 4px;
+        color: #ccc;
+        border: none;
+        outline: none;
+
+        &:hover {
+          color: #fff;
+        }
+        > span {
+          display: inline-block;
+        }
+
+        &.ant-btn-background-ghost::after {
+          border: none !important;
+        }
+      }
+
+      .close-btn {
+      }
+    }
+  }
+  .content-container {
+    flex: 1;
+    background-color: #1e1e1e;
+  }
+}

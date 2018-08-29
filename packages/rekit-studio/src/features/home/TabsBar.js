@@ -22,7 +22,6 @@ export class TabsBar extends Component {
   static propTypes = {
     openTabs: PropTypes.array.isRequired,
     historyTabs: PropTypes.array.isRequired,
-    sidePanelWidth: PropTypes.number.isRequired,
     actions: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
@@ -210,7 +209,7 @@ export class TabsBar extends Component {
   };
 
   render() {
-    const { openTabs, sidePanelWidth } = this.props;
+    const { openTabs } = this.props;
     const currentTab = this.getCurrentTab();
     const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
     return (
@@ -242,7 +241,7 @@ export class TabsBar extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'sidePanelWidth', 'viewChanged']),
+    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'viewChanged']),
     pathname: state.router.pathname,
     tabs: tabsSelector(state),
     location: state.router.location,

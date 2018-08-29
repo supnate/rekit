@@ -3,5 +3,5 @@
     "experimentalDecorators": true,
     "allowJs": true
   },
-  "excludes": "*/node_modules/*"
+  "exclude": "*/node_modules/*"
 }

@@ -158,9 +158,12 @@ export default class MonacoEditor extends Component {
     this.containerElement = component;
   };
 
-  handleWindowResize = _.debounce(() => {
+  // handleWindowResize = _.debounce(() => {
+  //   this.editor.layout();
+  // }, 10);
+  handleWindowResize = () => {
     this.editor.layout();
-  }, 100);
+  };
 
   render() {
     return <div ref={this.assignRef} className="editor-monaco-editor" />;

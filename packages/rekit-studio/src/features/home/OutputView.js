@@ -13,39 +13,7 @@ export class OutputView extends Component {
   render() {
     return (
       <div className="home-output-view">
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
-        <div>Page Content: home/OutputView</div>
+        Page Content: home/OutputView
       </div>
     );
   }

@@ -12,7 +12,7 @@ import store from './common/store';
 // const store = configStore();
 // const history = syncHistoryWithStore(browserHistory, store);
 
-if (0 && process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
   const socket = io();
   socket.on('connect', () => {
     console.log('[STUDIO] connected.');

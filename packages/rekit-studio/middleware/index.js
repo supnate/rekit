@@ -87,9 +87,12 @@ module.exports = () => {
 
   function rekitMiddleware(server, app, args) {
     args = args || {};
-    // setupSocketIo(server);
+    setupSocketIo(server);
     const prjRoot = rekit.core.paths.getProjectRoot();
-    app.use('/coverage', express.static(rekit.core.paths.join(prjRoot, 'coverage'), { fallthrough: false }));
+    app.use(
+      '/coverage',
+      express.static(rekit.core.paths.join(prjRoot, 'coverage'), { fallthrough: false })
+    );
     app.use(bodyParser.json({ limit: '5MB' }));
     app.use(bodyParser.urlencoded({ extended: true }));
 

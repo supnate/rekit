@@ -50,7 +50,7 @@ function _startDevServer(port) {
   const serverConfig = createDevServerConfig(proxyConfig, urls.lanUrlForConfig);
   const devServer = new WebpackDevServer(compiler, serverConfig);
 
-  devServer.use(rekitMiddleWare()(devServer, devServer.app));
+  devServer.use(rekitMiddleWare()(devServer.listeningApp, devServer.app));
   // Launch WebpackDevServer.
   devServer.listen(port, HOST, err => {
     if (err) {

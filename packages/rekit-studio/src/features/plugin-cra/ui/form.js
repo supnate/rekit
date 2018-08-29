@@ -13,6 +13,7 @@ const parentElement = id => byId(byId(id).parent);
 const getFeatures = () =>
   byId('v:features')
     .children.map(byId)
+    .filter(ele => ele.type === 'feature')
     .map(f => ({ name: f.name, value: f.name }));
 
 const getInitialFeature = args => {
@@ -21,7 +22,7 @@ const getInitialFeature = args => {
     const targetEle = byId(context.targetId);
 
     if (targetEle.type === 'feature') {
-      return targetEle.id;
+      return targetEle.name;
     }
     if (/^actions|components$/.test(targetEle.type)) {
       return parentElement(targetEle.id).name;

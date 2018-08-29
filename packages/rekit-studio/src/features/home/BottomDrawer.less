@@ -3,14 +3,12 @@
 .home-bottom-drawer {
   height: 100%;
   color: #ddd;
-  display: flex;
-  flex-direction: column;
+  position: relative;
   .toolbar {
-    display: flex;
     height: 30px;
     border-top: 1px solid #333;
     background-color: #111;
-
+    display: flex;
     .toolbar-tabs {
       flex-grow: 1;
       background-color: #111;
@@ -58,7 +56,10 @@
     }
   }
   .content-container {
-    flex: 1;
+    position: absolute;
+    top: 30px;
+    bottom: 0;
+    width: 100%;
     background-color: #1e1e1e;
   }
 }

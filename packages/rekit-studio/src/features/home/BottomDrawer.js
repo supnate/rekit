@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { SvgIcon } from '../common';
+import { OutputView } from './';
 
 export default class BottomDrawer extends Component {
   static propTypes = {
@@ -27,7 +28,9 @@ export default class BottomDrawer extends Component {
             />
           </div>
         </div>
-        <div className="content-container">def</div>
+        <div className="content-container">
+          <OutputView />
+        </div>
       </div>
     );
   }

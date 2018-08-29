@@ -29,6 +29,8 @@ const initialState = {
   paneSize: {},
 
   bottomDrawerVisible: true,
+
+  output: [],
 };
 
 export default initialState;

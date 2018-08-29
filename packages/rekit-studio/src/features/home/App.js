@@ -21,18 +21,14 @@ import { fetchProjectData, resizePane, setBottomDrawerVisible } from './redux/ac
 
 export class App extends Component {
   static propTypes = {
-    // home: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
     elementById: PropTypes.object,
     openTabs: PropTypes.array,
-    sidePanelWidth: PropTypes.number.isRequired,
     projectDataNeedReload: PropTypes.bool.isRequired,
     fetchProjectDataError: PropTypes.any,
     fetchProjectDataPending: PropTypes.bool.isRequired,
     bottomDrawerVisible: PropTypes.bool.isRequired,
-    // dispatch: PropTypes.func.isRequired,
-    // location: PropTypes.object.isRequired,
   };
 
   static defaultProps = {

@@ -20,6 +20,7 @@ import plugin from '../../plugin/plugin';
 import { reducer as setViewChangedReducer } from './setViewChanged';
 import { reducer as resizePaneReducer } from './resizePane';
 import { reducer as setBottomDrawerVisibleReducer } from './setBottomDrawerVisible';
+import { reducer as clearOutputReducer } from './clearOutput';
 
 const reducers = [
   fetchProjectData,
@@ -37,6 +38,7 @@ const reducers = [
   setViewChangedReducer,
   resizePaneReducer,
   setBottomDrawerVisibleReducer,
+  clearOutputReducer,
 ];
 
 // const pascalCase = _.flow(

@@ -2,7 +2,7 @@ const paths = require('./paths');
 
 const commonDll = [
   'antd',
-  'antd/dist/antd.less',
+  // 'antd/dist/antd.less',
   'axios',
   'ansi-to-html',
   'babel-polyfill',

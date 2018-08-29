@@ -122,7 +122,7 @@ export class App extends Component {
             onChange={this.handleResize}
             onResizeEnd={sizes => this.handleResizeEnd('main-vertical', sizes)}
           >
-            <Pane minSize="50px" maxSize="800px" size={mainVerticalSizes[0] || '300px'}>
+            <Pane minSize="50px" maxSize="60%" size={mainVerticalSizes[0] || '300px'}>
               <SidePanel />
             </Pane>
             <Pane className="right-pane" size={mainVerticalSizes[1] || 70000}>
@@ -135,7 +135,7 @@ export class App extends Component {
                 onResizeEnd={sizes => this.handleResizeEnd('right-horizontal', sizes)}
               >
                 <Pane size={rightHorizontalSizes[0] || 60000}>{this.props.children}</Pane>
-                <Pane size={rightHorizontalSizes[1] || '280px'} minSize="50px" maxSize="800px">
+                <Pane size={rightHorizontalSizes[1] || '280px'} minSize="50px" maxSize="80%">
                   ccc
                 </Pane>
               </SplitPane>

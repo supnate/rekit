@@ -6,17 +6,17 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
-import SplitPane from 'react-split-pane';
+import SplitPane from 'react-split-pane/lib/SplitPane';
+import Pane from 'react-split-pane/lib/Pane';
 import { fetchFileContent, saveFile, showDemoAlert, stickTab } from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
 import { codeChange } from './redux/actions';
-import { OutlineResizer, MonacoEditor, EditorSider } from './';
+import { MonacoEditor, EditorSider } from './';
 
 export class CodeEditor extends Component {
   static propTypes = {
-    outlineWidth: PropTypes.number.isRequired,
     elementById: PropTypes.object.isRequired,
     fileContentById: PropTypes.object.isRequired,
     fileContentNeedReload: PropTypes.object.isRequired,
@@ -99,7 +99,11 @@ export class CodeEditor extends Component {
         loadingFile: false,
       });
       const newContent = this.getFileContent();
-      if (hasChange && oldContent !== newContent && newContent !== modelManager.getValue(nextProps.file)) {
+      if (
+        hasChange &&
+        oldContent !== newContent &&
+        newContent !== modelManager.getValue(nextProps.file)
+      ) {
         Modal.confirm({
           title: 'The file has changed on disk.',
           content: 'Do you want to reload it?',
@@ -133,7 +137,8 @@ export class CodeEditor extends Component {
     this.setState({ loadingFile: true });
     const lines = this.editor.getValue().split('\n');
     const { lineNumber, column } = this.editor.getPosition();
-    const cursorOffset = lines.slice(0, lineNumber - 1).reduce((c, line) => c + line.length + 1, 0) + column - 1;
+    const cursorOffset =
+      lines.slice(0, lineNumber - 1).reduce((c, line) => c + line.length + 1, 0) + column - 1;
 
     axios
       .post('/rekit/api/format-code', {
@@ -147,13 +152,20 @@ export class CodeEditor extends Component {
           return;
         }
         this.editor.executeEdits('format', [
-          { range: new monaco.Range(1, 1, 1000000, 1), text: res.data.content.formatted, forceMoveMarkers: true },
+          {
+            range: new monaco.Range(1, 1, 1000000, 1),
+            text: res.data.content.formatted,
+            forceMoveMarkers: true,
+          },
         ]);
         const newCursorOffset = res.data.content.cursorOffset;
         const newLines = res.data.content.formatted.split('\n');
         let c = 0;
         let newLineNumber = 0;
-        while (c + newLines[newLineNumber].length + 1 < newCursorOffset && newLineNumber < newLines.length) {
+        while (
+          c + newLines[newLineNumber].length + 1 < newCursorOffset &&
+          newLineNumber < newLines.length
+        ) {
           c += newLines[newLineNumber].length + 1;
           newLineNumber += 1;
         }
@@ -188,7 +200,10 @@ export class CodeEditor extends Component {
   checkAndFetchFileContent(props) {
     // Check if content exists or need reload, if yes then fetch it.
     const { fileContentById, fileContentNeedReload, fetchFileContentPending, file } = props;
-    if ((!_.has(fileContentById, file) || fileContentNeedReload[file]) && !fetchFileContentPending) {
+    if (
+      (!_.has(fileContentById, file) || fileContentNeedReload[file]) &&
+      !fetchFileContentPending
+    ) {
       return this.props.actions
         .fetchFileContent(props.file)
         .then(() => {
@@ -298,6 +313,13 @@ export class CodeEditor extends Component {
     );
   };
 
+  handleResize = () => {
+    window.dispatchEvent(new window.Event('resize'));
+  };
+  handleResizeEnd = sizes => {
+    storage.local.setItem('editorPaneSizes', sizes);
+  };
+
   render() {
     if (this.state.notFound) {
       return (
@@ -317,9 +339,10 @@ export class CodeEditor extends Component {
     };
     const hasChange = this.hasChange();
     const { saveFilePending } = this.props;
+    const editorPaneSizes = storage.local.getItem('editorPaneSizes') || ['1', '200px'];
+
     return (
       <div className="editor-code-editor">
-        <OutlineResizer />
         <div className="code-editor-toolbar">
           <div className="file-path">{this.props.file}</div>
           <div>
@@ -397,30 +420,37 @@ export class CodeEditor extends Component {
             )}
           </div>
         </div>
-        {(this.state.loadingFile || this.state.loadingEditor) && (
-          <div className="loading-container" style={{ marginRight: `${this.getOutlineWidth()}px` }}>
-            <Spin size="large" />
-          </div>
-        )}
-        <div className="monaco-editor-container" style={{ marginRight: `${this.getOutlineWidth()}px` }}>
-          <MonacoEditor
-            file={this.props.file}
-            options={options}
-            onChange={this.handleEditorChange}
-            editorDidMount={this.handleEditorDidMount}
-          />
-        </div>
-        {this.editor &&
-          this.hasOutline() &&
-          this.state.showOutline && (
-            <EditorSider
+
+        <SplitPane split="vertical" onChange={this.handleResize} onResizeEnd={this.handleResizeEnd}>
+          <Pane className="monaco-editor-container" size={editorPaneSizes[0]}>
+            {(this.state.loadingFile || this.state.loadingEditor) && (
+              <div
+                className="loading-container"
+              >
+                <Spin size="large" />
+              </div>
+            )}
+            <MonacoEditor
               file={this.props.file}
-              code={this.editor.getValue()}
-              width={this.getOutlineWidth()}
-              onSelectNode={this.handleOutlineSelect}
-              showDepsView={!!this.props.elementById[this.props.file]}
+              options={options}
+              onChange={this.handleEditorChange}
+              editorDidMount={this.handleEditorDidMount}
             />
-          )}
+          </Pane>
+          {this.editor &&
+            this.hasOutline() &&
+            this.state.showOutline && (
+              <Pane minSize="50px" maxSize="80%" size={editorPaneSizes[1]}>
+                <EditorSider
+                  file={this.props.file}
+                  code={this.editor.getValue()}
+                  width={this.getOutlineWidth()}
+                  onSelectNode={this.handleOutlineSelect}
+                  showDepsView={!!this.props.elementById[this.props.file]}
+                />
+              </Pane>
+            )}
+        </SplitPane>
       </div>
     );
   }
@@ -430,7 +460,6 @@ export class CodeEditor extends Component {
 function mapStateToProps(state) {
   return {
     // codeChange: state.home.codeChange,
-    outlineWidth: state.editor.outlineWidth,
     fileContentById: state.home.fileContentById,
     elementById: state.home.elementById,
     fileContentNeedReload: state.home.fileContentNeedReload,
@@ -442,8 +471,14 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab }, dispatch),
+    actions: bindActionCreators(
+      { fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab },
+      dispatch
+    ),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CodeEditor);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CodeEditor);

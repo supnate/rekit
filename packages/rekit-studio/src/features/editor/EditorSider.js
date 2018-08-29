@@ -13,7 +13,6 @@ export default class EditorSider extends Component {
     file: PropTypes.string.isRequired,
     code: PropTypes.string.isRequired,
     onSelectNode: PropTypes.func,
-    width: PropTypes.number,
     showDepsView: PropTypes.bool.isRequired,
   };
 
@@ -34,9 +33,9 @@ export default class EditorSider extends Component {
       panes.push(
         <Pane key="depsview" className="pane" minSize="100px" size={sizes[1] || 1}>
           <div className="pane-header">
-            Relations
-            <Button icon="right" size="small" onClick={() => history.go(1)} title="Go forward" />
+            <div className="pane-header-label">Relations</div>
             <Button icon="left" size="small" onClick={() => history.go(-1)} title="Go back" />
+            <Button icon="right" size="small" onClick={() => history.go(1)} title="Go forward" />
           </div>
           <DepsView file={this.props.file} />
         </Pane>
@@ -48,7 +47,7 @@ export default class EditorSider extends Component {
       // splitPaneProps.default
     }
     return (
-      <div className="editor-editor-sider" style={{ width: `${width}px` }}>
+      <div className="editor-editor-sider">
         <SplitPane split="horizontal" {...splitPaneProps}>
           {panes}
         </SplitPane>

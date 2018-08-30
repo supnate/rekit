@@ -6,15 +6,16 @@
 const fs = require('fs');
 const path = require('path');
 const shell = require('shelljs');
+const _ = require('lodash');
 const paths = require('./paths');
 
 let plugins = null;
 
-function getPlugins() {
+function getPlugins(prop) {
   if (!plugins) {
     loadPlugins();
   }
-  return plugins;
+  return prop ? plugins.filter(_.property(prop)) : plugins;
 }
 
 // Load plugin instance

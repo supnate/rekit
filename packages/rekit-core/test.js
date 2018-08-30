@@ -6,8 +6,9 @@ console.time('test');
 // console.log(rekit.core.app.getProjectData());
 // rekit.core.app.getProjectData();
 
-rekit.core.element.add('action', 'a1');
-rekit.core.element.add('component', 'home/c1', {});
+// rekit.core.element.add('action', 'a1');
+// rekit.core.element.add('component', 'home/c1', {});
+rekit.core.element.remove('feature', 'home', {});
 const { output } = rekit.core.vio.flush();
 console.log(output.length);
 output.forEach(console.log);

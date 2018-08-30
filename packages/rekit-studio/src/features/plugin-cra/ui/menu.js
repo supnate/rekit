@@ -1,7 +1,9 @@
+import { Modal, message } from 'antd';
 import store from '../../../common/store';
 import * as actions from '../../core/redux/actions';
 
 const showDialog = (...args) => store.dispatch(actions.showDialog(...args));
+const execCoreCommand = args => store.dispatch(actions.execCoreCommand(args));
 
 const byId = id => store.getState().home.elementById[id];
 
@@ -86,6 +88,44 @@ export default {
           showDialog('core.element.move.component', 'Move', {
             action: 'move',
             targetId: elementId,
+          });
+          break;
+        }
+        case 'del': {
+          console.log('del: ', elementId);
+          Modal.confirm({
+            title: 'Are you sure to delete the element?',
+            onOk() {
+              const ele = byId(elementId);
+              if (!ele) {
+                Modal.error({
+                  title: 'No element to delete',
+                  content: `Element not found: ${elementId}`,
+                });
+                return;
+              }
+              let name;
+              if (/^component|action$/.test(ele.type)) {
+                name = ele.parts[0].replace(/^src\/features\/|\.jsx?$/g, '');
+              } else {
+                name = ele.name;
+              }
+              execCoreCommand({
+                commandName: 'remove',
+                type: ele.type,
+                name,
+              }).then(
+                () => {
+                  message.success('Delete element success.');
+                },
+                err => {
+                  Modal.error({
+                    title: 'Failed to delete the element',
+                    content: err.toString(),
+                  });
+                }
+              );
+            },
           });
           break;
         }

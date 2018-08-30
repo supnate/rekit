@@ -15,7 +15,8 @@ function move(type, source, target, args) {
 }
 function remove(type, name, args) {
   console.log('removing element: ', type, name, args);
-  const thePlugin = _.findLast(plugin.getPlugins(), p => p.elements && p.elements[type] && p.elements[type].remove);
+  // const thePlugin = _.findLast(plugin.getPlugins(), p => p.elements && p.elements[type] && p.elements[type].remove);
+  const thePlugin = _.last(plugin.getPlugins(`elements.${type}.remove`));
   if (!thePlugin) throw new Error(`Can't find a plugin which could remove an element of type ${type}`);
   return thePlugin.elements[type].remove(name, args);
 }

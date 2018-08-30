@@ -104,7 +104,7 @@ module.exports = () => {
         switch (p) {
           case '/api/core-command':
             res.setHeader('content-type', 'application/json');
-            helpers.startOutputToClient(io);
+            helpers.startOutputToClient();
             rekit.core.handleCommand(req.body);
             rekit.core.vio.flush();
             res.write(JSON.stringify(req.body));

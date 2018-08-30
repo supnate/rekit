@@ -95,7 +95,6 @@ export class App extends Component {
     const sizesState = this.getSizesState();
     sizesState[paneId] = sizes;
     storage.local.setItem('layoutSizes', sizesState);
-    console.log('resize: ', paneId, sizes);
   };
 
   renderLoading() {

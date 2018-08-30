@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
 import { connect } from 'react-redux';
-import { Button, Form, Modal } from 'antd';
+import { Button, Form, Modal, message } from 'antd';
 import { FormBuilder } from '../common';
 import { execCoreCommand } from './redux/actions';
 import plugin from '../../common/plugin';
@@ -70,7 +71,8 @@ export class CommonForm extends Component {
           this.props.onSubmit();
           this.setState({ pending: false });
           // Show notification
-          //
+          console.log(context);
+          message.success(`${_.capitalize(context.action)} ${context.elementType} success.`);
         })
         .catch(err => {
           // Show error

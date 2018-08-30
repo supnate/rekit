@@ -8,6 +8,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Watchpack = require('watchpack');
 const rekit = require('rekit-core');
+const chalk = require('chalk');
 const helpers = require('./helpers');
 const fetchProjectData = require('./api/fetchProjectData');
 const getFileContent = require('./api/getFileContent');
@@ -100,16 +101,16 @@ module.exports = () => {
     return (req, res, next) => {
       const urlObject = url.parse(req.originalUrl);
       const p = urlObject.pathname.replace(rootPath, '');
+      helpers.startOutputToClient();
+
       try {
         switch (p) {
           case '/api/core-command':
             res.setHeader('content-type', 'application/json');
-            helpers.startOutputToClient();
             rekit.core.handleCommand(req.body);
             rekit.core.vio.flush();
             res.write(JSON.stringify(req.body));
             res.end();
-            helpers.stopOutputToClient();
             break;
           case '/api/element':
             element(req, res);
@@ -302,9 +303,13 @@ module.exports = () => {
       } catch (e) {
         res.statusCode = 500;
         res.write(e.toString());
-        if (e.stack) res.write(e.stack);
+        if (e.stack) {
+          res.write(e.stack);
+          e.stack.split('\n').forEach(line => console.log(chalk.red(line)));
+        }
         res.end();
       }
+      helpers.stopOutputToClient();
     };
   }
   return rekitMiddleware;

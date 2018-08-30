@@ -18,7 +18,6 @@ while (prjRoot && prjRoot !== lastDir && fs.existsSync(prjRoot)) {
 
 const originalWrite = process.stdout.write;
 function startOutputToClient() {
-  console.log('starting output to client');
   const output = [];
   const emit = _.debounce(() => {
     io.emit('output', output.length > 300 ? output.slice(-300) : output); // max to 300 lines flush to client

@@ -132,7 +132,7 @@
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
     "raf": "3.4.0",
-    "react": "^16.2.0",
+    "react": "^16.4.2",
     "react-beautiful-dnd": "^9.0.1",
     "react-dev-utils": "^5.0.0",
     "react-dom": "^16.2.0",

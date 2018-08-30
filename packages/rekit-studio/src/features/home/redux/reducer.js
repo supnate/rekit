@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import update from 'immutability-helper';
+import Convert from 'ansi-to-html';
 import history from '../../../common/history';
 import initialState from './initialState';
 import { reducer as fetchProjectData } from './fetchProjectData';
@@ -21,6 +22,8 @@ import { reducer as setViewChangedReducer } from './setViewChanged';
 import { reducer as resizePaneReducer } from './resizePane';
 import { reducer as setBottomDrawerVisibleReducer } from './setBottomDrawerVisible';
 import { reducer as clearOutputReducer } from './clearOutput';
+
+const convert = new Convert();
 
 const reducers = [
   fetchProjectData,
@@ -137,6 +140,27 @@ export default function reducer(state = initialState, action) {
       newState = { ...state, openTabs, historyTabs };
       storage.session.setItem('openTabs', openTabs);
       storage.session.setItem('historyTabs', historyTabs);
+      break;
+    }
+
+    case 'REKIT_STUDIO_OUTPUT': {
+      let output = state.output.slice(0);
+      if (Array.isArray(action.data)) {
+        output.push.apply(
+          output,
+          action.data.map(text =>
+            convert
+              .toHtml(text.replace(/ /g, '&nbsp;'))
+              .replace('#00A', '#1565C0')
+              .replace(/color:#555/g, 'color:#777')
+          )
+        );
+      }
+      if (output.length > 300) output = output.slice(-300);
+      newState = {
+        ...state,
+        output,
+      };
       break;
     }
 

@@ -8,6 +8,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Watchpack = require('watchpack');
 const rekit = require('rekit-core');
+const helpers = require('./helpers');
 const fetchProjectData = require('./api/fetchProjectData');
 const getFileContent = require('./api/getFileContent');
 const execCmd = require('./api/execCmd');
@@ -30,7 +31,7 @@ const { paths, vio } = rekit.core;
 let lastProjectData = null;
 module.exports = () => {
   // eslint-disable-line
-  let io = null;
+  // let io = null;
 
   // const bgProcesses = {};
 
@@ -66,7 +67,7 @@ module.exports = () => {
   const rootPath = '/rekit';
 
   function setupSocketIo(server) {
-    io = require('socket.io')(server);
+    global.io = require('socket.io')(server);
 
     io.on('connection', client => {
       client.on('disconnect', () => {
@@ -103,15 +104,18 @@ module.exports = () => {
         switch (p) {
           case '/api/core-command':
             res.setHeader('content-type', 'application/json');
+            helpers.startOutputToClient(io);
             rekit.core.handleCommand(req.body);
             rekit.core.vio.flush();
             res.write(JSON.stringify(req.body));
             res.end();
+            helpers.stopOutputToClient();
             break;
           case '/api/element':
             element(req, res);
             break;
           case '/api/project-data': {
+            io.emit('output', 'fetch project');
             res.setHeader('content-type', 'application/json');
             res.write(JSON.stringify(rekit.core.app.getProjectData()));
             res.end();

@@ -34,25 +34,27 @@ function fetchDepsRemote() {
           allDeps[name].latestVersion = latestVersionCache[name];
           return Promise.resolve();
         }
-        return packageJson(name).then((json) => {
+        return packageJson(name).then(json => {
           allDeps[json.name].latestVersion = json.version;
           latestVersionCache[name] = json.version;
         });
       })
-    ).then(() => {
-      resolve({
-        deps: Object.keys(prjPkgJson.dependencies || {}),
-        devDeps: Object.keys(prjPkgJson.devDependencies || {}),
-        allDeps,
+    )
+      .then(() => {
+        resolve({
+          deps: Object.keys(prjPkgJson.dependencies || {}),
+          devDeps: Object.keys(prjPkgJson.devDependencies || {}),
+          allDeps,
+        });
+      })
+      .catch(() => {
+        resolve({
+          deps: Object.keys(prjPkgJson.dependencies || {}),
+          devDeps: Object.keys(prjPkgJson.devDependencies || {}),
+          allDeps,
+          hasError: true,
+        });
       });
-    }).catch(() => {
-      resolve({
-        deps: Object.keys(prjPkgJson.dependencies || {}),
-        devDeps: Object.keys(prjPkgJson.devDependencies || {}),
-        allDeps,
-        hasError: true,
-      });
-    });
   });
 }
 

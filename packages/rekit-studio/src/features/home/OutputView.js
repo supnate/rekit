@@ -11,9 +11,13 @@ export class OutputView extends Component {
   };
 
   render() {
+    const { output } = this.props;
     return (
       <div className="home-output-view">
-        Page Content: home/OutputView
+        <ul>
+          {output.length === 0 && <li key="empty">No output.</li>}
+          {output.map((html, i) => <li key={i} dangerouslySetInnerHTML={{ __html: html }} />)}
+        </ul>
       </div>
     );
   }
@@ -29,7 +33,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ clearOutput }, dispatch)
+    actions: bindActionCreators({ clearOutput }, dispatch),
   };
 }
 

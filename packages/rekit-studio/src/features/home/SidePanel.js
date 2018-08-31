@@ -19,7 +19,6 @@ export class SidePanel extends Component {
   };
 
   state = {
-    searchKey: null,
     aboutDialogVisible: process.env.REKIT_ENV === 'demo',
   };
 
@@ -85,12 +84,6 @@ export class SidePanel extends Component {
     }
   };
 
-  handleSearch = key => {
-    this.setState({
-      searchKey: key,
-    });
-  };
-
   renderMainMenu = () => {
     return (
       <Menu onClick={this.handleMainMenuClick} className="main-menu">
@@ -149,10 +142,7 @@ export class SidePanel extends Component {
             </label>
           </Dropdown>
         </div>
-        <div className="toolbar">
-          <SearchInput onSearch={this.handleSearch} />
-        </div>
-        <ProjectExplorer searchKey={this.state.searchKey} />
+        <ProjectExplorer />
         {this.state.aboutDialogVisible && (
           <Modal
             visible

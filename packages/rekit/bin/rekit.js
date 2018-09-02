@@ -8,6 +8,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const resolveCwd = require('resolve-cwd');
 const ArgumentParser = require('argparse').ArgumentParser;
 const rekitPkgJson = require('../package.json');
 const createApp = require('./createApp');
@@ -33,11 +34,14 @@ function getLocalRekitCore() {
   if (!prjRoot || !fs.existsSync(pkgJson)) return null;
   else {
     const pj = require(pkgJson);
-    if (!(pj.devDependencies && pj.devDependencies['rekit-core'] || pj.dependencies && pj.dependencies['rekit-core'])) {
+    if (
+      !((pj.devDependencies && pj.devDependencies['rekit-core']) || (pj.dependencies && pj.dependencies['rekit-core']))
+    ) {
       return null;
     }
   }
-  return require('rekit-core');
+
+  return require(resolveCwd('rekit-core'));
 }
 
 const rekitCore = getLocalRekitCore();
@@ -46,7 +50,7 @@ const parser = new ArgumentParser({
   version: rekitPkgJson.version,
   addHelp: true,
   allowAbbrev: false,
-  description: 'Build scalable web applications with React, Redux and React-router.'
+  description: 'Build scalable web applications with React, Redux and React-router.',
 });
 
 const subparsers = parser.addSubparsers({
@@ -55,12 +59,10 @@ const subparsers = parser.addSubparsers({
 });
 
 // Create project
-const createCmd = subparsers.addParser('create',
-  {
-    addHelp: true,
-    description: 'Create a new Rekit project.',
-  }
-);
+const createCmd = subparsers.addParser('create', {
+  addHelp: true,
+  description: 'Create a new Rekit project.',
+});
 
 createCmd.addArgument('name', {
   help: 'The project name',
@@ -77,13 +79,15 @@ createCmd.addArgument(['--clean', '-c'], {
 });
 
 createCmd.addArgument(['--template', '-t'], {
-  help: 'Which template to use for creating a project. Clone from "https://github.com/supnate/rekit-boilerplate-${template} Default to cra (create-react-app). If it\'s rekit. Then use supnate/rekit-boilerplate.',
+  help:
+    'Which template to use for creating a project. Clone from "https://github.com/supnate/rekit-boilerplate-${template} Default to cra (create-react-app). If it\'s rekit. Then use supnate/rekit-boilerplate.',
   defaultValue: 'cra',
 });
 
 const createPluginCmd = subparsers.addParser('create-plugin', {
   addHelp: true,
-  description: 'Create a Rekit plugin. If under a Rekit project, create a local plugin; otherwise create a plugin as a npm package.',
+  description:
+    'Create a Rekit plugin. If under a Rekit project, create a local plugin; otherwise create a plugin as a npm package.',
 });
 
 createPluginCmd.addArgument('name', {
@@ -111,19 +115,18 @@ installPluginCmd.addArgument('name', {
 // });
 
 // Add sub-command
-const addCmd = subparsers.addParser('add',
-  {
-    addHelp: true,
-    description: 'Add an element to the project.',
-  }
-);
+const addCmd = subparsers.addParser('add', {
+  addHelp: true,
+  description: 'Add an element to the project.',
+});
 
 addCmd.addArgument('type', {
-  help: 'The type of the element to add.'
+  help: 'The type of the element to add.',
 });
 
 addCmd.addArgument('name', {
-  help: 'The element name to add, in format of <feature>/<name>, e.g.: \'rekit add component user/list-view\'. <name> is unnecessary if add a feature.'
+  help:
+    "The element name to add, in format of <feature>/<name>, e.g.: 'rekit add component user/list-view'. <name> is unnecessary if add a feature.",
 });
 
 addCmd.addArgument(['--connect', '-c'], {
@@ -142,45 +145,44 @@ addCmd.addArgument(['--async', '-a'], {
 });
 
 // Remove sub-command
-const rmCmd = subparsers.addParser('remove',
-  {
-    aliases: ['rm'],
-    addHelp: true,
-    description: 'Remove an element from the project.',
-  }
-);
+const rmCmd = subparsers.addParser('remove', {
+  aliases: ['rm'],
+  addHelp: true,
+  description: 'Remove an element from the project.',
+});
 
 rmCmd.addArgument('type', {
-  help: 'The type of the element to remove.'
+  help: 'The type of the element to remove.',
 });
 
 rmCmd.addArgument('name', {
-  help: 'The element name to remove, in format of <feature>/<name>, e.g.: \'rekit remove component user/list-view\'. Name is unnecessary if remove a feature.'
+  help:
+    "The element name to remove, in format of <feature>/<name>, e.g.: 'rekit remove component user/list-view'. Name is unnecessary if remove a feature.",
 });
 
 // Move sub-command
-const mvCmd = subparsers.addParser('move',
-  {
-    aliases: ['mv'],
-    addHelp: true,
-    description: 'Move or rename an element.',
-  }
-);
+const mvCmd = subparsers.addParser('move', {
+  aliases: ['mv'],
+  addHelp: true,
+  description: 'Move or rename an element.',
+});
 
 mvCmd.addArgument('type', {
-  help: 'The type of the element to move.'
+  help: 'The type of the element to move.',
 });
 
 mvCmd.addArgument('source', {
-  help: 'The source element to move, in format of <feature>/<name>, e.g.: \'rekit move component user/list-view employee/list\'. Name is unnecessary if move a feature.'
+  help:
+    "The source element to move, in format of <feature>/<name>, e.g.: 'rekit move component user/list-view employee/list'. Name is unnecessary if move a feature.",
 });
 
 mvCmd.addArgument('target', {
-  help: 'The target element to reach, in format of <feature>/<name>, e.g.: \'rekit move component user/list-view employee/list\'. Name is unnecessary if move a feature.'
+  help:
+    "The target element to reach, in format of <feature>/<name>, e.g.: 'rekit move component user/list-view employee/list'. Name is unnecessary if move a feature.",
 });
 
 if (rekitCore) {
-  rekitCore.plugin.getPlugins(rekitCore).forEach((p) => {
+  rekitCore.plugin.getPlugins(rekitCore).forEach(p => {
     if (p.config.defineArgs) p.config.defineArgs(addCmd, mvCmd, rmCmd);
   });
 }
@@ -190,7 +192,7 @@ const args = parser.parseArgs();
 console.time('😃  Done');
 // Convert aliases
 const aliases = { rm: 'remove', mv: 'move' };
-Object.keys(aliases).forEach((k) => {
+Object.keys(aliases).forEach(k => {
   if (args.commandName === k) {
     args.commandName = aliases[k];
   }

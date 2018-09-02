@@ -1,8 +1,8 @@
 # <img src="/images/logo_text.png?raw=true" width="260">
 
-> 🔥  [Rekit Now Creates Apps By Create-react-app](https://medium.com/@nate_wang/rekit-now-creates-apps-by-create-react-app-3f0d82fd64f3)
+> 🎉  [Rekit Now Creates Apps By Create-react-app](https://medium.com/@nate_wang/rekit-now-creates-apps-by-create-react-app-3f0d82fd64f3)
 
-> 🎉  [Introducing Rekit Studio: a real IDE for React and Redux development](https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542)
+> 🔥  [Introducing Rekit Studio: a real IDE for React and Redux development](https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542)
 
 > 🎉  [Using Rekit Studio in an Existing React Project](https://medium.com/@nate_wang/using-rekit-studio-in-an-existing-react-project-39713d9667b)
 

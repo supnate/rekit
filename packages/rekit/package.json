@@ -1,6 +1,6 @@
 {
   "name": "rekit",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Toolkit for building scalable web applications with React, Redux and React-router.",
   "license": "MIT",
   "bin": {
@@ -33,7 +33,8 @@
   "dependencies": {
     "argparse": "^1.0.7",
     "download-git-repo": "^1.0.2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "resolve-cwd": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

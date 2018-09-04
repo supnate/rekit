@@ -4,10 +4,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { clearOutput } from './redux/actions';
 
+const scrollTop = {};
 export class OutputView extends Component {
   static propTypes = {
+    type: PropTypes.string,
     output: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
+  };
+
+  static defaultProps = {
+    type: 'default',
   };
   getSnapshotBeforeUpdate() {
     // why not called?
@@ -15,13 +21,21 @@ export class OutputView extends Component {
     console.log('snapshot: ', n.scrollHeight, n.scrollTop, n.offsetHeight);
     return n.scrollHeight - n.scrollTop < n.offsetHeight * 1.8;
   }
+
+  componentDidMount() {
+    if (scrollTop[this.props.type]) this.scrollNode.scrollTop = scrollTop[this.props.type];
+  }
   componentDidUpdate(prevProps, prevState, needScrollBottom) {
     const n = this.scrollNode;
     n.scrollTop = n.scrollHeight - n.offsetHeight;
-
+    scrollTop[this.props.type] = this.scrollNode.scrollTop;
   }
 
-  assignRef = node => this.scrollNode = node;
+  componentWillUnmount() {
+    scrollTop[this.props.type] = this.scrollNode.scrollTop;
+  }
+
+  assignRef = node => (this.scrollNode = node);
 
   render() {
     const { output } = this.props;
@@ -29,7 +43,9 @@ export class OutputView extends Component {
       <div className="home-output-view" ref={this.assignRef}>
         <ul>
           {output.length === 0 && <li key="empty">No output.</li>}
-          {output.map(item => <li key={item.key} dangerouslySetInnerHTML={{ __html: item.text }} />)}
+          {output.map(item => (
+            <li key={item.key} dangerouslySetInnerHTML={{ __html: item.text }} />
+          ))}
         </ul>
       </div>
     );

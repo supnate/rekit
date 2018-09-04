@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button } from 'antd';
 import classnames from 'classnames';
+import { storage } from '../common/utils';
 import plugin from '../../common/plugin';
 
 export default class BottomDrawer extends Component {
@@ -10,7 +11,7 @@ export default class BottomDrawer extends Component {
     hideDrawer: PropTypes.func.isRequired,
   };
 
-  state = { currentTab: 'output' };
+  state = { currentTab: storage.local.getItem('bottomDrawerTab', 'output') };
 
   getPanes = _.memoize(() => {
     const panes = plugin.getPlugins('bottomDrawer.getPanes').reduce((arr, p) => {
@@ -25,6 +26,7 @@ export default class BottomDrawer extends Component {
 
   handleTabClick = key => {
     this.setState({ currentTab: key });
+    storage.local.setItem('bottomDrawerTab', key);
   };
 
   render() {

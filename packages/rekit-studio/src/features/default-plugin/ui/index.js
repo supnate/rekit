@@ -16,12 +16,6 @@ export const bottomDrawer = {
         order: 1,
         component: () => <div>problems2</div>,
       },
-      {
-        tab: 'Terminal',
-        key: 'teminal',
-        order: 20,
-        component: () => <div>terminal</div>,
-      },
     ];
   },
 };

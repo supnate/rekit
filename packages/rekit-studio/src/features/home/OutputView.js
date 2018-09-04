@@ -29,7 +29,7 @@ export class OutputView extends Component {
       <div className="home-output-view" ref={this.assignRef}>
         <ul>
           {output.length === 0 && <li key="empty">No output.</li>}
-          {output.map((html, i) => <li key={i} dangerouslySetInnerHTML={{ __html: html }} />)}
+          {output.map(item => <li key={item.key} dangerouslySetInnerHTML={{ __html: item.text }} />)}
         </ul>
       </div>
     );

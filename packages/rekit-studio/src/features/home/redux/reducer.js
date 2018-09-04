@@ -148,12 +148,13 @@ export default function reducer(state = initialState, action) {
       if (Array.isArray(action.data)) {
         output.push.apply(
           output,
-          action.data.map(text =>
-            convert
-              .toHtml(text.replace(/ /g, '&nbsp;'))
+          action.data.map(item => ({
+            ...item,
+            text: convert
+              .toHtml(item.text.replace(/ /g, '&nbsp;'))
               .replace('#00A', '#1565C0')
-              .replace(/color:#555/g, 'color:#777')
-          )
+              .replace(/color:#555/g, 'color:#777'),
+          }))
         );
       }
       if (output.length > 300) output = output.slice(-300);

@@ -17,10 +17,17 @@ while (prjRoot && prjRoot !== lastDir && fs.existsSync(prjRoot)) {
 }
 
 const originalWrite = process.stdout.write;
+let seed = 0;
 function startOutputToClient() {
   const output = [];
   const emit = _.debounce(() => {
-    io.emit('output', output.length > 300 ? output.slice(-300) : output); // max to 300 lines flush to client
+    let toClient = output.length > 300 ? output.slice(-300) : output;
+    toClient = toClient.map(text => {
+      seed++;
+      seed %= 1000000;
+      return { text, key: seed };
+    });
+    io.emit('output', toClient); // max to 300 lines flush to client
     output.length = 0;
   }, 100);
 

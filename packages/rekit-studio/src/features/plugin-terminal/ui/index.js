@@ -1,6 +1,5 @@
 import { WebTerminal } from '../';
 
-console.log(WebTerminal);
 export const bottomDrawer = {
   getPanes() {
     return [

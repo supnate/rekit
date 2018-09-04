@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import * as fit from 'xterm/lib/addons/fit/fit';
 import * as attach from 'xterm/lib/addons/attach/attach';
 import * as winptyCompat from 'xterm/lib/addons/winptyCompat/winptyCompat';
@@ -15,7 +16,7 @@ const terminalOptions = {
   cursorBlink: true,
   fontFamily: "'Andale Mono', 'Courier New', 'Courier', monospace",
   theme: {
-    foreground: '#cccccc',
+    foreground: '#7af950',
     background: '#080808',
   },
   screenKeys: true,
@@ -30,6 +31,7 @@ function createTerminal(node) {
   term = new Terminal(terminalOptions);
   window.term = term; // Expose `term` to window for debugging purposes
   term.on('resize', function(size) {
+    console.log('resize: ', size);
     if (!pid) {
       return;
     }
@@ -74,6 +76,7 @@ function runRealTerminal() {
 
 export default class WebTerminal extends Component {
   componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize);
     if (!term) {
       const div = document.createElement('div');
       this.container.appendChild(div);
@@ -87,9 +90,12 @@ export default class WebTerminal extends Component {
 
   componentWillUnmount() {
     if (term) this.container.removeChild(term.element.parentNode);
+    window.removeEventListener('resize', this.handleWindowResize);
   }
 
-  handleResize = () => {}
+  handleWindowResize = _.debounce(() => {
+    term.fit();
+  }, 300);
 
   render() {
     return <div className="plugin-terminal-web-terminal" ref={n => (this.container = n)} />;

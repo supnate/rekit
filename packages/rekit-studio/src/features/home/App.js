@@ -138,7 +138,7 @@ export class App extends Component {
               >
                 <Pane size={rightHorizontalSizes[0] || 1}>{this.props.children}</Pane>
                 {bottomDrawerVisible && (
-                  <Pane size={rightHorizontalSizes[1] || '280px'} minSize="50px" maxSize="80%">
+                  <Pane size={rightHorizontalSizes[1] || '280px'} minSize="30px" maxSize="80%">
                     <BottomDrawer hideDrawer={this.hideDrawer} />
                   </Pane>
                 )}

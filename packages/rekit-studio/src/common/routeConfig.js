@@ -11,7 +11,7 @@ import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
 import pluginCraRoute from '../features/plugin-cra/route';
 import coreRoute from '../features/core/route';
-import pluginCoreRoute from '../features/plugin-core/route';
+import defaultPluginRoute from '../features/default-plugin/route';
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
 // This is used for Rekit cmds to register routes for new features, remove features, etc.
@@ -27,7 +27,7 @@ const childRoutes = [
   layoutRoute,
   editorRoute,
   coreRoute,
-  pluginCoreRoute,
+  defaultPluginRoute,
 ];
 
 const routes = [{

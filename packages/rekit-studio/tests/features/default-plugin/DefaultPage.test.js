@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
-import { DefaultPage } from 'src/features/plugin-core/DefaultPage';
+import { DefaultPage } from 'src/features/default-plugin/DefaultPage';
 
-describe('plugin-core/DefaultPage', () => {
+describe('default-plugin/DefaultPage', () => {
   it('renders node with correct class name', () => {
     const props = {
       pluginCore: {},
@@ -14,7 +14,7 @@ describe('plugin-core/DefaultPage', () => {
     );
 
     expect(
-      renderedComponent.find('.plugin-core-default-page').getElement()
+      renderedComponent.find('.default-plugin-default-page').getElement()
     ).to.exist;
   });
 });

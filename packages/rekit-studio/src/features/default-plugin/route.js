@@ -6,8 +6,8 @@ import {
 } from './';
 
 export default {
-  path: 'plugin-core',
-  name: 'Plugin core',
+  path: 'default-plugin',
+  name: 'Default plugin',
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
   ],

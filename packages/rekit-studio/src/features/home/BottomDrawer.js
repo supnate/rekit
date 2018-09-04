@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button } from 'antd';
 import classnames from 'classnames';
-import { SvgIcon } from '../common';
-import { OutputView } from './';
 import plugin from '../../common/plugin';
 
 export default class BottomDrawer extends Component {
@@ -16,26 +14,12 @@ export default class BottomDrawer extends Component {
 
   getPanes = _.memoize(() => {
     const panes = plugin.getPlugins('bottomDrawer.getPanes').reduce((arr, p) => {
-      arr.push.apply(arr, p.bottomDrawer.getPanes());
+      let ps = p.bottomDrawer.getPanes();
+      if (!Array.isArray(ps)) ps = [ps];
+      arr.push.apply(arr, ps);
       return arr;
     }, []);
     panes.sort((p1, p2) => p1.order - p2.order);
-    panes.push({
-      tab: 'Output',
-      key: 'output',
-      order: 10,
-      component: OutputView,
-    },{
-      tab: 'Problems',
-      key: 'problems',
-      order: 1,
-      component:  () => <div>problems</div>,
-    },{
-      tab: 'Terminal',
-      key: 'teminal',
-      order: 20,
-      component: () => <div>terminal</div>,
-    });
     return panes;
   });
 
@@ -74,7 +58,7 @@ export default class BottomDrawer extends Component {
           </div>
         </div>
         <div className="content-container">
-          {currentPane && <currentPane.component /> || 'No view'}
+          {(currentPane && <currentPane.component />) || 'No view'}
         </div>
       </div>
     );

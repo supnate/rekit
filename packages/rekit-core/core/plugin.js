@@ -9,10 +9,10 @@ const shell = require('shelljs');
 const _ = require('lodash');
 const paths = require('./paths');
 
-let plugins = null;
-
+const plugins = [];
+let loaded = false;
 function getPlugins(prop) {
-  if (!plugins) {
+  if (!loaded) {
     loadPlugins();
   }
   return prop ? plugins.filter(_.property(prop)) : plugins;
@@ -31,14 +31,15 @@ function loadPlugin(pluginRoot) {
 }
 
 function loadPlugins() {
+  if (loaded) return;
   const localPluginRoot = paths.localPluginRoot;
 
   const prjPkgJson = require(paths.map('package.json'));
 
   // Find local plugins, all local plugins are loaded
-  plugins = [];
+  let pluginFolders = [];
   if (fs.existsSync(localPluginRoot)) {
-    plugins = plugins.concat(
+    pluginFolders = pluginFolders.concat(
       shell
         .ls(localPluginRoot)
         .filter(d => fs.existsSync(paths.join(localPluginRoot, d)))
@@ -48,7 +49,7 @@ function loadPlugins() {
 
   // Find installed plugins, only those defined in package.rekit.plugins are loaded.
   if (prjPkgJson.rekit && prjPkgJson.rekit.plugins) {
-    plugins = plugins.concat(
+    pluginFolders = pluginFolders.concat(
       prjPkgJson.rekit.plugins.map(
         p => (path.isAbsolute(p) ? p : require.resolve(/^rekit-plugin-/.test(p) ? p : 'rekit-plugin-' + p))
       )
@@ -56,10 +57,27 @@ function loadPlugins() {
   }
 
   // Create plugin instances
-  plugins = plugins.map(loadPlugin);
+  pluginFolders.map(loadPlugin).forEach(addPlugin);
+  loaded = true;
+}
+
+// Dynamically add an plugin
+function addPlugin(plugin) {
+  if (_.find(plugins, { name: plugin.name })) {
+    console.warn('You should not add a plugin again with name: ' + plugin.name);
+    return;
+  }
+  plugins.push(plugin);
+}
+
+function removePlugin(pluginName) {
+  const removed = _.remove(plugins, { name: pluginName });
+  if (!removed.length) console.warn('No plugin was removed: ' + pluginName);
 }
 
 module.exports = {
   getPlugins,
   loadPlugins,
+  addPlugin,
+  removePlugin,
 };

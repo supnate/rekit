@@ -1,5 +1,8 @@
 const middleware = require('./middleware');
 
-module.exports = {
+const plugin = {
+  name: 'terminal',
   middleware,
 };
+
+module.exports = plugin;

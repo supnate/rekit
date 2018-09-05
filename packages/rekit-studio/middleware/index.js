@@ -28,7 +28,12 @@ const removePackage = require('./api/removePackage');
 // rekitCore.utils.setProjectRoot('/Users/pwang7/workspace/app-hasura');
 // rekitCore.plugin.loadPlugins(rekitCore);
 
-const { paths, vio } = rekit.core;
+const { paths, vio, plugin } = rekit.core;
+
+// Load default plugins
+plugin.addPlugin(require('../src/features/plugin-terminal/core'));
+plugin.addPlugin(require('../src/features/plugin-cra/core'));
+
 let lastProjectData = null;
 module.exports = () => {
   // eslint-disable-line
@@ -120,7 +125,6 @@ module.exports = () => {
             element(req, res);
             break;
           case '/api/project-data': {
-            io.emit('output', 'fetch project');
             res.setHeader('content-type', 'application/json');
             res.write(JSON.stringify(rekit.core.app.getProjectData()));
             res.end();

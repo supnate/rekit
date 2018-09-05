@@ -25,11 +25,13 @@ function setupSocketIo(server) {
 }
 
 function configStudio(server, app, args) {
+  args = args || {};
   expressWs(app, server);
   app.use(bodyParser.json({ limit: '5MB' }));
   app.use(bodyParser.urlencoded({ extended: true }));
 
   const io = setupSocketIo(server);
+  args.io = io;
   app.use((req, res, next) => {
     helpers.startOutputToClient(io);
     res.on('finish', () => {
@@ -40,7 +42,7 @@ function configStudio(server, app, args) {
 
   rekit.core.plugin.getPlugins('studio.config').forEach(p => {
     console.log('Loading studio plugin: ', p.name);
-    p.studio.config(server, app, { ...args, io });
+    p.studio.config(server, app, args);
   });
 
   // General error handler

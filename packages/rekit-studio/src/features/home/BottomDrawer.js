@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Button } from 'antd';
 import classnames from 'classnames';
-import { storage } from '../common/utils';
 import plugin from '../../common/plugin';
+import { setBottomDrawerVisible, setBottomDrawerTab } from './redux/actions';
 
-export default class BottomDrawer extends Component {
+export class BottomDrawer extends Component {
   static propTypes = {
-    hideDrawer: PropTypes.func.isRequired,
-    showDrawer: PropTypes.func.isRequired,
-    visible: PropTypes.bool.isRequired,
+    actions: PropTypes.object.isRequired,
+    bottomDrawerVisible: PropTypes.bool.isRequired,
+    bottomDrawerTab: PropTypes.string.isRequired,
   };
-
-  state = { currentTab: storage.local.getItem('bottomDrawerTab', 'output') };
 
   getPanes = _.memoize(() => {
     const panes = plugin.getPlugins('bottomDrawer.getPanes').reduce((arr, p) => {
@@ -26,17 +26,25 @@ export default class BottomDrawer extends Component {
     return panes;
   });
 
+  showDrawer = () => {
+    this.props.actions.setBottomDrawerVisible(true);
+    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
+  };
+
+  hideDrawer = () => {
+    this.props.actions.setBottomDrawerVisible(false);    
+    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
+  };
+
   handleTabClick = key => {
-    this.setState({ currentTab: key });
-    storage.local.setItem('bottomDrawerTab', key);
-    this.props.showDrawer();
+    this.props.actions.setBottomDrawerTab(key);
+    this.props.actions.setBottomDrawerVisible(true);
   };
 
   render() {
     const panes = this.getPanes();
-    const { visible, hideDrawer, showDrawer } = this.props;
-    const { currentTab } = this.state;
-    const currentPane = _.find(panes, { key: currentTab });
+    const { bottomDrawerVisible, bottomDrawerTab } = this.props;
+    const currentPane = _.find(panes, { key: bottomDrawerTab });
     return (
       <div className="home-bottom-drawer">
         <div className="toolbar">
@@ -45,7 +53,7 @@ export default class BottomDrawer extends Component {
               <span
                 key={pane.key}
                 className={classnames('toolbar-tab', {
-                  'is-active': visible && pane.key === currentTab,
+                  'is-active': bottomDrawerVisible && pane.key === bottomDrawerTab,
                 })}
                 onClick={() => this.handleTabClick(pane.key)}
               >
@@ -55,20 +63,38 @@ export default class BottomDrawer extends Component {
           </div>
           <div className="toolbar-buttons">
             <Button
-              icon={visible ? 'down-square' : 'up-square'}
+              icon={bottomDrawerVisible ? 'down-square' : 'up-square'}
               size="small"
               className="toggle-btn"
               shape="circle"
-              onClick={visible ? hideDrawer : showDrawer}
+              onClick={bottomDrawerVisible ? this.hideDrawer : this.showDrawer}
             />
           </div>
         </div>
-        {visible && (
+        {bottomDrawerVisible && (
           <div className="content-container">
-            {(currentPane && <currentPane.component />) || 'No view'}
+            {(currentPane && <currentPane.component />) || 'No view for the tab.'}
           </div>
         )}
       </div>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    bottomDrawerVisible: state.home.bottomDrawerVisible,
+    bottomDrawerTab: state.home.bottomDrawerTab,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ setBottomDrawerVisible, setBottomDrawerTab }, dispatch),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BottomDrawer);

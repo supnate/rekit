@@ -19,9 +19,9 @@ import { reducer as showDialogReducer } from './showDialog';
 import { reducer as hideDialogReducer } from './hideDialog';
 import plugin from '../../plugin/plugin';
 import { reducer as setViewChangedReducer } from './setViewChanged';
-import { reducer as resizePaneReducer } from './resizePane';
 import { reducer as setBottomDrawerVisibleReducer } from './setBottomDrawerVisible';
 import { reducer as clearOutputReducer } from './clearOutput';
+import { reducer as setBottomDrawerTabReducer } from './setBottomDrawerTab';
 
 const convert = new Convert();
 
@@ -39,9 +39,9 @@ const reducers = [
   showDialogReducer,
   hideDialogReducer,
   setViewChangedReducer,
-  resizePaneReducer,
   setBottomDrawerVisibleReducer,
   clearOutputReducer,
+  setBottomDrawerTabReducer,
 ];
 
 // const pascalCase = _.flow(

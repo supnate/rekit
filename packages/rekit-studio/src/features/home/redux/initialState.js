@@ -28,7 +28,8 @@ const initialState = {
   viewChanged: {},
   paneSize: {},
 
-  bottomDrawerVisible: false,
+  bottomDrawerVisible: storage.local.getItem('bottomDrawerVisible', true),
+  bottomDrawerTab: storage.local.getItem('bottomDrawerTab', 'output'),
 
   output: [],
 };

@@ -15,12 +15,12 @@ export class OutputView extends Component {
   static defaultProps = {
     type: 'default',
   };
-  getSnapshotBeforeUpdate() {
-    // why not called?
-    const n = this.scrollNode;
-    console.log('snapshot: ', n.scrollHeight, n.scrollTop, n.offsetHeight);
-    return n.scrollHeight - n.scrollTop < n.offsetHeight * 1.8;
-  }
+  // getSnapshotBeforeUpdate() {
+  //   // why not called?
+  //   const n = this.scrollNode;
+  //   console.log('snapshot: ', n.scrollHeight, n.scrollTop, n.offsetHeight);
+  //   return n.scrollHeight - n.scrollTop < n.offsetHeight * 1.8;
+  // }
 
   componentDidMount() {
     if (scrollTop[this.props.type]) this.scrollNode.scrollTop = scrollTop[this.props.type];

@@ -2,27 +2,45 @@ const _ = require('lodash');
 const bodyParser = require('body-parser');
 const rekit = require('rekit-core');
 const chalk = require('chalk');
+const expressWs = require('express-ws');
 const helpers = require('./helpers');
 
 rekit.core.plugin.addPlugin(require('../features/plugin-default/core'));
 rekit.core.plugin.addPlugin(require('../features/plugin-terminal/core'));
 rekit.core.plugin.addPlugin(require('../features/plugin-cra/core'));
 
+function setupSocketIo(server) {
+  const io = require('socket.io')(server);
+
+  io.on('connection', client => {
+    client.on('disconnect', () => {
+      console.log('socket disconnected');
+    });
+  });
+
+  io.on('error', err => {
+    console.log('socket error', err);
+  });
+  return io;
+}
+
 function configStudio(server, app, args) {
+  expressWs(app, server);
   app.use(bodyParser.json({ limit: '5MB' }));
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  // app.use((req, res, next) => {
-  //   helpers.startOutputToClient();
-  //   res.on('finish', () => {
-  //     helpers.stopOutputToClient();
-  //   });
-  //   next();
-  // });
+  const io = setupSocketIo(server);
+  app.use((req, res, next) => {
+    helpers.startOutputToClient(io);
+    res.on('finish', () => {
+      helpers.stopOutputToClient();
+    });
+    next();
+  });
 
   rekit.core.plugin.getPlugins('studio.config').forEach(p => {
     console.log('Loading studio plugin: ', p.name);
-    p.studio.config(server, app, args);
+    p.studio.config(server, app, { ...args, io });
   });
 
   // General error handler

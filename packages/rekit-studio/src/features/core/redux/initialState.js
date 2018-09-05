@@ -13,12 +13,6 @@ const initialState = {
   },
   addElementPending: false,
   addElementError: null,
-  moveElementPending: false,
-  moveElementError: null,
-  removeElementPending: false,
-  removeElementError: null,
-  handleCoreCommandPending: false,
-  handleCoreCommandError: null,
   execCoreCommandPending: false,
   execCoreCommandError: null,
 };

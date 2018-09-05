@@ -18,7 +18,7 @@ while (prjRoot && prjRoot !== lastDir && fs.existsSync(prjRoot)) {
 
 const originalWrite = process.stdout.write;
 let seed = 0;
-function startOutputToClient() {
+function startOutputToClient(io) {
   const output = [];
   const emit = _.debounce(() => {
     let toClient = output.length > 300 ? output.slice(-300) : output;

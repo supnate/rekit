@@ -1,10 +1,8 @@
 const pty = require('node-pty');
-const expressWs = require('express-ws');
 
 function config(server, app, args) {
   const terminals = {};
   const logs = {};
-  expressWs(app, server);
 
   app.post('/terminals', function(req, res) {
     const cols = parseInt(req.query.cols, 10),

@@ -23,7 +23,7 @@ export function execCoreCommand(args = {}) {
       // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
       // args.error here is only for test coverage purpose.
       // const doRequest = args.error ? Promise.reject(new Error()) : Promise.resolve();
-      const doRequest = axios.post('/rekit/api/core-command', args);
+      const doRequest = axios.post('/api/core-command', args);
       doRequest.then(
         (res) => {
           dispatch({

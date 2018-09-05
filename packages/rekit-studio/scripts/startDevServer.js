@@ -13,7 +13,7 @@ const {
   prepareUrls,
 } = require('react-dev-utils/WebpackDevServerUtils');
 // const openBrowser = require('react-dev-utils/openBrowser');
-const rekitMiddleWare = require('../middleware');
+const configStudio = require('../src/server/configStudio');
 const paths = require('../config/paths');
 const createDevServerConfig = require('../config/webpackDevServer.config');
 const buildDll = require('./buildDll');
@@ -50,7 +50,8 @@ function _startDevServer(port) {
   const serverConfig = createDevServerConfig(proxyConfig, urls.lanUrlForConfig);
   const devServer = new WebpackDevServer(compiler, serverConfig);
 
-  devServer.use(rekitMiddleWare()(devServer.listeningApp, devServer.app));
+  // devServer.use(rekitMiddleWare()(devServer.listeningApp, devServer.app));
+  configStudio(devServer.listeningApp, devServer.app);
   // Launch WebpackDevServer.
   devServer.listen(port, HOST, err => {
     if (err) {

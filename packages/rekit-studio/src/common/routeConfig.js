@@ -11,7 +11,7 @@ import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
 import pluginCraRoute from '../features/plugin-cra/route';
 import coreRoute from '../features/core/route';
-import defaultPluginRoute from '../features/default-plugin/route';
+import pluginDefaultRoute from '../features/plugin-default/route';
 import pluginTerminalRoute from '../features/plugin-terminal/route';
 
 // NOTE: DO NOT CHANGE the 'childRoutes' name and the declaration pattern.
@@ -28,7 +28,7 @@ const childRoutes = [
   layoutRoute,
   editorRoute,
   coreRoute,
-  defaultPluginRoute,
+  pluginDefaultRoute,
   pluginTerminalRoute,
 ];
 

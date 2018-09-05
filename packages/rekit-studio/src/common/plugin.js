@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import * as defaultPlugin from '../features/default-plugin/ui';
+import * as defaultPlugin from '../features/plugin-default/ui';
 import * as cra from '../features/plugin-cra/ui';
 import * as terminal from '../features/plugin-terminal/ui';
 

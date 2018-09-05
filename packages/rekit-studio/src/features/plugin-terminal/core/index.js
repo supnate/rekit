@@ -1,8 +1,8 @@
-const middleware = require('./middleware');
+const studio = require('./studio');
 
 const plugin = {
   name: 'terminal',
-  middleware,
+  studio,
 };
 
 module.exports = plugin;

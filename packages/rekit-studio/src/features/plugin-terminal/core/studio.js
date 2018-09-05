@@ -1,7 +1,7 @@
 const pty = require('node-pty');
 const expressWs = require('express-ws');
 
-function terminalMiddleware(server, app, args) {
+function config(server, app, args) {
   const terminals = {};
   const logs = {};
   expressWs(app, server);
@@ -61,12 +61,6 @@ function terminalMiddleware(server, app, args) {
       delete logs[term.pid];
     });
   });
-
-  return (req, res, next) => next();
 }
 
-function middleware(server, app, args) {
-  return terminalMiddleware(server, app, args);
-}
-
-module.exports = middleware;
+module.exports = { config };

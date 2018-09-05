@@ -13,7 +13,7 @@ import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
 import pluginCraReducer from '../features/plugin-cra/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
-import defaultPluginReducer from '../features/default-plugin/redux/reducer';
+import pluginDefaultReducer from '../features/plugin-default/redux/reducer';
 import pluginTerminalReducer from '../features/plugin-terminal/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
@@ -35,7 +35,7 @@ const reducerMap = {
   editor: editorReducer,
   pluginCra: pluginCraReducer,
   core: coreReducer,
-  defaultPlugin: defaultPluginReducer,
+  pluginDefault: pluginDefaultReducer,
   pluginTerminal: pluginTerminalReducer,
 };
 

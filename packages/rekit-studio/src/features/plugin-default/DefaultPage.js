@@ -12,7 +12,7 @@ export class DefaultPage extends Component {
 
   render() {
     return (
-      <div className="default-plugin-default-page">
+      <div className="plugin-default-default-page">
         Page Content: plugin-core/DefaultPage
       </div>
     );

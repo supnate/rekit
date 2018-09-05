@@ -29,9 +29,7 @@ function createTerminal(node) {
   Terminal.applyAddon(fit);
   Terminal.applyAddon(winptyCompat);
   term = new Terminal(terminalOptions);
-  window.term = term; // Expose `term` to window for debugging purposes
   term.on('resize', function(size) {
-    console.log('resize: ', size);
     if (!pid) {
       return;
     }

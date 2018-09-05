@@ -42,6 +42,7 @@ function startOutputToClient() {
 function stopOutputToClient() {
   process.stdout.write = originalWrite;
 }
+
 module.exports = {
   forceRequire(modulePath) {
     // Avoid cache for require.

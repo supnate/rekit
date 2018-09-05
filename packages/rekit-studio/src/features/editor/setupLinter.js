@@ -20,7 +20,7 @@ const doLint = _.debounce(() => {
   if (/javascript/i.test(editor.getModel().getModeId())) {
     const code = editor.getValue();
     axios
-      .post('/rekit/api/lint', {
+      .post('/api/lint', {
         content: code,
         file: editor._editingFile // eslint-disable-line
       })

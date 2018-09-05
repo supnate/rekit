@@ -9,6 +9,8 @@ import plugin from '../../common/plugin';
 export default class BottomDrawer extends Component {
   static propTypes = {
     hideDrawer: PropTypes.func.isRequired,
+    showDrawer: PropTypes.func.isRequired,
+    visible: PropTypes.bool.isRequired,
   };
 
   state = { currentTab: storage.local.getItem('bottomDrawerTab', 'output') };
@@ -27,10 +29,12 @@ export default class BottomDrawer extends Component {
   handleTabClick = key => {
     this.setState({ currentTab: key });
     storage.local.setItem('bottomDrawerTab', key);
+    this.props.showDrawer();
   };
 
   render() {
     const panes = this.getPanes();
+    const { visible, hideDrawer, showDrawer } = this.props;
     const { currentTab } = this.state;
     const currentPane = _.find(panes, { key: currentTab });
     return (
@@ -41,7 +45,7 @@ export default class BottomDrawer extends Component {
               <span
                 key={pane.key}
                 className={classnames('toolbar-tab', {
-                  'is-active': pane.key === currentTab,
+                  'is-active': visible && pane.key === currentTab,
                 })}
                 onClick={() => this.handleTabClick(pane.key)}
               >
@@ -51,17 +55,19 @@ export default class BottomDrawer extends Component {
           </div>
           <div className="toolbar-buttons">
             <Button
-              icon="close"
+              icon={visible ? 'down-square' : 'up-square'}
               size="small"
-              className="close-btn"
+              className="toggle-btn"
               shape="circle"
-              onClick={this.props.hideDrawer}
+              onClick={visible ? hideDrawer : showDrawer}
             />
           </div>
         </div>
-        <div className="content-container">
-          {(currentPane && <currentPane.component />) || 'No view'}
-        </div>
+        {visible && (
+          <div className="content-container">
+            {(currentPane && <currentPane.component />) || 'No view'}
+          </div>
+        )}
       </div>
     );
   }

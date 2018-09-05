@@ -82,8 +82,13 @@ export class App extends Component {
     return storage.local.getItem('layoutSizes') || {};
   }
 
+  showDrawer = () => {
+    this.props.actions.setBottomDrawerVisible(true);
+    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
+  };
+
   hideDrawer = () => {
-    this.props.actions.setBottomDrawerVisible(false)
+    this.props.actions.setBottomDrawerVisible(false);
     requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
   };
 
@@ -116,6 +121,14 @@ export class App extends Component {
     const sizes = this.getSizesState();
     const mainVerticalSizes = sizes['main-vertical'] || [];
     const rightHorizontalSizes = sizes['right-horizontal'] || [];
+
+    const bottomDrawer = (
+      <BottomDrawer
+        visible={bottomDrawerVisible}
+        hideDrawer={this.hideDrawer}
+        showDrawer={this.showDrawer}
+      />
+    );
     return (
       <LocaleProvider locale={enUS}>
         <div className="home-app">
@@ -139,10 +152,11 @@ export class App extends Component {
                 <Pane size={rightHorizontalSizes[0] || 1}>{this.props.children}</Pane>
                 {bottomDrawerVisible && (
                   <Pane size={rightHorizontalSizes[1] || '280px'} minSize="30px" maxSize="80%">
-                    <BottomDrawer hideDrawer={this.hideDrawer} />
+                    {bottomDrawer}
                   </Pane>
                 )}
               </SplitPane>
+              {!bottomDrawerVisible && <div className="right-bottom-bar">{bottomDrawer}</div>}
             </Pane>
           </SplitPane>
           <DialogContainer />

@@ -28,7 +28,7 @@ const initialState = {
   viewChanged: {},
   paneSize: {},
 
-  bottomDrawerVisible: true,
+  bottomDrawerVisible: false,
 
   output: [],
 };

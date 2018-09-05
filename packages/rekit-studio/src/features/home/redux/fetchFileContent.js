@@ -14,7 +14,7 @@ export function fetchFileContent(file) {
 
     const promise = new Promise(async (resolve, reject) => {
       try {
-        const res = await axios.get('/rekit/api/file-content', {
+        const res = await axios.get('/api/read-file', {
           params: { file }
         });
         dispatch({

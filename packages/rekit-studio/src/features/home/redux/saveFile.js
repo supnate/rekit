@@ -22,7 +22,7 @@ export function saveFile(filePath, content) {
       // doRequest is a placeholder Promise. You should replace it with your own logic.
       // See the real-word example at:  https://github.com/supnate/rekit/blob/master/src/features/home/redux/fetchRedditReactjsList.js
       // args.error here is only for test coverage purpose.
-      const doRequest = axios.post('/rekit/api/save-file', {
+      const doRequest = axios.post('/api/save-file', {
         file: filePath,
         content,
       });

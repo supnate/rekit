@@ -124,18 +124,15 @@ function moveRoute(source, dest) {
   }
 }
 
-// function addToActions(feature, name) {
-//   const targetPath = utils.mapReduxFile(feature, 'actions');
-//   refactor.addExportFrom(`src/features/${feature}/redux/actions.js`, `./${name}`, null, name);
-// }
+function addToActions(feature, name, actionFile) {
+  if (!actionFile) actionFile = name;
+  refactor.addExportFrom(`src/features/${feature}/redux/actions.js`, `./${actionFile}`, null, name);
+}
 
-// function removeFromActions(feature, name, actionFile) {
-//   name = _.camelCase(name);
-//   actionFile = _.camelCase(actionFile || name);
-//   const targetPath = utils.mapReduxFile(feature, 'actions');
-
-//   refactor.removeImportBySource(targetPath, `./${actionFile}`);
-// }
+function removeFromActions(feature, name, actionFile) {
+  if (!actionFile) actionFile = name;
+  refactor.removeImportBySource(`src/features/${feature}/redux/actions.js`, `./${actionFile}`);
+}
 
 function renameInActions(feature, oldName, newName, actionFile) {
   // Rename export { xxx, xxxx } from './actionFile'
@@ -179,20 +176,19 @@ function removeFromReducer(feature, action) {
 }
 
 function addToInitialState(feature, name, value) {
-  const targetPath = utils.mapReduxFile(feature, 'initialState');
+  const targetPath = `src/features/${feature}/initialState.js`;
   refactor.addObjectProperty(targetPath, 'initialState', name, value);
 }
 
 function removeFromInitialState(feature, name) {
-  const targetPath = utils.mapReduxFile(feature, 'initialState');
+  const targetPath = `src/features/${feature}/initialState.js`;
   refactor.removeObjectProperty(targetPath, 'initialState', name);
 }
 
 function renameInInitialState(feature, oldName, newName) {
   // Summary:
   //  Rename initial state property name.
-
-  const targetPath = utils.mapReduxFile(feature, 'initialState');
+  const targetPath = `src/features/${feature}/initialState.js`;
   refactor.renameObjectProperty(targetPath, 'initialState', oldName, newName);
 }
 
@@ -311,8 +307,8 @@ module.exports = {
   addToRoute,
   removeFromRoute,
   moveRoute,
-  // addToActions,
-  // removeFromActions,
+  addToActions,
+  removeFromActions,
   renameInActions,
   addToReducer,
   renameInReducer,

@@ -9,10 +9,9 @@ const { vio, template } = rekit.core;
 // Add a component
 // elePath format: home/MyComponent, home/subFolder/MyComponent
 function add(elePath, args) {
-  const { connected, urlPath } = args;
+  const { connect, urlPath } = args;
   const ele = utils.parseElePath(elePath, 'component');
-
-  const tplFile = connected ? './templates/ConnectedComponent.js.tpl' : './templates/Component.js.tpl';
+  const tplFile = connect ? './templates/ConnectedComponent.js.tpl' : './templates/Component.js.tpl';
   template.generate(ele.modulePath, {
     templateFile: path.join(__dirname, tplFile),
     context: Object.assign({ ele }, args.context || {}),

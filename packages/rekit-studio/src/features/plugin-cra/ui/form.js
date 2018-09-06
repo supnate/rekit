@@ -59,7 +59,7 @@ export default {
           featureMeta(args),
           nameMeta(args),
           {
-            key: 'connected',
+            key: 'connect',
             label: 'Connect to Store',
             widget: Checkbox,
             initialValue: false,

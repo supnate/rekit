@@ -34,7 +34,9 @@ function move(source, target, args) {
   console.log('moving action: ', source, target, args);
 }
 
-function addAsync() {}
+function addAsync(elePath, args) {
+  
+}
 function moveAsync() {}
 function removeAsync() {}
 

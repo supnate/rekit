@@ -14,14 +14,17 @@ export function setViewChanged(urlPath, changed) {
 
 export function reducer(state, action) {
   switch (action.type) {
-    case HOME_SET_VIEW_CHANGED:
+    case HOME_SET_VIEW_CHANGED:{
+      const { urlPath, changed } = action.payload;
+      if (state.viewChanged[urlPath] === changed) return state;
       return {
         ...state,
         viewChanged: {
           ...state.viewChanged,
-          [action.payload.urlPath]: action.payload.changed,
+          [urlPath]: changed,
         },
       };
+    }
 
     default:
       return state;

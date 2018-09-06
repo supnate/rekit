@@ -12,7 +12,6 @@ import { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged } f
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
-import { codeChange } from './redux/actions';
 import { MonacoEditor, EditorSider } from './';
 
 export class CodeEditor extends Component {
@@ -223,8 +222,8 @@ export class CodeEditor extends Component {
   }
 
   handleEditorChange = () => {
-    this.props.actions.codeChange();
-    this.props.actions.setViewChanged(document.location.pathname, this.hasChange());
+    const pathname = document.location.pathname;
+    this.props.actions.setViewChanged(pathname, this.hasChange());
     if (this.hasChange()) {
       this.props.actions.stickTab();
     }
@@ -279,7 +278,7 @@ export class CodeEditor extends Component {
       .saveFile(this.props.file, this.editor.getValue())
       .then(() => {
         modelManager.setInitialValue(this.props.file, this.editor.getValue());
-        this.props.actions.codeChange();
+        this.props.actions.setViewChanged(document.location.pathname, false);
       })
       .catch(() => {
         if (process.env.REKIT_ENV === 'demo') {
@@ -462,7 +461,6 @@ export class CodeEditor extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    // codeChange: state.home.codeChange,
     fileContentById: state.home.fileContentById,
     elementById: state.home.elementById,
     fileContentNeedReload: state.home.fileContentNeedReload,
@@ -475,7 +473,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab, setViewChanged },
+      { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged },
       dispatch
     ),
   };

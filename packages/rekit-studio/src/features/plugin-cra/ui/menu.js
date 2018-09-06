@@ -106,7 +106,7 @@ export default {
               }
               let name;
               if (/^component|action$/.test(ele.type)) {
-                name = ele.parts[0].replace(/^src\/features\/|\.jsx?$/g, '');
+                name = ele.parts[0].replace(/^src\/features\/(redux\/)?|\.jsx?$/g, '');
               } else {
                 name = ele.name;
               }

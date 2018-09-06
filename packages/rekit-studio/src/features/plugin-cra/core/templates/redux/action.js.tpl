@@ -6,7 +6,7 @@ import {
   ${actionType},
 } from './constants';
 
-export function ${_.camelCase(action)}() {
+export function ${ele.name}() {
   return {
     type: ${actionType},
   };

@@ -23,9 +23,9 @@ const { vio, template } = rekit.core;
  * // create a file named 'Hello.less' in feature 'home'.
  * style.add('home', 'Hello');
  **/
-function add(elePath, args) {
+function add(ele, args) {
   // Create style file for a component
-  const ele = utils.parseElePath(elePath, 'style');
+  // const ele = utils.parseElePath(elePath, 'style');
   template.generate(
     ele.stylePath,
     Object.assign({}, args, {
@@ -39,7 +39,7 @@ function add(elePath, args) {
     })
   );
 
-  entry.addToStyle(ele.path);
+  entry.addToStyle(ele);
 }
 
 /**
@@ -49,11 +49,11 @@ function add(elePath, args) {
  * @alias module:style.remove
  *
  **/
-function remove(elePath) {
+function remove(ele) {
   // Remove style file of a component
-  const ele = utils.parseElePath(elePath, 'style');
+  // const ele = utils.parseElePath(elePath, 'style');
   vio.del(ele.stylePath);
-  entry.removeFromStyle(elePath);
+  entry.removeFromStyle(ele);
 }
 
 /**

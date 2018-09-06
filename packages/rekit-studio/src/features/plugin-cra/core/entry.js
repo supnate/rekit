@@ -10,9 +10,9 @@ const utils = require('./utils');
 const { vio, refactor, logger, config, paths } = rekit.core;
 
 // module.exports = {
-function addToIndex(elePath) {
+function addToIndex(ele) {
   // Add to index.js of a feature, note filePath should be in a feature
-  const ele = utils.parseElePath(elePath);
+  // const ele = utils.parseElePath(elePath);
   const indexPath = `src/features/${ele.feature}/index.js`;
 
   if (!vio.fileExists(indexPath)) {
@@ -23,8 +23,8 @@ function addToIndex(elePath) {
   refactor.addExportFrom(indexPath, moduleSource, ele.name);
 }
 
-function removeFromIndex(elePath) {
-  const ele = utils.parseElePath(elePath);
+function removeFromIndex(ele) {
+  // const ele = utils.parseElePath(elePath);
   const indexPath = `src/features/${ele.feature}/index.js`;
 
   if (!vio.fileExists(indexPath)) {
@@ -124,22 +124,18 @@ function moveRoute(source, dest) {
   }
 }
 
-function addToActions(feature, name, actionFile) {
-  feature = _.kebabCase(feature);
-  name = _.camelCase(name);
-  actionFile = _.camelCase(actionFile || name);
+// function addToActions(feature, name) {
+//   const targetPath = utils.mapReduxFile(feature, 'actions');
+//   refactor.addExportFrom(`src/features/${feature}/redux/actions.js`, `./${name}`, null, name);
+// }
 
-  const targetPath = utils.mapReduxFile(feature, 'actions');
-  refactor.addExportFrom(targetPath, `./${actionFile}`, null, name);
-}
+// function removeFromActions(feature, name, actionFile) {
+//   name = _.camelCase(name);
+//   actionFile = _.camelCase(actionFile || name);
+//   const targetPath = utils.mapReduxFile(feature, 'actions');
 
-function removeFromActions(feature, name, actionFile) {
-  name = _.camelCase(name);
-  actionFile = _.camelCase(actionFile || name);
-  const targetPath = utils.mapReduxFile(feature, 'actions');
-
-  refactor.removeImportBySource(targetPath, `./${actionFile}`);
-}
+//   refactor.removeImportBySource(targetPath, `./${actionFile}`);
+// }
 
 function renameInActions(feature, oldName, newName, actionFile) {
   // Rename export { xxx, xxxx } from './actionFile'
@@ -153,12 +149,11 @@ function renameInActions(feature, oldName, newName, actionFile) {
 }
 
 function addToReducer(feature, action) {
-  const targetPath = utils.mapReduxFile(feature, 'reducer');
-  const camelActionName = _.camelCase(action);
+  const targetPath = `src/features/${feature}/redux/reducer.js`;
   refactor.updateFile(targetPath, ast =>
     [].concat(
-      refactor.addImportFrom(ast, `./${camelActionName}`, '', `reducer as ${camelActionName}Reducer`),
-      refactor.addToArray(ast, 'reducers', `${camelActionName}Reducer`)
+      refactor.addImportFrom(ast, `./${action}`, '', `reducer as ${action}Reducer`),
+      refactor.addToArray(ast, 'reducers', `${action}Reducer`)
     )
   );
 }
@@ -174,12 +169,11 @@ function renameInReducer(feature, oldName, newName) {
 }
 
 function removeFromReducer(feature, action) {
-  const targetPath = utils.mapReduxFile(feature, 'reducer');
-  const camelActionName = _.camelCase(action);
+  const targetPath = `src/features/${feature}/redux/reducer.js`;
   refactor.updateFile(targetPath, ast =>
     [].concat(
-      refactor.removeImportBySource(ast, `./${camelActionName}`),
-      refactor.removeFromArray(ast, 'reducers', `${camelActionName}Reducer`)
+      refactor.removeImportBySource(ast, `./${action}`),
+      refactor.removeFromArray(ast, 'reducers', `${action}Reducer`)
     )
   );
 }
@@ -276,15 +270,12 @@ function removeFromRouteConfig(feature) {
   );
 }
 
-function addToStyle(elePath) {
-  // elePath: home/MyComponent, home/subFolder/MyComponent2
-  const ele = utils.parseElePath(elePath, 'style');
+function addToStyle(ele) {
   const targetPath = `src/features/${ele.feature}/style.${config.style}`;
   refactor.addStyleImport(targetPath, `./${ele.path.replace(/^\w+\//, '')}`);
 }
 
-function removeFromStyle(elePath) {
-  const ele = utils.parseElePath(elePath, 'style');
+function removeFromStyle(ele) {
   const targetPath = `src/features/${ele.feature}/style.${config.style}`;
   refactor.removeStyleImport(targetPath, `./${ele.path.replace(/^\w+\//, '')}`);
 }
@@ -320,8 +311,8 @@ module.exports = {
   addToRoute,
   removeFromRoute,
   moveRoute,
-  addToActions,
-  removeFromActions,
+  // addToActions,
+  // removeFromActions,
   renameInActions,
   addToReducer,
   renameInReducer,

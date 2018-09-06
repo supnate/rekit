@@ -99,6 +99,13 @@ export default {
           type: context.elementType,
           name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
         };
+      case 'core.element.add.action':
+        return {
+          ...values,
+          commandName: context.action,
+          type: context.elementType,
+          name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
+        };
       default:
         break;
     }

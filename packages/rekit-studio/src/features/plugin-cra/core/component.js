@@ -17,8 +17,8 @@ function add(elePath, args) {
     context: Object.assign({ ele }, args.context || {}),
   });
 
-  style.add(ele.path, args);
-  entry.addToIndex(ele.path, args);
+  style.add(ele, args);
+  entry.addToIndex(ele, args);
   if (urlPath) {
     route.add(ele.path, args);
   }
@@ -29,8 +29,8 @@ function remove(elePath, args) {
   const ele = utils.parseElePath(elePath, 'component');
   vio.del(ele.modulePath);
 
-  style.remove(ele.path, args);
-  entry.removeFromIndex(ele.path, args);
+  style.remove(ele, args);
+  entry.removeFromIndex(ele, args);
   route.remove(ele.path, args);
 }
 

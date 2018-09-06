@@ -22,6 +22,9 @@ const initialState = {
 
   depStatus: {
   },
+  fetchEnvVarsPending: false,
+  fetchEnvVarsError: null,
+  envVars: null
 };
 
 export default initialState;

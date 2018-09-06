@@ -4,6 +4,7 @@
 import {
   WebpackManager,
   DepsManager,
+  EnvVarsManager,
 } from './';
 
 export default {
@@ -12,5 +13,6 @@ export default {
   childRoutes: [
     { path: 'webpack', name: 'Webpack manager', component: WebpackManager },
     { path: 'deps', name: 'Deps manager', component: DepsManager },
+    { path: 'env', name: 'Env vars manager', component: EnvVarsManager },
   ],
 };

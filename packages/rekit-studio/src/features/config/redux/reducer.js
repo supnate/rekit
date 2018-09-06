@@ -13,6 +13,7 @@ import { reducer as updatePackageReducer } from './updatePackage';
 import { reducer as removePackageReducer } from './removePackage';
 import { reducer as setDepsOutputHeightReducer } from './setDepsOutputHeight';
 import { reducer as fetchDepsRemoteReducer } from './fetchDepsRemote';
+import { reducer as fetchEnvVarsReducer } from './fetchEnvVars';
 
 const reducers = [
   fetchDepsReducer,
@@ -21,6 +22,7 @@ const reducers = [
   removePackageReducer,
   setDepsOutputHeightReducer,
   fetchDepsRemoteReducer,
+  fetchEnvVarsReducer,
 ];
 
 export default function reducer(state = initialState, action) {

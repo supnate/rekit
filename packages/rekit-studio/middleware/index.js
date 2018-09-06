@@ -18,6 +18,7 @@ const lint = require('./api/lint');
 const format = require('./api/format');
 const fetchDeps = require('./api/fetchDeps');
 const fetchDepsRemote = require('./api/fetchDepsRemote');
+const fetchEnvVars = require('./api/fetchEnvVars');
 const installPackage = require('./api/installPackage');
 const updatePackage = require('./api/updatePackage');
 const removePackage = require('./api/removePackage');
@@ -145,6 +146,17 @@ module.exports = () => {
           case '/api/fetchDeps': {
             try {
               res.write(JSON.stringify(fetchDeps()));
+              res.end();
+            } catch (e) {
+              res.statusCode = 500;
+              res.write(JSON.stringify({ error: e.toString() }));
+              res.end();
+            }
+            break;
+          }
+          case '/api/fetchEnvVars': {
+            try {
+              res.write(JSON.stringify(fetchEnvVars()));
               res.end();
             } catch (e) {
               res.statusCode = 500;

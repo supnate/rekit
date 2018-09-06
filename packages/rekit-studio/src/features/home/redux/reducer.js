@@ -92,6 +92,10 @@ export default function reducer(state = initialState, action) {
         name = 'Dependencies';
         type = 'deps';
         icon = 'profile';
+      } else if (arr[0] === 'config' && arr[1] === 'env') {
+        name = 'Environment Variables';
+        type = 'env';
+        icon = 'profile';
       } else {
         // No tabs for other pages like '/blank'
         newState = state;
@@ -100,7 +104,7 @@ export default function reducer(state = initialState, action) {
 
       const foundTab = _.find(openTabs, { key });
       if (!foundTab) {
-        const isTemp = !/^#(home|tests|coverage|build|deps)$/.test(key);
+        const isTemp = !/^#(home|tests|coverage|build|deps|env)$/.test(key);
         const tabItem = { key, type, name, icon, pathname, isTemp };
         if (type === 'element') {
           tabItem.subTab = arr[2] || '';

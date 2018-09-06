@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import plugin from '../../plugin/plugin';
+import plugin from '../../../common/plugin';
 import { storage } from '../../common/utils';
 
 const pathnameSelector = state => state.router.location.pathname;

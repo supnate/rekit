@@ -5,7 +5,6 @@ import commonRoute from '../features/common/route';
 import rekitCmdsRoute from '../features/rekit-cmds/route';
 import diagramRoute from '../features/diagram/route';
 import rekitToolsRoute from '../features/rekit-tools/route';
-import pluginRoute from '../features/plugin/route';
 import configRoute from '../features/config/route';
 import layoutRoute from '../features/layout/route';
 import editorRoute from '../features/editor/route';
@@ -23,7 +22,6 @@ const childRoutes = [
   rekitCmdsRoute,
   diagramRoute,
   rekitToolsRoute,
-  pluginRoute,
   configRoute,
   layoutRoute,
   editorRoute,

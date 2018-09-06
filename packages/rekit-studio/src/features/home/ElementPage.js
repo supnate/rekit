@@ -5,11 +5,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CodeEditor } from '../editor';
 import * as actions from './redux/actions';
-import plugin from '../plugin/plugin';
+import plugin from '../../common/plugin';
 import { DepsDiagramView } from '../diagram';
 import { ImageView } from './';
 
-const CodeView = ({ element, viewElement }) => <CodeEditor file={(viewElement && viewElement.target) || element.target || element.id} />;
+const CodeView = ({ element, viewElement }) => (
+  <CodeEditor file={(viewElement && viewElement.target) || element.target || element.id} />
+);
 const DepsDiagramViewWrapper = ({ element, viewElement, elementById }) => (
   <DepsDiagramView elementId={element.id} elementById={elementById} />
 );
@@ -67,11 +69,19 @@ export class ElementPage extends Component {
   byId = id => this.props.elementById[id];
 
   renderNotFound() {
-    return <div className="home-element-page error">Element not found, please check URL or if the element exists.</div>;
+    return (
+      <div className="home-element-page error">
+        Element not found, please check URL or if the element exists.
+      </div>
+    );
   }
 
   renderNotSupported() {
-    return <div className="home-element-page error">The element is not supported or size is too large.</div>;
+    return (
+      <div className="home-element-page error">
+        The element is not supported or size is too large.
+      </div>
+    );
   }
 
   render() {
@@ -93,7 +103,12 @@ export class ElementPage extends Component {
     }
     return (
       <div className="home-element-page">
-        <View elementById={elementById} element={ele} viewElement={viewEle} match={this.props.match} />
+        <View
+          elementById={elementById}
+          element={ele}
+          viewElement={viewEle}
+          match={this.props.match}
+        />
       </div>
     );
   }

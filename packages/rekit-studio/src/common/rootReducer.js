@@ -7,7 +7,6 @@ import commonReducer from '../features/common/redux/reducer';
 import rekitCmdsReducer from '../features/rekit-cmds/redux/reducer';
 import diagramReducer from '../features/diagram/redux/reducer';
 import rekitToolsReducer from '../features/rekit-tools/redux/reducer';
-import pluginReducer from '../features/plugin/redux/reducer';
 import configReducer from '../features/config/redux/reducer';
 import layoutReducer from '../features/layout/redux/reducer';
 import editorReducer from '../features/editor/redux/reducer';
@@ -29,7 +28,6 @@ const reducerMap = {
   rekitCmds: rekitCmdsReducer,
   diagram: diagramReducer,
   rekitTools: rekitToolsReducer,
-  plugin: pluginReducer,
   config: configReducer,
   layout: layoutReducer,
   editor: editorReducer,

@@ -19,7 +19,8 @@ module.exports = (req, res) => {
     res.end();
   } else {
     try {
-      vio.put(file, req.body.content);
+      vio.save(file, req.body.content);
+      vio.flush();
       res.write(JSON.stringify({ success: true }));
     } catch (err) {
       res.write(JSON.stringify({ error: err }));

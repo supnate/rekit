@@ -8,7 +8,7 @@ import axios from 'axios';
 import { Button, Icon, message, Modal, Spin, Tooltip } from 'antd';
 import SplitPane from 'react-split-pane/lib/SplitPane';
 import Pane from 'react-split-pane/lib/Pane';
-import { fetchFileContent, saveFile, showDemoAlert, stickTab } from '../home/redux/actions';
+import { fetchFileContent, saveFile, showDemoAlert, stickTab, setViewChanged } from '../home/redux/actions';
 import editorStateMap from './editorStateMap';
 import modelManager from './modelManager';
 import { storage } from '../common/utils';
@@ -224,7 +224,10 @@ export class CodeEditor extends Component {
 
   handleEditorChange = () => {
     this.props.actions.codeChange();
-    if (this.hasChange()) this.props.actions.stickTab();
+    this.props.actions.setViewChanged(document.location.pathname, this.hasChange());
+    if (this.hasChange()) {
+      this.props.actions.stickTab();
+    }
   };
 
   handleOutlineSelect = nodeData => {
@@ -472,7 +475,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab },
+      { fetchFileContent, saveFile, codeChange, showDemoAlert, stickTab, setViewChanged },
       dispatch
     ),
   };

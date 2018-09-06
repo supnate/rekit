@@ -3,7 +3,7 @@ import history from '../../../common/history';
 
 export default {
   handleSelect(elementId) {
-    const { elementById } = store.getState().home.projectData;
+    const { elementById } = store.getState().home;
     const ele = elementById[elementId];
     switch (ele.type) {
       case 'component':

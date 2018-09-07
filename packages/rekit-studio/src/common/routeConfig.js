@@ -30,14 +30,16 @@ const childRoutes = [
   pluginTerminalRoute,
 ];
 
-const routes = [{
-  path: '/',
-  component: App,
-  childRoutes: [
-    ...childRoutes,
-    { path: '*', name: 'Page not found', component: PageNotFound },
-  ].filter(r => r.component || (r.childRoutes && r.childRoutes.length > 0)),
-}];
+const routes = [
+  {
+    path: '/',
+    component: App,
+    childRoutes: [
+      ...childRoutes,
+      { path: '*', name: 'Page not found', component: PageNotFound },
+    ].filter(r => r.component || (r.childRoutes && r.childRoutes.length > 0)),
+  },
+];
 
 function handleIndexRoute(route) {
   if (!route.childRoutes || !route.childRoutes.length) {

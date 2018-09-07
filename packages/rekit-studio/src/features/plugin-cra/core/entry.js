@@ -193,12 +193,12 @@ function renameInInitialState(feature, oldName, newName) {
 }
 
 function addToRootReducer(feature) {
-  const targetPath = utils.mapSrcFile('common/rootReducer.js');
+  const targetPath = 'src/common/rootReducer.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
       refactor.addImportFrom(
         ast,
-        `../features/${_.kebabCase(feature)}/redux/reducer`,
+        `../features/${feature}/redux/reducer`,
         `${_.camelCase(feature)}Reducer`
       ),
       refactor.addObjectProperty(ast, 'reducerMap', _.camelCase(feature), `${_.camelCase(feature)}Reducer`)
@@ -207,7 +207,7 @@ function addToRootReducer(feature) {
 }
 
 function renameInRootReducer(oldFeature, newFeature) {
-  const targetPath = utils.mapSrcFile('common/rootReducer.js');
+  const targetPath = 'src/common/rootReducer.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
       refactor.renameImportSpecifier(ast, `${_.camelCase(oldFeature)}Reducer`, `${_.camelCase(newFeature)}Reducer`),
@@ -223,27 +223,27 @@ function renameInRootReducer(oldFeature, newFeature) {
 
 function removeFromRootReducer(feature) {
   // NOTE: currently only used by feature
-  const targetPath = utils.mapSrcFile('common/rootReducer.js');
+  const targetPath = 'src/common/rootReducer.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
-      refactor.removeImportBySource(ast, `../features/${_.kebabCase(feature)}/redux/reducer`),
+      refactor.removeImportBySource(ast, `../features/${feature}/redux/reducer`),
       refactor.removeObjectProperty(ast, 'reducerMap', _.camelCase(feature))
     )
   );
 }
 
 function addToRouteConfig(feature) {
-  const targetPath = utils.mapSrcFile('common/routeConfig.js');
+  const targetPath = 'src/common/routeConfig.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
-      refactor.addImportFrom(ast, `../features/${_.kebabCase(feature)}/route`, `${_.camelCase(feature)}Route`),
+      refactor.addImportFrom(ast, `../features/${feature}/route`, `${_.camelCase(feature)}Route`),
       refactor.addToArray(ast, 'childRoutes', `${_.camelCase(feature)}Route`)
     )
   );
 }
 
 function renameInRouteConfig(oldFeature, newFeature) {
-  const targetPath = utils.mapSrcFile('common/routeConfig.js');
+  const targetPath = 'src/common/routeConfig.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
       refactor.renameImportSpecifier(ast, `${_.camelCase(oldFeature)}Route`, `${_.camelCase(newFeature)}Route`),
@@ -257,10 +257,10 @@ function renameInRouteConfig(oldFeature, newFeature) {
 }
 
 function removeFromRouteConfig(feature) {
-  const targetPath = utils.mapSrcFile('common/routeConfig.js');
+  const targetPath = 'src/common/routeConfig.js';
   refactor.updateFile(targetPath, ast =>
     [].concat(
-      refactor.removeImportBySource(ast, `../features/${_.kebabCase(feature)}/route`),
+      refactor.removeImportBySource(ast, `../features/${feature}/route`),
       refactor.removeFromArray(ast, 'childRoutes', `${_.camelCase(feature)}Route`)
     )
   );
@@ -282,21 +282,21 @@ function renameInStyle(feature, oldName, newName) {
 }
 
 function addToRootStyle(feature) {
-  const targetPath = utils.mapSrcFile('styles/index.' + utils.getCssExt());
-  refactor.addStyleImport(targetPath, `../features/${_.kebabCase(feature)}/style`);
+  const targetPath = `src/styles/index.${config.style}`;
+  refactor.addStyleImport(targetPath, `../features/${feature}/style`);
 }
 
 function removeFromRootStyle(feature) {
-  const targetPath = utils.mapSrcFile('styles/index.' + utils.getCssExt());
-  refactor.removeStyleImport(targetPath, `../features/${_.kebabCase(feature)}/style`);
+  const targetPath = `src/styles/index.${config.style}`;
+  refactor.removeStyleImport(targetPath, `../features/${feature}/style`);
 }
 
 function renameInRootStyle(oldFeature, newFeature) {
-  const targetPath = utils.mapSrcFile('styles/index.' + utils.getCssExt());
+  const targetPath = `src/styles/index.${config.style}`;
   refactor.renameStyleImport(
     targetPath,
-    `../features/${_.kebabCase(oldFeature)}/style`,
-    `../features/${_.kebabCase(newFeature)}/style`
+    `../features/${oldFeature}/style`,
+    `../features/${newFeature}/style`
   );
 }
 // };

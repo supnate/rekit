@@ -1,21 +1,3 @@
-import React from 'react';
-import { OutputView } from '../../home';
-
-export const bottomDrawer = {
-  getPanes() {
-    return [
-      {
-        tab: 'Output',
-        key: 'output',
-        order: 10,
-        component: OutputView,
-      },
-      {
-        tab: 'Problems',
-        key: 'problems',
-        order: 1,
-        component: () => <div>problems2</div>,
-      },
-    ];
-  },
-};
+export { default as form } from './form';
+export { default as menu } from './menu';
+export { default as bottomDrawer } from './bottomDrawer';

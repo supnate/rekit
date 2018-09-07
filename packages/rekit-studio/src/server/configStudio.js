@@ -5,10 +5,6 @@ const chalk = require('chalk');
 const expressWs = require('express-ws');
 const helpers = require('./helpers');
 
-rekit.core.plugin.addPlugin(require('../features/plugin-default/core'));
-rekit.core.plugin.addPlugin(require('../features/plugin-terminal/core'));
-rekit.core.plugin.addPlugin(require('../features/plugin-cra/core'));
-
 function setupSocketIo(server) {
   const io = require('socket.io')(server);
 

@@ -11,9 +11,9 @@ const menuItems = {
   addAction: { name: 'Add Action', key: 'add-action' },
   addComponent: { name: 'Add Component', key: 'add-component' },
   addFeature: { name: 'Add Feature', key: 'add-feature' },
-  del: { name: 'Delete', key: 'del' },
-  move: { name: 'Move', key: 'move' },
-  rename: { name: 'Rename', key: 'rename' },
+  del: { name: 'Delete', key: 'del-component-action' },
+  move: { name: 'Move', key: 'move-component-action' },
+  rename: { name: 'Rename', key: 'rename-component-action' },
   showTest: { name: 'Unit Test', key: 'show-test' },
   runTest: { name: 'Run Test', key: 'run-test' },
   runTests: { name: 'Run Tests', key: 'run-tests' },
@@ -46,20 +46,12 @@ export default {
         case 'action':
           items.push(menuItems.rename, menuItems.move, menuItems.runTest, menuItems.del);
           break;
-        case 'folder':
-          items.push(menuItems.newFile, menuItems.newFolder, menuItems.rename, menuItems.del);
-          break;
-        case 'misc':
-          items.push(menuItems.newFile, menuItems.newFolder);
-          break;
-        case 'file':
-          items.push(menuItems.rename, menuItems.del);
-          break;
         default:
           break;
       }
     },
     handleMenuClick({ elementId, key }) {
+      const ele = byId(elementId);
       switch (key) {
         case 'add-component': {
           showDialog('core.element.add.component', 'Add Component', {
@@ -91,8 +83,7 @@ export default {
           });
           break;
         }
-        case 'del': {
-          console.log('del: ', elementId);
+        case 'del-component-action': {
           Modal.confirm({
             title: 'Are you sure to delete the element?',
             onOk() {
@@ -104,12 +95,7 @@ export default {
                 });
                 return;
               }
-              let name;
-              if (/^component|action$/.test(ele.type)) {
-                name = ele.parts[0].replace(/^src\/features\/(redux\/)?|\.jsx?$/g, '');
-              } else {
-                name = ele.name;
-              }
+              const name = ele.parts[0].replace(/^src\/features\/(redux\/)?|\.jsx?$/g, '');
               execCoreCommand({
                 commandName: 'remove',
                 type: ele.type,

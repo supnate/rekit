@@ -300,7 +300,7 @@ function flush() {
     }
   });
 
-  // Delete files
+  // Delete files/folders
   Object.keys(toDel).forEach(filePath => {
     const absFilePath = paths.map(filePath);
     if (!fs.existsSync(absFilePath)) {
@@ -311,7 +311,8 @@ function flush() {
         file: filePath,
       });
     } else {
-      fs.unlinkSync(absFilePath);
+      // fs.unlinkSync(absFilePath);
+      shell.rm('-rf', absFilePath);
       log('Deleted: ', 'magenta', filePath);
       res.push({
         type: 'del-file',

@@ -42,24 +42,29 @@ function add(feature) {
   entry.addToRootStyle(feature);
 }
 
-function rename(oldName, newName) {
-  const targetPath = `src/features/${feature}/redux/constants.js`;
-  const lines = vio.getLines(targetPath);
-  const i = refactor.lineIndex(lines, `export const ${oldName} = '${oldName}';`);
-  if (i >= 0) {
-    lines[i] = `export const ${newName} = '${newName}';`;
-  }
+function move(oldName, newName) {
+  // const targetPath = `src/features/${feature}/redux/constants.js`;
+  // const lines = vio.getLines(targetPath);
+  // const i = refactor.lineIndex(lines, `export const ${oldName} = '${oldName}';`);
+  // if (i >= 0) {
+  //   lines[i] = `export const ${newName} = '${newName}';`;
+  // }
 
-  vio.save(targetPath, lines);
+  // vio.save(targetPath, lines);
 }
 
-function remove(name) {
-  const targetPath = `src/features/${feature}/redux/constants.js`; 
-  refactor.removeLines(targetPath, `export const ${name} = '${name}';`);
+function remove(feature) {
+  feature = _.kebabCase(feature);
+  vio.del(`src/features/${feature}`);
+  vio.del(`tests/features/${feature}`);
+
+  entry.removeFromRootReducer(feature);
+  entry.removeFromRouteConfig(feature);
+  entry.removeFromRootStyle(feature);
 }
 
 module.exports = {
   add,
   remove,
-  rename,
+  move,
 };

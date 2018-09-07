@@ -1,6 +1,5 @@
 const path = require('path');
 const CLIEngine = require('eslint').CLIEngine;
-const rekit = require('rekit-core');
 
 function lint(req, res) {
   const code = req.body.content;

@@ -1,4 +1,3 @@
-const rekit = require('rekit-core');
 const Watchpack = require('watchpack');
 
 const { paths, vio } = rekit.core;

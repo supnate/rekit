@@ -1,4 +1,3 @@
-const rekit = require('rekit-core');
 
 module.exports = (req, res) => {
   res.type('json');

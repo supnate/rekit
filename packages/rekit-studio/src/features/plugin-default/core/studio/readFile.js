@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const rekit = require('rekit-core');
 
 const { paths, vio } = rekit.core;
 

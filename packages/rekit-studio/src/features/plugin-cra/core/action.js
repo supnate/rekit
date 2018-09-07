@@ -1,10 +1,10 @@
-const path = require('path');
 const _ = require('lodash');
 const entry = require('./entry');
 const utils = require('./utils');
 const constant = require('./constant');
+const app = require('./app');
 
-const { vio, template, refactor } = rekit.core;
+const { vio, template } = rekit.core;
 const { pascalCase, getTplPath, parseElePath, getActionType, getAsyncActionTypes } = utils;
 
 function add(elePath, args) {
@@ -23,8 +23,11 @@ function add(elePath, args) {
 }
 
 function remove(elePath, args) {
-  if (args.async) return removeAsync(elePath, args);
   const ele = parseElePath(elePath, 'action');
+  if (_.get(app.getFileProps(ele.modulePath), 'action.isAsync')) {
+    return removeAsync(elePath, args);
+  }
+
   const actionType = getActionType(ele.feature, ele.name);  
   vio.del(ele.modulePath);
   constant.remove(ele.feature, actionType);
@@ -64,8 +67,25 @@ function addAsync(elePath, args = {}) {
   entry.addToInitialState(ele.feature, `${ele.name}Pending`, 'false');
   entry.addToInitialState(ele.feature, `${ele.name}Error`, 'null');
 }
+
+function removeAsync(elePath, args = {}) {
+  const ele = parseElePath(elePath, 'action');
+  const actionTypes = getAsyncActionTypes(ele.feature, ele.name);
+
+  vio.del(ele.modulePath);
+
+  constant.remove(ele.feature, actionTypes.begin);
+  constant.remove(ele.feature, actionTypes.success);
+  constant.remove(ele.feature, actionTypes.failure);
+  constant.remove(ele.feature, actionTypes.dismissError);
+
+  entry.removeFromActions(ele.feature, ele.name);
+  entry.removeFromReducer(ele.feature, ele.name);
+  entry.removeFromInitialState(ele.feature, `${ele.name}Pending`, 'false');
+  entry.removeFromInitialState(ele.feature, `${ele.name}Error`, 'null');
+}
+
 function moveAsync() {}
-function removeAsync() {}
 
 module.exports = {
   add,

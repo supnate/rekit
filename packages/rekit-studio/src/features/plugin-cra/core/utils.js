@@ -35,7 +35,6 @@ function parseElePath(elePath, type = 'component') {
     ele.modulePath = `src/features/${feature}/redux/${name}.js`;
     ele.testPath = `tests/features/${feature}/redux/${name}.test.js`;
   }
-  console.log(ele);
   return ele;
 }
 

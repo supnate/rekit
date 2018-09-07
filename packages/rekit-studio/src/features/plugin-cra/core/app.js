@@ -356,4 +356,5 @@ function getProjectData() {
 
 module.exports = {
   getProjectData,
+  getFileProps,
 };

@@ -176,19 +176,19 @@ function removeFromReducer(feature, action) {
 }
 
 function addToInitialState(feature, name, value) {
-  const targetPath = `src/features/${feature}/initialState.js`;
+  const targetPath = `src/features/${feature}/redux/initialState.js`;
   refactor.addObjectProperty(targetPath, 'initialState', name, value);
 }
 
 function removeFromInitialState(feature, name) {
-  const targetPath = `src/features/${feature}/initialState.js`;
+  const targetPath = `src/features/${feature}/redux/initialState.js`;
   refactor.removeObjectProperty(targetPath, 'initialState', name);
 }
 
 function renameInInitialState(feature, oldName, newName) {
   // Summary:
   //  Rename initial state property name.
-  const targetPath = `src/features/${feature}/initialState.js`;
+  const targetPath = `src/features/${feature}/redux/initialState.js`;
   refactor.renameObjectProperty(targetPath, 'initialState', oldName, newName);
 }
 

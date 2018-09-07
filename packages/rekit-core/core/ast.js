@@ -10,7 +10,9 @@ function getAst(filePath, throwIfError) {
   // Todo: make src/libs configurable
   if (_.startsWith(filePath, 'src/libs/')) return null; // ignore libs folder to parse
   const checkAst = ast => {
-    if (!ast && throwIfError) throw new Error(`Failed to parse ast, please check syntax: ${filePath}`);
+    if (!ast && throwIfError) {
+      throw new Error(`Failed to parse ast or file not exists, please check syntax: ${filePath}`);
+    }
   };
 
   if (!vio.fileExists(filePath)) {

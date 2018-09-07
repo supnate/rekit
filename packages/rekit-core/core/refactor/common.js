@@ -126,11 +126,8 @@ function acceptFilePathForAst(func) {
     // eslint-disable-line
     let theAst = file;
     if (_.isString(file)) {
-      theAst = ast.getAst(file);
+      theAst = ast.getAst(file, true);
       // vio.assertAst(theAst, file);
-      if (!theAst) {
-        throw new Error(`Failed to parse ${file}, please check syntax and retry.`);
-      }
     }
     const args = _.toArray(arguments);
     args[0] = theAst;

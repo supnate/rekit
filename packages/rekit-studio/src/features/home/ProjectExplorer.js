@@ -120,7 +120,7 @@ export class ProjectExplorer extends Component {
       key={nodeData.key}
       title={this.renderTreeNodeTitle(nodeData)}
       className={nodeData.className}
-      isLeaf={!nodeData.children}
+      isLeaf={!nodeData.children || !nodeData.children.length}
     >
       {nodeData.children && nodeData.children.map(this.renderTreeNode)}
     </TreeNode>

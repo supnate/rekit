@@ -1,3 +1,4 @@
+import _ from 'lodash';
 const colorMap = {
   feature: '#0277bd',
   action: '#ec407a',
@@ -124,9 +125,20 @@ export default {
         ele.count = ele.children.length - 1;
       }
 
-      if (ele.type === 'feature' && byId(`src/features/${ele.name}/core`) && byId(`src/features/${ele.name}/ui`)) {
+      const coreDir = `src/features/${ele.name}/core`;
+      const uiDir = `src/features/${ele.name}/ui`;
+      if (ele.type === 'feature' && byId(coreDir) && byId(uiDir)) {
         ele.icon = iconMap.plugin;
         ele.iconColor = colorMap.plugin;
+        const misc = ele.children.pop();
+        ele.children.push(coreDir, uiDir, misc);
+        _.pull(byId(misc).children, coreDir, uiDir)
+
+        byId(coreDir).icon = 'core';
+        byId(uiDir).icon = 'ui';
+        byId(uiDir).iconColor = '#CDDC39';
+        
+
       }
 
       if (ele.children && ele.children.forEach) {

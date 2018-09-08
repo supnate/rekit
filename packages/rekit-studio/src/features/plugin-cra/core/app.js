@@ -268,7 +268,7 @@ function getFeatures() {
       {
         id: `v:${f}-routes`,
         type: 'routes',
-        name: f,
+        name: 'Routes',
         feature: f,
         parts: [routeFilePath],
         views: [

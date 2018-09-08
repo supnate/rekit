@@ -37,8 +37,15 @@ export default {
     handleMenuClick({ elementId, key }) {
       switch (key) {
         case 'new-file': {
-          showDialog('core.element.move.component', 'Rename', {
-            action: 'rename',
+          showDialog('core.element.add.file', 'New File', {
+            action: 'add',
+            targetId: elementId,
+          });
+          break;
+        }
+        case 'new-folder': {
+          showDialog('core.element.add.folder', 'New Folder', {
+            action: 'add',
             targetId: elementId,
           });
           break;

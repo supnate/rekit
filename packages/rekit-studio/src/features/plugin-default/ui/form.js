@@ -12,12 +12,14 @@ const nameMeta = () => ({
 });
 
 export default {
-  fillMeta(args) {
+  fillMeta(args) {console.log('fill meta: ', args);
     switch (args.formId) {
       case 'core.element.add.file':
+      case 'core.element.add.folder':      
         args.meta.elements.push(
           nameMeta(),
         );
+        break;
         break;
       default:
         break;
@@ -29,13 +31,20 @@ export default {
   processValues(args) {
     const { context, values, formId } = args;
     switch (formId) {
-      case 'core.element.add.file':
+      case 'core.element.add.file': {
+        const target = byId(context.targetId);
+        let name;
+        if (target.type === 'folder') name = target.id + '/' + values.name;
+        else if (target.type === 'misc') name = target.target + '/' + values.name;
+        else if (target.type === 'file') name = target.id.replace(/\/[^/]$/, '/' + values.name);
+        else throw new Error('Unkonwn target type to add a file: ', target.type);
         return {
           ...values,
-          commandName: context.action,
-          type: context.elementType,
-          name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
+          commandName: 'add',
+          type: 'file',
+          name,
         };
+      }
       default:
         break;
     }

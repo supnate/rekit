@@ -36,7 +36,10 @@ function getFileProps(file) {
       }
     },
     ClassDeclaration(path) {
-      if (path.node.superClass && path.node.body.body.some(n => n.type === 'ClassMethod' && n.key.name === 'render')) {
+      if (
+        path.node.superClass &&
+        path.node.body.body.some(n => n.type === 'ClassMethod' && n.key.name === 'render')
+      ) {
         ff.hasClassAndRenderMethod = true;
       }
     },
@@ -309,7 +312,13 @@ function getFeatures() {
       return filtered;
     };
     const misc = filterNonMisc(elementById[`src/features/${f}`].children);
-    children.push({ id: `v:${f}-misc`, type: 'misc', name: 'Misc', children: misc });
+    children.push({
+      id: `v:${f}-misc`,
+      target: `src/features/${f}`,
+      type: 'misc',
+      name: 'Misc',
+      children: misc,
+    });
 
     const id = `v:feature-${f}`;
     elements.push(id);
@@ -342,6 +351,7 @@ function getProjectData() {
     type: 'misc',
     id: 'v:root-misc',
     name: 'Misc',
+    target: 'src',
     children: srcFiles.elements.filter(eid => eid !== 'src/features'),
   };
 

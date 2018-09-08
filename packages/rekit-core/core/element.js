@@ -2,19 +2,19 @@ const _ = require('lodash');
 const plugin = require('./plugin');
 
 function add(type, name, args) {
-  console.log('Adding element: ', `[${type}]`, name);
+  console.log(`Adding ${type}: `, name);
   const thePlugin = _.last(plugin.getPlugins(`elements.${type}.add`));
   if (!thePlugin) throw new Error(`Can't find a plugin which could add an element of type ${type}`);
   return thePlugin.elements[type].add(name, args);
 }
 function move(type, source, target, args) {
-  console.log('Moving element: ', `[${type}]`, source, target);
+  console.log(`Moving ${type}: `, source, target);
   const thePlugin = _.last(plugin.getPlugins(`elements.${type}.move`));
   if (!thePlugin) throw new Error(`Can't find a plugin which could move element of type ${type}`);
   return thePlugin.elements[type].move(type, source, target, args);
 }
 function remove(type, name, args) {
-  console.log('Removing element: ', `[${type}]`, name);
+  console.log(`Removing ${type}: `, name);
   const thePlugin = _.last(plugin.getPlugins(`elements.${type}.remove`));
   if (!thePlugin) throw new Error(`Can't find a plugin which could remove an element of type ${type}`);
   return thePlugin.elements[type].remove(name, args);

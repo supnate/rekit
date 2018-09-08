@@ -9,7 +9,7 @@ function config(server, app, args) {
   watchFileChange(args.io);
 
   app.get('/api/project-data', projectData);
-  app.post('/api/core-command', coreCommand);
+  app.post('/api/core-command', coreCommand(args.io));
   app.post('/api/lint', lint);
   app.get('/api/read-file', readFile);
   app.post('/api/save-file', saveFile);

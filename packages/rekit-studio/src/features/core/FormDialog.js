@@ -22,6 +22,7 @@ export class FormDialog extends Component {
         visible={this.props.dialog.visible}
         title={this.props.dialog.title || 'Dialog'}
         destroyOnClose
+        maskClosable={false}
         onCancel={hideDialog}
         footer={null}
       >

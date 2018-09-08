@@ -26,6 +26,7 @@ function getProjectRoot() {
       lastDir = cwd;
       cwd = join(cwd, '..');
     }
+    if (!prjRoot) throw new Error('Can not find the Rekit project.');
     projectRoot = join(/\/$/.test(prjRoot) ? prjRoot : prjRoot + '/');
   }
   return projectRoot;

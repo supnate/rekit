@@ -5,6 +5,7 @@ const action = require('./action');
 const hooks = require('./hooks');
 
 module.exports = {
+  name: 'cra',
   app,
   hooks,
   elements: {

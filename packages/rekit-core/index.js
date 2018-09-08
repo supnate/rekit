@@ -29,7 +29,7 @@ global.rekit = {
   },
 };
 
-plugin.loadPlugins();
+// plugin.loadPlugins();
 
 plugin.addPlugin(require('../rekit-studio/src/features/plugin-default/core'));
 plugin.addPlugin(require('../rekit-studio/src/features/plugin-terminal/core'));

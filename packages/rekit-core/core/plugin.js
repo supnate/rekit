@@ -63,6 +63,7 @@ function loadPlugins() {
 
 // Dynamically add an plugin
 function addPlugin(plugin) {
+  if (!plugin.name) throw new Error('Each plugin should have a name.');
   if (_.find(plugins, { name: plugin.name })) {
     console.warn('You should not add a plugin again with name: ' + plugin.name);
     return;

@@ -8,9 +8,8 @@ const deps = require('./deps');
 const plugin = require('./plugin');
 
 function getProjectData() {
-  const plugins = plugin.getPlugins();
   let prjData = { elementById: {}, elements: [] };
-  plugins.filter(p => p.app && p.app.getProjectData).forEach(p => {
+  plugin.getPlugins('app.getProjectData').forEach(p => {
     prjData = _.merge(prjData, p.app.getProjectData());
   });
   return prjData;
@@ -62,7 +61,12 @@ function readDir(dir) {
       if (ext === 'js' || ext === 'jsx') {
         fileEle.views = [
           { key: 'diagram', name: 'Diagram' },
-          { key: 'code', name: 'Code', target: rFile, isDefault: true },
+          {
+            key: 'code',
+            name: 'Code',
+            target: rFile,
+            isDefault: true,
+          },
         ];
         if (size < 50000) fileEle.deps = deps.getDeps(rFile);
       }

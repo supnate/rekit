@@ -24,6 +24,7 @@ export default {
         case 'folder':
           items.push(menuItems.newFile, menuItems.newFolder, menuItems.rename, menuItems.del);
           break;
+        case 'folder-alias':
         case 'misc':
           items.push(menuItems.newFile, menuItems.newFolder);
           break;

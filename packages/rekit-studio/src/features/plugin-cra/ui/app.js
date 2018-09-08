@@ -27,7 +27,6 @@ const iconMap = {
   plugin: 'plugin',
 };
 
-
 const getFeature = file => {
   return /^src\/features\/\w+\//.test(file) ? file.split('/')[2] : null;
 };
@@ -36,15 +35,17 @@ export default {
   processProjectData(prjData) {
     const byId = id => prjData.elementById[id];
     const features = Object.values(prjData.elementById).filter(ele => ele.type === 'feature');
-    const allRoutesDepsMap = features.map(f => `src/features/${f.name}/route.js`).reduce((depsMap, routeFile) => {
-      const ele = byId(routeFile);
-      if (ele && ele.deps && ele.deps.length) {
-        ele.deps.forEach(d => {
-          depsMap[d.id] = true;
-        });
-      }
-      return depsMap;
-    }, {});
+    const allRoutesDepsMap = features
+      .map(f => `src/features/${f.name}/route.js`)
+      .reduce((depsMap, routeFile) => {
+        const ele = byId(routeFile);
+        if (ele && ele.deps && ele.deps.length) {
+          ele.deps.forEach(d => {
+            depsMap[d.id] = true;
+          });
+        }
+        return depsMap;
+      }, {});
 
     Object.values(prjData.elementById).forEach(ele => {
       if (ele.type && iconMap[ele.type]) {
@@ -90,7 +91,9 @@ export default {
         case 'component':
           // Uses Redux store
           if (ele.props && ele.props.connectToStore) {
-            ele.marks = [{ name: 'C', description: 'Connected to Redux Store', bgColor: '#42bd41' }];
+            ele.marks = [
+              { name: 'C', description: 'Connected to Redux Store', bgColor: '#42bd41' },
+            ];
           }
 
           // Used in react router
@@ -131,13 +134,26 @@ export default {
         ele.icon = iconMap.plugin;
         ele.iconColor = colorMap.plugin;
         const misc = ele.children.pop();
-        ele.children.push(coreDir, uiDir, misc);
-        _.pull(byId(misc).children, coreDir, uiDir)
+        ele.children.push('v:plugin-core-dir', 'v:plugin-ui-dir', misc);
+        _.pull(byId(misc).children, coreDir, uiDir);
 
-        byId(coreDir).icon = 'core';
-        byId(uiDir).icon = 'ui';
-        byId(uiDir).iconColor = '#CDDC39';
-        
+        Object.assign(prjData.elementById, {
+          'v:plugin-core-dir': {
+            name: 'Core',
+            target: coreDir,
+            type: 'folder-alias',
+            icon: 'core',
+            children: byId(coreDir).children,
+          },
+          'v:plugin-ui-dir': {
+            name: 'UI',
+            target: coreDir,
+            type: 'folder-alias',
+            icon: 'ui',
+            children: byId(uiDir).children,
+            iconColor: '#CDDC39',
+          },
+        });
 
       }
 

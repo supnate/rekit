@@ -34,8 +34,8 @@ export default {
         const target = byId(context.targetId);
         let name;
         if (target.type === 'folder') name = target.id + '/' + values.name;
-        else if (target.type === 'misc') name = target.target + '/' + values.name;
         else if (target.type === 'file') name = target.id.replace(/\/[^/]$/, '/' + values.name);
+        else if (target.type === 'folder-alias') name = target.target + '/' + values.name;
         else throw new Error('Unkonwn target type to add a file: ', target.type);
         return {
           ...values,

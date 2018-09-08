@@ -20,7 +20,6 @@ export default {
           nameMeta(),
         );
         break;
-        break;
       default:
         break;
     }
@@ -31,7 +30,8 @@ export default {
   processValues(args) {
     const { context, values, formId } = args;
     switch (formId) {
-      case 'core.element.add.file': {
+      case 'core.element.add.file': 
+      case 'core.element.add.folder': {
         const target = byId(context.targetId);
         let name;
         if (target.type === 'folder') name = target.id + '/' + values.name;
@@ -41,7 +41,7 @@ export default {
         return {
           ...values,
           commandName: 'add',
-          type: 'file',
+          type: context.elementType,
           name,
         };
       }

@@ -40,6 +40,7 @@ export default {
           showDialog('core.element.add.file', 'New File', {
             action: 'add',
             targetId: elementId,
+            elementType: 'file',
           });
           break;
         }
@@ -47,6 +48,7 @@ export default {
           showDialog('core.element.add.folder', 'New Folder', {
             action: 'add',
             targetId: elementId,
+            elementType: 'folder',
           });
           break;
         }

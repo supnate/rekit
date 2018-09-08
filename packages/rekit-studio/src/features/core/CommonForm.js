@@ -30,6 +30,17 @@ export class CommonForm extends Component {
     error: null,
   };
 
+  componentDidMount() {
+    this.getMeta().elements.forEach(ele => {
+      if (ele.autoFocus) {
+        requestAnimationFrame(() => {
+          const node = document.getElementById(ele.key);
+          if (node && node.focus) node.focus();
+        });
+      }
+    });
+  }
+
   getMeta() {
     const meta = {
       colon: true,
@@ -79,7 +90,11 @@ export class CommonForm extends Component {
           this.setState({ pending: false });
           Modal.error({
             title: 'Failed',
-            content: <span style={{ color: 'red' }}>{err.toString ? err.toString() : 'Unknown error.'}</span>,
+            content: (
+              <span style={{ color: 'red' }}>
+                {err.toString ? err.toString() : 'Unknown error.'}
+              </span>
+            ),
           });
         });
       // } else {

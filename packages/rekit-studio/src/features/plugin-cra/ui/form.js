@@ -48,6 +48,7 @@ const nameMeta = () => ({
   key: 'name',
   label: 'Name',
   widget: Input,
+  autoFocus: true,
   required: true,
 });
 

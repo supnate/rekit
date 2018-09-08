@@ -1,6 +1,4 @@
-import React from 'react';
-import _ from 'lodash';
-import { Input, Checkbox, Select } from 'antd';
+import { Input } from 'antd';
 import store from '../../../common/store';
 
 const byId = id => store.getState().home.elementById[id];
@@ -8,11 +6,12 @@ const nameMeta = () => ({
   key: 'name',
   label: 'Name',
   widget: Input,
+  autoFocus: true,
   required: true,
 });
 
 export default {
-  fillMeta(args) {console.log('fill meta: ', args);
+  fillMeta(args) {
     switch (args.formId) {
       case 'core.element.add.file':
       case 'core.element.add.folder':      

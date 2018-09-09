@@ -133,14 +133,15 @@
           border-radius: 5px;
           background-color: #aaa;
         }
+        svg {
+          display: none;
+        }
 
         &:hover::before {
-          content: '\E633';
+          display: none;
+        }
+        &:hover svg {
           display: inline-block;
-          width: 10px;
-          height: 10px;
-          border-radius: 0px;
-          background-color: transparent;
         }
       }
     }

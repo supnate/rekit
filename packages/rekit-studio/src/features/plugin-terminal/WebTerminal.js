@@ -11,7 +11,7 @@ let term, protocol, socketURL, socket, pid;
 const terminalOptions = {
   cols: 40,
   rows: 20,
-  fontSize: 13,
+  fontSize: 12,
   lineHeight: 1,
   cursorBlink: true,
   fontFamily: "'Andale Mono', 'Courier New', 'Courier', monospace",

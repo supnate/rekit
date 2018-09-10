@@ -5,19 +5,29 @@ const chalk = require('chalk');
 const expressWs = require('express-ws');
 const helpers = require('./helpers');
 
-function setupSocketIo(server) {
-  const io = require('socket.io')(server);
-
-  io.on('connection', client => {
-    client.on('disconnect', () => {
-      console.log('socket disconnected');
-    });
+function setupWebSocket(app) {
+  const sockets = [];
+  app.ws('/rekit-studio-socket', (ws, req) => {
+    ws.on('close', () => _.pull(sockets, ws));
+    sockets.push(ws);
   });
 
-  io.on('error', err => {
-    console.log('socket error', err);
-  });
-  return io;
+  return {
+    emit(type, msg) {
+      sockets.forEach(socket => {
+        try {
+          socket.send(
+            JSON.stringify({
+              type,
+              payload: msg,
+            })
+          );
+        } catch (e) {
+          // ignore socket send error
+        }
+      });
+    },
+  };
 }
 
 function configStudio(server, app, args) {
@@ -26,7 +36,7 @@ function configStudio(server, app, args) {
   app.use(bodyParser.json({ limit: '5MB' }));
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  const io = setupSocketIo(server);
+  const io = setupWebSocket(app);
   args.io = io;
   app.use((req, res, next) => {
     helpers.startOutputToClient(io);

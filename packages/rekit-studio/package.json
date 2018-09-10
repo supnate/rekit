@@ -58,7 +58,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node ./scripts/start.js",
-    "build": "node ./tools/build.js",
+    "serveBuild": "node ./scripts/startBuildServer.js",
+    "build": "node ./scripts/build.js",
     "npm:publish": "node ./tools/npm_publish.js",
     "test": "node ./tools/run_test.js",
     "build:test": "node ./tools/server.js -m build"

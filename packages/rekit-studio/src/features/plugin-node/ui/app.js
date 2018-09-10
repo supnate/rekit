@@ -1,31 +1,39 @@
 import _ from 'lodash';
 const colorMap = {
   feature: '#0277bd',
-  action: '#ec407a',
-  actions: '#ec407a',
+  service: '#ec407a',
+  services: '#ec407a',
   'initial-state': '#ec407a',
-  component: '#f08036',
-  components: '#f08036',
+  'ui-module': '#f08036',
+  'ui-modules': '#f08036',
   'folder-alias': '#8d6e63',
   normal: '#888888',
   routes: '#26a69a',
-  plugin: '#4CAF50',
+  page: '#4CAF50',
+  layout: '#CDDC39',
+  others: '#8d6e63',
 };
 
 const iconMap = {
   features: 'rekit',
   feature: 'book',
-  action: 'notification',
-  actions: 'notification',
+  service: 'notification',
+  services: 'notification',
   'initial-state': 'database',
-  component: 'appstore-o',
-  components: 'appstore-o',
+  'ui-module': 'appstore-o',
+  'ui-modules': 'appstore-o',
+  layout: 'ui',
+  layouts: 'ui',
   'folder-alias': 'folder',
   folder: 'folder',
+  others: 'folder',
   file: 'file',
   routes: 'sharealt',
-  plugin: 'plugin',
+  page: 'page',
 };
+
+let byId;
+let rawElements;
 
 const getRoutesNode = () => {
   return {
@@ -39,8 +47,8 @@ const getPagesNode = () => {
   return {
     id: 'v:pages',
     name: 'Pages',
-    icon: 'file',
-    iconColor: colorMap.plugin,
+    icon: iconMap.page,
+    iconColor: colorMap.page,
   };
 };
 const getUiModulesNode = () => {
@@ -48,8 +56,8 @@ const getUiModulesNode = () => {
     id: 'v:ui-modules',
     name: 'UI Modules',
     type: 'ui-modules',
-    icon: iconMap.component,
-    iconColor: colorMap.component,
+    icon: iconMap['ui-modules'],
+    iconColor: colorMap['ui-modules'],
   };
 };
 const getLayoutsNode = () => {
@@ -57,17 +65,17 @@ const getLayoutsNode = () => {
     id: 'v:layouts',
     name: 'Layouts',
     type: 'layouts',
-    icon: 'ui',
-    iconColor: '#CDDC39',
+    icon: iconMap.layout,
+    iconColor: colorMap.layout,
   };
 };
 const getServicesNode = () => {
   return {
     id: 'v:misc',
     type: 'folder-alias',
-    name: 'Others',
-    icon: 'api',
-    iconColor: colorMap.action,
+    name: 'Services',
+    icon: iconMap.services,
+    iconColor: colorMap.services,
   };
 };
 
@@ -76,24 +84,30 @@ const getOthersNode = () => {
     id: 'v:others',
     type: 'folder-alias',
     name: 'Others',
-    icon: 'folder',
-    iconColor: colorMap.misc,
+    icon: iconMap.others,
+    iconColor: colorMap.others,
+    children: rawElements,
   };
 };
 
 export default {
   processProjectData(prjData) {
-    const byId = id => prjData.elementById[id];
+    byId = id => prjData.elementById[id];
+    rawElements = prjData.elements.slice();
 
-    const rawElements = prjData.elements.slice();
-
+    const routesNode = getRoutesNode();
+    const pagesNode = getPagesNode();
+    const uiModulesNode = getUiModulesNode();
+    const layoutsNode = getLayoutsNode();
+    const servicesNode = getServicesNode();
+    const othersNode = getOthersNode();
     const rootChildren = [
-      getRoutesNode(),
-      getPagesNode(),
-      getUiModulesNode(),
-      getLayoutsNode(),
-      getServicesNode(),
-      getOthersNode(),
+      routesNode,
+      pagesNode,
+      uiModulesNode,
+      layoutsNode,
+      servicesNode,
+      othersNode,
     ];
     rootChildren.forEach(c => (prjData.elementById[c.id] = c));
     prjData.elements = rootChildren.map(c => c.id);

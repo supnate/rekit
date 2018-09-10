@@ -8,11 +8,9 @@ const deps = require('./deps');
 const plugin = require('./plugin');
 
 function getProjectData() {
-  let prjData = { elementById: {}, elements: [] };
-  plugin.getPlugins('app.getProjectData').forEach(p => {
-    prjData = _.merge(prjData, p.app.getProjectData());
-  });
-  return prjData;
+  const plugins = plugin.getPlugins('app.getProjectData');
+  if (plugins.length) return _.last(plugins).app.getProjectData();
+  return readDir(paths.map('src'));
 }
 
 function sortElements(elements, elementById) {

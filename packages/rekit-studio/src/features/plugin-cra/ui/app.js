@@ -128,33 +128,36 @@ export default {
         ele.count = ele.children.length - 1;
       }
 
-      const coreDir = `src/features/${ele.name}/core`;
-      const uiDir = `src/features/${ele.name}/ui`;
-      if (ele.type === 'feature' && byId(coreDir) && byId(uiDir)) {
-        ele.icon = iconMap.plugin;
-        ele.iconColor = colorMap.plugin;
-        const misc = ele.children.pop();
-        ele.children.push('v:plugin-core-dir', 'v:plugin-ui-dir', misc);
-        _.pull(byId(misc).children, coreDir, uiDir);
+      if (ele.type === 'feature') {
+        const coreDir = `src/features/${ele.name}/core`;
+        const uiDir = `src/features/${ele.name}/ui`;
+        if (byId(coreDir) && byId(uiDir)) {
+          ele.icon = iconMap.plugin;
+          ele.iconColor = colorMap.plugin;
+          const misc = ele.children.pop();
+          _.pull(byId(misc).children, coreDir, uiDir);
 
-        Object.assign(prjData.elementById, {
-          'v:plugin-core-dir': {
-            name: 'Core',
-            target: coreDir,
-            type: 'folder-alias',
-            icon: 'core',
-            children: byId(coreDir).children,
-          },
-          'v:plugin-ui-dir': {
-            name: 'UI',
-            target: coreDir,
-            type: 'folder-alias',
-            icon: 'ui',
-            children: byId(uiDir).children,
-            iconColor: '#CDDC39',
-          },
-        });
-
+          const coreDirId = `v:${ele.name}-plugin-core-dir`;
+          const uiDirId = `v:${ele.name}-plugin-ui-dir`;
+          ele.children.push(coreDirId, uiDirId, misc);
+          Object.assign(prjData.elementById, {
+            [coreDirId]: {
+              name: 'Core',
+              target: coreDir,
+              type: 'folder-alias',
+              icon: 'core',
+              children: byId(coreDir).children.slice(),
+            },
+            [uiDirId]: {
+              name: 'UI',
+              target: uiDir,
+              type: 'folder-alias',
+              icon: 'ui',
+              children: byId(uiDir).children.slice(),
+              iconColor: '#CDDC39',
+            },
+          });
+        }
       }
 
       if (ele.children && ele.children.forEach) {

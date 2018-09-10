@@ -14,6 +14,7 @@ import pluginCraReducer from '../features/plugin-cra/redux/reducer';
 import coreReducer from '../features/core/redux/reducer';
 import pluginDefaultReducer from '../features/plugin-default/redux/reducer';
 import pluginTerminalReducer from '../features/plugin-terminal/redux/reducer';
+import pluginNodeReducer from '../features/plugin-node/redux/reducer';
 
 // NOTE 1: DO NOT CHANGE the 'reducerMap' name and the declaration pattern.
 // This is used for Rekit cmds to register new features, remove features, etc.
@@ -35,6 +36,7 @@ const reducerMap = {
   core: coreReducer,
   pluginDefault: pluginDefaultReducer,
   pluginTerminal: pluginTerminalReducer,
+  pluginNode: pluginNodeReducer,
 };
 
 export default combineReducers(reducerMap);

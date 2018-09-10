@@ -57,7 +57,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node ./tools/server.js",
+    "start": "node ./scripts/start.js",
     "build": "node ./tools/build.js",
     "npm:publish": "node ./tools/npm_publish.js",
     "test": "node ./tools/run_test.js",

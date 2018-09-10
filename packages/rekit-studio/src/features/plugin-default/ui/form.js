@@ -31,7 +31,7 @@ export default {
     switch (formId) {
       case 'core.element.add.file': 
       case 'core.element.add.folder': {
-        const target = byId(context.targetId);
+        let target = byId(context.targetId);
         let name;
         if (target.type === 'folder') name = target.id + '/' + values.name;
         else if (target.type === 'file') name = target.id.replace(/\/[^/]$/, '/' + values.name);

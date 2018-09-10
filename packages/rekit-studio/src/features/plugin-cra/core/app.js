@@ -315,7 +315,7 @@ function getFeatures() {
     children.push({
       id: `v:${f}-misc`,
       target: `src/features/${f}`,
-      type: 'misc',
+      type: 'folder-alias',
       name: 'Misc',
       children: misc,
     });
@@ -348,7 +348,7 @@ function getProjectData() {
   };
 
   const eleMisc = {
-    type: 'misc',
+    type: 'folder-alias',
     id: 'v:root-misc',
     name: 'Misc',
     target: 'src',

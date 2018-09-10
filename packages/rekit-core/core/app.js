@@ -34,7 +34,6 @@ function readDir(dir) {
 
   const elementById = {};
   const elements = [];
-
   shell.ls(dir).forEach(file => {
     file = paths.join(dir, file);
     const rFile = file.replace(prjRoot, '');

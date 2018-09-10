@@ -52,7 +52,7 @@
     "version": "2.0.3",
     "devPort": 6078,
     "buildPort": 6079,
-    "plugins": [],
+    "plugins": ["/Users/pwang7/workspace/rekit/packages/rekit-studio/src/features/plugin-cra"],
     "css": "less"
   },
   "license": "MIT",

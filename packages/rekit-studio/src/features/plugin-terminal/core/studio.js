@@ -11,7 +11,7 @@ function config(server, app, args) {
         name: 'xterm-color',
         cols: cols || 80,
         rows: rows || 24,
-        cwd: process.env.PWD,
+        cwd: rekit.core.paths.getProjectRoot(),
         env: process.env,
       });
 

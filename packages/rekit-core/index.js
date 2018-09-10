@@ -11,7 +11,7 @@ const deps = require('./core/deps');
 const handleCommand = require('./core/handleCommand');
 
 // paths.setProjectRoot('/Users/pwang7/workspace/app-next/');
-// paths.setProjectRoot('/Users/pwang7/workspace/rekit/packages/rekit-studio');
+// if (process.env.NODE_ENV !== 'production') paths.setProjectRoot('/Users/pwang7/workspace/rekitebaynode/');
 
 global.rekit = {
   core: {
@@ -33,6 +33,6 @@ global.rekit = {
 
 plugin.addPlugin(require('../rekit-studio/src/features/plugin-default/core'));
 plugin.addPlugin(require('../rekit-studio/src/features/plugin-terminal/core'));
-plugin.addPlugin(require('../rekit-studio/src/features/plugin-cra/core'));
+// if (process.env.NODE_ENV !== 'production') plugin.addPlugin(require('../rekit-studio/src/features/plugin-cra/core'));
 
 module.exports = global.rekit;

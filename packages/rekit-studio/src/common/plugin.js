@@ -1,12 +1,28 @@
 import _ from 'lodash';
+
+// This is temporialy used for Rekit Studio development.
+// In future plugins are dynamically loaded.
+
 import * as defaultPlugin from '../features/plugin-default/ui';
 import * as cra from '../features/plugin-cra/ui';
 import * as terminal from '../features/plugin-terminal/ui';
+import * as node from '../features/plugin-node/ui';
+
+const pluginMap = {
+  default: defaultPlugin,
+  cra,
+  terminal,
+  node,
+};
 
 export default {
-  plugins: [defaultPlugin, cra, terminal],
+  pluginNames: [],
+  setPluginNames(names) {
+    this.pluginNames = names;
+  },
   getPlugins(prop) {
-    if (!prop) return this.plugins;
-    return this.plugins.filter(_.property(prop));
-  }
+    const plugins = this.pluginNames.map(name => pluginMap[name]);
+    if (!prop) return plugins;
+    return plugins.filter(_.property(prop));
+  },
 };

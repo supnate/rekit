@@ -1,13 +1,11 @@
 import _ from 'lodash';
 import axios from 'axios';
-
 import {
   HOME_FETCH_PROJECT_DATA_BEGIN,
   HOME_FETCH_PROJECT_DATA_SUCCESS,
   HOME_FETCH_PROJECT_DATA_FAILURE,
   HOME_FETCH_PROJECT_DATA_DISMISS_ERROR,
 } from './constants';
-
 import plugin from '../../../common/plugin';
 
 export function fetchProjectData() {
@@ -21,7 +19,7 @@ export function fetchProjectData() {
         (res) => {
           if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           const prjData = res.data;
-
+          plugin.setPluginNames(prjData.plugins); // development time to load plugins
           plugin.getPlugins('app.processProjectData').forEach(p => {
             p.app.processProjectData(prjData);
           });

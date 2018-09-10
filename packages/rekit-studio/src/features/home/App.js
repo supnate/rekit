@@ -102,7 +102,7 @@ export class App extends Component {
   }
 
   render() {
-    if (!this.props.elementById) {
+    if (!this.props.elementById || !this.props.projectName) {
       return this.renderLoading();
     }
 

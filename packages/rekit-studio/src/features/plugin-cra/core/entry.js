@@ -268,12 +268,14 @@ function removeFromRouteConfig(feature) {
 
 function addToStyle(ele) {
   const targetPath = `src/features/${ele.feature}/style.${config.style}`;
-  refactor.addStyleImport(targetPath, `./${ele.path.replace(/^\w+\//, '')}`);
+  const modulePath = `.${ele.path.substring(ele.path.indexOf('/'))}`;
+  refactor.addStyleImport(targetPath, modulePath);
 }
 
 function removeFromStyle(ele) {
   const targetPath = `src/features/${ele.feature}/style.${config.style}`;
-  refactor.removeStyleImport(targetPath, `./${ele.path.replace(/^\w+\//, '')}`);
+  const modulePath = `.${ele.path.substring(ele.path.indexOf('/'))}`;  
+  refactor.removeStyleImport(targetPath, modulePath);
 }
 
 function renameInStyle(feature, oldName, newName) {
@@ -299,7 +301,7 @@ function renameInRootStyle(oldFeature, newFeature) {
     `../features/${newFeature}/style`
   );
 }
-// };
+
 module.exports = {
   addToIndex,
   removeFromIndex,

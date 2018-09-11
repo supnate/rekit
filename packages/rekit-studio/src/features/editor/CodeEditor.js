@@ -140,7 +140,7 @@ export class CodeEditor extends Component {
       lines.slice(0, lineNumber - 1).reduce((c, line) => c + line.length + 1, 0) + column - 1;
 
     axios
-      .post('/rekit/api/format-code', {
+      .post('/api/format-code', {
         content: modelManager.getValue(this.props.file),
         file: this.props.file,
         cursorOffset,

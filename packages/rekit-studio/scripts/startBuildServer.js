@@ -11,6 +11,8 @@ function startBuildServer() {
   const root = path.join(__dirname, '../build');
   app.use(compression());
   app.use(express.static(root));
+  console.log(rekit.core.paths.getProjectRoot());
+  app.use(express.static(rekit.core.paths.getProjectRoot()));
   configStudio(server, app);
   app.use(fallback('index.html', { root }));
 

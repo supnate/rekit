@@ -6,6 +6,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const chalk = require('chalk');
+const express = require('express');
 // const fallback = require('express-history-api-fallback');
 const {
   createCompiler,
@@ -52,6 +53,7 @@ function _startDevServer(port) {
 
   // devServer.use(rekitMiddleWare()(devServer.listeningApp, devServer.app));
   configStudio(devServer.listeningApp, devServer.app);
+  devServer.use(express.static(rekit.core.paths.getProjectRoot()));
   // Launch WebpackDevServer.
   devServer.listen(port, HOST, err => {
     if (err) {

@@ -10,6 +10,7 @@ import { stickTab } from './redux/actions';
 import { getTreeData } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
+import history from '../../common/history';
 
 const TreeNode = Tree.TreeNode;
 
@@ -56,7 +57,10 @@ export class ProjectExplorer extends Component {
       }
     }
     storage.local.setItem('explorerExpandedKeys', expandedKeys);
-
+    const ele = this.eleById(key);
+    if (ele && ele.navigable) {
+      history.push(`/element/${encodeURIComponent(ele.id)}`);
+    }
     plugin.getPlugins('projectExplorer.handleSelect').forEach(p => {
       p.projectExplorer.handleSelect(key);
     });

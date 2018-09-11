@@ -1,20 +1,3 @@
-import store from '../../../common/store';
-import history from '../../../common/history';
-
 export default {
-  handleSelect(elementId) {
-    const { elementById } = store.getState().home;
-    const ele = elementById[elementId];
-    switch (ele.type) {
-      case 'component':
-      case 'action':
-      case 'initial-state':
-      case 'file':
-      case 'routes':
-        history.push(`/element/${encodeURIComponent(ele.id)}`);
-        break;
-      default:
-        break;
-    }
-  }
+  handleSelect(elementId) {},
 };

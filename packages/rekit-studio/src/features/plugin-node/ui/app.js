@@ -58,6 +58,7 @@ const getPagesNode = () => {
           name: ele.name,
           type: 'page',
           icon: iconMap.page,
+          navigable: true,
         };
         setById(p.id, p);
         return p;

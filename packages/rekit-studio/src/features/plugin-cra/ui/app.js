@@ -53,6 +53,18 @@ export default {
         ele.iconColor = colorMap[ele.type];
       }
 
+      switch (ele.type) {
+        case 'component':
+        case 'action':
+        case 'initial-state':
+        case 'file':
+        case 'routes':
+          ele.navigable = true;
+          break;
+        default:
+          break;
+      }
+
       if (ele.parts) {
         ele.parts.forEach(part => {
           if (byId(part)) byId(part).owner = ele.id;

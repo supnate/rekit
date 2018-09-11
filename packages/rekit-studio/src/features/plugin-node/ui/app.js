@@ -34,6 +34,7 @@ const iconMap = {
 
 let byId;
 let rawElements;
+let setById;
 
 const getRoutesNode = () => {
   return {
@@ -49,6 +50,20 @@ const getPagesNode = () => {
     name: 'Pages',
     icon: iconMap.page,
     iconColor: colorMap.page,
+    children: (() => {
+      const children = byId('src/pages').children.map(c => {
+        const ele = byId(c);
+        const p = {
+          id: `v:${ele.id}`,
+          name: ele.name,
+          type: 'page',
+          icon: iconMap.page,
+        };
+        setById(p.id, p);
+        return p;
+      });
+      return children.map(c => c.id);
+    })(),
   };
 };
 const getUiModulesNode = () => {
@@ -93,6 +108,7 @@ const getOthersNode = () => {
 export default {
   processProjectData(prjData) {
     byId = id => prjData.elementById[id];
+    setById = (id, ele) => prjData.elementById[id] = ele;
     rawElements = prjData.elements.slice();
 
     const routesNode = getRoutesNode();

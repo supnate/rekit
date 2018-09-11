@@ -150,7 +150,8 @@ export class TabsBar extends Component {
     if (!hasSubTabs) return null;
     let activeSubTabPath = pathname;
     if (!currentTab.subTabs.some(t => t.urlPath === pathname)) {
-      activeSubTabPath = _.find(currentTab.subTabs, 'isDefault').urlPath;
+      const st = _.find(currentTab.subTabs, 'isDefault');
+      if (st) activeSubTabPath = st.urlPath;
     }
 
     return (

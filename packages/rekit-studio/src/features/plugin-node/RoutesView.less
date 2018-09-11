@@ -1,5 +1,54 @@
 @import '../../styles/mixins';
 
 .plugin-node-routes-view {
+  margin: 30px;
 
+  .ant-table {
+    background-color: #2b2b2b;
+    border-color: rgba(255, 255, 255, 0) !important;
+    width: 900px;
+  }
+  table {
+    padding: 0 !important;
+  }
+
+  th {
+    background-color: #3b3b3b !important;
+    color: #ccc !important;
+    border-color: rgba(255, 255, 255, 0) !important;
+    border-bottom: 1px solid #222 !important;
+  }
+  td {
+    border-color: rgba(255, 255, 255, 0) !important;
+    border-bottom: 1px solid #222 !important;
+    color: #bbb;
+    a {
+      color: @primary-color;
+      &:hover {
+        text-decoration: underline;
+      }
+
+      .anticon-appstore-o {
+        color: #fb8c00;
+      }
+      .anticon-file {
+        color: #7cb342;
+      }
+      .anticon-api {
+        color: #d81b60;
+      }
+    }
+    .common-svg-icon {
+      width: 14px;
+      height: 14px;
+      margin-right: 5px;
+      transform: translateY(2px);
+      fill: #888;
+    }
+  }
+
+
+  tr:hover td {
+    background-color: #333!important;
+  }
 }

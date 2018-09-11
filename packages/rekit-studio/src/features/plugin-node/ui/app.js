@@ -149,6 +149,7 @@ export default {
     const servicesNode = getServicesNode();
     const othersNode = getOthersNode();
 
+    routesNode.count = prjData.routes.length;
     pagesNode.count = pagesNode.children.length;
     uiModulesNode.count = uiModulesNode.children.length;
     layoutsNode.count = layoutsNode.children.length;

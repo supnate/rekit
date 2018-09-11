@@ -58,7 +58,7 @@ export class ProjectExplorer extends Component {
     }
     storage.local.setItem('explorerExpandedKeys', expandedKeys);
     const ele = this.eleById(key);
-    if (ele && ele.navigable) {
+    if (ele && (ele.navigable || ele.type === 'file')) {
       history.push(`/element/${encodeURIComponent(ele.id)}`);
     }
     plugin.getPlugins('projectExplorer.handleSelect').forEach(p => {

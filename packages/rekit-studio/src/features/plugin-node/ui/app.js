@@ -75,6 +75,7 @@ const getRoutesNode = () => {
     name: 'Routes',
     icon: iconMap.routes,
     iconColor: colorMap.routes,
+    target: 'routes.json'
   };
 };
 const getPagesNode = () => {
@@ -133,6 +134,11 @@ export default {
   processProjectData(prjData) {
     byId = id => prjData.elementById[id];
     setById = (id, ele) => (prjData.elementById[id] = ele);
+    // setById('routes.json', {
+    //   name: 'routes.json',
+    //   id: 'routes.json',
+    //   type: 'file',
+    // });
     rawElements = prjData.elements.slice();
 
     const routesNode = getRoutesNode();

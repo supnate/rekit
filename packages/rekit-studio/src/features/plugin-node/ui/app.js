@@ -129,6 +129,18 @@ export default {
     rootChildren.forEach(c => (prjData.elementById[c.id] = c));
     prjData.elements = rootChildren.map(c => c.id);
 
-    Object.values(prjData.elementById).forEach(ele => {});
+    Object.values(prjData.elementById).forEach(ele => {
+      switch (ele.type) {
+        case 'ui-module':
+        case 'service':
+        case 'layoutt':
+        case 'file':
+        case 'routes':
+          ele.navigable = true;
+          break;
+        default:
+          break;
+      }
+    });
   },
 };

@@ -71,24 +71,6 @@ export default {
         });
       }
 
-      if (ele.type === 'file') {
-        switch (ele.ext) {
-          case 'js':
-          case 'svg':
-          case 'less':
-            ele.icon = `file_type_${ele.ext}`;
-            break;
-          case 'png':
-          case 'jpg':
-          case 'jpeg':
-          case 'gif':
-            ele.icon = 'file_type_image';
-            break;
-          default:
-            break;
-        }
-      }
-
       switch (ele.type) {
         case 'components':
           ele.count = ele.children.length;

@@ -42,7 +42,7 @@ function remove(name, args) {
   // Remove locale file
   const appName = config.getPkgJson().name;
   const localeFile = `locales/en/${_.pascalCase(appName)}/${name}.properties`;
-  vio.del(localeFile);
+  if (vio.fileExists(localeFile)) vio.del(localeFile);
 
   // Remove routes
   const routesJsonPath = 'routes.json';

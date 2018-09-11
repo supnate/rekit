@@ -82,42 +82,33 @@ export default {
         );
 
         break;
-      case 'core.element.add.action':
+      case 'core.element.add.uiModule':
+      case 'core.element.add.layout':
         args.meta.elements.push(
-          featureMeta(args),
+          nameMeta(args),
+        );
+        break;
+      case 'core.element.add.service':
+        args.meta.elements.push(
           nameMeta(args),
           {
-            key: 'async',
-            label: 'Async',
-            widget: Checkbox,
-            initialValue: false,
-          }
+            key: 'urlPath',
+            label: 'Url Path',
+            widget: Input,
+            tooltip: 'The URL path to access the service.',
+          },
         );
-
         break;
       default:
         break;
     }
   },
-  processValues(args) {
-    const { context, values, formId } = args;
+  processValues(cmd) {
+    const { formId } = cmd;
     switch (formId) {
-      case 'core.element.add.page':
-        return {
-          ...values,
-          commandName: context.action,
-          type: context.elementType,
-        };
-      case 'core.element.add.action':
-        return {
-          ...values,
-          commandName: context.action,
-          type: context.elementType,
-          name: `${values.feature}/${values.name}`.replace(/\/+/g, '/'),
-        };
       default:
         break;
     }
-    return args;
+    return cmd;
   },
 };

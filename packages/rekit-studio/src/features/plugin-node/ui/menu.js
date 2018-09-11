@@ -10,7 +10,7 @@ const byId = id => store.getState().home.elementById[id];
 
 const menuItems = {
   addPage: { name: 'Add Page', key: 'add-page' },
-  addUiModule: { name: 'Add Component', key: 'add-ui-module' },
+  addUiModule: { name: 'Add UI Module', key: 'add-ui-module' },
   addLayout: { name: 'Add Layout', key: 'add-layout' },
   addService: { name: 'Add Service', key: 'add-service' },
   del: { name: 'Delete', key: 'del-element' },

@@ -73,9 +73,10 @@ const getRoutesNode = () => {
   return {
     id: 'v:routes',
     name: 'Routes',
+    type: 'routes',
     icon: iconMap.routes,
     iconColor: colorMap.routes,
-    target: 'routes.json'
+    views: [{ key: 'rules', name: 'Rules' }, { key: 'code', name: 'Code', target: 'routes.json' }],
   };
 };
 const getPagesNode = () => {

@@ -69,10 +69,14 @@ export class CommonForm extends Component {
       }
       console.log('Form submit: ', values);
 
-      let command = { commandName: context.action, context, formId, values };
+      let command = { commandName: context.action, type: context.elementType, ...values, context, formId, values };
       plugin.getPlugins('form.processValues').forEach(p => {
         command = p.form.processValues(command);
       });
+
+      delete command.formId;
+      if (command.values === values) delete command.values;
+      if (command.context === context) delete command.context;
 
       this.setState({ pending: true });
       // if (/^add|move|update$/.test(context.action)) {

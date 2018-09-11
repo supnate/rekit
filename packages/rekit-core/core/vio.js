@@ -253,8 +253,9 @@ function ls(folder) {
   return _.union(diskFiles, memoFiles);
 }
 
-function del(filePath) {
-  toDel[filePath] = true;
+function del(filePath, noWarning) {
+  toDel[filePath] = noWarning ? 'no-warning' : true;
+  delete toSave[filePath];
 }
 
 function reset() {
@@ -305,7 +306,7 @@ function flush() {
   Object.keys(toDel).forEach(filePath => {
     const absFilePath = paths.map(filePath);
     if (!fs.existsSync(absFilePath)) {
-      log('Warning: no file to delete: ', 'yellow', filePath);
+      if (toDel[filePath] !== 'no-warning') log('Warning: no file to delete: ', 'yellow', filePath);
       res.push({
         type: 'del-file-warning',
         warning: 'no-file',

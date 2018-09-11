@@ -1,4 +1,5 @@
 import { Modal, message } from 'antd';
+import _ from 'lodash';
 import store from '../../../common/store';
 import * as actions from '../../core/redux/actions';
 
@@ -63,10 +64,26 @@ export default {
           break;
         }
         case 'add-ui-module': {
-          showDialog('core.element.add.action', 'Add Action', {
+          showDialog('core.element.add.uiModule', 'Add UI Module', {
             action: 'add',
             targetId: elementId,
-            elementType: 'action',
+            elementType: 'ui-module',
+          });
+          break;
+        }
+        case 'add-layout': {
+          showDialog('core.element.add.layout', 'Add Layout', {
+            action: 'add',
+            targetId: elementId,
+            elementType: 'layout',
+          });
+          break;
+        }
+        case 'add-service': {
+          showDialog('core.element.add.service', 'Add Service', {
+            action: 'add',
+            targetId: elementId,
+            elementType: 'service',
           });
           break;
         }
@@ -84,30 +101,29 @@ export default {
           });
           break;
         }
-        case 'del-component-action': {
+        case 'del-element': {
+          const ele = byId(elementId);
+          if (!ele) {
+            Modal.error({
+              title: 'No element to delete',
+              content: `${_.capitalize(ele.type)} not found: ${elementId}`,
+            });
+            return;
+          }
           Modal.confirm({
-            title: 'Are you sure to delete the element?',
+            title: `Are you sure to delete the ${ele.type}?`,
             onOk() {
-              const ele = byId(elementId);
-              if (!ele) {
-                Modal.error({
-                  title: 'No element to delete',
-                  content: `Element not found: ${elementId}`,
-                });
-                return;
-              }
-              const name = ele.parts[0].replace(/^src\/features\/(redux\/)?|\.jsx?$/g, '');
               execCoreCommand({
                 commandName: 'remove',
                 type: ele.type,
-                name,
+                name: ele.name,
               }).then(
                 () => {
-                  message.success('Delete element success.');
+                  message.success(`Delete ${ele.type} success.`);
                 },
                 err => {
                   Modal.error({
-                    title: 'Failed to delete the element',
+                    title: `Failed to delete the ${ele.type}`,
                     content: err.toString(),
                   });
                 }

@@ -271,12 +271,13 @@ function flush() {
   const prjRoot = paths.getProjectRoot();
   const res = [];
   Object.keys(dirs).forEach(dir => {
-    if (!shell.test('-e', dir)) {
-      shell.mkdir('-p', dir);
+    const absDir = paths.map(dir);
+    if (!shell.test('-e', absDir)) {
+      shell.mkdir('-p', absDir);
       log('Created: ', 'blue', dir);
       res.push({
         type: 'create-dir',
-        file: dir.replace(prjRoot, ''),
+        file: dir,
       });
     }
   });

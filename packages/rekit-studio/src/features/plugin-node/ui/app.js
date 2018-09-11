@@ -17,8 +17,8 @@ const colorMap = {
 const iconMap = {
   features: 'rekit',
   feature: 'book',
-  service: 'notification',
-  services: 'notification',
+  service: 'service',
+  services: 'service',
   'initial-state': 'database',
   'ui-module': 'appstore-o',
   'ui-modules': 'appstore-o',
@@ -36,6 +36,39 @@ let byId;
 let rawElements;
 let setById;
 
+const getElements = (dir, type) => {
+  const children = byId(dir).children.map(c => {
+    const ele = byId(c);
+    const keyMap = {
+      'style.less': 'Style',
+      'template.marko': 'Template',
+      'index.js': 'Index',
+      'browser.json': 'Browser',
+    };
+    const viewName = id => {
+      const name = byId(id).name;
+      return keyMap[name] || name;
+    };
+    const views = ele.children
+      .filter(cid => byId(cid).type === 'file')
+      .map(cid => ({ key: viewName(cid).toLowerCase(), target: cid, name: viewName(cid) }));
+    if (views.length) views[0].isDefault = true;
+    const p = {
+      id: `v:${ele.id}`,
+      name: ele.name,
+      type,
+      icon: iconMap[type],
+      tabIconColor: colorMap[type],
+      navigable: true,
+      views: [{ key: 'diagram', name: 'Diagram' }, ...views],
+      parts: ele.children.filter(cid => byId(cid).type === 'file'),
+    };
+    setById(p.id, p);
+    return p;
+  });
+  return children.map(c => c.id);
+};
+
 const getRoutesNode = () => {
   return {
     id: 'v:routes',
@@ -48,23 +81,10 @@ const getPagesNode = () => {
   return {
     id: 'v:pages',
     name: 'Pages',
+    type: 'pages',
     icon: iconMap.page,
     iconColor: colorMap.page,
-    children: (() => {
-      const children = byId('src/pages').children.map(c => {
-        const ele = byId(c);
-        const p = {
-          id: `v:${ele.id}`,
-          name: ele.name,
-          type: 'page',
-          icon: iconMap.page,
-          navigable: true,
-        };
-        setById(p.id, p);
-        return p;
-      });
-      return children.map(c => c.id);
-    })(),
+    children: getElements('src/pages', 'page'),
   };
 };
 const getUiModulesNode = () => {
@@ -74,6 +94,7 @@ const getUiModulesNode = () => {
     type: 'ui-modules',
     icon: iconMap['ui-modules'],
     iconColor: colorMap['ui-modules'],
+    children: getElements('src/ui-modules', 'ui-module'),
   };
 };
 const getLayoutsNode = () => {
@@ -83,15 +104,17 @@ const getLayoutsNode = () => {
     type: 'layouts',
     icon: iconMap.layout,
     iconColor: colorMap.layout,
+    children: getElements('src/layouts', 'layout'),
   };
 };
 const getServicesNode = () => {
   return {
     id: 'v:misc',
-    type: 'folder-alias',
+    type: 'services',
     name: 'Services',
     icon: iconMap.services,
     iconColor: colorMap.services,
+    children: getElements('src/services', 'service'),
   };
 };
 
@@ -109,7 +132,7 @@ const getOthersNode = () => {
 export default {
   processProjectData(prjData) {
     byId = id => prjData.elementById[id];
-    setById = (id, ele) => prjData.elementById[id] = ele;
+    setById = (id, ele) => (prjData.elementById[id] = ele);
     rawElements = prjData.elements.slice();
 
     const routesNode = getRoutesNode();
@@ -118,6 +141,12 @@ export default {
     const layoutsNode = getLayoutsNode();
     const servicesNode = getServicesNode();
     const othersNode = getOthersNode();
+
+    pagesNode.count = pagesNode.children.length;
+    uiModulesNode.count = uiModulesNode.children.length;
+    layoutsNode.count = layoutsNode.children.length;
+    servicesNode.count = servicesNode.children.length;
+
     const rootChildren = [
       routesNode,
       pagesNode,

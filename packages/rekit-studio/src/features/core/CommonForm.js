@@ -92,7 +92,7 @@ export class CommonForm extends Component {
             title: 'Failed',
             content: (
               <span style={{ color: 'red' }}>
-                {err.toString ? err.toString() : 'Unknown error.'}
+                {err.message ? err.message : 'Unknown error.'}
               </span>
             ),
           });

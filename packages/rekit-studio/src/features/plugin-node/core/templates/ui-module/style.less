@@ -1,0 +1,2 @@
+.ui-module-${name} {
+}

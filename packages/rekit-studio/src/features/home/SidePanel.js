@@ -125,15 +125,14 @@ export class SidePanel extends Component {
   render() {
     // const { projectName, projectRoot, sidePanelWidth, demoAlertVisible } = this.props;
     // const prjName = projectName || projectRoot.split('/').pop();
-    const sidePanelWidth = 300;
     const demoAlertVisible = false;
-    const prjName = 'CRA';
+    const { projectName } = this.props;
     return (
       <div className="home-side-panel dark-theme">
         <div className="header">
           <Link className="home-link" to="/" title={this.props.projectRoot}>
             <h5>
-              <Icon type="home" /> {prjName}2
+              <Icon type="home" /> {projectName}
             </h5>
           </Link>
           <Dropdown overlay={this.renderMainMenu()}>

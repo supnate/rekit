@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 
-const elementByIdSelector = elementById => elementById;
-const elementIdSelector = (elementById, elementId) => elementId;
+const elementByIdSelector = state => state.elementById;
+const elementIdSelector = state => state.elementId;
 
 export const getDepsDiagramData = createSelector(
   elementByIdSelector,
   elementIdSelector,
   (elementById, elementId) => {
     const ele = elementById[elementId];
-
+    if (!ele) throw new Error(`Can't find element: ${elementId}`);
     let links = [];
     let nodes = [];
 

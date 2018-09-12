@@ -7,12 +7,11 @@ export default class DepsDiagramView extends Component {
   static propTypes = {
     elementById: PropTypes.object.isRequired,
     elementId: PropTypes.string.isRequired,
-    elements: PropTypes.array.isRequired,
   };
 
   render() {
-    const { elementById, elementId, elements } = this.props;
-    const { nodes, links } = getDepsDiagramData({ elements, elementById, elementId });
+    const { elementById, elementId } = this.props;
+    const { nodes, links } = getDepsDiagramData({ elementById, elementId });
     return (
       <div className="diagram-deps-diagram-view">
         <DepsDiagram nodes={nodes} links={links} targetId={elementId} />

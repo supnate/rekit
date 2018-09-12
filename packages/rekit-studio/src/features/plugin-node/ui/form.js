@@ -5,12 +5,13 @@ import store from '../../../common/store';
 
 const Option = Select.Option;
 
-const createSelectOptions = options => options.map(opt => <Option key={opt.value || opt.name}>{opt.name}</Option>);
+const createSelectOptions = options =>
+  options.map(opt => <Option key={opt.value || opt.name}>{opt.name}</Option>);
 
 const byId = id => store.getState().home.elementById[id];
 const parentElement = id => byId(byId(id).parent);
 
-const getLayouts = () =>{
+const getLayouts = () => {
   const layouts = byId('v:layouts')
     .children.map(byId)
     .filter(ele => ele.type === 'layout')
@@ -20,7 +21,7 @@ const getLayouts = () =>{
     value: '_no_layout',
   });
   return layouts;
-}
+};
 
 // const getInitialLayout = args => {
 //   const { context } = args;
@@ -78,34 +79,37 @@ export default {
             widget: Checkbox,
             initialValue: false,
             tooltip: 'Whether to create a locale file for the page.',
-          },
+          }
         );
 
         break;
       case 'core.element.add.uiModule':
       case 'core.element.add.layout':
-        args.meta.elements.push(
-          nameMeta(args),
-        );
+        args.meta.elements.push(nameMeta(args));
         break;
       case 'core.element.add.service':
-        args.meta.elements.push(
-          nameMeta(args),
-          {
-            key: 'urlPath',
-            label: 'Url Path',
-            widget: Input,
-            tooltip: 'The URL path to access the service.',
-          },
-        );
+        args.meta.elements.push(nameMeta(args), {
+          key: 'urlPath',
+          label: 'Url Path',
+          widget: Input,
+          tooltip: 'The URL path to access the service.',
+        });
         break;
       default:
         break;
     }
   },
   processValues(cmd) {
-    const { formId } = cmd;
+    const { formId, context } = cmd;
     switch (formId) {
+      case 'core.element.add.uiModule': {
+        const target = byId(context.targetId);
+        if (target.type === 'ui-module') {
+          cmd.name = `${target.id.replace('v:src/ui-modules/', '')}/${cmd.name}`;
+        }
+        return cmd;
+        break;
+      }
       default:
         break;
     }

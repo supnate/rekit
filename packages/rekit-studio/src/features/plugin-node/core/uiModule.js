@@ -3,11 +3,13 @@ const path = require('path');
 const fs = require('fs');
 const { vio, template, utils } = rekit.core;
 
-function add(name, args) {
-  name = _.kebabCase(name);
+function add(elePath, args) {
+  const arr = elePath.split('/');
+  const name = _.kebabCase(arr.pop());
+  const p = arr.join('/'); //maybe empty
   const tplDir = path.join(__dirname, './templates/ui-module');
   const tplFiles = fs.readdirSync(tplDir);
-  const targetDir = `src/ui-modules/${name}`;
+  const targetDir = path.join('src/ui-modules', p, name);//`src/ui-modules/${name}`;
   vio.mkdir(targetDir);
   tplFiles.forEach(tplFile => {
     const targetPath = `${targetDir}/${tplFile.replace(/\.tpl$/, '')}`;
@@ -18,9 +20,11 @@ function add(name, args) {
   });
 }
 
-function remove(name, args) {
-  name = _.kebabCase(name);
-  const targetDir = `src/ui-modules/${name}`;
+function remove(elePath, args) {
+  const arr = elePath.split('/');
+  const name = _.kebabCase(arr.pop());
+  const p = arr.join('/');
+  const targetDir = path.join('src/ui-modules', p, name);
   vio.del(targetDir);
 }
 

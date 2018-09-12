@@ -34,7 +34,7 @@ export default {
           items.push(menuItems.addUiModule);
           break;
         case 'ui-module':
-          items.push(menuItems.rename, menuItems.del);
+          items.push(menuItems.addUiModule, menuItems.rename, menuItems.del);
           break;
         case 'layouts':
           items.push(menuItems.addLayout);

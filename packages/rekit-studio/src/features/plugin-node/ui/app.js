@@ -36,57 +36,71 @@ let byId;
 let rawElements;
 let setById;
 
-const getElements = (dir, type) => {
-  const children = byId(dir).children.map(c => {
-    const ele = byId(c);
-    // const keyMap = {
-    //   'style.less': 'Style',
-    //   'template.marko': 'Template',
-    //   'index.js': 'Index',
-    //   'browser.json': 'Browser',
-    // };
-    const keyMap = {
-      'style.less': 'Style',
-      'template.marko': 'Template',
-      'index.marko': 'Template',
-      'unit-tests': 'Test',
-      test: 'Test',
-      'index.js': 'Index',
-      'component.js': 'Component',
-      'browser.json': 'Browser',
-    };
-    const sorted = ['Diagram', 'Index', 'Component', 'Template', 'Style', 'Browser', 'Test'];
+const getElement = (dir, type) => {
+  const dirEle = byId(dir);
+  const keyMap = {
+    'style.less': 'Style',
+    'template.marko': 'Template',
+    'index.marko': 'Template',
+    'unit-tests': 'Test',
+    test: 'Test',
+    'index.js': 'Index',
+    'component.js': 'Component',
+    'browser.json': 'Browser',
+  };
+  const sorted = ['Diagram', 'Index', 'Component', 'Template', 'Style', 'Browser', 'Test'];
 
-    const viewName = id => {
-      const name = byId(id).name;
-      return keyMap[name] || name;
-    };
-    let views = ele.children
-      .filter(cid => byId(cid).type === 'file')
-      .map(cid => ({ key: viewName(cid).toLowerCase(), target: cid, name: viewName(cid) }));
-    views = _.sortBy(views, v => {
-      const i = sorted.indexOf(v.name);
-      if (i !== -1) return i;
-      return sorted.length + 1;
-    });
-    if (views.length) views[0].isDefault = true;
-    views.push({
-      key: '_btn_add',
-      name: '+',
-    });
-    const p = {
-      id: `v:${ele.id}`,
-      name: ele.name,
-      type,
-      icon: iconMap[type],
-      tabIconColor: colorMap[type],
-      navigable: true,
-      views: [{ key: 'diagram', name: 'Diagram' }, ...views],
-      parts: ele.children.filter(cid => byId(cid).type === 'file'),
-    };
-    setById(p.id, p);
-    return p;
+  const viewName = id => {
+    const name = byId(id).name;
+    return keyMap[name] || name;
+  };
+
+  let views = dirEle.children
+    .filter(cid => byId(cid).type === 'file' && !byId(cid).name.endsWith('.marko.js'))
+    .map(cid => ({ key: viewName(cid).toLowerCase(), target: cid, name: viewName(cid) }));
+  views = _.sortBy(views, v => {
+    const i = sorted.indexOf(v.name);
+    if (i !== -1) return i;
+    return sorted.length + 1;
   });
+  if (views.length) views[0].isDefault = true;
+  views.push({
+    key: '_btn_add',
+    name: '+',
+  });
+  const ele = {
+    id: `v:${dirEle.id}`,
+    name: dirEle.name,
+    type,
+    icon: iconMap[type],
+    tabIconColor: colorMap[type],
+    navigable: true,
+    views: [{ key: 'diagram', name: 'Diagram' }, ...views],
+    parts: dirEle.children.filter(cid => byId(cid).type === 'file'),
+  };
+  setById(ele.id, ele);
+  if (type === 'ui-module') {
+    // ui module may have sub modules
+    ele.children = dirEle.children
+      .filter(c => {
+        const ee = byId(c);
+        if (ee.type === 'folder' && byId(`${ee.id}/component.js`) && byId(`${ee.id}/index.marko`)) {
+          return true;
+        }
+        return false;
+      })
+      .map(c => getElement(c, type))
+      .map(c => c.id);
+    if (ele.children.length) {
+      ele.iconColor = colorMap['ui-modules'];
+      ele.count = ele.children.length;
+    }
+  }
+  return ele;
+};
+
+const getElements = (dir, type) => {
+  const children = byId(dir).children.map(c => getElement(c, type));
   return children.map(c => c.id);
 };
 

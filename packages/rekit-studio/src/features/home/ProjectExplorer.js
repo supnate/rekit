@@ -157,7 +157,7 @@ export class ProjectExplorer extends Component {
         {treeNodes.length > 0 ? (
           <Tree
             onRightClick={this.handleRightClick}
-            autoExpandParent={false}
+            defaultExpandParent={false}
             selectedKeys={[this.state.selectedKey]}
             expandedKeys={this.state.expandedKeys}
             onSelect={this.handleSelect}

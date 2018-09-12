@@ -127,7 +127,7 @@ const getOthersNode = () => {
     name: 'Others',
     icon: iconMap.others,
     iconColor: colorMap.others,
-    children: rawElements,
+    children: _.without(rawElements, 'src/layouts', 'src/pages', 'src/services', 'src/ui-modules'),
   };
 };
 
@@ -135,11 +135,6 @@ export default {
   processProjectData(prjData) {
     byId = id => prjData.elementById[id];
     setById = (id, ele) => (prjData.elementById[id] = ele);
-    // setById('routes.json', {
-    //   name: 'routes.json',
-    //   id: 'routes.json',
-    //   type: 'file',
-    // });
     rawElements = prjData.elements.slice();
 
     const routesNode = getRoutesNode();

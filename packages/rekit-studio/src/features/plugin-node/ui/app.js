@@ -39,20 +39,41 @@ let setById;
 const getElements = (dir, type) => {
   const children = byId(dir).children.map(c => {
     const ele = byId(c);
+    // const keyMap = {
+    //   'style.less': 'Style',
+    //   'template.marko': 'Template',
+    //   'index.js': 'Index',
+    //   'browser.json': 'Browser',
+    // };
     const keyMap = {
       'style.less': 'Style',
       'template.marko': 'Template',
+      'index.marko': 'Template',
+      'unit-tests': 'Test',
+      test: 'Test',
       'index.js': 'Index',
+      'component.js': 'Component',
       'browser.json': 'Browser',
     };
+    const sorted = ['Diagram', 'Index', 'Component', 'Template', 'Style', 'Browser', 'Test'];
+
     const viewName = id => {
       const name = byId(id).name;
       return keyMap[name] || name;
     };
-    const views = ele.children
+    let views = ele.children
       .filter(cid => byId(cid).type === 'file')
       .map(cid => ({ key: viewName(cid).toLowerCase(), target: cid, name: viewName(cid) }));
+    views = _.sortBy(views, v => {
+      const i = sorted.indexOf(v.name);
+      if (i !== -1) return i;
+      return sorted.length + 1;
+    });
     if (views.length) views[0].isDefault = true;
+    views.push({
+      key: '_btn_add',
+      name: '+',
+    });
     const p = {
       id: `v:${ele.id}`,
       name: ele.name,

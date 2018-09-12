@@ -1,5 +1,5 @@
 import React from 'react';
-import { OutputView } from '../../home';
+import OutputView from '../../home/OutputView';
 
 export default {
   getPanes() {

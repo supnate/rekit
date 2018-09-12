@@ -1,4 +1,4 @@
-import { WebTerminal } from '../';
+import WebTerminal from '../WebTerminal';
 
 export const bottomDrawer = {
   getPanes() {

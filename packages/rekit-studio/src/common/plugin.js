@@ -15,13 +15,14 @@ const pluginMap = {
   node,
 };
 
+// Use global variable to store module state for workaround of HMR.
+if (!window.__REKIT_pluginNames) window.__REKIT_pluginNames = [];
 export default {
-  pluginNames: [],
   setPluginNames(names) {
-    this.pluginNames = names;
+    window.__REKIT_pluginNames = names;
   },
   getPlugins(prop) {
-    const plugins = this.pluginNames.map(name => pluginMap[name]);
+    const plugins = window.__REKIT_pluginNames.map(name => pluginMap[name]);
     if (!prop) return plugins;
     return plugins.filter(_.property(prop));
   },

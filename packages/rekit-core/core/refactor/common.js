@@ -57,14 +57,15 @@ function updateFile(filePath, changes) {
 
 // find module alias
 // TODO: support .babelrc
+//
 function getModuleResolverAlias() {
   const thePkgJson = config.getPkgJson();
   const babelPlugins = _.get(thePkgJson, 'babel.plugins');
-  let alias = {};
+  const alias = config.getRekitConfig().moduleAlias || {};
   if (_.isArray(babelPlugins)) {
     const moduleResolver = babelPlugins.filter(p => p[0] === 'module-resolver');
     if (moduleResolver.length && moduleResolver[0][1]) {
-      alias = moduleResolver[0][1].alias;
+      Object.assign(alias, moduleResolver[0][1].alias);
     }
   }
   return alias;

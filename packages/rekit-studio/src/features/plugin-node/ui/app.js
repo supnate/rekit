@@ -73,7 +73,7 @@ const getElement = (dir, type) => {
     name: dirEle.name,
     type,
     icon: iconMap[type],
-    tabIconColor: colorMap[type],
+    iconColor: colorMap[type],
     navigable: true,
     views: [{ key: 'diagram', name: 'Diagram' }, ...views],
     parts: dirEle.children.filter(cid => byId(cid).type === 'file'),
@@ -193,6 +193,11 @@ export default {
     prjData.elements = rootChildren.map(c => c.id);
 
     Object.values(prjData.elementById).forEach(ele => {
+      if (ele.parts) {
+        ele.parts.forEach(part => {
+          if (byId(part)) byId(part).owner = ele.id;
+        });
+      }
       switch (ele.type) {
         case 'ui-module':
         case 'service':

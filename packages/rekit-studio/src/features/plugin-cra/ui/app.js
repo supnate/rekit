@@ -53,6 +53,11 @@ export default {
         ele.iconColor = colorMap[ele.type];
       }
 
+      if (ele.parts) {
+        ele.parts.forEach(part => {
+          if (byId(part)) byId(part).owner = ele.id;
+        });
+      }
       switch (ele.type) {
         case 'component':
         case 'action':
@@ -63,12 +68,6 @@ export default {
           break;
         default:
           break;
-      }
-
-      if (ele.parts) {
-        ele.parts.forEach(part => {
-          if (byId(part)) byId(part).owner = ele.id;
-        });
       }
 
       switch (ele.type) {

@@ -61,7 +61,7 @@ export class ElementPage extends Component {
     } else if (viewEle.key === 'diagram' && ele.type === 'file' && /^jsx?$/.test(ele.ext)) {
       // Show default deps diagram for normal js files
       return DepsDiagramViewWrapper;
-    } else {
+    } else if (ele.type === 'file') {
       return CodeView;
     }
   }
@@ -79,7 +79,7 @@ export class ElementPage extends Component {
   renderNotSupported() {
     return (
       <div className="home-element-page error">
-        The element is not supported or size is too large.
+        The element/view is not supported or size is too large.
       </div>
     );
   }

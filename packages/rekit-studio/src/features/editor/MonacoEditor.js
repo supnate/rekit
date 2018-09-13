@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import configMonacoEditor from './configMonacoEditor';
+import configMonaco from './configMonaco';
 import modelManager from './modelManager';
 
 function noop() {}
@@ -133,11 +134,13 @@ export default class MonacoEditor extends Component {
 
   initMonaco() {
     const { theme, options, file } = this.props;
-    this.editorWillMount(monaco);
+    configMonaco(window.monaco);
+    this.editorWillMount(window.monaco);
     if (!editorInstance) {
       const domNode = document.createElement('div');
       domNode.className = 'monaco-editor-node';
       this.containerElement.appendChild(domNode);
+      
       editorInstance = monaco.editor.create(domNode, {
         model: modelManager.getModel(file),
         ...options

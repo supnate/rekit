@@ -91,10 +91,6 @@ const getElement = (dir, type) => {
       })
       .map(c => getElement(c, type))
       .map(c => c.id);
-    if (ele.children.length) {
-      ele.iconColor = colorMap['ui-modules'];
-      ele.count = ele.children.length;
-    }
   }
   return ele;
 };

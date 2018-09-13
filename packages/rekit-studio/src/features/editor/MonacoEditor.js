@@ -142,10 +142,11 @@ export default class MonacoEditor extends Component {
       this.containerElement.appendChild(domNode);
       
       editorInstance = monaco.editor.create(domNode, {
-        model: modelManager.getModel(file),
+        model: null,
         ...options
       });
       configMonacoEditor(editorInstance, monaco);
+      editorInstance.setModel(modelManager.getModel(file));
     } else {
       editorInstance.setModel(modelManager.getModel(file));
       this.containerElement.appendChild(getEditorNode());

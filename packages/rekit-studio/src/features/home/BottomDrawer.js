@@ -36,10 +36,15 @@ export class BottomDrawer extends Component {
     requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
   };
 
-  handleTabClick = key => {
+  handleTabClick = (evt, key) => {
     this.props.actions.setBottomDrawerTab(key);
     this.props.actions.setBottomDrawerVisible(true);
+    evt.stopPropagation();
   };
+
+  handleToolbarClick = () => {
+    this.props.actions.setBottomDrawerVisible(!this.props.bottomDrawerVisible);
+  }
 
   render() {
     const panes = this.getPanes();
@@ -47,7 +52,7 @@ export class BottomDrawer extends Component {
     const currentPane = _.find(panes, { key: bottomDrawerTab });
     return (
       <div className="home-bottom-drawer">
-        <div className="toolbar">
+        <div className="toolbar" onClick={this.handleToolbarClick}>
           <div className="toolbar-tabs">
             {panes.map(pane => (
               <span
@@ -55,7 +60,7 @@ export class BottomDrawer extends Component {
                 className={classnames('toolbar-tab', {
                   'is-active': bottomDrawerVisible && pane.key === bottomDrawerTab,
                 })}
-                onClick={() => this.handleTabClick(pane.key)}
+                onClick={(evt) => this.handleTabClick(evt, pane.key)}
               >
                 {pane.tab}
               </span>

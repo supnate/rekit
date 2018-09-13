@@ -47,7 +47,7 @@ export class ElementPage extends Component {
       .some(p => {
         View = p.view.getView(ele, viewEle ? viewEle.key : null);
         if (View) return true;
-        return false;
+        return 'TOO_LARGE';
       });
     if (View) return View;
 
@@ -56,14 +56,16 @@ export class ElementPage extends Component {
       if (realEle.type === 'file') {
         if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(realEle.ext)) return ImageView;
         if (realEle.size < 100000) return CodeView;
+        else return 0;
       }
       return null;
     } else if (viewEle.key === 'diagram' && ele.type === 'file' && /^jsx?$/.test(ele.ext)) {
       // Show default deps diagram for normal js files
       return DepsDiagramViewWrapper;
-    } else if (ele.type === 'file') {
+    } else if (viewEle.target && this.byId(viewEle.target) && this.byId(viewEle.target).type === 'file') {
       return CodeView;
     }
+    return null;
   }
 
   byId = id => this.props.elementById[id];
@@ -79,7 +81,15 @@ export class ElementPage extends Component {
   renderNotSupported() {
     return (
       <div className="home-element-page error">
-        The element/view is not supported or size is too large.
+        The element/view is not supported.
+      </div>
+    );
+  }
+
+  renderSizeTooLarge() {
+    return (
+      <div className="home-element-page error">
+        The file size is too large to show, please try other native code editors.
       </div>
     );
   }
@@ -98,6 +108,9 @@ export class ElementPage extends Component {
     }
 
     const View = this.getView(ele, viewEle);
+    if (View === 'TOO_LARGE') {
+      return this.renderSizeTooLarge();
+    }
     if (!View) {
       return this.renderNotSupported();
     }

@@ -6,14 +6,6 @@ export default {
       return RoutesView;
     }
 
-    // if (
-    //   (['page', 'ui-module', 'layout', 'service'].includes(element.type) ||
-    //     /^jsx?$/.test(element.ext)) &&
-    //   view === 'diagram'
-    // ) {
-    //   return ElementDiagram;
-    // }
-
     return null;
   },
 };

@@ -28,12 +28,10 @@ export class BottomDrawer extends Component {
 
   showDrawer = () => {
     this.props.actions.setBottomDrawerVisible(true);
-    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
   };
 
   hideDrawer = () => {
     this.props.actions.setBottomDrawerVisible(false);    
-    requestAnimationFrame(() => window.dispatchEvent(new window.Event('resize')));
   };
 
   handleTabClick = (evt, key) => {

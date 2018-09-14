@@ -100,7 +100,7 @@ export class HomePage extends Component {
       <div className="top-badges">
         {badges.map(b => (
           <div className="top-badge" key={b.type}>
-            <SvgIcon type={icons(b.type)} fill={colors(b.type)} />
+            <SvgIcon size={28} type={icons(b.type)} fill={colors(b.type)} />
             <label className="count">{typesCount[b.type]}</label>
             <label className="type">{b.name}</label>
           </div>

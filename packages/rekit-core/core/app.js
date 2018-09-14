@@ -9,12 +9,12 @@ const plugin = require('./plugin');
 
 function getProjectData() {
   const plugins = plugin.getPlugins('app.getProjectData');
+  const prjData = {};
   if (plugins.length) {
-    const prjData = {};
     plugins.forEach(p => Object.assign(prjData, p.app.getProjectData()));
-    return prjData;
   }
-  return readDir(paths.map('src'));
+  if (!prjData.elements || !prjData.elementById) Object.assign(prjData, readDir(paths.map('src')));
+  return prjData;
 }
 
 function sortElements(elements, elementById) {

@@ -26,6 +26,7 @@ let setById;
 
 const getElement = (dir, type) => {
   const dirEle = byId(dir);
+  if (!dirEle || dirEle.type !== 'folder') return null;
   const keyMap = {
     'style.less': 'Style',
     'template.marko': 'Template',
@@ -84,7 +85,8 @@ const getElement = (dir, type) => {
 };
 
 const getElements = (dir, type) => {
-  const children = byId(dir).children.map(c => getElement(c, type));
+  if (!byId(dir) || byId(dir).type !== 'folder') return [];
+  const children = byId(dir).children.map(c => getElement(c, type)).filter(e => !!e);
   return children.map(c => c.id);
 };
 
@@ -115,7 +117,7 @@ const getUiModulesNode = () => {
     type: 'ui-modules',
     icon: iconMap['ui-modules'],
     iconColor: colorMap['ui-modules'],
-    children: getElements('src/ui-modules', 'ui-module'),
+    children: [...getElements('src/components', 'ui-module'), ...getElements('src/ui-modules', 'ui-module')],
   };
 };
 const getLayoutsNode = () => {

@@ -88,6 +88,41 @@ export const getDepsData = createSelector(elementByIdSelector, elementById => {
   return { dependencies, dependents };
 });
 
+export const getGroupedDepsData = createSelector(elementByIdSelector, elementById => {
+  const byId = id => elementById[id] || null;
+  const ensuareArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
+  const dependencies = {};
+  const dependents = {};
+
+  Object.values(elementById).forEach(ele => {
+    if (ele.target) ele = byId(ele.target);
+    let eleDeps = ele.parts
+      ? ele.parts.reduce((prev, part) => {
+          if (byId(part) && byId(part).deps) {
+            prev.push.apply(prev, byId(part).deps);
+          }
+          return prev;
+        }, [])
+      : ele.deps || [];
+
+    // deps should not in parts and uniq
+    eleDeps = eleDeps
+      .filter(d => d.type === 'file' && (!ele.parts || !ele.parts.includes(d.id)))
+      .map(d => d.id);
+    eleDeps = _.uniq(eleDeps);
+    eleDeps.forEach(dep => {
+      dep = byId(dep);
+      if (!dep) return;
+      if (dep.owner) dep = byId(dep.owner);
+      if (!dep || dep.id === ele.id) return;
+      ensuareArray(dependencies, ele.id).push(dep.id);
+      ensuareArray(dependents, dep.id).push(ele.id);
+    });
+  });
+
+  return { dependencies, dependents };
+});
+
 export const getTypesCount =  createSelector(
   elementByIdSelector,
   (elementById) => {

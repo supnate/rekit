@@ -1,18 +1,6 @@
 import _ from 'lodash';
-const colorMap = {
-  feature: '#0277bd',
-  service: '#ec407a',
-  services: '#ec407a',
-  'initial-state': '#ec407a',
-  'ui-module': '#f08036',
-  'ui-modules': '#f08036',
-  'folder-alias': '#8d6e63',
-  normal: '#888888',
-  routes: '#26a69a',
-  page: '#4CAF50',
-  layout: '#CDDC39',
-  others: '#8d6e63',
-};
+import colors from '../colors';
+const colorMap = colors;
 
 const iconMap = {
   features: 'rekit',

@@ -7,7 +7,7 @@ import history from '../../common/history';
 import * as actions from './redux/actions';
 import { DepsDiagram } from '../diagram';
 // import { getElementDiagramData } from './selectors/getElementDiagramData';
-import { getDepsDiagramData } from '../diagram/selectors/getDepsDiagramData';
+import { getElementDiagramData } from './selectors/getElementDiagramData';
 
 import colors from './colors';
 
@@ -41,7 +41,7 @@ export class ElementDiagram extends Component {
     const { elementById } = this.props;
     const byId = id => elementById[id];
     // let { nodes, links } = getDepsDiagramData(elementById, this.getElementId());
-    return getDepsDiagramData({ elementById, elementId: this.getElementId() });
+    return getElementDiagramData({ elementById, elementId: this.getElementId() });
 
     // Filter out tests files
     // nodes = nodes.filter(node => /^src\//.test(node.id));

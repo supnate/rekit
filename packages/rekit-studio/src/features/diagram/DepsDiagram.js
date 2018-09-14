@@ -22,7 +22,27 @@ export default class DepsDiagram extends PureComponent {
 
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize);
+    // Use requestAnimationFrame to ensure it gets correct chart size.
+    requestAnimationFrame(this.initDiagram);
+  }
 
+  componentDidUpdate(prevProps) {
+    const props = this.props;
+    if (
+      prevProps.nodes !== props.nodes ||
+      prevProps.links !== props.links ||
+      prevProps.targetId !== props.targetId ||
+      prevProps.size !== props.size
+    ) {
+      this.updateDiagram();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize);
+  }
+
+  initDiagram = () => {
     const size = this.getChartSize();
     this.svg = d3
       .select(this.d3Node)
@@ -73,23 +93,7 @@ export default class DepsDiagram extends PureComponent {
     this.nodeLabelsGroup = this.svg.append('g');
 
     this.updateDiagram();
-  }
-
-  componentDidUpdate(prevProps) {
-    const props = this.props;
-    if (
-      prevProps.nodes !== props.nodes ||
-      prevProps.links !== props.links ||
-      prevProps.targetId !== props.targetId ||
-      prevProps.size !== props.size
-    ) {
-      this.updateDiagram();
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowResize);
-  }
+  };
 
   getChartSize() {
     const containerNode = this.d3Node.parentNode.parentNode;
@@ -124,7 +128,6 @@ export default class DepsDiagram extends PureComponent {
 
     const dataNodes = this.props.nodes;
     const dataLinks = _.cloneDeep(this.props.links);
-
     const size = this.getChartSize();
     this.svg.attr('width', size.width).attr('height', size.height);
     this.sim.force('center', d3.forceCenter(size.width / 2, size.height / 2));
@@ -144,7 +147,9 @@ export default class DepsDiagram extends PureComponent {
             .on('drag', this.dragged)
             .on('end', this.dragended)
         );
-    const bgNodes = this.bgNodesGroup.selectAll('circle').data(dataNodes.filter(n => n.doubleCircle));
+    const bgNodes = this.bgNodesGroup
+      .selectAll('circle')
+      .data(dataNodes.filter(n => n.doubleCircle));
     bgNodes.exit().remove();
     this.bgNodes = drawBgNode(bgNodes);
     this.bgNodes = drawBgNode(bgNodes.enter().append('circle')).merge(this.bgNodes);
@@ -174,15 +179,23 @@ export default class DepsDiagram extends PureComponent {
         .attr('class', 'line')
         .attr('stroke', d => d.color || '#ddd')
         .attr('stroke-dasharray', d => d.dashed || (d.target === targetId ? '3, 3' : ''))
-        .attr('marker-end', l => (l.type === 'dep' ? `url(#${l.source === targetId ? 'dep-on' : 'dep-by'})` : ''));
-    const links = this.linksGroup.selectAll('line').data(dataLinks.filter(l => l.type !== 'no-line'));
+        .attr(
+          'marker-end',
+          l => (l.type === 'dep' ? `url(#${l.source === targetId ? 'dep-on' : 'dep-by'})` : '')
+        );
+    const links = this.linksGroup
+      .selectAll('line')
+      .data(dataLinks.filter(l => l.type !== 'no-line'));
     links.exit().remove();
     this.links = drawLink(links);
     this.links = drawLink(links.enter().append('line')).merge(this.links);
 
     const drawNodeLabel = d3Selection =>
       d3Selection
-        .attr('class', d => `element-node-text ${d.id !== targetId && d.type !== 'feature' ? 'dep-node' : ''}`)
+        .attr(
+          'class',
+          d => `element-node-text ${d.id !== targetId && d.type !== 'feature' ? 'dep-node' : ''}`
+        )
         .attr('transform', 'translate(0, 2)')
         .attr('text-anchor', 'middle')
         .attr('cursor', d => d.cursor || 'pointer')

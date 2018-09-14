@@ -22,8 +22,7 @@ export default class DepsDiagram extends PureComponent {
 
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize);
-    // Use requestAnimationFrame to ensure it gets correct chart size.
-    setTimeout(this.initDiagram, 100);
+    requestAnimationFrame(this.initDiagram);
   }
 
   componentDidUpdate(prevProps) {
@@ -97,7 +96,6 @@ export default class DepsDiagram extends PureComponent {
 
   getChartSize() {
     const containerNode = this.d3Node.parentNode.parentNode;
-
     return (
       this.props.size || {
         width: Math.max(containerNode.offsetWidth, 400),
@@ -215,9 +213,9 @@ export default class DepsDiagram extends PureComponent {
     this.nodeLabels = drawNodeLabel(nodeLabels.enter().append('text')).merge(this.nodeLabels);
 
     const distanceMap = {
-      child: 100,
-      dep: 100,
-      'no-line': 280,
+      child: 120,
+      dep: 120,
+      'no-line': 320,
     };
 
     this.sim.nodes(dataNodes);

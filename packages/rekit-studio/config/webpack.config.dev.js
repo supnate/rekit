@@ -49,9 +49,9 @@ module.exports = {
       // require.resolve('webpack/hot/dev-server'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       // Finally, this is your app's code:
-      paths.appIndexJs,
       paths.appIndexStyle,
       paths.antdIndexStyle,
+      paths.appIndexJs,
       // We include the app code last so that if there is a runtime error during
       // initialization, it doesn't blow up the WebpackDevServer client, and
       // changing JS code would still trigger a refresh.

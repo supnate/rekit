@@ -26,4 +26,11 @@ export default {
     if (!prop) return plugins;
     return plugins.filter(_.property(prop));
   },
+  getColor(type) {
+    const colors = this.getPlugins('colors').reduce((prev, curr) => {
+      Object.assign(prev, curr.colors);
+      return prev;
+    }, {});
+    return colors[type] || '#78909C';
+  },
 };

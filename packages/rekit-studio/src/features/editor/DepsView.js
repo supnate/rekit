@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { SvgIcon } from '../common';
@@ -14,13 +15,34 @@ export class DepsView extends Component {
 
   renderLink = dep => {
     const byId = id => this.props.elementById[id];
-    let ele = byId(dep);
-    if (ele.owner) ele = byId(ele.owner);
+
+    const ele = byId(dep);
+    if (!ele) return '';
+    let url = `/element/${encodeURIComponent(ele.id)}`;
+    let name = ele.name;
+    let icon = ele.icon;
+    let iconColor = ele.iconColor;
+    if (ele.owner) {
+      const owner = byId(ele.owner);
+      const view = owner.views ? _.find(owner.views, { target: ele.id }) : null;
+      if (view) url = `/element/${encodeURIComponent(owner.id)}/${view.key}`;
+      else url = `/element/${encodeURIComponent(owner.id)}/${ele.name}`;
+
+      icon = owner.icon;
+      iconColor = owner.iconColor;
+      name = (
+        <span>
+          {owner.name}
+          <span style={{ opacity: 0.3 }}>/{ele.name}</span>
+        </span>
+      );
+    }
+
     return (
-      <dd key={ele.id}>
-        <Link title={ele.id} to={`/element/${encodeURIComponent(ele.id)}`}>
-          <SvgIcon type={ele.icon} style={{ fill: ele.iconColor }} />
-          {ele.name}
+      <dd key={url}>
+        <Link title={ele.id} to={url}>
+          <SvgIcon type={icon} style={{ fill: iconColor }} />
+          {name}
         </Link>
       </dd>
     );
@@ -31,9 +53,14 @@ export class DepsView extends Component {
     const depsData = getDepsData({ elements, elementById });
     const byId = id => elementById[id];
     const ele = byId(file);
-    const eid = ele.owner || ele.id;
-    const dependencies = depsData.dependencies[eid] || [];
-    const dependents = depsData.dependents[eid] || [];
+    // const eid = ele.owner || ele.id;
+    let dependencies = [...(depsData.dependencies[ele.id] || [])];
+    let dependents = [...(depsData.dependents[ele.id] || [])];
+
+    dependencies = dependencies.filter(
+      d => !(byId(d) && byId(d).owner && byId(d).owner === ele.owner)
+    );
+    dependents = dependents.filter(d => !(byId(d) && byId(d).owner && byId(d).owner === ele.owner));
 
     const sort = deps => {
       deps.sort((dep1, dep2) => {
@@ -47,22 +74,21 @@ export class DepsView extends Component {
 
     return (
       <div className="editor-deps-view">
-        {dependencies.length > 0 && (
-          <dl className="dependencies">
-            <dt>
-              <SvgIcon type="arrow-right" />Dependencies
-            </dt>
-            {dependencies.map(this.renderLink)}
-          </dl>
-        )}
-        {dependents.length > 0 && (
-          <dl className="dependents">
-            <dt>
-              <SvgIcon type="arrow-left" />Dependents
-            </dt>
-            {dependents.map(this.renderLink)}
-          </dl>
-        )}
+        <dl className="dependencies">
+          <dt>
+            <SvgIcon type="arrow-right" />
+            Dependencies ({dependencies.length})
+          </dt>
+          {dependencies.map(this.renderLink)}
+        </dl>
+
+        <dl className="dependents">
+          <dt>
+            <SvgIcon type="arrow-left" />
+            Dependents ({dependents.length})
+          </dt>
+          {dependents.map(this.renderLink)}
+        </dl>
       </div>
     );
   }

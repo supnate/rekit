@@ -1,0 +1,15 @@
+export default {
+  service: 'service',
+  services: 'service',
+  'initial-state': 'database',
+  'ui-module': 'appstore-o',
+  'ui-modules': 'appstore-o',
+  layout: 'ui',
+  layouts: 'ui',
+  'folder-alias': 'folder',
+  folder: 'folder',
+  others: 'folder',
+  file: 'file',
+  routes: 'sharealt',
+  page: 'page',
+};

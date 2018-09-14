@@ -36,6 +36,16 @@ export default {
       return tab;
     }
 
+    if (urlPath === '/' || !urlPath) {
+      return {
+        name: 'Dashboard',
+        key: 'dashboard',
+        icon: 'dashboard',
+        iconColor: '#33cdff',
+        urlPath,
+      };
+    }
+
     return null;
   },
 };

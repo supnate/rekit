@@ -26,11 +26,18 @@ export default {
     if (!prop) return plugins;
     return plugins.filter(_.property(prop));
   },
-  getColor(type) {
-    const colors = this.getPlugins('colors').reduce((prev, curr) => {
-      Object.assign(prev, curr.colors);
-      return prev;
-    }, {});
-    return colors[type] || '#78909C';
-  },
+  // getColor(type) {
+  //   const colors = this.getPlugins('colors').reduce((prev, curr) => {
+  //     Object.assign(prev, curr.colors);
+  //     return prev;
+  //   }, {});
+  //   return colors[type] || '#78909C';
+  // },
+  // getIcon(type) {
+  //   const icons = this.getPlugins('icons').reduce((prev, curr) => {
+  //     Object.assign(prev, curr.icons);
+  //     return prev;
+  //   }, {});
+  //   return icons[type] || 'file';
+  // },
 };

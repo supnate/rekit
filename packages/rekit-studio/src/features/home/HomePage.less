@@ -5,17 +5,22 @@
   min-height: 100%;
   background-color: #1e1e1e;
   color: #ddd;
-  color: red;
   .top-badges {
     min-width: 800px;
-    margin-right: -15px;
+    display: flex;
   }
 
   .top-badge {
     position: relative;
-    margin-right: 15px;
+    // margin-right: 15px;
+    flex-grow: 1;
+    flex-direction: row;
     height: 100px;
     background-color: #2a2d33;
+    margin-right: 15px;
+    &:last-child {
+      margin-right: 0;
+    }
 
     &.feature .anticon { color: darken(@feature-color, 10%); }
     &.action .anticon { color: darken(@action-color, 10%); }

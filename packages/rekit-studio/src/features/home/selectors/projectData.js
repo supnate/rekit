@@ -87,3 +87,15 @@ export const getDepsData = createSelector(elementByIdSelector, elementById => {
 
   return { dependencies, dependents };
 });
+
+export const getTypesCount =  createSelector(
+  elementByIdSelector,
+  (elementById) => {
+    const count = {};
+    Object.values(elementById).forEach(ele => {
+      count[ele.type] = (count[ele.type] || 0) + 1;
+    });
+
+    return count;
+  },
+);

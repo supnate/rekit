@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Col, Icon, Popover, Row } from 'antd';
 import plugin from '../../common/plugin';
-import { OverviewChordDiagram } from '../diagram';
+import { OverviewChordDiagram, OverviewDiagram } from '../diagram';
 import { TestCoverageSummary } from '../rekit-tools';
 import { getOverviewStat } from './selectors/getOverviewStat';
 import { getTypesCount } from './selectors/projectData';
@@ -111,17 +111,18 @@ export class HomePage extends Component {
 
   render() {
     // const { features, featureById } = this.props.home;
-    const overviewStat = {};
 
     return (
       <div className="home-home-page">
         {this.renderBadges()}
-        <Row style={{ minWidth: 800 }}>
-          <Col span="16" className="diagram-container">
-            Diagram
+        <Row style={{ minWidth: 800 }} gutter={30}>
+          <Col span="16">
+            <h3>Overview Diagram</h3>
+            <OverviewDiagram />
           </Col>
           <Col span="8" className="test-coverage-container">
-            test
+            <h3>Test Coverage</h3>
+            <div className="test-coverage">No data.</div>
           </Col>
         </Row>
       </div>

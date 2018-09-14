@@ -22,11 +22,21 @@
       margin-right: 0;
     }
 
-    &.feature .anticon { color: darken(@feature-color, 10%); }
-    &.action .anticon { color: darken(@action-color, 10%); }
-    &.component .anticon { color: darken(@component-color, 10%); }
-    &.misc .anticon { color: darken(@misc-color, 10%); }
-    &.route .anticon { color: darken(@route-color, 10%); }
+    &.feature .anticon {
+      color: darken(@feature-color, 10%);
+    }
+    &.action .anticon {
+      color: darken(@action-color, 10%);
+    }
+    &.component .anticon {
+      color: darken(@component-color, 10%);
+    }
+    &.misc .anticon {
+      color: darken(@misc-color, 10%);
+    }
+    &.route .anticon {
+      color: darken(@route-color, 10%);
+    }
 
     .common-svg-icon {
       position: absolute;
@@ -70,7 +80,14 @@
     padding-right: 30px;
   }
 
-  &-overview-diagram-help, &-test-coverage-summary-help {
+  .test-coverage {
+    background-color: #2a2d33;
+    height: 300px;
+    padding: 20px;
+  }
+
+  &-overview-diagram-help,
+  &-test-coverage-summary-help {
     width: 260px;
     padding-bottom: 15px;
 
@@ -90,10 +107,18 @@
 
           background-color: red;
 
-          &.feature { background-color: @feature-color; }
-          &.component { background-color: @component-color; }
-          &.action { background-color: @action-color; }
-          &.misc { background-color: @misc-color; }
+          &.feature {
+            background-color: @feature-color;
+          }
+          &.component {
+            background-color: @component-color;
+          }
+          &.action {
+            background-color: @action-color;
+          }
+          &.misc {
+            background-color: @misc-color;
+          }
         }
       }
     }

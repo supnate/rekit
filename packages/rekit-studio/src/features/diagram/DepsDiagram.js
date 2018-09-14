@@ -23,7 +23,7 @@ export default class DepsDiagram extends PureComponent {
   componentDidMount() {
     window.addEventListener('resize', this.handleWindowResize);
     // Use requestAnimationFrame to ensure it gets correct chart size.
-    requestAnimationFrame(this.initDiagram);
+    setTimeout(this.initDiagram, 100);
   }
 
   componentDidUpdate(prevProps) {
@@ -160,7 +160,7 @@ export default class DepsDiagram extends PureComponent {
         .attr('stroke-width', d => d.borderWidth || 0)
         .attr('stroke', d => d.borderColor || '#eee')
         .attr('cursor', d => d.cursor || 'pointer')
-        .attr('fill', d => d.bgColor || '#78909C')
+        .attr('fill', d => d.bgColor)
         .on('click', this.handleNodeClick)
         .call(
           d3

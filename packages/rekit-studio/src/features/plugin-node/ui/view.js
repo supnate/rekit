@@ -1,4 +1,4 @@
-import { RoutesView, ElementDiagram } from '../';
+import { RoutesView } from '../';
 
 export default {
   getView(element, view) {
@@ -6,13 +6,13 @@ export default {
       return RoutesView;
     }
 
-    if (
-      (['page', 'ui-module', 'layout', 'service'].includes(element.type) ||
-        /^jsx?$/.test(element.ext)) &&
-      view === 'diagram'
-    ) {
-      return ElementDiagram;
-    }
+    // if (
+    //   (['page', 'ui-module', 'layout', 'service'].includes(element.type) ||
+    //     /^jsx?$/.test(element.ext)) &&
+    //   view === 'diagram'
+    // ) {
+    //   return ElementDiagram;
+    // }
 
     return null;
   },

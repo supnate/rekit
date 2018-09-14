@@ -13,7 +13,7 @@ export const getElementDiagramData = createSelector(
   (depsData, elementById, elementId) => {
     const byId = id => elementById[id];
     const { nodes, links } = depsData;
-
+console.log(nodes, 'links:', links);
     const realNodes = [];
 
     nodes.forEach(node => {

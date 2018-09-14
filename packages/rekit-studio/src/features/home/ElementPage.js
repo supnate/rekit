@@ -59,7 +59,7 @@ export class ElementPage extends Component {
         else return 0;
       }
       return null;
-    } else if (viewEle.key === 'diagram' && ele.type === 'file' && /^jsx?$/.test(ele.ext)) {
+    } else if (viewEle.key === 'diagram') {
       // Show default deps diagram for normal js files
       return DepsDiagramViewWrapper;
     } else if (viewEle.target && this.byId(viewEle.target) && this.byId(viewEle.target).type === 'file') {

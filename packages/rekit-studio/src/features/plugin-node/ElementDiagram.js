@@ -7,7 +7,7 @@ import history from '../../common/history';
 import * as actions from './redux/actions';
 import { DepsDiagram } from '../diagram';
 // import { getElementDiagramData } from './selectors/getElementDiagramData';
-import { getElementDiagramData } from './selectors/getElementDiagramData';
+import { getDepsDiagramData } from '../diagram/selectors/getDepsDiagramData';
 
 import colors from './colors';
 
@@ -18,37 +18,37 @@ export class ElementDiagram extends Component {
     element: PropTypes.object.isRequired,
   };
 
-  getElementId() {
-    const { element } = this.props;
-    let elementId;
-    switch (element.type) {
-      case 'ui-module':
-      case 'page':
-      case 'layout':
-      case 'service':
-        elementId = element.parts[0];
-        break;
-      case 'file':
-        elementId = element.id;
-        break;
-      default:
-        throw new Error('Unknown element type: ' + element.type);
-    }
-    return elementId;
-  }
+  // getElementId() {
+  //   const { element } = this.props;
+  //   let elementId;
+  //   switch (element.type) {
+  //     case 'ui-module':
+  //     case 'page':
+  //     case 'layout':
+  //     case 'service':
+  //       elementId = element.parts[0];
+  //       break;
+  //     case 'file':
+  //       elementId = element.id;
+  //       break;
+  //     default:
+  //       throw new Error('Unknown element type: ' + element.type);
+  //   }
+  //   return elementId;
+  // }
 
-  getDiagramData() {
-    const { elementById } = this.props;
-    const byId = id => elementById[id];
-    // let { nodes, links } = getDepsDiagramData(elementById, this.getElementId());
-    return getElementDiagramData({ elementById, elementId: this.getElementId() });
+  // getDiagramData() {
+  //   const { elementById } = this.props;
+  //   const byId = id => elementById[id];
+  //   // let { nodes, links } = getDepsDiagramData(elementById, this.getElementId());
+  //   return getElementDiagramData({ elementById, elementId: this.props.element.id });
 
-    // Filter out tests files
-    // nodes = nodes.filter(node => /^src\//.test(node.id));
-    // links = links.filter(link => /^src\//.test(link.source) && /^src\//.test(link.target));
+  //   // Filter out tests files
+  //   // nodes = nodes.filter(node => /^src\//.test(node.id));
+  //   // links = links.filter(link => /^src\//.test(link.source) && /^src\//.test(link.target));
 
-    // return { nodes, links };
-  }
+  //   // return { nodes, links };
+  // }
 
   handleNodeClick = node => {
     const byId = id => this.props.elementById[id];
@@ -60,15 +60,15 @@ export class ElementDiagram extends Component {
   };
 
   render() {
-    const targetId = this.getElementId();
-    const { nodes, links } = this.getDiagramData();
+    const { element, elementById } = this.props;
+    const { nodes, links } = getDepsDiagramData({elementById, elementId: element.id});
     return (
       <div className="plugin-node-element-diagram">
         <div className="diagram-container">
           <DepsDiagram
             nodes={nodes}
             links={links}
-            targetId={targetId}
+            targetId={element.id}
             handleNodeClick={this.handleNodeClick}
           />
         </div>

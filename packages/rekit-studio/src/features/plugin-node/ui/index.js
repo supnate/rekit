@@ -3,3 +3,4 @@ export { default as menu } from './menu';
 export { default as form } from './form';
 export { default as view } from './view';
 export { default as editor } from './editor';
+export { default as colors } from '../colors';

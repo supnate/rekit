@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Icon } from 'antd';
 
 // Load all svg files into svg sprite
 const files = require.context('!svg-sprite-loader!../../svgicons', false, /.*\.svg$/);
@@ -39,6 +40,10 @@ export default class SvgIcon extends Component {
       });
     }
     const cssCls = `common-svg-icon common-svg-icon-${type} ${this.props.className || ''}`;
+
+    if (/^anticon-/.test(type)) {
+      return <Icon className={cssCls} type={type.replace(/^anticon-/, '')} {...props} />;
+    }
     return (
       <svg className={cssCls} xmlns="http://www.w3.org/2000/svg" {...props}>
         <use xlinkHref={`#${type}`} />

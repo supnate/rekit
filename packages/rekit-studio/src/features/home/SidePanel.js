@@ -132,7 +132,7 @@ export class SidePanel extends Component {
         <div className="header">
           <Link className="home-link" to="/" title={this.props.projectRoot}>
             <h5>
-              <Icon type="home" /> {projectName}
+              <SvgIcon type="anticon-home" size={22} /> {projectName}
             </h5>
           </Link>
           <Dropdown overlay={this.renderMainMenu()}>

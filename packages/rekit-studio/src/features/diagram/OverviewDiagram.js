@@ -208,7 +208,7 @@ export default class OverviewDiagram extends PureComponent {
   };
 
   handleWindowResize = () => {
-    this.updateDiagram();
+    // this.updateDiagram();
   };
 
   render() {

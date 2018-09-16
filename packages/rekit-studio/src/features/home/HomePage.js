@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Col, Icon, Popover, Row } from 'antd';
 import plugin from '../../common/plugin';
-import { OverviewChordDiagram, OverviewDiagram } from '../diagram';
+import { OverviewChordDiagram, AllDepsDiagramView } from '../diagram';
 import { TestCoverageSummary } from '../rekit-tools';
 import { getOverviewStat } from './selectors/getOverviewStat';
 import { getTypesCount } from './selectors/projectData';
@@ -118,7 +118,9 @@ export class HomePage extends Component {
         <Row style={{ minWidth: 800 }} gutter={30}>
           <Col span="16">
             <h3>Overview Diagram</h3>
-            <OverviewDiagram />
+            <div className="diagram-container">
+              <AllDepsDiagramView />
+            </div>
           </Col>
           <Col span="8" className="test-coverage-container">
             <h3>Test Coverage</h3>

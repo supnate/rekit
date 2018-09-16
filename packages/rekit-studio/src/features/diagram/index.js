@@ -5,3 +5,5 @@ export { default as OverviewChordDiagram } from './OverviewChordDiagram';
 export { default as DepsDiagram } from './DepsDiagram';
 export { default as DepsDiagramView } from './DepsDiagramView';
 export { default as OverviewDiagramView } from './OverviewDiagramView';
+export { default as AllDepsDiagram } from './AllDepsDiagram';
+export { default as AllDepsDiagramView } from './AllDepsDiagramView';

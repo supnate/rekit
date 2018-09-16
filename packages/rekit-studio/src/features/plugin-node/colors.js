@@ -8,7 +8,11 @@ export default  {
   normal: '#888888',
   routes: '#26a69a',
   page: '#4CAF50',
+  pages: '#4CAF50',
   layout: '#CDDC39',
+  layouts: '#CDDC39',
   others: '#8d6e63',
   diagram: '#78909C',
+  file: '#aaa',
+  folder: '#aaa',
 };

@@ -23,23 +23,25 @@ export default class SvgIcon extends Component {
   };
 
   render() {
-    const { size, type, fill, style } = this.props;
+    const { size, type, fill } = this.props;
     const props = { ...this.props };
     delete props.type;
     delete props.size;
     delete props.className;
     delete props.fill;
+
     if (fill) {
       props.style = {
+        ...props.style,
         fill,
-        ...style,
       };
     }
     if (size) {
-      Object.assign(props.style, {
+      props.style = {
+        ...props.style,
         width: `${size}px`,
         height: `${size}px`,
-      });
+      };
     }
     const cssCls = `common-svg-icon common-svg-icon-${type} ${this.props.className || ''}`;
 

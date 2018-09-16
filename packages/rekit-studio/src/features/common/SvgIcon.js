@@ -19,7 +19,7 @@ export default class SvgIcon extends Component {
     size: null,
     className: '',
     style: null,
-    fill: '#ddd',
+    fill: null,
   };
 
   render() {
@@ -29,10 +29,12 @@ export default class SvgIcon extends Component {
     delete props.size;
     delete props.className;
     delete props.fill;
-    props.style = {
-      fill,
-      ...style,
-    };
+    if (fill) {
+      props.style = {
+        fill,
+        ...style,
+      };
+    }
     if (size) {
       Object.assign(props.style, {
         width: `${size}px`,

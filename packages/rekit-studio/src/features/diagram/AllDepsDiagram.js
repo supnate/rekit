@@ -40,18 +40,22 @@ export default class AllDepsDiagram extends Component {
   }
 
   updateDiagram = () => {
-    const { nodes, links } = this.props;
     this.svg
       .attr('width', 500)
       .attr('height', 500)
     ;
 
+    this.drawNodes();
+    // this.drawLinks();
+  }
+
+  drawNodes = () => {
+    const { nodes } = this.props;
     const drawNode = (d3Selection) => {
       d3Selection
         .attr('id', d => d.id)
         .attr('stroke-width', d => 10)
         .attr('stroke', d => d.color)
-        .attr('fill', '#666')
         .attr('d', (d) => {
           const d3Path = d3.path();
           d3Path.arc(d.x, d.y, d.radius, d.startAngle, d.endAngle);
@@ -59,6 +63,27 @@ export default class AllDepsDiagram extends Component {
         })
       ;
     };
+
+    const allNodes = this.nodesGroup.selectAll('path').data(nodes);
+    allNodes.exit().remove();
+    drawNode(allNodes.enter().append('svg:path'));
+    // drawNode(allNodes);
+  }
+
+  drawLinks = () => {
+    const { nodes } = this.props;
+    const drawLink = (d3Selection) => {
+  d3Selection
+    .attr('marker-end', 'url(#marker)') // eslint-disable-line
+    .attr('class', getLinkCssClass)
+    .attr('d', (d) => {
+      const d3Path = d3.path();
+      d3Path.moveTo(d.x1, d.y1);
+      d3Path.quadraticCurveTo(d.cpx, d.cpy, d.x2, d.y2);
+      return d3Path;
+    })
+  ;
+}
 
     const allNodes = this.nodesGroup.selectAll('path').data(nodes);
     allNodes.exit().remove();

@@ -47,7 +47,7 @@ export class ElementPage extends Component {
       .some(p => {
         View = p.view.getView(ele, viewEle ? viewEle.key : null);
         if (View) return true;
-        return 'TOO_LARGE';
+        return 0;
       });
     if (View) return View;
 
@@ -55,8 +55,8 @@ export class ElementPage extends Component {
       const realEle = ele.target ? this.byId(ele.target) : ele;
       if (realEle.type === 'file') {
         if (/^png|jpg|jpeg|gif|bmp|webp$/i.test(realEle.ext)) return ImageView;
-        if (realEle.size < 100000) return CodeView;
-        else return 0;
+        if (realEle.size < 500000) return CodeView; 
+        else return 'TOO_LARGE';
       }
       return null;
     } else if (viewEle.key === 'diagram') {

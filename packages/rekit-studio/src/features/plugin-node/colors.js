@@ -6,6 +6,7 @@ export default  {
   'ui-modules': '#f08036',
   'folder-alias': '#8d6e63',
   normal: '#888888',
+  route: '#26a69a',
   routes: '#26a69a',
   page: '#4CAF50',
   pages: '#4CAF50',

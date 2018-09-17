@@ -10,6 +10,7 @@ export default {
   folder: 'folder',
   others: 'folder',
   file: 'file',
+  route: 'sharealt',
   routes: 'sharealt',
   page: 'page',
 };

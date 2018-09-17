@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Col, Icon, Popover, Row } from 'antd';
+import { Col, Row } from 'antd';
 import plugin from '../../common/plugin';
-import { OverviewChordDiagram, AllDepsDiagramView } from '../diagram';
-import { TestCoverageSummary } from '../rekit-tools';
-import { getOverviewStat } from './selectors/getOverviewStat';
+import { AllDepsDiagramView } from '../diagram';
 import { getTypesCount } from './selectors/projectData';
 import { SvgIcon } from '../common';
 import colors from '../../common/colors';
@@ -101,7 +99,7 @@ export class HomePage extends Component {
         {badges.map(b => (
           <div className="top-badge" key={b.type}>
             <SvgIcon size={28} type={icons(b.type)} fill={colors(b.type)} />
-            <label className="count">{typesCount[b.type]}</label>
+            <label className="count">{_.isFunction(b.count) ? b.count() : typesCount[b.type]}</label>
             <label className="type">{b.name}</label>
           </div>
         ))}

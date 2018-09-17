@@ -26,6 +26,13 @@ export default class AllDepsDiagram extends Component {
     window.removeEventListener('resize', this.updateDiagram);
   }
 
+  componentDidUpdate(prevProps) {
+    const props = this.props;
+    if (prevProps.elementById !== props.elementById) {
+      this.updateDiagram();
+    }
+  }
+
   getSize() {
     const containerNode = this.d3Node;
     return Math.max(Math.min(containerNode.offsetWidth, containerNode.offsetHeight), 100);

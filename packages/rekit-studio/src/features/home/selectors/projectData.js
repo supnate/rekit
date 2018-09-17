@@ -69,6 +69,10 @@ export const getGroupedDepsData = createSelector(elementByIdSelector, elementByI
 
   Object.values(elementById).forEach(ele => {
     if (ele.target) ele = byId(ele.target);
+    if (!ele) {
+      // it seems only happend for 'src' folder.
+      return;
+    }
     let eleDeps = ele.parts
       ? ele.parts.reduce((prev, part) => {
           if (byId(part) && byId(part).deps) {
@@ -96,14 +100,11 @@ export const getGroupedDepsData = createSelector(elementByIdSelector, elementByI
   return { dependencies, dependents };
 });
 
-export const getTypesCount =  createSelector(
-  elementByIdSelector,
-  (elementById) => {
-    const count = {};
-    Object.values(elementById).forEach(ele => {
-      count[ele.type] = (count[ele.type] || 0) + 1;
-    });
+export const getTypesCount = createSelector(elementByIdSelector, elementById => {
+  const count = {};
+  Object.values(elementById).forEach(ele => {
+    count[ele.type] = (count[ele.type] || 0) + 1;
+  });
 
-    return count;
-  },
-);
+  return count;
+});

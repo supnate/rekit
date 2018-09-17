@@ -4,6 +4,7 @@ const t = require('babel-types');
 const vio = require('./vio');
 const ast = require('./ast');
 const refactor = require('./refactor');
+const plugin = require('./plugin');
 
 const depsCache = {};
 
@@ -18,9 +19,22 @@ function getDeps(filePath, originalFilePath) {
     return depsCache[filePath].deps;
   }
 
+  const plugins = plugin.getPlugins('app.getDeps');
+  let deps = null;
+  if (plugins.length) {
+    _.reverse(plugins.slice()).some(p => {
+      deps = p.app.getDeps(filePath);
+      return deps;
+    });
+  }
+
+  if (!filePath.endsWith('.js') && !filePath.endsWith('.jsx')) {
+    return null;
+  }
+
   if (!vio.fileExists(filePath)) return [];
 
-  const deps = [];
+  deps = [];
 
   const pushModuleSource = (moduleSource, args = {}) => {
     if (!moduleSource) return;

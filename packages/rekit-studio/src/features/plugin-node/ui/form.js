@@ -108,7 +108,6 @@ export default {
           cmd.name = `${target.id.replace('v:src/ui-modules/', '')}/${cmd.name}`;
         }
         return cmd;
-        break;
       }
       default:
         break;

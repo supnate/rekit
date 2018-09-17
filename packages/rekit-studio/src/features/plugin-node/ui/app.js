@@ -146,6 +146,7 @@ const getOthersNode = () => {
     id: 'v:others',
     type: 'folder-alias',
     name: 'Others',
+    target: 'src',
     icon: iconMap.others,
     iconColor: colorMap.others,
     children: _.without(rawElements, 'src/layouts', 'src/pages', 'src/services', 'src/ui-modules'),

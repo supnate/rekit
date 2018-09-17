@@ -95,6 +95,9 @@ export default {
           tooltip: 'The URL path to access the service.',
         });
         break;
+      case 'core.element.move':
+        args.meta.elements.push(nameMeta(args));
+        break;
       default:
         break;
     }
@@ -107,6 +110,12 @@ export default {
         if (target.type === 'ui-module') {
           cmd.name = `${target.id.replace('v:src/ui-modules/', '')}/${cmd.name}`;
         }
+        return cmd;
+      }
+      case 'core.element.move': {
+        const ele = byId(context.targetId);
+        cmd.source = { name: ele.name };
+        cmd.target = { name: cmd.name };
         return cmd;
       }
       default:

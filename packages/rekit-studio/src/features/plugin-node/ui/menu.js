@@ -16,7 +16,7 @@ const menuItems = {
   addService: { name: 'Add Service', key: 'add-service' },
   del: { name: 'Delete', key: 'del-element' },
   move: { name: 'Move', key: 'move-element' },
-  rename: { name: 'Rename', key: 'rename-element' },
+  rename: { name: 'Rename', key: 'move-element' },
 };
 
 export default {
@@ -88,10 +88,11 @@ export default {
           });
           break;
         }
-        case 'rename': {
-          showDialog('core.element.move.component', 'Rename', {
-            action: 'rename',
+        case 'move-element': {
+          showDialog('core.element.move', 'Rename', {
+            action: 'move',
             targetId: elementId,
+            elementType: ele.type,
           });
           break;
         }

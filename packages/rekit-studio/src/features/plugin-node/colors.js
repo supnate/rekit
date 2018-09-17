@@ -13,6 +13,6 @@ export default  {
   layouts: '#CDDC39',
   others: '#8d6e63',
   diagram: '#78909C',
-  file: '#aaa',
-  folder: '#aaa',
+  file: '#8d6e63',
+  folder: '#8d6e63',
 };

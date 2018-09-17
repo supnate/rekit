@@ -13,7 +13,7 @@ const nodeWidth = size => Math.max(size / 40, 6);
 
 const getPos = (node, size) => {
   const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
-  const angle = (node.startAngle + node.endAngle) /2 ;
+  const angle = (node.startAngle + node.endAngle) / 2;
   const x = size / 2 + radius * Math.cos(angle);
   const y = size / 2 + radius * Math.sin(angle);
   return { x, y, angle };
@@ -75,30 +75,52 @@ export const getAllDepsDiagramData = createSelector(
   getGroupedDepsData,
   sizeSelector,
   (elementById, deps, size) => {
-    // const byId = id => elementById[id];
-    // const radius = size / 2 - nodeWidth(size) / 2;
-
     // All nodes should be in the deps diagram.
     const eles = Object.values(elementById).filter(
       n => !n.owner && n.type !== 'folder' && (n.type === 'file' || n.parts || n.target)
     );
 
-    const avgAngle = (Math.PI * 2) / eles.length;
+    const groups = _.groupBy(eles, 'type');
+    const groupTypes = Object.keys(groups);
+
+    const groupGap = (Math.PI * 2 * 0.4) / eles.length;
+    const avgAngle = (Math.PI * 2 - groupTypes.length * groupGap) / eles.length;
+    const startAngleByType = {};
+    let typeStartAngle = 0;
+    let nodes = [];
+    let groupNodes = [];
     const nodeById = {};
-    let nodes = eles.map((ele, index) => {
-      const n = {
-        id: ele.id,
-        name: ele.name,
-        type: ele.type,
+    groupTypes.forEach(type => {
+      groupNodes.push({
+        id: type,
         x: size / 2,
         y: size / 2,
         width: nodeWidth(size),
-        startAngle: avgAngle * index,
-        endAngle: avgAngle * index + avgAngle * 0.8,
-        radius: size / 2 -  padding(size),
-      };
-      nodeById[n.id] = n;
-      return n;
+        startAngle: typeStartAngle,
+        endAngle: typeStartAngle + groups[type].length * avgAngle,
+        type,
+        radius: size / 2 - padding(size),
+        pieRadius: size / 2 - nodeWidth(size) / 2 - padding(size),
+      });
+      startAngleByType[type] = typeStartAngle;
+
+      groups[type].forEach((ele, index) => {
+        const startAngle = typeStartAngle + avgAngle * index + avgAngle * 0.25;
+        const n = {
+          id: ele.id,
+          name: ele.name,
+          type: ele.type,
+          x: size / 2,
+          y: size / 2,
+          width: nodeWidth(size),
+          startAngle,
+          endAngle: startAngle + avgAngle * 0.5,
+          radius: size / 2 - padding(size),
+        };
+        nodeById[n.id] = n;
+        nodes.push(n);
+      });
+      typeStartAngle += groups[type].length * avgAngle + groupGap;
     });
 
     let links = [];
@@ -127,6 +149,6 @@ export const getAllDepsDiagramData = createSelector(
       return false;
     });
 
-    return { nodes, links };
+    return { nodes, links, groups: groupNodes };
   }
 );

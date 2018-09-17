@@ -14,7 +14,9 @@ export default {
         tab: 'Problems',
         key: 'problems',
         order: 1,
-        component: () => <div>problems2</div>,
+        component: () => (
+          <div style={{ padding: '10px', fontSize: '12px', color: 'green' }}>No problems!</div>
+        ),
       },
     ];
   },

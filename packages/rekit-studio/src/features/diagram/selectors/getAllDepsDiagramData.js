@@ -2,18 +2,23 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { getGroupedDepsData } from '../../home/selectors/projectData';
 
-const elementByIdSelector = state => state.elementById;
+const NODE_WIDTH = 10;
+const PADDING = 20;
 
-const getPos = (node) => {
+const elementByIdSelector = state => state.elementById;
+const sizeSelector = state => state.size;
+
+const getPos = (node, size) => {
+  const radius = size / 2 - PADDING - NODE_WIDTH / 2;
   const angle = (node.startAngle + node.endAngle) /2 ;
-  const x = 250 + 195 * Math.cos(angle);
-  const y = 250 + 195 * Math.sin(angle);
+  const x = size / 2 + radius * Math.cos(angle);
+  const y = size / 2 + radius * Math.sin(angle);
   return { x, y, angle };
 };
 
-const getLink = (source, target) => {
-  const pos1 = getPos(source);
-  const pos2 = getPos(target);
+const getLink = (source, target, size) => {
+  const pos1 = getPos(source, size);
+  const pos2 = getPos(target, size);
   const x1 = pos1.x;
   const y1 = pos1.y;
   const x2 = pos2.x;
@@ -33,7 +38,7 @@ const getLink = (source, target) => {
   const costheta = asign * Math.cos(theta);
   const sintheta = asign * Math.sin(theta);
 
-  const radius = 195;
+  const radius = size / 2 - PADDING - NODE_WIDTH / 2;
   let ang = Math.abs(pos1.angle - pos2.angle);
   if (ang > Math.PI) ang = 2 * Math.PI - ang;
   ang /= 2;
@@ -65,8 +70,10 @@ const getLink = (source, target) => {
 export const getAllDepsDiagramData = createSelector(
   elementByIdSelector,
   getGroupedDepsData,
-  (elementById, deps) => {
-    const byId = id => elementById[id];
+  sizeSelector,
+  (elementById, deps, size) => {
+    // const byId = id => elementById[id];
+    // const radius = size / 2 - NODE_WIDTH / 2;
 
     // All nodes should be in the deps diagram.
     const eles = Object.values(elementById).filter(
@@ -80,12 +87,11 @@ export const getAllDepsDiagramData = createSelector(
         id: ele.id,
         name: ele.name,
         type: ele.type,
-        // color: colors(ele.type),
-        x: 250,
-        y: 250,
+        x: size / 2,
+        y: size / 2,
         startAngle: avgAngle * index,
         endAngle: avgAngle * index + avgAngle * 0.8,
-        radius: 200,
+        radius: size / 2 -  PADDING,
       };
       nodeById[n.id] = n;
       return n;
@@ -97,7 +103,7 @@ export const getAllDepsDiagramData = createSelector(
       eleDeps.forEach(dep => {
         const source = nodeById[ele.id];
         const target = nodeById[dep];
-        links.push(getLink(source, target));
+        links.push(getLink(source, target, size));
       });
     });
 

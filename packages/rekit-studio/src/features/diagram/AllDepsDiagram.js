@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
+import { getAllDepsDiagramData } from './selectors/getAllDepsDiagramData';
 import colors from '../../common/colors';
 
 export default class AllDepsDiagram extends Component {
   static propTypes = {
-    nodes: PropTypes.array.isRequired,
-    links: PropTypes.array.isRequired,
     onNodeClick: PropTypes.func,
+    elementById: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -16,11 +16,19 @@ export default class AllDepsDiagram extends Component {
   };
 
   componentDidMount() {
-    this.initDiagram();
+    window.addEventListener('resize', this.updateDiagram);
+    requestAnimationFrame(this.initDiagram);
   }
 
   componentWillUnmount() {
     this.tooltip.hide();
+    window.removeEventListener('resize', this.updateDiagram);
+
+  }
+
+  getSize() {
+    const containerNode = this.d3Node;
+    return Math.max(Math.min(containerNode.offsetWidth, containerNode.offsetHeight), 100);
   }
 
   initDiagram = () => {
@@ -59,15 +67,16 @@ export default class AllDepsDiagram extends Component {
   };
 
   updateDiagram = () => {
-    this.svg.attr('width', 500).attr('height', 500);
+    const size = this.getSize();
+    this.svg.attr('width', size).attr('height', size);
+    const { elementById } = this.props;
+    const { nodes, links } = getAllDepsDiagramData({ elementById, size });
 
-    this.drawNodes();
-    this.drawLinks();
+    this.drawNodes(nodes);
+    this.drawLinks(links);
   };
 
-  drawNodes = () => {
-    const { nodes } = this.props;
-    const self = this;
+  drawNodes = nodes => {
     const drawNode = d3Selection => {
       d3Selection
         .attr('id', d => d.id)
@@ -87,11 +96,10 @@ export default class AllDepsDiagram extends Component {
     const allNodes = this.nodesGroup.selectAll('path').data(nodes);
     allNodes.exit().remove();
     drawNode(allNodes.enter().append('svg:path'));
-    // drawNode(allNodes);
+    drawNode(allNodes);
   };
 
-  drawLinks = () => {
-    const { links } = this.props;
+  drawLinks = links => {
     const drawLink = d3Selection => {
       d3Selection
         .attr('marker-end', 'url(#marker)') // eslint-disable-line
@@ -117,20 +125,18 @@ export default class AllDepsDiagram extends Component {
     this.tooltip.show(d, nodes[index]);
   };
 
-  handleNodeMouseout = (d) => {
+  handleNodeMouseout = d => {
     this.tooltip.hide(d);
   };
 
   render() {
-    const { nodes, links } = this.props;
     return (
-      <div className="diagram-all-deps-diagram">
-        <div
-          ref={node => {
-            this.d3Node = node;
-          }}
-        />
-      </div>
+      <div
+        className="diagram-all-deps-diagram"
+        ref={node => {
+          this.d3Node = node;
+        }}
+      />
     );
   }
 }

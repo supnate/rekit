@@ -1,10 +1,10 @@
 @import './antdDarkMixins';
 
-@feature-color: #33CDFF;
-@action-color: #FF81C3;
-@component-color: #FFB14A;
-@misc-color: #A1887F;
-@route-color: lighten(#26A69A, 10%);
+@feature-color: #33cdff;
+@action-color: #ff81c3;
+@component-color: #ffb14a;
+@misc-color: #a1887f;
+@route-color: lighten(#26a69a, 10%);
 @side-panel-width: 240px; // not used any more
 .scroll-style() {
   &::-webkit-scrollbar {
@@ -31,3 +31,10 @@
   bottom: 0;
   right: 0;
 }
+
+.vertical-align() {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+

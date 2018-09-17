@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import { AllDepsDiagram } from './';
-import { getAllDepsDiagramData } from './selectors/getAllDepsDiagramData';
 import history from '../../common/history';
 
 export class AllDepsDiagramView extends Component {
@@ -18,10 +17,10 @@ export class AllDepsDiagramView extends Component {
 
   render() {
     const { elementById } = this.props;
-    const { nodes, links } = getAllDepsDiagramData({ elementById });
+    // const { nodes, links } = getAllDepsDiagramData({ elementById });
     return (
       <div className="diagram-all-deps-diagram-view">
-        <AllDepsDiagram nodes={nodes} links={links} onNodeClick={this.handleNodeClick} />
+        <AllDepsDiagram elementById={elementById} onNodeClick={this.handleNodeClick} />
       </div>
     );
   }

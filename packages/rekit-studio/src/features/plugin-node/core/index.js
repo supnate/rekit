@@ -3,6 +3,7 @@
 module.exports = {
   name: 'node',
   app: require('./app'),
+  deps: require('./deps'),
   elements: {
     page: require('./page'),
     'ui-module': require('./uiModule'),

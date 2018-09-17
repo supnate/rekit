@@ -19,13 +19,14 @@ function getDeps(filePath, originalFilePath) {
     return depsCache[filePath].deps;
   }
 
-  const plugins = plugin.getPlugins('app.getDeps');
+  const plugins = plugin.getPlugins('deps.getDeps');
   let deps = null;
   if (plugins.length) {
     _.reverse(plugins.slice()).some(p => {
-      deps = p.app.getDeps(filePath);
+      deps = p.deps.getDeps(filePath);
       return deps;
     });
+    if (deps) return deps;
   }
 
   if (!filePath.endsWith('.js') && !filePath.endsWith('.jsx')) {

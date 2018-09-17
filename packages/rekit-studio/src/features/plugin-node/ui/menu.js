@@ -9,6 +9,7 @@ const execCoreCommand = args => store.dispatch(actions.execCoreCommand(args));
 const byId = id => store.getState().home.elementById[id];
 
 const menuItems = {
+  newFile: { name: 'New File', key: 'new-file' },
   addPage: { name: 'Add Page', key: 'add-page' },
   addUiModule: { name: 'Add UI Module', key: 'add-ui-module' },
   addLayout: { name: 'Add Layout', key: 'add-layout' },
@@ -28,25 +29,25 @@ export default {
           items.push(menuItems.addPage);
           break;
         case 'page':
-          items.push(menuItems.rename, menuItems.del);
+          items.push(menuItems.newFile, menuItems.rename, menuItems.del);
           break;
         case 'ui-modules':
           items.push(menuItems.addUiModule);
           break;
         case 'ui-module':
-          items.push(menuItems.addUiModule, menuItems.rename, menuItems.del);
+          items.push(menuItems.newFile, menuItems.addUiModule, menuItems.rename, menuItems.del);
           break;
         case 'layouts':
           items.push(menuItems.addLayout);
           break;
         case 'layout':
-          items.push(menuItems.rename, menuItems.del);
+          items.push(menuItems.newFile, menuItems.rename, menuItems.del);
           break;
         case 'services':
           items.push(menuItems.addService);
           break;
         case 'service':
-          items.push(menuItems.rename, menuItems.del);
+          items.push(menuItems.newFile, menuItems.rename, menuItems.del);
           break;
         default:
           break;

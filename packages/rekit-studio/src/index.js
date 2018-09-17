@@ -108,7 +108,8 @@ function renderApp(app) {
   render(<AppContainer>{app}</AppContainer>, root);
 }
 
-renderApp(<Root store={store} routeConfig={routeConfig} />);
+// Force js execution after style loaded
+window.onload = () => renderApp(<Root store={store} routeConfig={routeConfig} />);
 
 if (module.hot) {
   module.hot.accept('./common/routeConfig', () => {

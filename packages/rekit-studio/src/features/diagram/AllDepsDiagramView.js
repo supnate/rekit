@@ -12,7 +12,7 @@ export class AllDepsDiagramView extends Component {
   };
 
   handleNodeClick = node => {
-    history.push(`/element/${encodeURIComponent(node.id)}`);
+    history.push(`/element/${encodeURIComponent(node.id)}/diagram`);
   }
 
   render() {

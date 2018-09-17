@@ -149,6 +149,6 @@ export const getAllDepsDiagramData = createSelector(
       return false;
     });
 
-    return { nodes, links, groups: groupNodes };
+    return { nodes, links, groups: groupNodes, depsData: deps };
   }
 );

@@ -2,14 +2,17 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { getGroupedDepsData } from '../../home/selectors/projectData';
 
-const NODE_WIDTH = 10;
-const PADDING = 20;
+// const nodeWidth(size) = 10;
+// const padding(size) = 20;
 
 const elementByIdSelector = state => state.elementById;
 const sizeSelector = state => state.size;
+const padding = size => Math.max(size / 15, 20);
+
+const nodeWidth = size => Math.max(size / 40, 6);
 
 const getPos = (node, size) => {
-  const radius = size / 2 - PADDING - NODE_WIDTH / 2;
+  const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
   const angle = (node.startAngle + node.endAngle) /2 ;
   const x = size / 2 + radius * Math.cos(angle);
   const y = size / 2 + radius * Math.sin(angle);
@@ -38,7 +41,7 @@ const getLink = (source, target, size) => {
   const costheta = asign * Math.cos(theta);
   const sintheta = asign * Math.sin(theta);
 
-  const radius = size / 2 - PADDING - NODE_WIDTH / 2;
+  const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
   let ang = Math.abs(pos1.angle - pos2.angle);
   if (ang > Math.PI) ang = 2 * Math.PI - ang;
   ang /= 2;
@@ -73,7 +76,7 @@ export const getAllDepsDiagramData = createSelector(
   sizeSelector,
   (elementById, deps, size) => {
     // const byId = id => elementById[id];
-    // const radius = size / 2 - NODE_WIDTH / 2;
+    // const radius = size / 2 - nodeWidth(size) / 2;
 
     // All nodes should be in the deps diagram.
     const eles = Object.values(elementById).filter(
@@ -89,9 +92,10 @@ export const getAllDepsDiagramData = createSelector(
         type: ele.type,
         x: size / 2,
         y: size / 2,
+        width: nodeWidth(size),
         startAngle: avgAngle * index,
         endAngle: avgAngle * index + avgAngle * 0.8,
-        radius: size / 2 -  PADDING,
+        radius: size / 2 -  padding(size),
       };
       nodeById[n.id] = n;
       return n;

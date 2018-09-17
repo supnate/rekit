@@ -5,6 +5,8 @@
   min-height: 100%;
   background-color: #1e1e1e;
   color: #ddd;
+  display: flex;
+  flex-direction: column;
   .top-badges {
     min-width: 800px;
     display: flex;
@@ -20,22 +22,6 @@
     margin-right: 15px;
     &:last-child {
       margin-right: 0;
-    }
-
-    &.feature .anticon {
-      color: darken(@feature-color, 10%);
-    }
-    &.action .anticon {
-      color: darken(@action-color, 10%);
-    }
-    &.component .anticon {
-      color: darken(@component-color, 10%);
-    }
-    &.misc .anticon {
-      color: darken(@misc-color, 10%);
-    }
-    &.route .anticon {
-      color: darken(@route-color, 10%);
     }
 
     .common-svg-icon {
@@ -69,6 +55,17 @@
     }
   }
 
+  .ant-row {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: row;
+    > div {
+      // height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
   h3 {
     color: #ccc;
     font-weight: normal;
@@ -78,13 +75,16 @@
   }
   .diagram-container {
     background-color: #2a2d33;
-    height: 550px;
+    flex: 1 1 0;
+    overflow: hidden;
+    min-height: 200px;
   }
 
   .test-coverage {
     background-color: #2a2d33;
-    height: 300px;
+    flex-grow: 1;
     padding: 20px;
+    min-height: 200px;
   }
 
   &-overview-diagram-help,

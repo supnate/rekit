@@ -80,7 +80,7 @@ export default class AllDepsDiagram extends Component {
     const drawNode = d3Selection => {
       d3Selection
         .attr('id', d => d.id)
-        .attr('stroke-width', d => 10)
+        .attr('stroke-width', d => d.width)
         .attr('stroke', d => colors(d.type))
         .attr('class', 'element-node')
         .attr('d', d => {

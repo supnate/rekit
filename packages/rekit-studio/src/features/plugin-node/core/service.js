@@ -45,4 +45,24 @@ function remove(name, args) {
   vio.save(routesJsonPath, JSON.stringify(routesJson, null, 4));
 }
 
-module.exports = { add, remove };
+
+function move(source, target) {
+  const name1 = _.kebabCase(source);
+  const name2 = _.kebabCase(target);
+
+  // Rename route path if it exists
+  const routesJson = JSON.parse(vio.getContent('routes.json'));
+  routesJson.forEach(item => {
+    if (item.route && item.route.endsWith(`./src/services/${name1}/rest`))
+      item.route = item.route.replace(`./src/services/${name1}/rest`, `./src/services/${name2}/rest`);
+    if (item.pageName === _.pascalCase(name1)) {
+      item.pageName = _.pascalCase(name2);
+    }
+  });
+  vio.save('routes.json', JSON.stringify(routesJson, null, 4));
+  // rename dir
+  vio.moveDir(`src/services/${name1}`, `src/services/${name2}`);
+}
+
+
+module.exports = { add, remove, move };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { Spin, Tree } from 'antd';
 import { SvgIcon } from '../common';
@@ -119,14 +120,14 @@ export class ProjectExplorer extends Component {
       </span>
     );
   }
-  renderTreeNode = nodeData => (
+  renderTreeNode = (nodeData, depth = 1) => (
     <TreeNode
       key={nodeData.key}
       title={this.renderTreeNodeTitle(nodeData)}
-      className={nodeData.className}
+      className={classnames(nodeData.className, `tree-node-depth-${depth}`)}
       isLeaf={!nodeData.children || !nodeData.children.length}
     >
-      {nodeData.children && nodeData.children.map(this.renderTreeNode)}
+      {nodeData.children && nodeData.children.map(d => this.renderTreeNode(d, depth + 1))}
     </TreeNode>
   );
 
@@ -145,7 +146,7 @@ export class ProjectExplorer extends Component {
       return this.renderLoading();
     }
 
-    const treeNodes = this.props.treeData.map(this.renderTreeNode);
+    const treeNodes = this.props.treeData.map(d => this.renderTreeNode(d));
 
     return (
       <div

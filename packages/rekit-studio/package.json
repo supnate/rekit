@@ -122,6 +122,7 @@
     "fuzzysort": "^1.1.4",
     "html-webpack-plugin": "2.29.0",
     "immutability-helper": "^2.7.1",
+    "import-from": "^2.1.0",
     "jest": "20.0.4",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",

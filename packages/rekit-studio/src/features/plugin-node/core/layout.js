@@ -24,4 +24,13 @@ function remove(name, args) {
   vio.del(targetDir);
 }
 
-module.exports = { add, remove };
+function move(source, target) {
+  const name1 = _.kebabCase(source);
+  const name2 = _.kebabCase(target);
+
+  // rename dir
+  vio.moveDir(`src/layouts/${name1}`, `src/layouts/${name2}`);
+}
+
+
+module.exports = { add, remove, move };

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Icon, Table } from 'antd';
 import { Link } from 'react-router-dom';
 import { SvgIcon } from '../common';
-import history from '../../common/history';
+import colors from '../../common/colors';
+import icons from '../../common/icons';
 
 export class RoutesView extends Component {
   static propTypes = {
@@ -39,7 +40,7 @@ export class RoutesView extends Component {
           }
           return (
             <Link to={`/element/${encodeURIComponent(ele.id)}`}>
-              <SvgIcon type={ele.icon} style={{ fill: ele.tabIconColor}}/> {ele.name}
+              <SvgIcon type={ele.icon} fill={ele.iconColor}/> {ele.name}
             </Link>
           );
         },

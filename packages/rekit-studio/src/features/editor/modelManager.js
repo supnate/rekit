@@ -20,7 +20,8 @@ const modelManager = {
     if (!filePath) return;
     // delete initialContent[filePath];
     const model = this.getModel(filePath, null, true);
-    if (model && model.getValue() !== this.getInitialValue(filePath)) model.setValue(this.getInitialValue(filePath) || '');
+    if (model && model.getValue() !== this.getInitialValue(filePath))
+      model.setValue(this.getInitialValue(filePath) || '');
   },
   setValue(filePath, content) {
     const model = this.getModel(filePath);
@@ -29,10 +30,15 @@ const modelManager = {
   setInitialValue(filePath, content) {
     if (initialContent[filePath] === content) return;
     const model = this.getModel(filePath, content, true);
-    if (model && (!_.has(initialContent, filePath) || model.getValue() === initialContent[filePath])) {
+    if (
+      model &&
+      (!_.has(initialContent, filePath) || model.getValue() === initialContent[filePath])
+    ) {
+      initialContent[filePath] = content; // this line should be before model.setValue
       model.setValue(content);
+    } else {
+      initialContent[filePath] = content;
     }
-    initialContent[filePath] = content;
   },
   getValue(filePath) {
     const model = this.getModel(filePath);

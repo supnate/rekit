@@ -57,7 +57,7 @@ export default class AllDepsDiagram extends Component {
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
       .attr('class', d => `triangle-marker ${d}`)
-      .attr('fill', '#ddd')
+      .attr('fill', '#ccc')
       .attr('orient', 'auto')
       .append('svg:path')
       .attr('d', 'M0,-5L10,0L0,5');
@@ -119,7 +119,7 @@ export default class AllDepsDiagram extends Component {
         .attr('marker-end', 'url(#marker)') // eslint-disable-line
         // .attr('class', getLinkCssClass)
         .attr('fill', 'transparent')
-        .attr('stroke', '#ddd')
+        .attr('stroke', '#ccc')
         .attr('stroke-width', '1px')
         .attr('class', 'path-link a-d-d-path')
         .attr('d', d => {

@@ -77,10 +77,11 @@ export const getAllDepsDiagramData = createSelector(
   (elementById, deps, size) => {
     // All nodes should be in the deps diagram.
     const eles = Object.values(elementById).filter(
-      n => !n.owner && n.type !== 'folder' && (n.type === 'file' || n.parts || n.target)
+      n => !n.owner && n.type !== 'folder' && n.type !== 'folder-alias' && (n.type === 'file' || n.parts || n.target)
     );
 
     const groups = _.groupBy(eles, 'type');
+    Object.values(groups).forEach(arr => arr.sort((a,b) => a.name.localeCompare(b.name)));
     const groupTypes = Object.keys(groups);
 
     const groupGap = (Math.PI * 2 * 0.4) / eles.length;
@@ -105,7 +106,15 @@ export const getAllDepsDiagramData = createSelector(
       startAngleByType[type] = typeStartAngle;
 
       groups[type].forEach((ele, index) => {
-        const startAngle = typeStartAngle + avgAngle * index + avgAngle * 0.25;
+        const len = groups[type].length;
+        const groupAngle = avgAngle * len;
+        // How eleAngle calculated? See below formula
+        // len * eleAngle + (len + 1) * eleGap = groupAngle
+        // eleGap = eleAngle * 20%
+        // paddingAngle = eleAngle * 20%
+        const eleAngle = groupAngle / (1.2 * len + 0.2);
+        const eleGap = eleAngle * 0.2;
+        const startAngle = typeStartAngle + eleGap + index * (eleGap + eleAngle);
         const n = {
           id: ele.id,
           name: ele.name,
@@ -114,7 +123,7 @@ export const getAllDepsDiagramData = createSelector(
           y: size / 2,
           width: nodeWidth(size),
           startAngle,
-          endAngle: startAngle + avgAngle * 0.5,
+          endAngle: startAngle + eleAngle,
           radius: size / 2 - padding(size),
         };
         nodeById[n.id] = n;

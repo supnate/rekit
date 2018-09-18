@@ -35,7 +35,7 @@ export class RoutesView extends Component {
         render: target => {
           const ele = this.props.elementById[`v:${target}`];
           if (!ele) {
-            return `Target not found: ${ele.name}`;
+            return `Target not found: ${target}`;
           }
           return (
             <Link to={`/element/${encodeURIComponent(ele.id)}`}>

@@ -11,7 +11,7 @@ function move(type, source, target, args) {
   console.log(`Moving ${type}: `, source, target);
   const thePlugin = _.last(plugin.getPlugins(`elements.${type}.move`));
   if (!thePlugin) throw new Error(`Can't find a plugin which could move element of type ${type}`);
-  return thePlugin.elements[type].move(type, source, target, args);
+  return thePlugin.elements[type].move(source, target, args);
 }
 function remove(type, name, args) {
   console.log(`Removing ${type}: `, name);

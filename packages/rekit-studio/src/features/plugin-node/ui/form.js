@@ -114,8 +114,8 @@ export default {
       }
       case 'core.element.move': {
         const ele = byId(context.targetId);
-        cmd.source = { name: ele.name };
-        cmd.target = { name: cmd.name };
+        cmd.source = ele.name;
+        cmd.target = cmd.name;
         return cmd;
       }
       default:

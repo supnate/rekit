@@ -55,12 +55,27 @@ function remove(name, args) {
 }
 
 function move(source, target) {
-  const name1 = _.kebabCase(source.name);
-  const name2 = _.kebabCase(target.name);
+  const name1 = _.kebabCase(source);
+  const name2 = _.kebabCase(target);
   const appName = config.getPkgJson().name;
 
+  const tpl = `src/pages/${name1}/template.marko`;
+  if (vio.fileExists(tpl)) {
+    const content = vio
+      .getContent(tpl)
+      .replace(`className="page-${name1}"`, `className="page-${name2}"`)
+      .replace(`>Page content: ${name1}<`, `>Page content: ${name2}<`);
+    vio.save(tpl, content);
+  }
+
+  const less = `src/pages/${name1}/style.less`;
+  if (vio.fileExists(less)) {
+    const content = vio.getContent(less).replace(`.page-${name1} {`, `.page-${name2} {`);
+    vio.save(less, content);
+  }
+
   // rename dir
-  vio.mvDir(name1, name2);
+  vio.moveDir(`src/pages/${name1}`, `src/pages/${name2}`);
 
   // Rename locale file if it exists
   const localeFile1 = `locales/en/${_.pascalCase(appName)}/${name1}.properties`;
@@ -70,7 +85,8 @@ function move(source, target) {
   // Rename route path if it exists
   const routesJson = JSON.parse(vio.getContent('routes.json'));
   routesJson.forEach(item => {
-    item.route = item.route.replace(`./src/pages/${name1}`, `./src/pages/${name2}`);
+    if (item.route && item.route.endsWith(`./src/pages/${name1}`))
+      item.route = item.route.replace(`./src/pages/${name1}`, `./src/pages/${name2}`);
     if (item.pageName === _.pascalCase(name1)) {
       item.pageName = _.pascalCase(name2);
     }

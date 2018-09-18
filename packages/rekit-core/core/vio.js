@@ -285,19 +285,20 @@ function flush() {
 
   // Move directories
   Object.keys(mvDirs).forEach(oldDir => {
-    if (!shell.test('-e', oldDir)) {
-      log('Warning: no dir to move: ', 'yellow', oldDir);
+    const absOldDir = paths.map(oldDir);
+    if (!shell.test('-e', absOldDir)) {
+      log('Warning: no dir to move: ', 'yellow', absOldDir);
       res.push({
         type: 'mv-file-warning',
         warning: 'no-file',
-        file: oldDir.replace(prjRoot, ''),
+        file: oldDir,
       });
     } else {
-      shell.mv(oldDir, mvDirs[oldDir]);
+      shell.mv(absOldDir, paths.map(mvDirs[oldDir]));
       log('Moved dir: ', 'green', oldDir, mvDirs[oldDir]);
       res.push({
         type: 'mv-file',
-        file: oldDir.replace(prjRoot, ''),
+        file: oldDir,
       });
     }
   });

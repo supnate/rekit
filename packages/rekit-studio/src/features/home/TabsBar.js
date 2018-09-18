@@ -11,6 +11,8 @@ import history from '../../common/history';
 import { SvgIcon } from '../common';
 import { closeTab, stickTab, moveTab } from './redux/actions';
 import { tabsSelector } from './selectors/tabs';
+import editorStateMap from '../editor/editorStateMap';
+import modelManager from '../editor/modelManager';
 
 const getListStyle = () => ({
   display: 'flex',
@@ -26,6 +28,7 @@ export class TabsBar extends Component {
     dispatch: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     viewChanged: PropTypes.object.isRequired,
+    elementById: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -83,14 +86,25 @@ export class TabsBar extends Component {
     const { openTabs, historyTabs } = this.props;
 
     const doClose = () => {
-      // if (files) {
-      //   delete editorStateMap[files.code];
-      //   delete editorStateMap[files.style];
-      //   delete editorStateMap[files.test];
-      //   modelManager.reset(files.code);
-      //   modelManager.reset(files.style);
-      //   modelManager.reset(files.test);
-      // }
+      const ele = this.props.elementById[tab.key];
+      if (ele) {
+        const files = [];
+        if (ele.type === 'file') files.push(ele.id);
+        else if (ele.target) files.push(ele.target);
+        if (ele.views) {
+          files.push.apply(files, ele.views.map(v => v.target));
+        }
+        files.forEach(file => {
+          if (!file) return;
+          // TODO: this may not cover all posibilities for files under a tab
+          delete editorStateMap[file];
+          delete editorStateMap[file];
+          delete editorStateMap[file];
+          modelManager.reset(file);
+          modelManager.reset(file);
+          modelManager.reset(file);
+        });
+      }
 
       this.props.actions.closeTab(tab.key);
       if (historyTabs.length === 1) {
@@ -129,7 +143,9 @@ export class TabsBar extends Component {
         openTabs.filter(t => t.key !== tab.key).forEach(t => this.handleClose({}, t));
         break;
       case 'close-right':
-        openTabs.slice(_.findIndex(openTabs, { key: tab.key }) + 1).forEach(t => this.handleClose({}, t));
+        openTabs
+          .slice(_.findIndex(openTabs, { key: tab.key }) + 1)
+          .forEach(t => this.handleClose({}, t));
         break;
       case 'close-self':
         this.handleClose({}, tab);
@@ -214,9 +230,7 @@ export class TabsBar extends Component {
     const currentTab = this.getCurrentTab();
     const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
     return (
-      <div
-        className={classnames('home-tabs-bar', { 'has-sub-tabs': hasSubTabs })}
-      >
+      <div className={classnames('home-tabs-bar', { 'has-sub-tabs': hasSubTabs })}>
         <DragDropContext onDragEnd={this.handleDragEnd}>
           <Droppable droppableId="droppable" direction="horizontal">
             {provided => (
@@ -242,7 +256,7 @@ export class TabsBar extends Component {
 /* istanbul ignore next */
 function mapStateToProps(state) {
   return {
-    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'viewChanged']),
+    ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'viewChanged', 'elementById']),
     pathname: state.router.pathname,
     tabs: tabsSelector(state),
     location: state.router.location,

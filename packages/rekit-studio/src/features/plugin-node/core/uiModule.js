@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
-const { vio, template, utils } = rekit.core;
+const { vio, template, config } = rekit.core;
 
 function add(elePath, args) {
   const arr = elePath.split('/');
@@ -28,4 +28,28 @@ function remove(elePath, args) {
   vio.del(targetDir);
 }
 
-module.exports = { add, remove };
+function move(source, target) {
+  const name1 = _.kebabCase(source);
+  const name2 = _.kebabCase(target);
+
+  const tpl = `src/ui-modules/${name1}/index.marko`;
+  if (vio.fileExists(tpl)) {
+    const content = vio
+      .getContent(tpl)
+      .replace(`class="ui-module-${name1}"`, `class="ui-module-${name2}"`)
+      .replace(`>UI Module: ${name1}<`, `>UI Module: ${name2}<`);
+    vio.save(tpl, content);
+  }
+
+  const less = `src/ui-modules/${name1}/style.less`;
+  if (vio.fileExists(less)) {
+    const content = vio.getContent(less).replace(`.ui-module-${name1} {`, `.ui-module-${name2} {`);
+    vio.save(less, content);
+  }
+
+  // rename dir
+  vio.moveDir(`src/ui-modules/${name1}`, `src/ui-modules/${name2}`);
+
+}
+
+module.exports = { add, remove, move };

@@ -4,6 +4,9 @@
   font-size: 13px;
   padding: 10px 0 0 0;
   color: #bbb;
+  overflow: auto;
+  .scroll-style();
+  height: 100%;
 
   .common-svg-icon {
     transform: translateY(2px);
@@ -53,6 +56,13 @@
   .problem-source {
     color: #666;
     margin-right: 6px;
+  }
+
+  .problem-message {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 2000px;
+    min-width: 50px;
   }
 
   .source-pos {

@@ -47,7 +47,7 @@ export class ProblemsView extends Component {
           <dd key={`${msg.ruleId}-${msg.line}-${msg.column}`}>
             <SvgIcon type="error" theme="filled" size={11} fill="#ef5350" />
             <span class="problem-source">[eslint]</span>
-            <span title={msg.message}>{msg.message}</span>
+            <span class="problem-message" title={msg.message}>{msg.message}</span>
             <span class="source-pos">({msg.line}, {msg.column})</span>
           </dd>
         ))}

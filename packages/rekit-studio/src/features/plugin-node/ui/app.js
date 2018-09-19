@@ -97,6 +97,7 @@ const getRoutesNode = () => {
     type: 'routes',
     icon: iconMap.routes,
     iconColor: colorMap.routes,
+    parts: ['routes.json'],
     views: [{ key: 'rules', name: 'Rules' }, { key: 'code', name: 'Code', target: 'routes.json' }],
   };
 };

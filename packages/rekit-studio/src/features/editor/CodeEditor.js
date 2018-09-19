@@ -237,6 +237,7 @@ export class CodeEditor extends Component {
 
   handleEditorDidMount = editor => {
     this.editor = editor;
+    window.GLOBAL_EDITOR = editor;
     editor.focus();
     // This seems to be able to add multiple times.
     editor.addCommand([monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S], () => {

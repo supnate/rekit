@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { Badge } from 'antd';
 import * as actions from './redux/actions';
 import { SvgIcon } from '../common';
+import history from '../../common/history';
+import editorStateMap from '../editor/editorStateMap';
 
 export class ProblemsView extends Component {
   static propTypes = {
@@ -18,13 +20,41 @@ export class ProblemsView extends Component {
     closedFiles: {},
   };
 
-  toggleCollapse = (file) => {
+  toggleCollapse = file => {
     this.setState({
       closedFiles: {
         ...this.state.closedFiles,
         [file]: !this.state.closedFiles[file],
       },
     });
+  };
+
+  handleMsgClick(file, msg) {
+    _.merge(editorStateMap, {
+      [file]: {
+        viewState: {
+          firstPosition: {
+            column: msg.column,
+            lineNumber: msg.line,
+          },
+        },
+        cursorState: [
+          {
+            inSelectionMode: true,
+            position: {
+              column: msg.endColumn || msg.column,
+              lineNumber: msg.endLine || msg.line,
+            },
+            selectionStart: {
+              column: msg.column,
+              lineNumber: msg.line,
+            },
+          },
+        ],
+      },
+    });
+    window.GLOBAL_EDITOR.restoreViewState(editorStateMap[file] || null);
+    history.push(`/element/${encodeURIComponent(file)}`);
   }
 
   renderFileProblem(file, msgs) {
@@ -38,17 +68,29 @@ export class ProblemsView extends Component {
     return (
       <dl key={file} className={isClosed ? 'file-closed' : ''}>
         <dt onClick={() => this.toggleCollapse(file)}>
-          <SvgIcon type={isClosed ? "anticon-caret-right" : 'anticon-caret-down'} size={8} fill="#aaa" className="error-switcher" />
+          <SvgIcon
+            type={isClosed ? 'anticon-caret-right' : 'anticon-caret-down'}
+            size={8}
+            fill="#aaa"
+            className="error-switcher"
+          />
           <SvgIcon type={ele.icon} size={12} fill={ele.iconColor} />
           {ele.name} <span className="full-path">{file}</span>
           <Badge count={msgs.length} />
         </dt>
         {msgs.map(msg => (
-          <dd key={`${msg.ruleId}-${msg.line}-${msg.column}`}>
+          <dd
+            key={`${msg.ruleId}-${msg.line}-${msg.column}`}
+            onClick={() => this.handleMsgClick(file, msg)}
+          >
             <SvgIcon type="error" theme="filled" size={11} fill="#ef5350" />
             <span className="problem-source">[eslint]</span>
-            <span className="problem-message" title={msg.message}>{msg.message}</span>
-            <span className="source-pos">({msg.line}, {msg.column})</span>
+            <span className="problem-message" title={msg.message}>
+              {msg.message}
+            </span>
+            <span className="source-pos">
+              ({msg.line}, {msg.column})
+            </span>
           </dd>
         ))}
       </dl>

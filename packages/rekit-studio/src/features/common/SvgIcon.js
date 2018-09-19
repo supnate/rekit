@@ -46,6 +46,15 @@ export default class SvgIcon extends Component {
     const cssCls = `common-svg-icon common-svg-icon-${type} ${this.props.className || ''}`;
 
     if (/^anticon-/.test(type)) {
+      if (fill) {
+        props.style.color = fill;
+      }
+      if (size) {
+        delete props.style.width;
+        delete props.style.height;
+        props.style.fontSize = `${size}px`;
+      }
+
       return <Icon className={cssCls} type={type.replace(/^anticon-/, '')} {...props} />;
     }
     return (

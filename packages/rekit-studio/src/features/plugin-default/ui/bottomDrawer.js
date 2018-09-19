@@ -1,5 +1,5 @@
-import React from 'react';
 import OutputView from '../../home/OutputView';
+import { ProblemsView } from '../';
 
 export default {
   getPanes() {
@@ -14,9 +14,7 @@ export default {
         tab: 'Problems',
         key: 'problems',
         order: 1,
-        component: () => (
-          <div style={{ padding: '10px', fontSize: '12px', color: '#aaa' }}>No problems!</div>
-        ),
+        component: ProblemsView,
       },
     ];
   },

@@ -1,2 +1,2 @@
-export { default as DefaultPage } from './DefaultPage';
 export { default as ProblemsView } from './ProblemsView';
+export { default as ProblemPaneTitle } from './ProblemPaneTitle';

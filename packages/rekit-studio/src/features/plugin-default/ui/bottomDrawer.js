@@ -1,5 +1,6 @@
+import React from 'react';
 import OutputView from '../../home/OutputView';
-import { ProblemsView } from '../';
+import { ProblemsView, ProblemPaneTitle } from '../';
 
 export default {
   getPanes() {
@@ -11,7 +12,7 @@ export default {
         component: OutputView,
       },
       {
-        tab: 'Problems',
+        tab: <ProblemPaneTitle />,
         key: 'problems',
         order: 1,
         component: ProblemsView,

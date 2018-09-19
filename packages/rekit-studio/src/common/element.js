@@ -48,7 +48,6 @@ export default {
         if (!targetPathname) {
           console.error('target sub tab does not exist: ' + originalEle.id);
           return 0;
-          // throw new Error('target sub tab does not exist: ' + originalEle.id);
         }
       }
     } else {

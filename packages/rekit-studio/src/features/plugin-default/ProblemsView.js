@@ -28,10 +28,11 @@ export class ProblemsView extends Component {
           <Badge count={msgs.length} />
         </dt>
         {msgs.map(msg => (
-          <dd key={msg.ruleId}>
+          <dd key={`${msg.ruleId}-${msg.line}-${msg.column}`}>
             <SvgIcon type="error" theme="filled" size={11} fill="#ef5350" />
             <span class="problem-source">[eslint]</span>
-            {msg.message}
+            <span title={msg.message}>{msg.message}</span>
+            <span class="source-pos">({msg.line}, {msg.column})</span>
           </dd>
         ))}
       </dl>

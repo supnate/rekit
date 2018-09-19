@@ -12,7 +12,6 @@
 
   dd .common-svg-icon {
     transform: translateY(0px);
-
   }
 
   .full-path {
@@ -31,9 +30,11 @@
   dd {
     margin: 0;
     padding: 2px 0 2px 30px;
+    white-space: nowrap;
   }
 
-  dt, dd {
+  dt,
+  dd {
     cursor: pointer;
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -45,16 +46,22 @@
     margin-right: 6px;
   }
 
+  .source-pos {
+    color: #777;
+    margin-left: 4px;
+  }
 
   .ant-badge-count {
-    margin-left: 12px;
+    margin-left: 8px;
     font-size: 10px;
-    line-height: 14px;
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
-    border-radius: 7px;
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 10px;
     border: none;
     background-color: #444;
+    padding: 0;
+    box-shadow: none;
   }
 }

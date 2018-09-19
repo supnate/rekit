@@ -7,6 +7,7 @@ import { Badge } from 'antd';
 import * as actions from './redux/actions';
 import { SvgIcon } from '../common';
 import history from '../../common/history';
+import element from '../../common/element';
 import editorStateMap from '../editor/editorStateMap';
 
 export class ProblemsView extends Component {
@@ -53,8 +54,9 @@ export class ProblemsView extends Component {
         ],
       },
     });
-    window.GLOBAL_EDITOR.restoreViewState(editorStateMap[file] || null);
-    history.push(`/element/${encodeURIComponent(file)}`);
+    const res = element.show(file);
+    if (!res) window.GLOBAL_EDITOR.restoreViewState(editorStateMap[file] || null);
+    // history.push(`/element/${encodeURIComponent(file)}`);
   }
 
   renderFileProblem(file, msgs) {

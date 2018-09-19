@@ -30,6 +30,7 @@ export default {
             isDefault: view.isDefault,
             name: view.name,
             key: view.key,
+            target: view.target,
             urlPath: `/element/${encodeURIComponent(ele.id)}/${encodeURIComponent(view.key)}`,
           })),
       };

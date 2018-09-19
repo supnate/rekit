@@ -3,11 +3,16 @@
 .plugin-default-problems-view {
   font-size: 13px;
   padding: 10px 0 0 0;
-  color: #aaa;
+  color: #bbb;
 
   .common-svg-icon {
     transform: translateY(2px);
     margin-right: 8px;
+  }
+
+  .error-switcher {
+    transform: translateY(6px);
+    margin-right: 0px;
   }
 
   dd .common-svg-icon {
@@ -29,8 +34,12 @@
   }
   dd {
     margin: 0;
-    padding: 2px 0 2px 30px;
+    padding: 2px 0 2px 50px;
     white-space: nowrap;
+  }
+
+  dl.file-closed dd {
+    display: none;
   }
 
   dt,

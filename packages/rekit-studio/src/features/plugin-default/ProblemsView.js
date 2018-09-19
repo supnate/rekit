@@ -14,15 +14,31 @@ export class ProblemsView extends Component {
     actions: PropTypes.object.isRequired,
   };
 
+  state = {
+    closedFiles: {},
+  };
+
+  toggleCollapse = (file) => {
+    this.setState({
+      closedFiles: {
+        ...this.state.closedFiles,
+        [file]: !this.state.closedFiles[file],
+      },
+    });
+  }
+
   renderFileProblem(file, msgs) {
     const byId = id => this.props.elementById[id];
     let ele = byId(file);
     if (ele.owner) ele = byId(ele.owner);
     if (ele.target) ele = byId(ele.target);
 
+    const isClosed = this.state.closedFiles[file];
+
     return (
-      <dl key={file}>
-        <dt>
+      <dl key={file} className={isClosed ? 'file-closed' : ''}>
+        <dt onClick={() => this.toggleCollapse(file)}>
+          <SvgIcon type={isClosed ? "anticon-caret-right" : 'anticon-caret-down'} size={8} fill="#aaa" className="error-switcher" />
           <SvgIcon type={ele.icon} size={12} fill={ele.iconColor} />
           {ele.name} <span className="full-path">{file}</span>
           <Badge count={msgs.length} />

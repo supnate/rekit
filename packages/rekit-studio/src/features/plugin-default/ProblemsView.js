@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Badge } from 'antd';
-import * as actions from './redux/actions';
 import { SvgIcon } from '../common';
-import history from '../../common/history';
 import element from '../../common/element';
 import editorStateMap from '../editor/editorStateMap';
+import { stickTab } from '../home/redux/actions';
 
 export class ProblemsView extends Component {
   static propTypes = {
@@ -56,7 +55,9 @@ export class ProblemsView extends Component {
     });
     const res = element.show(file);
     if (!res) window.GLOBAL_EDITOR.restoreViewState(editorStateMap[file] || null);
-    // history.push(`/element/${encodeURIComponent(file)}`);
+  }
+  handleMsgDblClick() {
+    setTimeout(() => this.props.actions.stickTab(), 100);
   }
 
   renderFileProblem(file, msgs) {
@@ -84,6 +85,7 @@ export class ProblemsView extends Component {
           <dd
             key={`${msg.ruleId}-${msg.line}-${msg.column}`}
             onClick={() => this.handleMsgClick(file, msg)}
+            onDoubleClick={() => this.handleMsgDblClick(file, msg)}
           >
             <SvgIcon type="error" theme="filled" size={11} fill="#ef5350" />
             <span className="problem-source">[eslint]</span>
@@ -122,7 +124,7 @@ function mapStateToProps(state) {
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch),
+    actions: bindActionCreators({ stickTab }, dispatch),
   };
 }
 

@@ -4,7 +4,7 @@ import store from './store';
 
 const byId = id => store.getState().home.elementById[id];
 export default {
-  show(ele) {
+  show(ele, view) {
     let originalEle = ele;
     if (_.isString(ele)) {
       ele = byId(ele);
@@ -15,6 +15,15 @@ export default {
     } else {
       originalEle = ele;
     }
+    const pathname = store.getState().router.location.pathname;
+    let targetPathname;
+
+    if (view) {
+      targetPathname = `/element/${encodeURIComponent(ele.id)}/${view}`;
+      if (pathname === targetPathname) return 0;
+      history.push(targetPathname);
+      return 1;
+    }
 
     if (ele.owner) ele = byId(ele.owner);
     if (ele.target) ele = byId(ele.target);
@@ -22,12 +31,11 @@ export default {
     const openTabs = store.getState().home.openTabs;
     const foundTab = _.find(openTabs, { key: ele.id });
 
-    const pathname = store.getState().router.location.pathname;
-    let targetPathname;
     if (foundTab) {
       if (foundTab.urlPath === pathname) {
-        console.log('no need nav');
         return 0;
+      } else if (originalEle.id === ele.id) {
+        targetPathname = foundTab.urlPath;
       } else {
         foundTab.subTabs &&
           foundTab.subTabs.some(t => {
@@ -38,7 +46,9 @@ export default {
             return false;
           });
         if (!targetPathname) {
-          throw new Error('target sub tab does not exist: ' + originalEle.id);
+          console.error('target sub tab does not exist: ' + originalEle.id);
+          return 0;
+          // throw new Error('target sub tab does not exist: ' + originalEle.id);
         }
       }
     } else {
@@ -51,7 +61,7 @@ export default {
         targetPathname += `/${v.key}`;
       }
     }
-    
+
     history.push(targetPathname);
     return 1;
   },

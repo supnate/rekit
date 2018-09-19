@@ -7,6 +7,7 @@
     "monaco": true,
     "sessionStorage": true,
     "localStorage": true,
+    "GLOBAL_EDITOR": true,
     "requestAnimationFrame": true
   }
 }

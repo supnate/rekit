@@ -12,6 +12,7 @@ import { getTreeData } from './selectors/projectData';
 import { ProjectExplorerContextMenu } from './';
 import plugin from '../../common/plugin';
 import history from '../../common/history';
+import element from '../../common/element';
 
 const TreeNode = Tree.TreeNode;
 
@@ -60,7 +61,8 @@ export class ProjectExplorer extends Component {
     storage.local.setItem('explorerExpandedKeys', expandedKeys);
     const ele = this.eleById(key);
     if (ele && (ele.navigable || ele.type === 'file')) {
-      history.push(`/element/${encodeURIComponent(ele.id)}`);
+      // history.push(`/element/${encodeURIComponent(ele.id)}`);
+      element.show(ele);
     }
     plugin.getPlugins('projectExplorer.handleSelect').forEach(p => {
       p.projectExplorer.handleSelect(key);

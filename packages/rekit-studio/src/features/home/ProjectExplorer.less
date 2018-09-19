@@ -18,7 +18,7 @@
 
   .ant-tree {
     li {
-      padding: 3px 0;
+      padding: 0px 0;
     }
     li ul {
       padding: 0;
@@ -28,6 +28,8 @@
     .ant-tree-switcher {
       position: absolute;
       transform: translateY(-1px);
+      height: 30px;
+      line-height: 30px;
       cursor: pointer;
     }
     .ant-tree-switcher-noop {
@@ -35,16 +37,16 @@
     }
     .ant-tree-node-content-wrapper {
       display: block;
-      padding: 0;
+      padding: 3px 0 0 0;
       transition: none;
       border-radius: 0;
       overflow: hidden;
       cursor: pointer;
+      height: 30px;
       label {
         cursor: pointer;
         overflow: hidden;
         text-overflow: ellipsis;
-
         font-weight: lighter;
       }
 

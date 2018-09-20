@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import * as d3 from 'd3';
-import history from '../../common/history';
+import element from '../../common/element';
 
 export default class DepsDiagram extends PureComponent {
   static propTypes = {
@@ -243,7 +243,7 @@ export default class DepsDiagram extends PureComponent {
     if (node.noClick) return;
     if (this.props.handleNodeClick) this.props.handleNodeClick(node);
     else if (node.id) {
-      history.push(`/element/${encodeURIComponent(node.id)}/diagram`);
+      element.show(node.id, 'diagram');
     }
   };
 

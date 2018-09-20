@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import { AllDepsDiagram } from './';
-import history from '../../common/history';
+import element from '../../common/element';
 
 export class AllDepsDiagramView extends Component {
   static propTypes = {
@@ -12,12 +12,11 @@ export class AllDepsDiagramView extends Component {
   };
 
   handleNodeClick = node => {
-    history.push(`/element/${encodeURIComponent(node.id)}/diagram`);
+    element.show(node.id, 'diagram');
   }
 
   render() {
     const { elementById } = this.props;
-    // const { nodes, links } = getAllDepsDiagramData({ elementById });
     return (
       <div className="diagram-all-deps-diagram-view">
         <AllDepsDiagram elementById={elementById} onNodeClick={this.handleNodeClick} />

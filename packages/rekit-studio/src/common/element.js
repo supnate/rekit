@@ -5,63 +5,71 @@ import store from './store';
 const byId = id => store.getState().home.elementById[id];
 export default {
   show(ele, view) {
-    let originalEle = ele;
     if (_.isString(ele)) {
       ele = byId(ele);
     }
     if (!ele) {
-      console.error('Element does not exist: ', originalEle);
+      console.error('Element does not exist: ', arguments[0]);
       return;
-    } else {
-      originalEle = ele;
     }
     const pathname = store.getState().router.location.pathname;
-    let targetPathname;
 
+    let url;
     if (view) {
-      targetPathname = `/element/${encodeURIComponent(ele.id)}/${view}`;
-      if (pathname === targetPathname) return 0;
-      history.push(targetPathname);
-      return 1;
-    }
-
-    if (ele.owner) ele = byId(ele.owner);
-    if (ele.target) ele = byId(ele.target);
-
-    const openTabs = store.getState().home.openTabs;
-    const foundTab = _.find(openTabs, { key: ele.id });
-
-    if (foundTab) {
-      if (foundTab.urlPath === pathname) {
-        return 0;
-      } else if (originalEle.id === ele.id) {
-        targetPathname = foundTab.urlPath;
-      } else {
-        foundTab.subTabs &&
-          foundTab.subTabs.some(t => {
-            if (t.target === originalEle.id) {
-              targetPathname = t.urlPath;
-              return true;
-            }
-            return false;
-          });
-        if (!targetPathname) {
-          console.error('target sub tab does not exist: ' + originalEle.id);
-          return 0;
-        }
-      }
+      // caller is repsonsible to ensure ele has view
+      if (!this.hasViews(ele)) throw new Error(`Element "${ele.id}" does not has view "${view}".`);
+      url = `/element/${encodeURIComponent(ele.id)}/${view}`;
+    } else if (ele.owner || !ele.views) {
+      // show a concrete file
+      url = this.getUrl(ele);
     } else {
-      targetPathname = `/element/${encodeURIComponent(ele.id)}`;
-      if (ele.views) {
-        let v = _.find(ele.views, { isDefault: true });
-        if (!v) {
-          v = ele.views[0];
-        }
-        targetPathname += `/${v.key}`;
+      // It's an virtual element, like component/action/page etc.
+      const openTabs = store.getState().home.openTabs;
+      const foundTab = _.find(openTabs, { key: ele.id });
+
+      if (foundTab) {
+        url = foundTab.urlPath;
+      } else {
+        url = this.getUrl(ele);
       }
     }
-
-    history.push(targetPathname);
+    if (url === pathname) return 0;
+    history.push(url);
     return 1;
+  },
+
+  getUrl(ele) {
+    let originalEle = ele;
+    if (_.isString(ele)) ele = byId(ele);
+    if (!ele) {
+      console.error('Can not find element: ', originalEle);
+      return null;
+    }
+    originalEle = ele;
+    if (ele.owner) ele = byId(ele.owner);
+
+    const url = `/element/${encodeURIComponent(ele.id)}`;
+
+    const view = originalEle === ele ? this.getDefaultView(ele) : this.getView(ele, originalEle.id);
+    if (view) return `${url}/${view.key}`;
+
+    return url;
+  },
+
+  hasViews(ele) {
+    if (_.isString(ele)) ele = byId(ele);
+    return ele.views && ele.views.length;
+  },
+
+  getDefaultView(ele) {
+    if (!this.hasViews(ele)) return null;
+    if (_.isString(ele)) ele = byId(ele);
+    return _.find(ele.views, 'isDefault') || ele.views[0];
+  },
+
+  getView(ele, target) {
+    if (!this.hasViews(ele)) return null;
+    if (_.isString(ele)) ele = byId(ele);
+    return _.find(ele.views, { target });
   },
 };

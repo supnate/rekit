@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'antd';
 import fuzzysort from 'fuzzysort';
 import scrollIntoView from 'dom-scroll-into-view';
-import history from '../../common/history';
+import element from '../../common/element';
 import { SvgIcon } from '../common';
 import { getProjectElements } from './selectors/projectData';
 
@@ -84,7 +84,7 @@ export class QuickOpen extends Component {
 
     const { elementById, elements } = this.props;
     const list = getProjectElements({ elements, elementById }).map(ele => {
-      const position = ele.position || (ele.parts && ele.parts[0]) || ele.id;
+      const position = element.hasViews(ele) ? element.getDefaultView(ele).target : (ele.target || ele.id);// ele.position || (ele.parts && ele.parts[0]) || ele.id;
       return {
         ...ele,
         position,
@@ -149,7 +149,7 @@ export class QuickOpen extends Component {
   handleItemClick = index => {
     this.setState({ visible: false });
     const item = this.state.results[index];
-    history.push(`/element/${encodeURIComponent(item.obj.id)}/code`);
+    element.show(item.obj.id);
   };
   render() {
     if (!this.state.visible) return null;

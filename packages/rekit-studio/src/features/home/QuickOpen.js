@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Icon } from 'antd';
 import fuzzysort from 'fuzzysort';
 import scrollIntoView from 'dom-scroll-into-view';
 import element from '../../common/element';

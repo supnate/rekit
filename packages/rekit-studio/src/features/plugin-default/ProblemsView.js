@@ -60,6 +60,18 @@ export class ProblemsView extends Component {
     setTimeout(() => this.props.actions.stickTab(), 100);
   }
 
+  renderErrorIcon(msg) {
+    let type, color;
+    if (msg.severity === 1) {
+      type = 'warning';
+      color = '#FFC107';
+    } else {
+      type = 'error';
+      color = '#ef5350';
+    }
+    return <SvgIcon type={type} size={11} fill={color} />;
+  }
+
   renderFileProblem(file, msgs) {
     const byId = id => this.props.elementById[id];
     let ele = byId(file);
@@ -87,7 +99,7 @@ export class ProblemsView extends Component {
             onClick={() => this.handleMsgClick(file, msg)}
             onDoubleClick={() => this.handleMsgDblClick(file, msg)}
           >
-            <SvgIcon type="error" theme="filled" size={11} fill="#ef5350" />
+            {this.renderErrorIcon(msg)}
             <span className="problem-source">[eslint]</span>
             <span className="problem-message" title={msg.message}>
               {msg.message}

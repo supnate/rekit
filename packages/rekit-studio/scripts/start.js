@@ -1,5 +1,10 @@
 'use strict';
-require('rekit-core').core.paths.setProjectRoot('/Users/pwang7/workspace/rekitebaynode/');
+
+// const ARG_PORT = process.argv[2];
+// const ARG_PRJ_ROOT = process.argv[2];
+// if (ARG_PRJ_ROOT) {
+//   require('rekit-core').core.paths.setProjectRoot(ARG_PRJ_ROOT);
+// }
 // require('rekit-core').core.paths.setProjectRoot('/Users/pwang7/workspace/serenity/');
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
@@ -44,7 +49,17 @@ parser.addArgument(['--readonly'], {
   action: 'storeTrue',
 });
 
+parser.addArgument(['--port', '-p'], {
+  help: 'The port to run Rekit Studio.',
+});
+
+parser.addArgument(['--dir', '-d'], {
+  help: 'The project dir to be managed by Rekit Studio.',
+});
+
 const args = parser.parseArgs();
+
+if (args.dir) require('rekit-core').core.paths.setProjectRoot(args.dir);
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 process.stdout.isTTY = false;
@@ -83,7 +98,7 @@ choosePort(HOST, DEFAULT_PORT)
       return;
     }
 
-    startDevServer(port);
+    startDevServer(args.port || port);
   })
   .catch(err => {
     if (err && err.message) {

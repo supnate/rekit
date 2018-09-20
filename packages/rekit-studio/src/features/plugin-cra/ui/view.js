@@ -6,9 +6,9 @@ export default {
       return RouteRulesView;
     }
 
-    if ((['component', 'action'].includes(element.type) || /^jsx?$/.test(element.ext)) && view === 'diagram') {
-      return ElementDiagram;
-    }
+    // if ((['component', 'action'].includes(element.type) || /^jsx?$/.test(element.ext)) && view === 'diagram') {
+    //   return ElementDiagram;
+    // }
 
     return null;
   },

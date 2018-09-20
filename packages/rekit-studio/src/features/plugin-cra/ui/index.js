@@ -4,3 +4,5 @@ export { default as tab } from './tab';
 export { default as app } from './app';
 export { default as menu } from './menu';
 export { default as view } from './view';
+export { default as colors } from '../colors';
+export { default as icons } from './icons';

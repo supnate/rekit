@@ -113,21 +113,23 @@ function getDeps(filePath, originalFilePath) {
     if (dep.imported && dep.imported.length) {
       const depsOfDep = getDeps(dep.id, originalFilePath || filePath);
       const imported = [...dep.imported];
-      dep.imported.forEach(importedName => {
-        depsOfDep.forEach(theDep => {
-          if (theDep.exported && theDep.exported[importedName]) {
-            _.pull(imported, importedName);
-            const dep2 = { id: theDep.id, type: theDep.type };
-            const realImported = theDep.exported[importedName];
-            if (realImported === 'default') dep2.defaultImport = true;
-            else {
-              dep2.imported = [realImported];
-              dep2.defaultImport = false;
+      if (depsOfDep) {
+        dep.imported.forEach(importedName => {
+          depsOfDep.forEach(theDep => {
+            if (theDep.exported && theDep.exported[importedName]) {
+              _.pull(imported, importedName);
+              const dep2 = { id: theDep.id, type: theDep.type };
+              const realImported = theDep.exported[importedName];
+              if (realImported === 'default') dep2.defaultImport = true;
+              else {
+                dep2.imported = [realImported];
+                dep2.defaultImport = false;
+              }
+              prev.push(dep2);
             }
-            prev.push(dep2);
-          }
+          });
         });
-      });
+      }
       if (imported.length) {
         prev.push({
           ...dep,

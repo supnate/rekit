@@ -8,7 +8,7 @@ function getPkgJson(noCache) {
 
 function getRekitConfig(noCache) {
   const rekit = getPkgJson(noCache).rekit;
-  if (!rekit) throw new Error('No Rekit config in package.json of the project.');
+  if (!rekit) return null;
   return rekit;
 }
 // Load rekit configuration from package.json

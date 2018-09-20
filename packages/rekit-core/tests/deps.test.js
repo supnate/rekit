@@ -21,6 +21,11 @@ describe('deps', function() {
       filename: pkgJsonPath,
       loaded: true,
       exports: {
+        rekit: {
+          'module-alias': {
+            app2: './src',
+          },
+        },
         babel: {
           plugins: [
             [

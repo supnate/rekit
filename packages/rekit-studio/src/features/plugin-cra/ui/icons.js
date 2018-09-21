@@ -1,4 +1,5 @@
 export default {
+  feature: 'book',
   'initial-state': 'database',
   'component': 'appstore-o',
   'components': 'appstore-o',

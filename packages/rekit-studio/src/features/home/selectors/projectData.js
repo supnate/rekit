@@ -48,13 +48,13 @@ export const getDepsData = createSelector(elementByIdSelector, elementById => {
   // const byId = id => elementById[id] || null;
   const dependencies = {};
   const dependents = {};
-  const ensuareArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
+  const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
   Object.values(elementById).forEach(ele => {
     if (ele.deps && ele.deps.length) {
       ele.deps.forEach(dep => {
         if (dep.type !== 'file') return;
-        ensuareArray(dependencies, ele.id).push(dep.id);
-        ensuareArray(dependents, dep.id).push(ele.id);
+        ensureArray(dependencies, ele.id).push(dep.id);
+        ensureArray(dependents, dep.id).push(ele.id);
       });
     }
   });
@@ -63,7 +63,7 @@ export const getDepsData = createSelector(elementByIdSelector, elementById => {
 
 export const getGroupedDepsData = createSelector(elementByIdSelector, elementById => {
   const byId = id => elementById[id] || null;
-  const ensuareArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
+  const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
   const dependencies = {};
   const dependents = {};
 
@@ -92,8 +92,8 @@ export const getGroupedDepsData = createSelector(elementByIdSelector, elementByI
       if (!dep) return;
       if (dep.owner) dep = byId(dep.owner);
       if (!dep || dep.id === ele.id) return;
-      ensuareArray(dependencies, ele.id).push(dep.id);
-      ensuareArray(dependents, dep.id).push(ele.id);
+      ensureArray(dependencies, ele.id).push(dep.id);
+      ensureArray(dependents, dep.id).push(ele.id);
     });
   });
 

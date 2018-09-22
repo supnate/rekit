@@ -17,4 +17,5 @@ export default {
     { type: 'component', name: 'Components' },
     { type: 'action', name: 'Acttions' },
   ],
+  OverviewDiagram: ()=>'abc',
 };

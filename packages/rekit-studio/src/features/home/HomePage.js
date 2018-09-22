@@ -109,7 +109,9 @@ export class HomePage extends Component {
 
   render() {
     // const { features, featureById } = this.props.home;
+    const p = _.last(plugin.getPlugins('dashboard.OverviewDiagram'));
 
+    const OverviewDiagram = p ? p.dashboard.OverviewDiagram : AllDepsDiagramView;
     return (
       <div className="home-home-page">
         {this.renderBadges()}
@@ -117,7 +119,7 @@ export class HomePage extends Component {
           <Col span="16">
             <h3>Overview Diagram</h3>
             <div className="diagram-container">
-              <AllDepsDiagramView />
+              <OverviewDiagram />
             </div>
           </Col>
           <Col span="8" className="test-coverage-container">

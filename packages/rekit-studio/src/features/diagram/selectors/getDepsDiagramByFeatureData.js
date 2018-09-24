@@ -105,6 +105,28 @@ const getFeatures = eleById => {
     });
 };
 
+const getFeatureAngles = (features, featureGap) => {
+  const totalAngle = 2*Math.PI - features.length * featureGap;
+  const angles = {};
+  let count = 0;
+  features.forEach(f => {
+    Object.keys(f.elements).forEach(type => {
+      angles[type] = f.elements[type].length;
+      count += f.elements[type].length;
+    });
+  });
+  let start = 0;
+  Object.keys(angles).forEach((type, index) => {
+    const angle = angles[type] / count * totalAngle;
+    start = start + featureGap + angle;
+    angles[type] = {
+      angle,
+      start,
+    }
+  });
+  return angles;
+} 
+
 export const getDepsDiagramByFeatureData = createSelector(
   elementByIdSelector,
   getGroupedDepsData,
@@ -123,7 +145,8 @@ export const getDepsDiagramByFeatureData = createSelector(
     );
 
     console.log(eleCount);
-    const groupGap = (Math.PI * 2 / eleCount) * 0.4;
+    const featureGap = (Math.PI * 2 / eleCount) * 0.4;
+    const featureAngles = getFeatureAngles(features, featureGap); 
     const avgAngle = (Math.PI * 2 - features.length * groupGap) / eleCount;
 
 

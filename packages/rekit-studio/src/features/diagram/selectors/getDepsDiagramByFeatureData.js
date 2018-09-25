@@ -2,18 +2,14 @@ import _ from 'lodash';
 import { createSelector } from 'reselect';
 import { getGroupedDepsData } from '../../home/selectors/projectData';
 
-// const nodeWidth(size) = 10;
-// const padding(size) = 20;
-
 const elementByIdSelector = state => state.elementById;
 const sizeSelector = state => state.size;
-const typesSelector = state => state.types;
-const padding = size => Math.max(size / 15, 20);
+const toShowSelector = state => state.toShow;
 
+const padding = size => Math.max(size / 15, 20);
 const nodeWidth = size => Math.max(size / 50, 6);
 
 const getPos = node => {
-  // const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
   const radius = node.radius - node.width / 2;
   const angle = (node.startAngle + node.endAngle) / 2;
   const x = node.x + radius * Math.cos(angle);
@@ -43,7 +39,6 @@ const getLink = (source, target) => {
   const costheta = asign * Math.cos(theta);
   const sintheta = asign * Math.sin(theta);
 
-  // const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
   const radius = source.radius - source.width / 2;
   let ang = Math.abs(pos1.angle - pos2.angle);
   if (ang > Math.PI) ang = 2 * Math.PI - ang;
@@ -61,7 +56,6 @@ const getLink = (source, target) => {
     else t += 2 * Math.PI;
   }
   const m = s < t ? d : -d;
-  // if (source.angle - target.angle > Math.PI) d = -d;
 
   const m1 = m * sintheta;
   const m2 = m * costheta;
@@ -73,17 +67,7 @@ const getLink = (source, target) => {
   return { x1, y1, x2, y2, cpx, cpy, source, target };
 };
 
-// const toShow = ele =>
-//   !ele.owner &&
-//   ele.type !== 'folder' &&
-//   ele.type !== 'folder-alias' &&
-//   (ele.type === 'file' || ele.parts || ele.target);
-
-const toShow = ele =>
-  /^(file|component|action)$/.test(ele.type) &&
-  !['index.js', 'constants.js', 'actions.js', 'reducer.js'].includes(ele.name) &&
-  (ele.type === 'file' ? /^js|jsx$/.test(ele.ext) : true);
-
+let toShow;
 const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
 
 const calcAngles = (eles, containerStart, containerAngle, gapRate, isCircle) => {
@@ -146,44 +130,6 @@ const getFeatureEleCount = f => {
   return Object.values(f.elements).reduce((c, arr) => c + arr.length, 0);
 };
 
-// const getFeatureAngles = (features, featureGap) => {
-//   const totalAngle = 2 * Math.PI - features.length * featureGap;
-//   const angles = {};
-//   let count = 0;
-//   features.forEach(f => {
-//     Object.keys(f.elements).forEach(type => {
-//       angles[type] = f.elements[type].length;
-//       count += f.elements[type].length;
-//     });
-//   });
-//   let start = 0;
-//   Object.keys(angles).forEach((type, index) => {
-//     const angle = (angles[type] / count) * totalAngle;
-//     start = start + featureGap + angle;
-//     angles[type] = {
-//       angle,
-//       start,
-//     };
-//   });
-//   return angles;
-// };
-
-// const getFeatureElementAngles = (feature, start, angle) => {
-//   const angles = {};
-//   const count = getFeatureEleCount(feature);
-//   const typesCount = Object.keys(feature.elements).length;
-//   // eleAngle + (typesCount - 1) * gap = angle
-//   // gap = eleAngle * 0.2
-//   // => eleAngle + (typesCount - 1) * eleAngle * 0.2 = angle
-//   // => eleAngle = angle / (0.8 + 0.2 * typesCount)
-//   const eleAngle = angle / (0.8 + 0.2 * typesCount);
-//   const gap = eleAngle * 0.2;
-
-//   return {
-//     angle: eleAngle,
-//     gap,
-//   };
-// };
 const nodeById = {};
 const getNode = (ele, index, angles, x, y, radius, width, feature) => {
   const angle = angles[index];
@@ -205,16 +151,17 @@ export const getDepsDiagramByFeatureData = createSelector(
   elementByIdSelector,
   getGroupedDepsData,
   sizeSelector,
-  (elementById, deps, size) => {
+  toShowSelector,
+  (elementById, deps, size, _toShow) => {
     // All nodes should be in the deps diagram.
     // const eles = Object.values(elementById).filter(toShow);
+    toShow = _toShow;
 
     const x = size / 2;
     const y = size / 2;
     const nodes = [];
     const features = getFeatures(elementById);
     const angles = calcAngles(features, 0, Math.PI * 2, -3, true);
-    // nodes.push.apply(nodes, getNodes(features, angles));
 
     const radius = size / 2 - padding(size);
     const innerRadius = radius - nodeWidth(size) - 2;
@@ -246,71 +193,6 @@ export const getDepsDiagramByFeatureData = createSelector(
       });
     });
 
-    // console.log('features');
-    // return features;
-
-    // const eleCount = features.reduce(
-    //   (count, f) => count + Object.values(f.elements).reduce((c, arr) => c + arr.length, 0),
-    //   0
-    // );
-
-    // console.log(eleCount);
-    // const featureGap = ((Math.PI * 2) / eleCount) * 0.4;
-    // const featureAngles = getFeatureAngles(features, featureGap);
-    // const avgAngle = (Math.PI * 2 - features.length * groupGap) / eleCount;
-
-    // const groups = _.groupBy(eles, 'type');
-    // Object.values(groups).forEach(arr => arr.sort((a, b) => a.name.localeCompare(b.name)));
-    // const groupTypes = Object.keys(groups);
-
-    // const groupGap = (Math.PI * 2 * 0.4) / eles.length;
-    // const avgAngle = (Math.PI * 2 - groupTypes.length * groupGap) / eles.length;
-    // const startAngleByType = {};
-    // let typeStartAngle = 0;
-    // let nodes = [];
-    // let groupNodes = [];
-    // const nodeById = {};
-    // groupTypes.forEach(type => {
-    //   groupNodes.push({
-    //     id: type,
-    //     x: size / 2,
-    //     y: size / 2,
-    //     width: nodeWidth(size),
-    //     startAngle: typeStartAngle,
-    //     endAngle: typeStartAngle + groups[type].length * avgAngle,
-    //     type,
-    //     radius: size / 2 - padding(size),
-    //     pieRadius: size / 2 - nodeWidth(size) / 2 - padding(size),
-    //   });
-    //   startAngleByType[type] = typeStartAngle;
-
-    //   groups[type].forEach((ele, index) => {
-    //     const len = groups[type].length;
-    //     const groupAngle = avgAngle * len;
-    //     // How eleAngle calculated? See below formula
-    //     // len * eleAngle + (len + 1) * eleGap = groupAngle
-    //     // eleGap = eleAngle * 20%
-    //     // paddingAngle = eleAngle * 20%
-    //     const eleAngle = groupAngle / (1.2 * len + 0.2);
-    //     const eleGap = eleAngle * 0.2;
-    //     const startAngle = typeStartAngle + eleGap + index * (eleGap + eleAngle);
-    //     const n = {
-    //       id: ele.id,
-    //       name: ele.name,
-    //       type: ele.type,
-    //       x: size / 2,
-    //       y: size / 2,
-    //       width: nodeWidth(size),
-    //       startAngle,
-    //       endAngle: startAngle + eleAngle,
-    //       radius: size / 2 - padding(size),
-    //     };
-    //     nodeById[n.id] = n;
-    //     nodes.push(n);
-    //   });
-    //   typeStartAngle += groups[type].length * avgAngle + groupGap;
-    // });
-
     let links = [];
     Object.values(elementById).forEach(ele => {
       const eleDeps = deps.dependencies[ele.id] || [];
@@ -322,24 +204,6 @@ export const getDepsDiagramByFeatureData = createSelector(
     });
 
     links = _.uniqWith(links, _.isEqual);
-    console.log('links: ', links);
     return { nodes, links, depsData: deps, nodeById };
-    // nodes = _.uniqBy(nodes, 'id');
-    // links = _.uniqWith(links, _.isEqual);
-
-    // const nodeIdHash = nodes.reduce((h, n) => {
-    //   h[n.id] = true;
-    //   return h;
-    // }, {});
-    // links = links.filter(l => {
-    //   if (!nodeIdHash[l.source.id])
-    //     console.error(`getAllDepsDiagramData: Link source ${l.source} doesn't exist.`);
-    //   else if (!nodeIdHash[l.target.id])
-    //     console.error(`getAllDepsDiagramData: Link target ${l.target} doesn't exist.`);
-    //   else return true;
-    //   return false;
-    // });
-
-    // return { nodes, links, groups: groupNodes, depsData: deps };
   }
 );

@@ -129,7 +129,6 @@ export default class OverviewDiagram extends Component {
       d3Selection
         .attr('id', d => `${d.source.id}-${d.target.id}`)
         .attr('marker-end', 'url(#marker)') // eslint-disable-line
-        // .attr('class', getLinkCssClass)
         .attr('fill', 'transparent')
         .attr('stroke', '#ccc')
         .attr('stroke-width', '1px')

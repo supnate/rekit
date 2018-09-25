@@ -80,7 +80,7 @@ const getLink = (source, target) => {
 //   (ele.type === 'file' || ele.parts || ele.target);
 
 const toShow = ele =>
-  /^file|component|action$/.test(ele.type) &&
+  /^(file|component|action)$/.test(ele.type) &&
   !['index.js', 'constants.js', 'actions.js', 'reducer.js'].includes(ele.name) &&
   (ele.type === 'file' ? /^js|jsx$/.test(ele.ext) : true);
 

@@ -12,17 +12,18 @@ const padding = size => Math.max(size / 15, 20);
 
 const nodeWidth = size => Math.max(size / 50, 6);
 
-const getPos = (node, size) => {
-  const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
+const getPos = node => {
+  // const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
+  const radius = node.radius - node.width / 2;
   const angle = (node.startAngle + node.endAngle) / 2;
-  const x = size / 2 + radius * Math.cos(angle);
-  const y = size / 2 + radius * Math.sin(angle);
+  const x = node.x + radius * Math.cos(angle);
+  const y = node.y + radius * Math.sin(angle);
   return { x, y, angle };
 };
 
-const getLink = (source, target, size) => {
-  const pos1 = getPos(source, size);
-  const pos2 = getPos(target, size);
+const getLink = (source, target) => {
+  const pos1 = getPos(source);
+  const pos2 = getPos(target);
   const x1 = pos1.x;
   const y1 = pos1.y;
   const x2 = pos2.x;
@@ -42,7 +43,8 @@ const getLink = (source, target, size) => {
   const costheta = asign * Math.cos(theta);
   const sintheta = asign * Math.sin(theta);
 
-  const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
+  // const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
+  const radius = source.radius - source.width / 2;
   let ang = Math.abs(pos1.angle - pos2.angle);
   if (ang > Math.PI) ang = 2 * Math.PI - ang;
   ang /= 2;
@@ -77,7 +79,10 @@ const getLink = (source, target, size) => {
 //   ele.type !== 'folder-alias' &&
 //   (ele.type === 'file' || ele.parts || ele.target);
 
-const toShow = ele => /^file|component|action$/.test(ele.type);
+const toShow = ele =>
+  /^file|component|action$/.test(ele.type) &&
+  !['index.js', 'constants.js', 'actions.js', 'reducer.js'].includes(ele.name) &&
+  (ele.type === 'file' ? /^js|jsx$/.test(ele.ext) : true);
 
 const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
 
@@ -110,7 +115,8 @@ const getFeatures = eleById => {
   const byId = id => eleById[id];
   return Object.values(eleById)
     .filter(ele => ele.type === 'feature')
-    // .filter(ele => /home|diagram|editor/.test(ele.name))
+    .filter(ele => /home|editor/.test(ele.name))
+
     .map(f => {
       const elements = {};
       const feature = {
@@ -178,10 +184,10 @@ const getFeatureEleCount = f => {
 //     gap,
 //   };
 // };
-
+const nodeById = {};
 const getNode = (ele, index, angles, x, y, radius, width) => {
   const angle = angles[index];
-  return {
+  return (nodeById[ele.id] = {
     id: ele.id,
     name: ele.name,
     type: ele.type,
@@ -191,7 +197,7 @@ const getNode = (ele, index, angles, x, y, radius, width) => {
     endAngle: angle.start + angle.angle,
     x,
     y,
-  };
+  });
 };
 
 export const getDepsDiagramByFeatureData = createSelector(
@@ -201,7 +207,7 @@ export const getDepsDiagramByFeatureData = createSelector(
   (elementById, deps, size) => {
     // All nodes should be in the deps diagram.
     // const eles = Object.values(elementById).filter(toShow);
-    const byId = id => elementById[id];
+
     const x = size / 2;
     const y = size / 2;
     const nodes = [];
@@ -210,7 +216,7 @@ export const getDepsDiagramByFeatureData = createSelector(
     // nodes.push.apply(nodes, getNodes(features, angles));
 
     const radius = size / 2 - padding(size);
-    const innerRadius = radius -nodeWidth(size) - 2;
+    const innerRadius = radius - nodeWidth(size) - 2;
 
     features.forEach((f, index) => {
       const n = getNode(f, index, angles, x, y, radius, nodeWidth(size));
@@ -238,8 +244,6 @@ export const getDepsDiagramByFeatureData = createSelector(
         });
       });
     });
-
-    return { nodes };
 
     // console.log('features');
     // return features;
@@ -306,16 +310,19 @@ export const getDepsDiagramByFeatureData = createSelector(
     //   typeStartAngle += groups[type].length * avgAngle + groupGap;
     // });
 
-    // let links = [];
-    // eles.forEach(ele => {
-    //   const eleDeps = deps.dependencies[ele.id] || [];
-    //   eleDeps.forEach(dep => {
-    //     const source = nodeById[ele.id];
-    //     const target = nodeById[dep];
-    //     links.push(getLink(source, target, size));
-    //   });
-    // });
+    let links = [];
+    Object.values(elementById).forEach(ele => {
+      const eleDeps = deps.dependencies[ele.id] || [];
+      eleDeps.forEach(dep => {
+        const source = nodeById[ele.id];
+        const target = nodeById[dep];
+        if (source && target) links.push(getLink(source, target));
+      });
+    });
 
+    links = _.uniqWith(links, _.isEqual);
+    console.log('links: ', links);
+    return { nodes, links, depsData: deps };
     // nodes = _.uniqBy(nodes, 'id');
     // links = _.uniqWith(links, _.isEqual);
 

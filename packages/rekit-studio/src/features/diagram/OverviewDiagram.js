@@ -85,11 +85,9 @@ export default class OverviewDiagram extends Component {
       size,
     }));
 
-    // console.log(getDepsDiagramByFeatureData({elementById, size}));
-    // this.drawGroups(groups);
     this.drawPies(nodes);
     this.drawNodes(nodes);
-    // this.drawLinks(links);
+    this.drawLinks(links);
   };
 
   drawNodes = nodes => {
@@ -176,21 +174,21 @@ export default class OverviewDiagram extends Component {
     pieNodes.exit().remove();
     drawPie(pieNodes.enter().append('svg:path'));
     drawPie(pieNodes);
-  }
+  };
 
   hanldeNodeMouseover = (d, index, nodes) => {
     this.tooltip.show(d, nodes[index]);
-    // this.highlightNode(d, nodes[index]);
+    this.highlightNode(d, nodes[index]);
   };
 
   handleNodeMouseout = (d, index, nodes) => {
     this.tooltip.hide(d);
-    // this.delightNode(d, nodes[index]);
+    this.delightNode(d, nodes[index]);
   };
 
   highlightNode = (d, target) => {
     this.nodesGroup.selectAll('path').attr('opacity', 0.1);
-    this.groupsGroup.selectAll('path').attr('opacity', 0.1);
+    // this.groupsGroup.selectAll('path').attr('opacity', 0.1);
     this.linksGroup.selectAll('path').attr('opacity', 0.1);
     const paths = d3.selectAll('path.a-d-d-path');
     const { depsData } = this.diagramData;

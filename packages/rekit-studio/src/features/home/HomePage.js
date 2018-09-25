@@ -111,7 +111,9 @@ export class HomePage extends Component {
     // const { features, featureById } = this.props.home;
     const p = _.last(plugin.getPlugins('dashboard.OverviewDiagram'));
 
-    const OverviewDiagram = p ? p.dashboard.OverviewDiagram : OverviewDiagramView;
+    let OverviewDiagram = AllDepsDiagramView;
+    if (p && p.dashboard.OverviewDiagram === 'feature') OverviewDiagram = OverviewDiagramView;
+    else if (p) OverviewDiagram = p.dashboard.OverviewDiagram;
     return (
       <div className="home-home-page">
         {this.renderBadges()}

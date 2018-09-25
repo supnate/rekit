@@ -4,7 +4,6 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import { getAllDepsDiagramData } from './selectors/getAllDepsDiagramData';
-import { getDepsDiagramByFeatureData } from './selectors/getDepsDiagramByFeatureData';
 import colors from '../../common/colors';
 
 export default class AllDepsDiagram extends Component {
@@ -85,7 +84,6 @@ export default class AllDepsDiagram extends Component {
       size,
     }));
 
-    console.log(getDepsDiagramByFeatureData({elementById, size}));
     this.drawGroups(groups);
     this.drawNodes(nodes);
     this.drawLinks(links);

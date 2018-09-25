@@ -80,10 +80,12 @@ export default class OverviewDiagram extends Component {
     const size = this.getSize();
     this.svg.attr('width', size).attr('height', size);
     const { elementById } = this.props;
-    const { nodes, links, groups } = (this.diagramData = getDepsDiagramByFeatureData({
+    this.diagramData = getDepsDiagramByFeatureData({
       elementById,
       size,
-    }));
+    });
+
+    const { nodes, links } = this.diagramData;
 
     this.drawPies(nodes);
     this.drawNodes(nodes);
@@ -105,7 +107,7 @@ export default class OverviewDiagram extends Component {
           return colors(d.type);
         })
         .attr('fill', 'transparent')
-        .attr('class', 'path-element-node a-d-d-path')
+        .attr('class', 'path-element-node od-path')
         .attr('d', d => {
           const d3Path = d3.path();
           d3Path.arc(d.x, d.y, d.radius, d.startAngle, d.endAngle);
@@ -131,7 +133,10 @@ export default class OverviewDiagram extends Component {
         .attr('fill', 'transparent')
         .attr('stroke', '#ccc')
         .attr('stroke-width', '1px')
-        .attr('class', 'path-link a-d-d-path')
+        .attr(
+          'class',
+          d => `path-link od-path ${d.source.feature === d.target.feature ? 'same-feature-dep' : ''}`
+        )
         .attr('d', d => {
           const d3Path = d3.path();
           d3Path.moveTo(d.x1, d.y1);
@@ -187,31 +192,56 @@ export default class OverviewDiagram extends Component {
   };
 
   highlightNode = (d, target) => {
+    if (d.type.startsWith('v:container-')) return;
+
     this.nodesGroup.selectAll('path').attr('opacity', 0.1);
-    // this.groupsGroup.selectAll('path').attr('opacity', 0.1);
     this.linksGroup.selectAll('path').attr('opacity', 0.1);
-    const paths = d3.selectAll('path.a-d-d-path');
+    const paths = this.svg.selectAll('path.od-path');
     const { depsData } = this.diagramData;
+
+    const toHighlight = data => {
+      const { nodeById } = this.diagramData;
+      const relEles = [
+        ...(depsData.dependencies[data.id] || []),
+        ...(depsData.dependents[data.id] || []),
+      ];
+
+      if (d.type === 'feature') {
+        return (
+          data.feature === d.name ||
+          _.get(data, 'source.feature') === d.name || // link out
+          _.get(data, 'target.feature') === d.name || // link in
+          relEles.some(id => nodeById[id] && nodeById[id].feature === d.name)
+        );
+      } else {
+        return (
+          data.id === d.id || // itself
+          _.get(data, 'source.id') === d.id || // link out
+          _.get(data, 'target.id') === d.id || // link in
+          relEles.includes(d.id)
+        );
+      }
+    };
 
     paths
       .filter(data => {
         if (!data) return false;
-        return (
-          data.id === d.id ||
-          _.get(data, 'source.id') === d.id ||
-          _.get(data, 'target.id') === d.id ||
-          (depsData.dependencies[data.id] || []).includes(d.id) ||
-          (depsData.dependents[data.id] || []).includes(d.id)
-        );
+        return toHighlight(data);
       })
       .attr('opacity', 1);
 
-    paths.filter(data => _.get(data, 'target.id') === d.id).style('stroke-dasharray', '3, 3');
+    if (d.type === 'feature') {
+      paths
+        .filter(data => _.get(data, 'target.feature') === d.name)
+        .style('stroke-dasharray', '3, 3');
+    } else {
+      paths.filter(data => _.get(data, 'target.id') === d.id).style('stroke-dasharray', '3, 3');
+    }
   };
 
   delightNode = (d, target) => {
     d3.select(target).attr('opacity', 1);
-    d3.selectAll('path.a-d-d-path').attr('opacity', 1);
+    d3.selectAll('path.od-path').attr('opacity', 1);
     this.linksGroup.selectAll('path').style('stroke-dasharray', '');
   };
 

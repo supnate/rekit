@@ -185,7 +185,7 @@ const getFeatureEleCount = f => {
 //   };
 // };
 const nodeById = {};
-const getNode = (ele, index, angles, x, y, radius, width) => {
+const getNode = (ele, index, angles, x, y, radius, width, feature) => {
   const angle = angles[index];
   return (nodeById[ele.id] = {
     id: ele.id,
@@ -197,6 +197,7 @@ const getNode = (ele, index, angles, x, y, radius, width) => {
     endAngle: angle.start + angle.angle,
     x,
     y,
+    feature,
   });
 };
 
@@ -219,7 +220,7 @@ export const getDepsDiagramByFeatureData = createSelector(
     const innerRadius = radius - nodeWidth(size) - 2;
 
     features.forEach((f, index) => {
-      const n = getNode(f, index, angles, x, y, radius, nodeWidth(size));
+      const n = getNode(f, index, angles, x, y, radius, nodeWidth(size), f.name);
       nodes.push(n);
       const types = Object.keys(f.elements).map(k => ({
         id: `${f.id}-${k}-container`,
@@ -229,7 +230,7 @@ export const getDepsDiagramByFeatureData = createSelector(
       }));
       const angles2 = calcAngles(types, n.startAngle, n.endAngle - n.startAngle, -0.2, false);
       types.forEach((type, index2) => {
-        const n2 = getNode(type, index2, angles2, x, y, innerRadius, nodeWidth(size));
+        const n2 = getNode(type, index2, angles2, x, y, innerRadius, nodeWidth(size), f.name);
         nodes.push(n2);
         const eles = f.elements[type.name].map(ele => ({
           id: ele.id,
@@ -239,7 +240,7 @@ export const getDepsDiagramByFeatureData = createSelector(
         }));
         const angles3 = calcAngles(eles, n2.startAngle, n2.endAngle - n2.startAngle, 0.3, false);
         eles.forEach((ele, index3) => {
-          const n3 = getNode(ele, index3, angles3, x, y, innerRadius, nodeWidth(size));
+          const n3 = getNode(ele, index3, angles3, x, y, innerRadius, nodeWidth(size), f.name);
           nodes.push(n3);
         });
       });
@@ -322,7 +323,7 @@ export const getDepsDiagramByFeatureData = createSelector(
 
     links = _.uniqWith(links, _.isEqual);
     console.log('links: ', links);
-    return { nodes, links, depsData: deps };
+    return { nodes, links, depsData: deps, nodeById };
     // nodes = _.uniqBy(nodes, 'id');
     // links = _.uniqWith(links, _.isEqual);
 

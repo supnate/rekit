@@ -17,7 +17,7 @@ export default {
     let url;
     if (view) {
       // caller is repsonsible to ensure ele has view
-      if (!this.hasViews(ele)) throw new Error(`Element "${ele.id}" does not has view "${view}".`);
+      // if (!this.hasViews(ele)) throw new Error(`Element "${ele.id}" does not has view "${view}".`);
       url = `/element/${encodeURIComponent(ele.id)}/${view}`;
     } else if (ele.owner || !ele.views) {
       // show a concrete file

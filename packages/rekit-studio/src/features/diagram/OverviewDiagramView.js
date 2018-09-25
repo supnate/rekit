@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from './redux/actions';
 import { OverviewDiagram } from './';
+import element from '../../common/element';
 
 export class OverviewDiagramView extends Component {
   static propTypes = {
@@ -11,10 +12,14 @@ export class OverviewDiagramView extends Component {
     actions: PropTypes.object.isRequired,
   };
 
+  handleNodeClick = node => {
+    element.show(node.id, 'diagram');
+  }
+
   render() {
     return (
       <div className="diagram-overview-diagram-view">
-        <OverviewDiagram elementById={this.props.elementById} />
+        <OverviewDiagram elementById={this.props.elementById} onNodeClick={this.handleNodeClick}/>
       </div>
     );
   }

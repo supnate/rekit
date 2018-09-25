@@ -115,7 +115,7 @@ const getFeatures = eleById => {
   const byId = id => eleById[id];
   return Object.values(eleById)
     .filter(ele => ele.type === 'feature')
-    .filter(ele => /home|editor/.test(ele.name))
+    .filter(ele => /home|editor|common|core|layout/.test(ele.name))
 
     .map(f => {
       const elements = {};

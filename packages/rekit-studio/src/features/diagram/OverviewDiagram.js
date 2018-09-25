@@ -38,6 +38,17 @@ export default class OverviewDiagram extends Component {
     return Math.max(Math.min(containerNode.offsetWidth, containerNode.offsetHeight), 100);
   }
 
+  byId = id => this.props.elementById[id];
+
+  toShow = ele => {
+    return (
+      ele &&
+      /^(file|component|action)$/.test(ele.type) &&
+      !['index.js', 'constants.js', 'actions.js', 'reducer.js'].includes(ele.name) &&
+      (ele.type === 'file' ? /^js|jsx$/.test(ele.ext) : true)
+    );
+  };
+
   initDiagram = () => {
     this.svg = d3
       .select(this.d3Node)
@@ -66,6 +77,7 @@ export default class OverviewDiagram extends Component {
     this.pieBgGroup = this.svg.append('svg:g');
     this.linksGroup = this.svg.append('svg:g');
     this.nodesGroup = this.svg.append('svg:g');
+    this.labelsGroup = this.svg.append('svg:g');
 
     this.tooltip = d3Tip()
       .attr('class', 'd3-tip')
@@ -83,12 +95,14 @@ export default class OverviewDiagram extends Component {
     this.diagramData = getDepsDiagramByFeatureData({
       elementById,
       size,
+      toShow: this.toShow,
     });
 
     const { nodes, links } = this.diagramData;
 
     this.drawPies(nodes);
     this.drawNodes(nodes);
+    this.drawLabels(nodes);
     this.drawLinks(links);
   };
 
@@ -108,20 +122,51 @@ export default class OverviewDiagram extends Component {
         })
         .attr('fill', 'transparent')
         .attr('class', 'path-element-node od-path')
+        .style('cursor', d => (this.toShow(this.byId(d.id)) ? 'pointer' : 'default'))
         .attr('d', d => {
           const d3Path = d3.path();
           d3Path.arc(d.x, d.y, d.radius, d.startAngle, d.endAngle);
           return d3Path;
         })
         .on('mouseover', this.hanldeNodeMouseover)
-        .on('mouseout', this.handleNodeMouseout);
-      // .on('click', this.props.onNodeClick);
+        .on('mouseout', this.handleNodeMouseout)
+        .on('click', this.props.onNodeClick);
     };
 
     const allNodes = this.nodesGroup.selectAll('path').data(nodes);
     allNodes.exit().remove();
     drawNode(allNodes.enter().append('svg:path'));
     drawNode(allNodes);
+  };
+
+  drawLabels = nodes => {
+    const labels = nodes.filter(n => n.type === 'feature').map(
+      f =>
+        console.log(f.id) || {
+          id: `label-feature-${f.name}`,
+          text: f.name,
+          href: f.id,
+        }
+    );
+    const drawLabel = d3Selection => {
+      d3Selection
+        .style('font-size', 12)
+        .style('fill', '#999')
+        .style('overflow', 'hidden')
+        .style('text-overflow', 'ellipsis')
+        .style('cursor', 'default')
+        .attr('dy', -12)
+        .attr('class', d => `label-node feature-${d.id}`)
+        .append('textPath')
+        .attr('xlink:href', d => `#${d.href}`)
+        .style('text-anchor', 'start')
+        .attr('startOffset', '0%')
+        .text(d => d.text);
+    };
+    const labelNodes = this.labelsGroup.selectAll('text').data(labels);
+    labelNodes.exit().remove();
+    drawLabel(labelNodes.enter().append('svg:text'));
+    drawLabel(labelNodes);
   };
 
   drawLinks = links => {
@@ -134,7 +179,8 @@ export default class OverviewDiagram extends Component {
         .attr('stroke-width', '1px')
         .attr(
           'class',
-          d => `path-link od-path ${d.source.feature === d.target.feature ? 'same-feature-dep' : ''}`
+          d =>
+            `path-link od-path ${d.source.feature === d.target.feature ? 'same-feature-dep' : ''}`
         )
         .attr('d', d => {
           const d3Path = d3.path();
@@ -153,7 +199,7 @@ export default class OverviewDiagram extends Component {
   drawPies = nodes => {
     const pies = nodes.filter(n => n.type === 'feature').map(f => ({
       id: `${f.id}:pie`,
-      width: f.radius - f.width / 2,
+      width: f.radius - f.width * 1.5 - 2,
       x: f.x,
       y: f.y,
       startAngle: f.startAngle,
@@ -181,7 +227,7 @@ export default class OverviewDiagram extends Component {
   };
 
   hanldeNodeMouseover = (d, index, nodes) => {
-    this.tooltip.show(d, nodes[index]);
+    if (this.toShow(this.byId(d.id))) this.tooltip.show(d, nodes[index]);
     this.highlightNode(d, nodes[index]);
   };
 
@@ -215,6 +261,7 @@ export default class OverviewDiagram extends Component {
       } else {
         return (
           data.id === d.id || // itself
+          data.name === d.feature || // feature node
           _.get(data, 'source.id') === d.id || // link out
           _.get(data, 'target.id') === d.id || // link in
           relEles.includes(d.id)

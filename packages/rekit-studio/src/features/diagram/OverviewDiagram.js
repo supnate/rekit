@@ -1,56 +1,52 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import * as d3 from 'd3';
-import history from '../../common/history';
+import d3Tip from 'd3-tip';
+import { getDepsDiagramByFeatureData } from './selectors/getDepsDiagramByFeatureData';
 import colors from '../../common/colors';
 
-
-export default class OverviewDiagram extends PureComponent {
+export default class OverviewDiagram extends Component {
   static propTypes = {
-    size: PropTypes.object,
-    showLabels: PropTypes.bool,
-    nodes: PropTypes.array.isRequired,
-    links: PropTypes.array.isRequired,
-    targetId: PropTypes.string.isRequired,
-    handleNodeClick: PropTypes.func,
+    onNodeClick: PropTypes.func,
+    elementById: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
-    showLabels: true,
-    size: null,
-    handleNodeClick: null,
+    onNodeClick() {},
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleWindowResize);
-    // requestAnimationFrame(this.initDiagram);
+    window.addEventListener('resize', this.updateDiagram);
+    requestAnimationFrame(this.initDiagram);
+  }
+
+  componentWillUnmount() {
+    this.tooltip.hide();
+    window.removeEventListener('resize', this.updateDiagram);
   }
 
   componentDidUpdate(prevProps) {
     const props = this.props;
-    if (
-      prevProps.nodes !== props.nodes ||
-      prevProps.links !== props.links ||
-      prevProps.targetId !== props.targetId ||
-      prevProps.size !== props.size
-    ) {
-      // this.updateDiagram();
+    if (prevProps.elementById !== props.elementById) {
+      this.updateDiagram();
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowResize);
+  getSize() {
+    const containerNode = this.d3Node;
+    return Math.max(Math.min(containerNode.offsetWidth, containerNode.offsetHeight), 100);
   }
 
   initDiagram = () => {
     this.svg = d3
       .select(this.d3Node)
       .append('svg')
-      .on('mousemove', this.handleSvgMousemove)
-    ;
+      .on('mousemove', this.handleSvgMousemove);
 
-    this.svg.append('svg:defs').selectAll('marker')
+    this.svg
+      .append('svg:defs')
+      .selectAll('marker')
       .data(['marker'])
       .enter()
       .append('svg:marker')
@@ -61,166 +57,174 @@ export default class OverviewDiagram extends PureComponent {
       .attr('markerWidth', 6)
       .attr('markerHeight', 6)
       .attr('class', d => `triangle-marker ${d}`)
+      .attr('fill', '#ccc')
       .attr('orient', 'auto')
       .append('svg:path')
-      .attr('d', 'M0,-5L10,0L0,5')
-    ;
+      .attr('d', 'M0,-5L10,0L0,5');
+
+    // this.groupsGroup = this.svg.append('svg:g');
+    this.pieBgGroup = this.svg.append('svg:g');
     this.linksGroup = this.svg.append('svg:g');
-    this.elementNodesGroup = this.svg.append('svg:g');
+    this.nodesGroup = this.svg.append('svg:g');
+
+    this.tooltip = d3Tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(d => d.name);
+    this.svg.call(this.tooltip);
+
     this.updateDiagram();
   };
 
-  getChartSize() {
-    const containerNode = this.d3Node.parentNode;
-    return (
-      this.props.size || {
-        width: Math.max(containerNode.offsetWidth, 400),
-        height: Math.max(containerNode.offsetHeight, 400),
-      }
-    );
-  }
+  updateDiagram = () => {
+    const size = this.getSize();
+    this.svg.attr('width', size).attr('height', size);
+    const { elementById } = this.props;
+    const { nodes, links, groups } = (this.diagramData = getDepsDiagramByFeatureData({
+      elementById,
+      size,
+    }));
 
+    // console.log(getDepsDiagramByFeatureData({elementById, size}));
+    // this.drawGroups(groups);
+    this.drawPies(nodes);
+    this.drawNodes(nodes);
+    // this.drawLinks(links);
+  };
 
-  updateDiagram() {
-    const { targetId } = this.props;
-
-    const dataNodes = this.props.nodes;
-    const dataLinks = _.cloneDeep(this.props.links);
-    const size = this.getChartSize();
-    this.svg.attr('width', size.width).attr('height', size.height);
-    this.sim.force('center', d3.forceCenter(size.width / 2, size.height / 2));
-
-    const drawBgNode = d3Selection =>
+  drawNodes = nodes => {
+    const drawNode = d3Selection => {
       d3Selection
-        .attr('r', d => d.outerRadius || d.radius + 3)
-        .attr('stroke-width', d => d.outerBorderWidth || 1)
-        .attr('stroke', d => d.outerBorderColor || '#ccc')
-        .attr('cursor', d => d.cursor || 'pointer')
-        .attr('fill', d => d.outerBgColor || '#222')
-        .on('click', this.handleNodeClick)
-        .call(
-          d3
-            .drag()
-            .on('start', this.dragstarted)
-            .on('drag', this.dragged)
-            .on('end', this.dragended)
-        );
-    const bgNodes = this.bgNodesGroup
-      .selectAll('circle')
-      .data(dataNodes.filter(n => n.doubleCircle));
-    bgNodes.exit().remove();
-    this.bgNodes = drawBgNode(bgNodes);
-    this.bgNodes = drawBgNode(bgNodes.enter().append('circle')).merge(this.bgNodes);
-
-    const drawNode = d3Selection =>
-      d3Selection
-        .attr('r', d => d.radius)
-        .attr('stroke-width', d => d.borderWidth || 0)
-        .attr('stroke', d => d.borderColor || '#eee')
-        .attr('cursor', d => d.cursor || 'pointer')
-        .attr('fill', d => d.bgColor)
-        .on('click', this.handleNodeClick)
-        .call(
-          d3
-            .drag()
-            .on('start', this.dragstarted)
-            .on('drag', this.dragged)
-            .on('end', this.dragended)
-        );
-    const nodes = this.nodesGroup.selectAll('circle').data(dataNodes);
-    nodes.exit().remove();
-    this.nodes = drawNode(nodes);
-    this.nodes = drawNode(nodes.enter().append('circle')).merge(this.nodes);
-
-    const drawLink = d3Selection =>
-      d3Selection
-        .attr('class', 'line')
-        .attr('stroke', d => d.color || '#ddd')
-        .attr('stroke-dasharray', d => d.dashed || (d.target === targetId ? '3, 3' : ''))
-        .attr(
-          'marker-end',
-          l => (l.type === 'dep' ? `url(#${l.source === targetId ? 'dep-on' : 'dep-by'})` : '')
-        );
-    const links = this.linksGroup
-      .selectAll('line')
-      .data(dataLinks.filter(l => l.type !== 'no-line'));
-    links.exit().remove();
-    this.links = drawLink(links);
-    this.links = drawLink(links.enter().append('line')).merge(this.links);
-
-    const drawNodeLabel = d3Selection =>
-      d3Selection
-        .attr(
-          'class',
-          d => `element-node-text ${d.id !== targetId && d.type !== 'feature' ? 'dep-node' : ''}`
-        )
-        .attr('transform', 'translate(0, 2)')
-        .attr('text-anchor', 'middle')
-        .attr('cursor', d => d.cursor || 'pointer')
-        .on('click', this.handleNodeClick)
-        .text(d => d.name)
-        .call(
-          d3
-            .drag()
-            .on('start', this.dragstarted)
-            .on('drag', this.dragged)
-            .on('end', this.dragended)
-        );
-
-    const nodeLabels = this.nodeLabelsGroup.selectAll('text').data(dataNodes);
-    nodeLabels.exit().remove();
-    this.nodeLabels = drawNodeLabel(nodeLabels);
-    this.nodeLabels = drawNodeLabel(nodeLabels.enter().append('text')).merge(this.nodeLabels);
-
-    const distanceMap = {
-      child: 120,
-      dep: 120,
-      'no-line': 320,
+        .attr('id', d => d.id)
+        .attr('stroke-width', d => d.width)
+        .attr('stroke', d => {
+          if (/v:container-/.test(d.type)) {
+            return d3
+              .color(colors(d.type.replace('v:container-', '')))
+              .brighter(0.75)
+              .hex();
+          }
+          return colors(d.type);
+        })
+        .attr('fill', 'transparent')
+        .attr('class', 'path-element-node a-d-d-path')
+        .attr('d', d => {
+          const d3Path = d3.path();
+          d3Path.arc(d.x, d.y, d.radius, d.startAngle, d.endAngle);
+          return d3Path;
+        })
+        .on('mouseover', this.hanldeNodeMouseover)
+        .on('mouseout', this.handleNodeMouseout);
+      // .on('click', this.props.onNodeClick);
     };
 
-    this.sim.nodes(dataNodes);
-    this.sim
-      .force('link')
-      .links(dataLinks)
-      .distance(d => d.length || distanceMap[d.type] || 50);
-    this.sim.alpha(1).restart();
+    const allNodes = this.nodesGroup.selectAll('path').data(nodes);
+    allNodes.exit().remove();
+    drawNode(allNodes.enter().append('svg:path'));
+    drawNode(allNodes);
+  };
+
+  drawLinks = links => {
+    const drawLink = d3Selection => {
+      d3Selection
+        .attr('id', d => `${d.source.id}-${d.target.id}`)
+        .attr('marker-end', 'url(#marker)') // eslint-disable-line
+        // .attr('class', getLinkCssClass)
+        .attr('fill', 'transparent')
+        .attr('stroke', '#ccc')
+        .attr('stroke-width', '1px')
+        .attr('class', 'path-link a-d-d-path')
+        .attr('d', d => {
+          const d3Path = d3.path();
+          d3Path.moveTo(d.x1, d.y1);
+          d3Path.quadraticCurveTo(d.cpx, d.cpy, d.x2, d.y2);
+          return d3Path;
+        });
+    };
+
+    const linksNodes = this.linksGroup.selectAll('path').data(links);
+    linksNodes.exit().remove();
+    drawLink(linksNodes.enter().append('svg:path'));
+    drawLink(linksNodes);
+  };
+
+  drawPies = nodes => {
+    const pies = nodes.filter(n => n.type === 'feature').map(f => ({
+      id: `${f.id}:pie`,
+      width: f.radius - f.width / 2,
+      x: f.x,
+      y: f.y,
+      startAngle: f.startAngle,
+      endAngle: f.endAngle,
+    }));
+
+    const drawPie = d3Selection => {
+      d3Selection
+        .attr('id', d => d.id)
+        .attr('stroke-width', d => d.width)
+        .attr('stroke', 'rgba(255, 255, 255, 0.1)')
+        .attr('fill', 'transparent')
+        .attr('class', 'feature-pie-node')
+        .attr('d', d => {
+          const d3Path = d3.path();
+          d3Path.arc(d.x, d.y, d.width / 2, d.startAngle, d.endAngle);
+          return d3Path;
+        });
+    };
+
+    const pieNodes = this.pieBgGroup.selectAll('path').data(pies);
+    pieNodes.exit().remove();
+    drawPie(pieNodes.enter().append('svg:path'));
+    drawPie(pieNodes);
   }
 
-  handleOnTick = () => {
-    this.nodes.attr('cx', d => d.x).attr('cy', d => d.y);
-    this.bgNodes.attr('cx', d => d.x).attr('cy', d => d.y);
-
-    this.links
-      .attr('x1', d => d.source.x)
-      .attr('y1', d => d.source.y)
-      .attr('x2', d => d.target.x)
-      .attr('y2', d => d.target.y);
-
-    this.nodeLabels.attr('x', d => d.x).attr('y', d => d.y);
+  hanldeNodeMouseover = (d, index, nodes) => {
+    this.tooltip.show(d, nodes[index]);
+    // this.highlightNode(d, nodes[index]);
   };
 
-  handleNodeClick = node => {
-    if (node.noClick) return;
-    if (this.props.handleNodeClick) this.props.handleNodeClick(node);
-    else if (node.id) {
-      history.push(`/element/${encodeURIComponent(node.id)}/diagram`);
-    }
+  handleNodeMouseout = (d, index, nodes) => {
+    this.tooltip.hide(d);
+    // this.delightNode(d, nodes[index]);
   };
 
-  handleWindowResize = () => {
-    // this.updateDiagram();
+  highlightNode = (d, target) => {
+    this.nodesGroup.selectAll('path').attr('opacity', 0.1);
+    this.groupsGroup.selectAll('path').attr('opacity', 0.1);
+    this.linksGroup.selectAll('path').attr('opacity', 0.1);
+    const paths = d3.selectAll('path.a-d-d-path');
+    const { depsData } = this.diagramData;
+
+    paths
+      .filter(data => {
+        if (!data) return false;
+        return (
+          data.id === d.id ||
+          _.get(data, 'source.id') === d.id ||
+          _.get(data, 'target.id') === d.id ||
+          (depsData.dependencies[data.id] || []).includes(d.id) ||
+          (depsData.dependents[data.id] || []).includes(d.id)
+        );
+      })
+      .attr('opacity', 1);
+
+    paths.filter(data => _.get(data, 'target.id') === d.id).style('stroke-dasharray', '3, 3');
+  };
+
+  delightNode = (d, target) => {
+    d3.select(target).attr('opacity', 1);
+    d3.selectAll('path.a-d-d-path').attr('opacity', 1);
+    this.linksGroup.selectAll('path').style('stroke-dasharray', '');
   };
 
   render() {
     return (
-      <div className="diagram-overview-diagram">abc
-        <div
-          className={`d3-node ${!this.props.showLabels ? 'no-text' : ''}`}
-          ref={node => {
-            this.d3Node = node;
-          }}
-        />
-      </div>
+      <div
+        className="diagram-overview-diagram"
+        ref={node => {
+          this.d3Node = node;
+        }}
+      />
     );
   }
 }

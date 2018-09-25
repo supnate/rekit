@@ -10,7 +10,7 @@ const sizeSelector = state => state.size;
 const typesSelector = state => state.types;
 const padding = size => Math.max(size / 15, 20);
 
-const nodeWidth = size => Math.max(size / 40, 6);
+const nodeWidth = size => Math.max(size / 50, 6);
 
 const getPos = (node, size) => {
   const radius = size / 2 - padding(size) - nodeWidth(size) / 2;
@@ -71,21 +71,27 @@ const getLink = (source, target, size) => {
   return { x1, y1, x2, y2, cpx, cpy, source, target };
 };
 
-const toShow = ele =>
-  !ele.owner &&
-  ele.type !== 'folder' &&
-  ele.type !== 'folder-alias' &&
-  (ele.type === 'file' || ele.parts || ele.target);
+// const toShow = ele =>
+//   !ele.owner &&
+//   ele.type !== 'folder' &&
+//   ele.type !== 'folder-alias' &&
+//   (ele.type === 'file' || ele.parts || ele.target);
+
+const toShow = ele => /^file|component|action$/.test(ele.type);
 
 const ensureArray = (obj, name) => (obj[name] ? obj[name] : (obj[name] = []));
 
 const calcAngles = (eles, containerStart, containerAngle, gapRate, isCircle) => {
-  // avgAngle * count + gap * gapCount = containerAngle
-  // gap = avgAngle * gapRate
+  // eleAngle * count + gap * gapCount = containerAngle
+  // gap = eleAngle * gapRate
   // gapCount = isCircle ? count + 1 : count;
   const count = eles.length;
-  const gapCount = isCircle ? count + 1 : count;
-  const gap = containerAngle / (count / gapRate + gapCount);
+  const gapCount = isCircle ? count : count - 1;
+  let gap;
+  if (gapRate === 0) gap = 0;
+  else if (gapRate < 0) gap = (Math.PI * 2 * Math.abs(gapRate)) / 360;
+  else gap = containerAngle / (count / gapRate + gapCount);
+
   const leftAngle = containerAngle - gap * gapCount;
   let start = containerStart;
   const total = eles.reduce((p, c) => p + c.weight, 0);
@@ -104,6 +110,7 @@ const getFeatures = eleById => {
   const byId = id => eleById[id];
   return Object.values(eleById)
     .filter(ele => ele.type === 'feature')
+    // .filter(ele => /home|diagram|editor/.test(ele.name))
     .map(f => {
       const elements = {};
       const feature = {
@@ -172,7 +179,7 @@ const getFeatureEleCount = f => {
 //   };
 // };
 
-const getNode = (ele, index, angles, radius, width) => {
+const getNode = (ele, index, angles, x, y, radius, width) => {
   const angle = angles[index];
   return {
     id: ele.id,
@@ -182,6 +189,8 @@ const getNode = (ele, index, angles, radius, width) => {
     width,
     startAngle: angle.start,
     endAngle: angle.start + angle.angle,
+    x,
+    y,
   };
 };
 
@@ -193,13 +202,18 @@ export const getDepsDiagramByFeatureData = createSelector(
     // All nodes should be in the deps diagram.
     // const eles = Object.values(elementById).filter(toShow);
     const byId = id => elementById[id];
+    const x = size / 2;
+    const y = size / 2;
     const nodes = [];
     const features = getFeatures(elementById);
-    const angles = calcAngles(features, 0, Math.PI * 2, 0.1, true);
+    const angles = calcAngles(features, 0, Math.PI * 2, -3, true);
     // nodes.push.apply(nodes, getNodes(features, angles));
 
+    const radius = size / 2 - padding(size);
+    const innerRadius = radius -nodeWidth(size) - 2;
+
     features.forEach((f, index) => {
-      const n = getNode(f, index, angles, 100, 5);
+      const n = getNode(f, index, angles, x, y, radius, nodeWidth(size));
       nodes.push(n);
       const types = Object.keys(f.elements).map(k => ({
         id: `${f.id}-${k}-container`,
@@ -207,26 +221,23 @@ export const getDepsDiagramByFeatureData = createSelector(
         name: k,
         weight: f.elements[k].length,
       }));
-      const angles2 = calcAngles(types, n.startAngle, n.endAngle - n.startAngle, 0.2, false);
+      const angles2 = calcAngles(types, n.startAngle, n.endAngle - n.startAngle, -0.2, false);
       types.forEach((type, index2) => {
-        const n2 = getNode(type, index2, angles2, 94, 5);
+        const n2 = getNode(type, index2, angles2, x, y, innerRadius, nodeWidth(size));
         nodes.push(n2);
-        console.log(f, type, f.name);
         const eles = f.elements[type.name].map(ele => ({
           id: ele.id,
           type: ele.type,
           name: ele.name,
           weight: 1,
         }));
-        const angles3 = calcAngles(eles, n2.startAngle, n2.endAngle - n2.startAngle, 0.2, false);
+        const angles3 = calcAngles(eles, n2.startAngle, n2.endAngle - n2.startAngle, 0.3, false);
         eles.forEach((ele, index3) => {
-          const n3 = getNode(ele, index3, angles3, 94, 5);
+          const n3 = getNode(ele, index3, angles3, x, y, innerRadius, nodeWidth(size));
           nodes.push(n3);
         });
-
       });
     });
-    console.log('nodes: ', nodes);
 
     return { nodes };
 

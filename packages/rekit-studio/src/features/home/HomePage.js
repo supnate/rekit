@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Col, Row } from 'antd';
 import plugin from '../../common/plugin';
-import { AllDepsDiagramView } from '../diagram';
+import { AllDepsDiagramView, OverviewDiagramView } from '../diagram';
 import { getTypesCount } from './selectors/projectData';
 import { SvgIcon } from '../common';
 import colors from '../../common/colors';
@@ -111,7 +111,7 @@ export class HomePage extends Component {
     // const { features, featureById } = this.props.home;
     const p = _.last(plugin.getPlugins('dashboard.OverviewDiagram'));
 
-    const OverviewDiagram = p ? p.dashboard.OverviewDiagram : AllDepsDiagramView;
+    const OverviewDiagram = p ? p.dashboard.OverviewDiagram : OverviewDiagramView;
     return (
       <div className="home-home-page">
         {this.renderBadges()}

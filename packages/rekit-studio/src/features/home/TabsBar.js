@@ -98,10 +98,6 @@ export class TabsBar extends Component {
           if (!file) return;
           // TODO: this may not cover all posibilities for files under a tab
           delete editorStateMap[file];
-          delete editorStateMap[file];
-          delete editorStateMap[file];
-          modelManager.reset(file);
-          modelManager.reset(file);
           modelManager.reset(file);
         });
       }

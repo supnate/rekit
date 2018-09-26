@@ -43,7 +43,7 @@ export default class OverviewDiagram extends Component {
   toShow = ele => {
     return (
       ele &&
-      /^(file|component|action)$/.test(ele.type) &&
+      /^(file|component|action|routes)$/.test(ele.type) &&
       !['index.js', 'constants.js', 'actions.js', 'reducer.js'].includes(ele.name) &&
       (ele.type === 'file' ? /^js|jsx$/.test(ele.ext) : true)
     );
@@ -140,14 +140,11 @@ export default class OverviewDiagram extends Component {
   };
 
   drawLabels = nodes => {
-    const labels = nodes.filter(n => n.type === 'feature').map(
-      f =>
-        console.log(f.id) || {
-          id: `label-feature-${f.name}`,
-          text: f.name,
-          href: f.id,
-        }
-    );
+    const labels = nodes.filter(n => n.type === 'feature').map(f => ({
+      id: `label-feature-${f.name}`,
+      text: f.name,
+      href: f.id,
+    }));
     const drawLabel = d3Selection => {
       d3Selection
         .style('font-size', 12)

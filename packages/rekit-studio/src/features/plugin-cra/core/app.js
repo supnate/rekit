@@ -1,8 +1,9 @@
 const _ = require('lodash');
+const path = require('path');
 // const shell = require('shelljs');
 const traverse = require('babel-traverse').default;
 
-const { ast, paths, vio, app } = rekit.core;
+const { ast, paths, vio, app, config } = rekit.core;
 
 let elementById = {};
 const filePropsCache = {};
@@ -10,6 +11,26 @@ const filePropsCache = {};
 function getFileProps(file) {
   if (filePropsCache[file] && filePropsCache[file].content === vio.getContent(file)) {
     return filePropsCache[file].props;
+  }
+
+  const name = path.basename(file);
+  let isComponent = false;
+  let isAction = false;
+
+  // If it's pascal case and has same style file, it's a component
+  if (
+    /^[A-Z][a-zA-Z0-9]*\.jsx?$/.test(name) &&
+    vio.fileExists(file.replace(/\.jsx?$/, `.${config.style}`))
+  ) {
+    isComponent = true;
+  }
+
+  // Files under redux folder are all actions excepts actions.js|constants.js|reducer.js|initialState.js
+  if (
+    /^src\/features\/\w+\/redux\/[\w.]+$/.test(file) &&
+    !['action.js', 'constants.js', 'reducer.js', 'initialState.js'].includes(name)
+  ) {
+    isAction = true;
   }
 
   const fileAst = ast.getAst(file);
@@ -55,14 +76,13 @@ function getFileProps(file) {
     },
   });
   const props = {
-    component: ff.importReact &&
-      ff.hasClassAndRenderMethod && {
-        connectToStore: ff.importReactRedux && ff.connectCall,
-      },
-    action: ff.exportReducer &&
-      ff.importConstant && {
-        isAsync: ff.importMultipleConstants,
-      },
+    component: isComponent && {
+      connectToStore: ff.importReactRedux && ff.connectCall,
+    },
+    action: isAction && {
+      isAsync: ff.importMultipleConstants,
+    },
+    syntaxError: !fileAst,
   };
 
   if (props.component) props.type = 'component';

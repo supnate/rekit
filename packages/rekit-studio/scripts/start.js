@@ -91,19 +91,22 @@ console.timeEnd('loading modules...');
 
 // We attempt to use the default port but if it is busy, we offer the user to
 // run on a different port. `choosePort()` Promise resolves to the next free port.
-choosePort(HOST, DEFAULT_PORT)
-  .then(port => {
-    if (port == null) {
-      // We have not found a port.
-      return;
-    }
+console.log('port: ', args.port);
+if (args.port) startDevServer(args.port);
+else
+  choosePort(HOST, DEFAULT_PORT)
+    .then(port => {
+      if (port == null) {
+        // We have not found a port.
+        return;
+      }
 
-    startDevServer(args.port || port);
-  })
-  .catch(err => {
-    if (err && err.message) {
-      console.log(err.message);
-      console.log(err.stack);
-    }
-    process.exit(1);
-  });
+      startDevServer(args.port || port);
+    })
+    .catch(err => {
+      if (err && err.message) {
+        console.log(err.message);
+        console.log(err.stack);
+      }
+      process.exit(1);
+    });

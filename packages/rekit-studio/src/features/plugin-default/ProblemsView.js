@@ -75,6 +75,7 @@ export class ProblemsView extends Component {
   renderFileProblem(file, msgs) {
     const byId = id => this.props.elementById[id];
     let ele = byId(file);
+    if (!ele) return null; // File may be deleted
     if (ele.owner) ele = byId(ele.owner);
     if (ele.target) ele = byId(ele.target);
 

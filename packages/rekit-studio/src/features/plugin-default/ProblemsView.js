@@ -103,7 +103,7 @@ export class ProblemsView extends Component {
             {this.renderErrorIcon(msg)}
             <span className="problem-source">[eslint]</span>
             <span className="problem-message" title={msg.message}>
-              {msg.message}
+              {msg.message} ({msg.ruleId})
             </span>
             <span className="source-pos">
               ({msg.line}, {msg.column})

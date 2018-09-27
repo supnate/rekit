@@ -97,11 +97,11 @@ export class TabsBar extends Component {
   };
 
   handleSelectTab = tab => {
-    history.push(tab.urlPath);
+    if (this.props.location.pathname !== tab.urlPath) history.push(tab.urlPath);
   };
 
   handleSelectSubTab = subTab => {
-    history.push(subTab.urlPath);
+    if (this.props.location.pathname !== subTab.urlPath) history.push(subTab.urlPath);
   };
 
   handleClose = (evt, tab, force) => {
@@ -277,7 +277,6 @@ export class TabsBar extends Component {
 function mapStateToProps(state) {
   return {
     ..._.pick(state.home, ['openTabs', 'projectRoot', 'historyTabs', 'viewChanged', 'elementById']),
-    pathname: state.router.pathname,
     tabs: tabsSelector(state),
     location: state.router.location,
   };

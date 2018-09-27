@@ -37,7 +37,7 @@ export class App extends Component {
     openTabs: [],
   };
 
-  componentDidMount() {
+  componentDidMount() {console.log('app did mount');
     this.props.actions
       .fetchProjectData()
       .then(() => {

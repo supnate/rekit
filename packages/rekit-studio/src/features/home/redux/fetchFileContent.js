@@ -7,7 +7,7 @@ import {
 } from './constants';
 
 export function fetchFileContent(file) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({
       type: HOME_FETCH_FILE_CONTENT_BEGIN,
     });
@@ -15,7 +15,7 @@ export function fetchFileContent(file) {
     const promise = new Promise(async (resolve, reject) => {
       try {
         const res = await axios.get('/api/read-file', {
-          params: { file }
+          params: { file },
         });
         dispatch({
           type: HOME_FETCH_FILE_CONTENT_SUCCESS,
@@ -25,7 +25,7 @@ export function fetchFileContent(file) {
       } catch (e) {
         dispatch({
           type: HOME_FETCH_FILE_CONTENT_FAILURE,
-          data: { error: e },
+          data: { file, error: e },
         });
         reject(e);
       }
@@ -64,12 +64,17 @@ export function reducer(state, action) {
       };
     }
 
-    case HOME_FETCH_FILE_CONTENT_FAILURE:
+    case HOME_FETCH_FILE_CONTENT_FAILURE: {
+      // if failed to fetch file content, don't reload it again to avoid infinite loop
+      const fileContentNeedReload = { ...state.fileContentNeedReload };
+      delete fileContentNeedReload[action.data.file];
       return {
         ...state,
+        fileContentNeedReload,
         fetchFileContentPending: false,
         fetchFileContentError: action.data.error,
       };
+    }
 
     case HOME_FETCH_FILE_CONTENT_DISMISS_ERROR:
       return {

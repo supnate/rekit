@@ -33,16 +33,40 @@ export class TabsBar extends Component {
 
   constructor(props) {
     super(props);
-    this.props.dispatch({
-      type: '@@router/LOCATION_CHANGE',
-      payload: this.props.location,
-    });
+    console.log('tabs bar constructor2');
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.location.pathname !== this.props.location.pathname) {
       if (this.delayScroll) clearTimeout(this.delayScroll);
       this.delayScroll = setTimeout(this.scrollActiveTabIntoView, 100);
+    }
+
+    if (prevProps.elementById !== this.props.elementById) {
+      this.closeNotExistingTabs();
+    }
+  }
+
+  closeNotExistingTabs() {
+    const { openTabs, historyTabs, elementById } = this.props;
+    const newOpenTabs = [...openTabs];
+    const newHistoryTabs = [...historyTabs];
+    let needRedirect = false;
+    newOpenTabs.forEach(tab => {
+      if (!elementById[tab.key]) {
+        if (tab.isActive) needRedirect = true;
+        this.props.actions.closeTab(tab.key);
+        _.pull(newHistoryTabs, tab.key);
+      }
+    });
+    if (needRedirect) {
+      if (newHistoryTabs.length === 0) {
+        history.push('/welcome');
+      } else {
+        const nextKey = newHistoryTabs[0];
+        const tab = _.find(newOpenTabs, { key: nextKey });
+        if (tab) history.push(tab.urlPath);
+      }
     }
   }
 

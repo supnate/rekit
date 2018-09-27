@@ -17,7 +17,7 @@ export function fetchProjectData() {
     return new Promise((resolve, reject) => {
       axios.get('/api/project-data').then(
         (res) => {
-          if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
+          // if (window.ON_REKIT_STUDIO_LOAD) window.ON_REKIT_STUDIO_LOAD();
           const prjData = res.data;
           plugin.setPluginNames(prjData.plugins); // development time to load plugins
           plugin.getPlugins('app.processProjectData').forEach(p => {

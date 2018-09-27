@@ -14,7 +14,7 @@ export default class SvgIcon extends Component {
     style: PropTypes.object,
     fill: PropTypes.string,
   };
-
+ 
   static defaultProps = {
     size: null,
     className: '',

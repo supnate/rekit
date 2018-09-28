@@ -29,7 +29,11 @@ function sortElements(elements, elementById) {
   return elements;
 }
 
-function readDir(dir) {
+const DIR_CACHE = {};
+function readDir(dir, useCache) {
+  if (DIR_CACHE[dir] && useCache) {
+    return DIR_CACHE[dir];
+  }
   const prjRoot = paths.getProjectRoot();
 
   dir = dir || paths.map('src');
@@ -77,13 +81,25 @@ function readDir(dir) {
     }
   });
   sortElements(elements, elementById);
+  DIR_CACHE[dir] = { elementById, elements };
   return {
     elementById,
     elements,
   };
 }
 
+function setFileChanged(file) {
+  if (!fs.existsSync(file)) {
+    removeFileFromCache(file);
+  }
+}
+
+function removeFileFromCache(file) {}
+
+function getFileElement() {}
+
 module.exports = {
   getProjectData,
   readDir,
+  setFileChanged,
 };

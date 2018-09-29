@@ -94,7 +94,16 @@ function setFileChanged(file) {
   }
 }
 
-function removeFileFromCache(file) {}
+function removeFileFromCache(file) {
+  const prjRoot = paths.getProjectRoot();
+  const rFile = file.replace(prjRoot, rFile);
+
+  if (!fs.existsSync(file)) {
+    console.log('file deleted: ', file);
+  } else {
+    console.log('file created or updated.', file);
+  }
+}
 
 function getFileElement() {}
 

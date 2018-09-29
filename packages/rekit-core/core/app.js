@@ -4,8 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const paths = require('./paths');
 const deps = require('./deps');
-
+const files = require('./files');
 const plugin = require('./plugin');
+
+const app = {};
 
 function getProjectData() {
   const plugins = plugin.getPlugins('app.getProjectData');
@@ -13,7 +15,8 @@ function getProjectData() {
   if (plugins.length) {
     plugins.forEach(p => Object.assign(prjData, p.app.getProjectData()));
   }
-  if (!prjData.elements || !prjData.elementById) Object.assign(prjData, readDir(paths.map('src')));
+  if (!prjData.elements || !prjData.elementById) Object.assign(prjData, files.readDir(paths.map('src')));
+  app.lastGetProjectDataTimestamp = files.lastChangeTime;
   return prjData;
 }
 
@@ -149,8 +152,10 @@ function getFileElement(file) {
   return fileEle;
 }
 
-module.exports = {
+Object.assign(app, {
   getProjectData,
   readDir,
   setFileChanged,
-};
+});
+
+module.exports = app;

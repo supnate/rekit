@@ -5,9 +5,19 @@ rekit.core.paths.setProjectRoot('/Users/pwang7/workspace/rekit/packages/rekit-st
 let prjData;
 console.log(rekit.core.plugin.getPlugins().map(p => p.name));
 console.time('Load project data');
-rekit.core.vio.reset();
+// rekit.core.vio.reset();
 prjData = rekit.core.files.readDir();
 console.timeEnd('Load project data');
+
+rekit.core.files.on('change', () => {
+  console.time('Load project');
+
+  prjData = rekit.core.app.getProjectData();
+  console.timeEnd('Load project');
+  Object.keys(prjData.elementById)
+    .filter(s => /redux/.test(s))
+    .forEach(console.log);
+});
 
 // console.time('Load project data');
 // rekit.core.vio.reset();

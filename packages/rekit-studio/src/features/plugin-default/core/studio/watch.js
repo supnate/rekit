@@ -1,21 +1,9 @@
-const Watchpack = require('watchpack');
-
-const { paths, vio } = rekit.core;
+const { vio, files } = rekit.core;
 
 function watchFileChange(io) {
-  const wp = new Watchpack({
-    aggregateTimeout: 1000,
-    poll: false,
-    // TODO: make ignored configurable
-    ignored: /node_modules|\.git/,
-  });
-
-  // TODO: make watch dir configurable
-  wp.watch([], [paths.map('src'), paths.map('tests'), paths.map('coverage')], Date.now() - 10);
-
-  wp.on('aggregated', changes => {
+  files.on('change', changes => {
     vio.reset();
-    if (io) io.emit('fileChanged', changes);
+    if (io) io.emit('fileChanged', { timestamp: files.lastChangeTime });
   });
 }
 

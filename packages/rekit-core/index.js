@@ -2,6 +2,7 @@ const app = require('./core/app');
 const element = require('./core/element');
 const plugin = require('./core/plugin');
 const paths = require('./core/paths');
+const files = require('./core/files');
 const vio = require('./core/vio');
 const template = require('./core/template');
 const config = require('./core/config');
@@ -17,6 +18,7 @@ global.rekit = {
   core: {
     app,
     paths,
+    files,
     plugin,
     element,
     vio,

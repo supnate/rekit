@@ -42,6 +42,7 @@
     "babel-traverse": "^6.23.1",
     "babel-types": "^6.23.0",
     "babylon": "^6.15.0",
+    "chokidar": "^2.0.4",
     "colors": "^1.1.2",
     "diff": "^3.2.0",
     "docdash": "^0.4.0",

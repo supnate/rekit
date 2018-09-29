@@ -1,4 +1,6 @@
 const Watchpack = require('watchpack');
+const chokidar = require('chokidar');
+
 const rekit = require('./');
 rekit.core.paths.setProjectRoot('/Users/pwang7/workspace/a1');
 
@@ -13,26 +15,41 @@ const readDir = () => {
   return results;
 };
 
-const wp = new Watchpack({
-  aggregateTimeout: 1000,
-  poll: false,
-  // TODO: make ignored configurable
-  ignored: /node_modules|\.git/,
-});
+const w = chokidar.watch(DIR, { persistent: false });
 
-// TODO: make watch dir configurable
-wp.watch([], [DIR], Date.now() - 10);
+w.on('add', (...args) => console.log('on add: ', args));
+w.on('change', (...args) => console.log('on change: ', args));
+w.on('unlink', (...args) => console.log('on unlink: ', args));
+w.on('addDir', (...args) => console.log('on addDir: ', args));
+w.on('unlinkDir', (...args) => console.log('on unlinkDir: ', args));
+w.on('ready', (...args) => console.log('on ready: ', w.getWatched()));
 
-wp.on('aggregated', () => {
-  console.log('aggregated');
-  const res = readDir();
-  console.log(res);
-});
+// const wp = new Watchpack({
+//   aggregateTimeout: 1000,
+//   poll: false,
+//   // TODO: make ignored configurable
+//   ignored: /node_modules|\.git/,
+// });
 
-wp.on('change', file => {
-  console.log('on change: ', file);
-  app.setFileChanged(file);
-});
+console.log('watched: ', w.getWatched());
+
+// // TODO: make watch dir configurable
+// wp.watch([], [DIR], Date.now() - 10);
+
+// // wp.on('aggregated', () => {
+// //   console.log('aggregated');
+// //   const res = readDir();
+// //   // console.log(res);
+// // });
+
+// wp.on('change', (...args) => {
+//   console.log('watch pack on change: ', args);
+// });
+
+// wp.on('remove', file => {
+//   console.log('on remove: ', file);
+//   // app.setFileChanged(file);
+// });
 
 console.log('Watching dir: ', DIR);
 

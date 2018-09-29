@@ -3,7 +3,7 @@ const path = require('path');
 // const shell = require('shelljs');
 const traverse = require('babel-traverse').default;
 
-const { ast, paths, vio, app, config } = rekit.core;
+const { ast, paths, vio, app, config, files } = rekit.core;
 
 let elementById = {};
 const filePropsCache = {};
@@ -356,8 +356,8 @@ function getFeatures() {
 }
 
 function getProjectData() {
-  const srcFiles = app.readDir(paths.map('src'));
-  const testFiles = app.readDir(paths.map('tests'));
+  const srcFiles = files.readDir(paths.map('src'), true);
+  const testFiles = files.readDir(paths.map('tests'), true);
   elementById = { ...srcFiles.elementById, ...testFiles.elementById };
 
   const eleFeatures = {

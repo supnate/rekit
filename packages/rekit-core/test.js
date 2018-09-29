@@ -9,6 +9,11 @@ rekit.core.vio.reset();
 prjData = rekit.core.app.getProjectData();
 console.timeEnd('Load project data');
 
+console.time('Load project data');
+rekit.core.vio.reset();
+prjData = rekit.core.app.getProjectData();
+console.timeEnd('Load project data');
+
 // console.time('Load project data 2');
 // rekit.core.vio.reset();
 // rekit.core.app.getProjectData();

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { ast, paths, vio, app } = rekit.core;
+const { ast, paths, vio, app, files } = rekit.core;
 
 function getRoutes() {
   const routesPath = paths.map('routes.json');
@@ -37,7 +37,7 @@ function getRoutes() {
 }
 
 function getProjectData() {
-  const prjData = app.readDir(paths.map('src'));
+  const prjData = files.readDir(paths.map('src'));
 
   const file = 'routes.json';
   prjData.elementById[file] = {

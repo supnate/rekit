@@ -15,14 +15,15 @@ const readDir = () => {
   return results;
 };
 
-const w = chokidar.watch(DIR, { persistent: false });
+const w = chokidar.watch(DIR, { persistent: true });
 
-w.on('add', (...args) => console.log('on add: ', args));
-w.on('change', (...args) => console.log('on change: ', args));
-w.on('unlink', (...args) => console.log('on unlink: ', args));
-w.on('addDir', (...args) => console.log('on addDir: ', args));
-w.on('unlinkDir', (...args) => console.log('on unlinkDir: ', args));
-w.on('ready', (...args) => console.log('on ready: ', w.getWatched()));
+w.on('ready', () => {
+  w.on('add', (...args) => console.log('on add: ', args));
+  w.on('change', (...args) => console.log('on change: ', args));
+  w.on('unlink', (...args) => console.log('on unlink: ', args));
+  w.on('addDir', (...args) => console.log('on addDir: ', args));
+  w.on('unlinkDir', (...args) => console.log('on unlinkDir: ', args));
+});
 
 // const wp = new Watchpack({
 //   aggregateTimeout: 1000,

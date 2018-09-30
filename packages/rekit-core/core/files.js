@@ -39,7 +39,8 @@ function readDir(dir) {
     if (ele.children) children.push.apply(children, ele.children);
   }
 
-  return { elements: dirEle.children, elementById };
+  // Always return a cloned object to avoid acidentally cache modify
+  return JSON.parse(JSON.stringify({ elements: dirEle.children, elementById }));
 }
 
 function startWatch(dir) {

@@ -10,13 +10,15 @@ prjData = rekit.core.files.readDir();
 console.timeEnd('Load project data');
 
 rekit.core.files.on('change', () => {
+  console.log('files changed');
   console.time('Load project');
 
   prjData = rekit.core.app.getProjectData();
+  // prjData = rekit.core.files.readDir();
   console.timeEnd('Load project');
   Object.keys(prjData.elementById)
-    .filter(s => /redux/.test(s))
-    .forEach(console.log);
+    .filter(s => /\/home\/redux\//.test(s) && !/test/.test(s))
+    .forEach(k => console.log(k));
 });
 
 // console.time('Load project data');

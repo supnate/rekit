@@ -19,8 +19,8 @@ const watchers = {};
 const files = new EventEmitter();
 
 const emitChange = _.debounce(() => {
-  // files.emit('change');
-}, 500);
+  files.emit('change');
+}, 100);
 
 function readDir(dir) {
   dir = dir || paths.map('src');
@@ -94,13 +94,23 @@ function onChange(file) {
   setLastChangeTime();
   emitChange();
 }
-function onAddDir() {
+function onAddDir(file) {
   console.log('on add dir', arguments);
+  const prjRoot = paths.getProjectRoot();
+  const rFile = file.replace(prjRoot, '');
+  allElementById[rFile] = getDirElement(file);
+
+  const dir = path.dirname(rFile);
+  byId(dir).children.push(rFile);
+
+  sortElements(byId(dir).children);
   setLastChangeTime();
   emitChange();
 }
-function onUnlinkDir() {
+function onUnlinkDir(file) {
   console.log('on unlink dir', arguments);
+  onUnlink(file);
+
   setLastChangeTime();
   emitChange();
 }
@@ -161,40 +171,6 @@ function getFileElement(file) {
   }
   return fileEle;
 }
-
-// function setFileChanged(file) {
-//   const prjRoot = paths.getProjectRoot();
-//   if (!fs.existsSync(file)) {
-//     // File deleted
-//     deleteFileInCache(file);
-//   } else if (!byId(file.replace(prjRoot, ''))) {
-//     // File created
-//     addFileToCache(file);
-//   }
-// }
-
-// function addFileToCache(file) {
-//   if (shell.test('-d', file)) {
-//   } else {
-//   }
-// }
-
-// function deleteFileInCache(file) {
-//   const prjRoot = paths.getProjectRoot();
-//   const rFile = file.replace(prjRoot, file);
-//   const dirEle = parentHash[rFile];
-//   if (dirEle) {
-//     // remove it from folder
-//     _.pull(dirEle.elements, rFile);
-//   }
-//   delete parentHash[rFile];
-// }
-
-function addDirToCache(dir) {
-  const dirEle = getDirElement(dir);
-  dirCache[dir] = dirEle;
-}
-// function deleteDirInCache(dir) {}
 
 function sortElements(elements) {
   elements.sort((a, b) => {

@@ -8,4 +8,3 @@ export { default as OutputPanel } from './OutputPanel';
 export { default as Resizer } from './Resizer';
 export { default as SvgIcon } from './SvgIcon';
 export { default as FormBuilder } from './FormBuilder';
-export { default as A } from './A';

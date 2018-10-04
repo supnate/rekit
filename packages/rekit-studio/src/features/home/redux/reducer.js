@@ -54,7 +54,7 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     // Put global reducers here
     case 'PROJECT_DATA_CHANGED':
-    case CORE_EXEC_CORE_COMMAND_SUCCESS: // For quick project reoload.
+    // case CORE_EXEC_CORE_COMMAND_SUCCESS: // For quick project reoload.
       newState = {
         ...state,
         projectDataNeedReload: true,

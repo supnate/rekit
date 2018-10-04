@@ -1,4 +1,3 @@
-export { default as DefaultPage } from './DefaultPage';
 export { default as CommonForm } from './CommonForm';
 export { default as FormDialog } from './FormDialog';
 export { default as DialogContainer } from './DialogContainer';

@@ -32,6 +32,7 @@ if (process.env.NODE_ENV !== 'test') {
         });
         break;
       case 'fileChanged':
+        console.log('file changed');
         store.dispatch({
           type: 'PROJECT_DATA_CHANGED',
           data: data.payload,

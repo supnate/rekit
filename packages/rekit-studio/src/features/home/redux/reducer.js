@@ -10,7 +10,7 @@ import { reducer as hideDemoAlertReducer } from './hideDemoAlert';
 import { reducer as saveFileReducer } from './saveFile';
 import { reducer as closeTabReducer } from './closeTab';
 import { reducer as moveTabReducer } from './moveTab';
-import { REKIT_CMDS_EXEC_CMD_SUCCESS } from '../../rekit-cmds/redux/constants';
+import { CORE_EXEC_CORE_COMMAND_SUCCESS } from '../../core/redux/constants';
 import { reducer as codeChangeReducer } from './codeChange';
 import { reducer as stickTabReducer } from './stickTab';
 import { storage } from '../../common/utils';
@@ -54,7 +54,7 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     // Put global reducers here
     case 'PROJECT_DATA_CHANGED':
-    case REKIT_CMDS_EXEC_CMD_SUCCESS: // For quick project reoload.
+    case CORE_EXEC_CORE_COMMAND_SUCCESS: // For quick project reoload.
       newState = {
         ...state,
         projectDataNeedReload: true,

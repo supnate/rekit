@@ -19,7 +19,7 @@ const watchers = {};
 const files = new EventEmitter();
 
 const emitChange = _.debounce(() => {
-  files.emit('change');
+  // files.emit('change');
 }, 500);
 
 function readDir(dir) {

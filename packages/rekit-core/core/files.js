@@ -25,7 +25,6 @@ const emitChange = _.debounce(() => {
 function readDir(dir) {
   dir = dir || paths.map('src');
   if (!watchers[dir]) startWatch(dir);
-  console.log('readDir', dir);
   if (!cache[dir]) {
     cache[dir] = getDirElement(dir);
   }
@@ -74,7 +73,6 @@ function onAdd(file) {
   emitChange();
 }
 function onUnlink(file) {
-  console.log('on unlink', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   delete allElementById[rFile];
@@ -86,7 +84,6 @@ function onUnlink(file) {
   emitChange();
 }
 function onChange(file) {
-  console.log('on change', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   allElementById[rFile] = getFileElement(file);
@@ -95,7 +92,6 @@ function onChange(file) {
   emitChange();
 }
 function onAddDir(file) {
-  console.log('on add dir', arguments);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   allElementById[rFile] = getDirElement(file);
@@ -108,7 +104,6 @@ function onAddDir(file) {
   emitChange();
 }
 function onUnlinkDir(file) {
-  console.log('on unlink dir', arguments);
   onUnlink(file);
 
   setLastChangeTime();

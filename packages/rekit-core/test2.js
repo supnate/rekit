@@ -9,5 +9,5 @@ files.readDir();
 files.on('change', () => {
   console.time('get prj data');
   const data = app.getProjectData();
-  console.timeEnd('get prj data');
+  console.timeEnd('get prj data', data);
 });

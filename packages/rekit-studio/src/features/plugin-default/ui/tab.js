@@ -43,6 +43,7 @@ export default {
         key: 'dashboard',
         icon: 'dashboard',
         iconColor: '#33cdff',
+        noPreview: true,
         urlPath,
       };
     }

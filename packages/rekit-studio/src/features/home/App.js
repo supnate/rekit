@@ -29,6 +29,7 @@ export class App extends Component {
     fetchProjectDataError: PropTypes.any,
     fetchProjectDataPending: PropTypes.bool.isRequired,
     bottomDrawerVisible: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -43,10 +44,10 @@ export class App extends Component {
       .then(() => {
         document.title = this.props.projectName;
         // For rendering tabs bar
-        // this.props.dispatch({
-        //   type: '@@router/LOCATION_CHANGE',
-        //   payload: this.props.location,
-        // });
+        this.props.dispatch({
+          type: '@@router/LOCATION_CHANGE',
+          payload: this.props.location,
+        });
       })
       .catch(err => {
         Modal.error({
@@ -175,7 +176,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ fetchProjectData }, dispatch),
-    // dispatch,
+    dispatch,
   };
 }
 

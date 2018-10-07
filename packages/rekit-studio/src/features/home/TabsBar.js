@@ -33,7 +33,7 @@ export class TabsBar extends Component {
 
   constructor(props) {
     super(props);
-    console.log('tabs bar constructor2');
+    console.log('tabs bar constructor');
   }
 
   componentDidUpdate(prevProps) {
@@ -245,8 +245,15 @@ export class TabsBar extends Component {
     );
   };
 
+  renderNoThing() {
+    return null;
+  }
+
   render() {
     const { openTabs } = this.props;
+    if (!openTabs.length) {
+      return this.renderNoThing();
+    }
     const currentTab = this.getCurrentTab();
     const hasSubTabs = currentTab && currentTab.subTabs && currentTab.subTabs.length > 0;
     return (

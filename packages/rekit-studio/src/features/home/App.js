@@ -101,7 +101,7 @@ export class App extends Component {
     );
   }
 
-  render() {
+  render() {console.log('app render.');
     if (!this.props.elementById || !this.props.projectName) {
       return this.renderLoading();
     }

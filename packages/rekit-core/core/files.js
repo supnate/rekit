@@ -65,6 +65,9 @@ function onAdd(file) {
   allElementById[rFile] = getFileElement(file);
 
   const dir = path.dirname(rFile);
+  if (!byId(dir)) {
+    onAddDir(dir);
+  }
   const children = byId(dir).children;
   children.push(rFile);
 
@@ -74,6 +77,7 @@ function onAdd(file) {
   emitChange();
 }
 function onUnlink(file) {
+  console.log('on unlink', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   delete allElementById[rFile];
@@ -85,6 +89,7 @@ function onUnlink(file) {
   emitChange();
 }
 function onChange(file) {
+  console.log('on change', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   allElementById[rFile] = getFileElement(file);
@@ -93,8 +98,10 @@ function onChange(file) {
   emitChange();
 }
 function onAddDir(file) {
+  console.log('on add dir', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
+  if (byId(rFile)) return; // already exists
   // suppose it's always empty, children will be added by other events
   allElementById[rFile] = {
     name: path.basename(file),
@@ -110,6 +117,7 @@ function onAddDir(file) {
   emitChange();
 }
 function onUnlinkDir(file) {
+  console.log('on unlink dir', file);
   onUnlink(file);
 
   setLastChangeTime();

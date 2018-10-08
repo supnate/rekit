@@ -61,10 +61,16 @@ function move(source, target) {
 
   const tpl = `src/pages/${name1}/template.marko`;
   if (vio.fileExists(tpl)) {
+    const i18nKey1 = `i18n${_.pascalCase(appName)}${_.pascalCase(name1)}`;
+    const i18nKey2 = `i18n${_.pascalCase(appName)}${_.pascalCase(name2)}`;
+    const i18nFile1 = `"${_.pascalCase(appName)}/${name1}"`;
+    const i18nFile2 = `"${_.pascalCase(appName)}/${name2}"`;
     const content = vio
       .getContent(tpl)
       .replace(`className="page-${name1}"`, `className="page-${name2}"`)
-      .replace(`>Page content: ${name1}<`, `>Page content: ${name2}<`);
+      .replace(`>Page content: ${name1}<`, `>Page content: ${name2}<`)
+      .replace(i18nFile1, i18nFile2)
+      .replace(new RegExp(i18nKey1, 'g'), i18nKey2);
     vio.save(tpl, content);
   }
 
@@ -80,7 +86,7 @@ function move(source, target) {
   // Rename locale file if it exists
   const localeFile1 = `locales/en/${_.pascalCase(appName)}/${name1}.properties`;
   const localeFile2 = `locales/en/${_.pascalCase(appName)}/${name2}.properties`;
-  if (vio.fileExists(localeFile1) && !vio.fileExists(localeFile2)) vio.mv(localeFile1, localeFile2);
+  if (vio.fileExists(localeFile1) && !vio.fileExists(localeFile2)) vio.move(localeFile1, localeFile2);
 
   // Rename route path if it exists
   const routesJson = JSON.parse(vio.getContent('routes.json'));

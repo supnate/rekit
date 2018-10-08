@@ -151,7 +151,7 @@ export default function reducer(state = initialState, action) {
           action.data.map(item => ({
             ...item,
             text: convert
-              .toHtml(item.text.replace(/ /g, '&nbsp;'))
+              .toHtml(item.text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/ /g, '&nbsp;'))
               .replace('#00A', '#1565C0')
               .replace(/color:#555/g, 'color:#777'),
           }))

@@ -34,6 +34,7 @@ export const getDepsDiagramData = createSelector(
 
       item.deps.forEach(dep => {
         if (dep.type !== 'file') return;
+        if (!byId(dep.id)) return;
         if (item.id === ele.id || (ele.parts && ele.parts.includes(item.id))) {
           // it's element itself, push its dependencies
           const depEle = byId(dep.id);

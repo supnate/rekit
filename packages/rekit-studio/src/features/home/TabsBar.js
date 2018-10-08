@@ -53,7 +53,7 @@ export class TabsBar extends Component {
     const newHistoryTabs = [...historyTabs];
     let needRedirect = false;
     newOpenTabs.forEach(tab => {
-      if (!elementById[tab.key]) {
+      if (!elementById[tab.key] && /^\/element\//.test(tab.urlPath)) {
         if (tab.isActive) needRedirect = true;
         this.props.actions.closeTab(tab.key);
         _.pull(newHistoryTabs, tab.key);

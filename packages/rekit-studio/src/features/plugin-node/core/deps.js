@@ -1,6 +1,6 @@
 const { vio, refactor } = rekit.core;
 
-const getDeps = (filePath) => {
+const getDeps = filePath => {
   if (!filePath.endsWith('.marko')) return null;
   const deps = [];
 
@@ -23,10 +23,24 @@ const getDeps = (filePath) => {
   const content = vio.getContent(filePath);
   const regex = /<include\(['"]([^)]+)['"]\)/g;
   let res;
-  while((res = regex.exec(content)) !== null) {
+  while ((res = regex.exec(content)) !== null) {
     pushModuleSource(res[1]);
   }
+
+  const regex2 = /<([\w-_]+) /g;
+  let res2;
+  while ((res2 = regex2.exec(content)) !== null) {
+    const depFile = `src/ui-modules/${res2[1]}/component.js`;
+    if (vio.fileExists(depFile)) {
+      pushModuleSource(depFile);
+    }
+
+    const depFile2 = `src/components/${res2[1]}/component.js`;
+    if (vio.fileExists(depFile2)) {
+      pushModuleSource(depFile2);
+    }
+  }
   return deps;
-}
+};
 
 module.exports = { getDeps };

@@ -65,7 +65,8 @@ function onAdd(file) {
   allElementById[rFile] = getFileElement(file);
 
   const dir = path.dirname(rFile);
-  byId(dir).children.push(rFile);
+  const children = byId(dir).children;
+  children.push(rFile);
 
   sortElements(byId(dir).children);
 
@@ -94,8 +95,13 @@ function onChange(file) {
 function onAddDir(file) {
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
-  allElementById[rFile] = getDirElement(file);
-
+  // suppose it's always empty, children will be added by other events
+  allElementById[rFile] = {
+    name: path.basename(file),
+    type: 'folder',
+    id: rFile,
+    children: [],
+  };
   const dir = path.dirname(rFile);
   byId(dir).children.push(rFile);
 

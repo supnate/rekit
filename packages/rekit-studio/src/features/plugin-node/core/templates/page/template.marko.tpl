@@ -3,7 +3,7 @@
 <% } %>
 <include("src/layouts/${layout}/template.marko")>
     <@body>
-        <div className="page-${name}">Page content: ${locale ? ('i18n' + _.pascalCase(appName) + _.pascalCase(name) + '.get(\'name\')') : name}</div>
+        <div className="page-${name}">Page content: ${locale ? ('$' + '{i18n' + _.pascalCase(appName) + _.pascalCase(name) + '.get(\'name\')\}') : name}</div>
     </@body>
 </include><%}else{%>
 <div className="page-${name}">Page content: ${locale ? ('i18n' + _.pascalCase(appName) + _.pascalCase(name) + '.get(\'name\')') : name}</div>

@@ -8,7 +8,6 @@ const createSelectOptions = options =>
   options.map(opt => <Option key={opt.value || opt.name}>{opt.name}</Option>);
 
 const byId = id => store.getState().home.elementById[id];
-const parentElement = id => byId(byId(id).parent);
 
 const getLayouts = () => {
   const layouts = byId('v:layouts')

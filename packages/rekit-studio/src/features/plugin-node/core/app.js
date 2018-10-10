@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { ast, paths, vio, app, files } = rekit.core;
+const { paths, files } = rekit.core;
 
 function getRoutes() {
   const routesPath = paths.map('routes.json');

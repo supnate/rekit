@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
-const { vio, template, paths, config } = rekit.core;
+const { vio, template, config } = rekit.core;
 
 function add(name, args) {
   name = _.kebabCase(name);

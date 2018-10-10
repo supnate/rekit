@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { Input, Checkbox, Select } from 'antd';
 import store from '../../../common/store';
 

@@ -10,7 +10,6 @@ import { reducer as hideDemoAlertReducer } from './hideDemoAlert';
 import { reducer as saveFileReducer } from './saveFile';
 import { reducer as closeTabReducer } from './closeTab';
 import { reducer as moveTabReducer } from './moveTab';
-import { CORE_EXEC_CORE_COMMAND_SUCCESS } from '../../core/redux/constants';
 import { reducer as codeChangeReducer } from './codeChange';
 import { reducer as stickTabReducer } from './stickTab';
 import { storage } from '../../common/utils';

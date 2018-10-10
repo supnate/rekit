@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
-const { vio, template, config } = rekit.core;
+const { vio, template } = rekit.core;
 
 function add(elePath, args) {
   const arr = elePath.split('/');

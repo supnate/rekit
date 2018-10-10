@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { SvgIcon } from '../common';
+import { Button } from 'antd';
 import { clearOutput } from './redux/actions';
 
 const scrollTop = {};
@@ -41,6 +43,13 @@ export class OutputView extends Component {
     const { output } = this.props;
     return (
       <div className="home-output-view" ref={this.assignRef}>
+        <Button
+              icon="close-circle"
+              size="small"
+              className="clear-btn"
+              shape="circle"
+              onClick={this.props.actions.clearOutput}
+            />
         <ul>
           {output.length === 0 && <li key="empty">No output.</li>}
           {output.map(item => (

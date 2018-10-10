@@ -15,4 +15,30 @@
     white-space: nowrap;
     font-family: 'Andale Mono';
   }
+
+  .clear-btn {
+    position: absolute;
+    right: 30px;
+    top: -30px;
+
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+    margin-top: 4px;
+    color: #888;
+    border: none;
+    outline: none;
+
+    &:hover, &:focus, &:active {
+      color: #aaa;
+      background-color: transparent;
+    }
+    > span {
+      display: inline-block;
+    }
+
+    &.ant-btn-background-ghost::after {
+      border: none !important;
+    }
+  }
 }

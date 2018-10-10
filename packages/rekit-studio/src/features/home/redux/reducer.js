@@ -41,6 +41,7 @@ const reducers = [
   setBottomDrawerVisibleReducer,
   clearOutputReducer,
   setBottomDrawerTabReducer,
+  clearOutputReducer,
 ];
 
 // const pascalCase = _.flow(

@@ -52,56 +52,65 @@ function getDeps(filePath, originalFilePath) {
     if (!vio.fileExists(modulePath)) modulePath += '.js';
     deps.push({ id: modulePath, type: 'file', ...args });
   };
-  traverse(ast.getAst(filePath), {
-    ExportNamedDeclaration(path) {
-      const moduleSource = _.get(path, 'node.source.value');
-      const exported = _.get(path, 'node.specifiers').reduce((prev, specifier) => {
-        prev[_.get(specifier, 'exported.name')] = _.get(specifier, 'local.name');
-        return prev;
-      }, {});
-      pushModuleSource(moduleSource, { exported });
-    },
-    ExportAllDeclaration(path) {
-      const moduleSource = _.get(path, 'node.source.value');
-      pushModuleSource(moduleSource);
-    },
-    CallExpression(path) {
-      const isRequire = _.get(path, 'node.callee.name') === 'require';
-      const isImport = _.get(path, 'node.callee.type') === 'Import';
-      if ((isRequire || isImport) && t.isStringLiteral(_.get(path, 'node.arguments[0]'))) {
-        const moduleSource = _.get(path, 'node.arguments[0].value');
-        const args = {};
-        if (isRequire) args.isRequire = true;
-        if (isImport) args.isImport = true;
-        pushModuleSource(moduleSource, args);
-      }
-    },
-    ImportDeclaration(path) {
-      const moduleSource = _.get(path, 'node.source.value');
-      const imported = [];
-      let defaultImport = false;
-      let nsImport = false;
-      path.node.specifiers.forEach(specifier => {
-        if (specifier.type === 'ImportNamespaceSpecifier') {
-          // imported.push('*');
-          // TODO: try to analyze namespace import
-          nsImport = true;
+  const ast2 = ast.getAst(filePath);
+  if (!ast2) {
+    console.log('no ast: ', filePath);
+    return []; // if syntax error, no deps returned.
+  }
+  try {
+    traverse(ast2, {
+      ExportNamedDeclaration(path) {
+        const moduleSource = _.get(path, 'node.source.value');
+        const exported = _.get(path, 'node.specifiers').reduce((prev, specifier) => {
+          prev[_.get(specifier, 'exported.name')] = _.get(specifier, 'local.name');
+          return prev;
+        }, {});
+        pushModuleSource(moduleSource, { exported });
+      },
+      ExportAllDeclaration(path) {
+        const moduleSource = _.get(path, 'node.source.value');
+        pushModuleSource(moduleSource);
+      },
+      CallExpression(path) {
+        const isRequire = _.get(path, 'node.callee.name') === 'require';
+        const isImport = _.get(path, 'node.callee.type') === 'Import';
+        if ((isRequire || isImport) && t.isStringLiteral(_.get(path, 'node.arguments[0]'))) {
+          const moduleSource = _.get(path, 'node.arguments[0].value');
+          const args = {};
+          if (isRequire) args.isRequire = true;
+          if (isImport) args.isImport = true;
+          pushModuleSource(moduleSource, args);
         }
-        if (specifier.type === 'ImportSpecifier') {
-          imported.push(specifier.imported.name);
-        }
-        if (specifier.type === 'ImportDefaultSpecifier') {
-          defaultImport = true;
-        }
-      });
+      },
+      ImportDeclaration(path) {
+        const moduleSource = _.get(path, 'node.source.value');
+        const imported = [];
+        let defaultImport = false;
+        let nsImport = false;
+        path.node.specifiers.forEach(specifier => {
+          if (specifier.type === 'ImportNamespaceSpecifier') {
+            // imported.push('*');
+            // TODO: try to analyze namespace import
+            nsImport = true;
+          }
+          if (specifier.type === 'ImportSpecifier') {
+            imported.push(specifier.imported.name);
+          }
+          if (specifier.type === 'ImportDefaultSpecifier') {
+            defaultImport = true;
+          }
+        });
 
-      const args = {};
-      if (imported.length) args.imported = imported;
-      if (nsImport) args.nsImport = true;
-      args.defaultImport = defaultImport;
-      pushModuleSource(moduleSource, args);
-    },
-  });
+        const args = {};
+        if (imported.length) args.imported = imported;
+        if (nsImport) args.nsImport = true;
+        args.defaultImport = defaultImport;
+        pushModuleSource(moduleSource, args);
+      },
+    });
+  } catch (e) {
+    return [];
+  }
 
   // Flatten deps
   // If a module use 'export ... from ...' then should direct to the real target module.

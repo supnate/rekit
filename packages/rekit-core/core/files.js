@@ -43,7 +43,7 @@ function readDir(dir) {
 }
 
 function startWatch(dir) {
-  const w = chokidar.watch(dir, { persistent: true, awaitWriteFinish: false });
+  const w = chokidar.watch(dir, { persistent: false, awaitWriteFinish: false });
   w.on('ready', () => {
     w.on('add', onAdd);
     w.on('change', onChange);

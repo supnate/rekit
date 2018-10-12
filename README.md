@@ -15,6 +15,8 @@ It helps you focus on business logic rather than dealing with massive libraries,
 [![Gitter](https://badges.gitter.im/supnate/rekit.svg)](https://gitter.im/rekitjs/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 [![Demo](https://img.shields.io/badge/demo-link-blue.svg)](http://demo.rekit.org)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/supnate/rekit.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/supnate/rekit/context:javascript)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/supnate/rekit.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/supnate/rekit/alerts)
 
 Rekit creates apps bootstrapped by [create-react-app](https://github.com/facebook/create-react-app) and uses an opinionated way to organize folder and code. It's designed to be scalable, testable and maintainable by using [feature oriented architecture](https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0), [one action per file pattern](https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk). This ensures application logic is well grouped and decoupled.
 

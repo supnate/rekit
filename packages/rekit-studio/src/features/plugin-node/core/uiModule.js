@@ -3,6 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const { vio, template } = rekit.core;
 
+_.pascalCase = _.flow(_.camelCase, _.upperFirst);
+_.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
+
 function add(elePath, args) {
   const arr = elePath.split('/');
   const name = _.kebabCase(arr.pop());

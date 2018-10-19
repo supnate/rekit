@@ -3,6 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const { vio, template } = rekit.core;
 
+_.pascalCase = _.flow(_.camelCase, _.upperFirst);
+_.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
+
 function add(name, args) {
   name = _.kebabCase(name);
   const tplDir = path.join(__dirname, './templates/layout');

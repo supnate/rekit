@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const app = require('./core/app');
 const element = require('./core/element');
 const plugin = require('./core/plugin');
@@ -11,6 +12,14 @@ const refactor = require('./core/refactor');
 const deps = require('./core/deps');
 const handleCommand = require('./core/handleCommand');
 
+_.pascalCase = _.flow(
+  _.camelCase,
+  _.upperFirst
+);
+_.upperSnakeCase = _.flow(
+  _.snakeCase,
+  _.toUpper
+);
 // paths.setProjectRoot('/Users/pwang7/workspace/app-next/');
 // if (process.env.NODE_ENV !== 'production') paths.setProjectRoot('/Users/pwang7/workspace/rekitebaynode/');
 

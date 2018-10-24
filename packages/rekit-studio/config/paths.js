@@ -42,6 +42,7 @@ module.exports = {
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
   appHtml: resolveApp('public/index.html'),
+  dllManifest: resolveApp('dll/manifest.json'),
   appIndexJs: resolveApp('src/index.js'),
   appIndexStyle: resolveApp('src/styles/index.less'),
   antdIndexStyle: require.resolve('antd/dist/antd.less'),

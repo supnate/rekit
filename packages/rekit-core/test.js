@@ -1,6 +1,6 @@
 const rekit = require('./');
 
-rekit.core.paths.setProjectRoot('/Users/pwang7/workspace/rekit/packages/rekit-studio');
+rekit.core.paths.setProjectRoot('/Users/pwang7/workspace/rekit-studio');
 // rekit.core.paths.setProjectRoot('/Users/pwang7/workspace/rekitebaynode');
 let prjData;
 console.log(rekit.core.plugin.getPlugins().map(p => p.name));
@@ -16,9 +16,9 @@ rekit.core.files.on('change', () => {
   prjData = rekit.core.app.getProjectData();
   // prjData = rekit.core.files.readDir();
   console.timeEnd('Load project');
-  Object.keys(prjData.elementById)
-    .filter(s => /\/home\/redux\//.test(s) && !/test/.test(s))
-    .forEach(k => console.log(k));
+  // Object.keys(prjData.elementById)
+  //   .filter(s => /\/home\/redux\//.test(s) && !/test/.test(s))
+  //   .forEach(k => console.log(k));
 });
 
 // console.time('Load project data');

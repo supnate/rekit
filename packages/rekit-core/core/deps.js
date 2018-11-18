@@ -16,6 +16,7 @@ function getDeps(filePath, originalFilePath) {
   if (originalFilePath === filePath) return [];
 
   if (depsCache[filePath] && depsCache[filePath].content === vio.getContent(filePath)) {
+    console.log('hit deps cache: ', filePath);
     return depsCache[filePath].deps;
   }
 

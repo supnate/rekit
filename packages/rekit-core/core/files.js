@@ -23,28 +23,34 @@ const emitChange = _.debounce(() => {
 }, 100);
 
 function readDir(dir) {
+  console.time('read dir');
   dir = dir || paths.map('src');
+  console.log('readding dir: ', dir);
   if (!watchers[dir]) startWatch(dir);
   if (!cache[dir]) {
+    console.log('no cache');
     cache[dir] = getDirElement(dir);
   }
   const elementById = {};
   const dirEle = cache[dir];
   const children = [...dirEle.children];
   while (children.length) {
+    // Get elementById
     const cid = children.pop();
     const ele = byId(cid);
     elementById[cid] = ele;
     if (ele.children) children.push.apply(children, ele.children);
   }
-
   // Always return a cloned object to avoid acidentally cache modify
-  return JSON.parse(JSON.stringify({ elements: dirEle.children, elementById }));
+  const res = JSON.parse(JSON.stringify({ elements: dirEle.children, elementById }));
+  console.timeEnd('read dir');
+  return res;
 }
 
 function startWatch(dir) {
-  const w = chokidar.watch(dir, { persistent: false, awaitWriteFinish: false });
+  const w = chokidar.watch(dir, { persistent: true, awaitWriteFinish: true });
   w.on('ready', () => {
+    console.log('watcher ready', dir);
     w.on('add', onAdd);
     w.on('change', onChange);
     w.on('unlink', onUnlink);

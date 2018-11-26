@@ -23,9 +23,7 @@ const emitChange = _.debounce(() => {
 }, 100);
 
 function readDir(dir) {
-  console.time('read dir');
   dir = dir || paths.map('src');
-  console.log('readding dir: ', dir);
   if (!watchers[dir]) startWatch(dir);
   if (!cache[dir]) {
     console.log('no cache');
@@ -43,7 +41,6 @@ function readDir(dir) {
   }
   // Always return a cloned object to avoid acidentally cache modify
   const res = JSON.parse(JSON.stringify({ elements: dirEle.children, elementById }));
-  console.timeEnd('read dir');
   return res;
 }
 
@@ -65,7 +62,7 @@ const setLastChangeTime = () => {
 };
 
 function onAdd(file) {
-  console.log('on add', file);
+  // console.log('on add', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   allElementById[rFile] = getFileElement(file);
@@ -83,7 +80,7 @@ function onAdd(file) {
   emitChange();
 }
 function onUnlink(file) {
-  console.log('on unlink', file);
+  // console.log('on unlink', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   delete allElementById[rFile];
@@ -95,7 +92,7 @@ function onUnlink(file) {
   emitChange();
 }
 function onChange(file) {
-  console.log('on change', file);
+  // console.log('on change', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   allElementById[rFile] = getFileElement(file);
@@ -104,7 +101,7 @@ function onChange(file) {
   emitChange();
 }
 function onAddDir(file) {
-  console.log('on add dir', file);
+  // console.log('on add dir', file);
   const prjRoot = paths.getProjectRoot();
   const rFile = file.replace(prjRoot, '');
   if (byId(rFile)) return; // already exists
@@ -123,7 +120,7 @@ function onAddDir(file) {
   emitChange();
 }
 function onUnlinkDir(file) {
-  console.log('on unlink dir', file);
+  // console.log('on unlink dir', file);
   onUnlink(file);
 
   setLastChangeTime();

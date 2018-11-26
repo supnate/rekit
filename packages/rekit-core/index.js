@@ -42,8 +42,9 @@ global.rekit = {
 
 // plugin.loadPlugins();
 
-plugin.addPlugin(require('../rekit-studio/src/features/plugin-default/core'));
-plugin.addPlugin(require('../rekit-studio/src/features/plugin-terminal/core'));
+plugin.addPlugin(require('../../../rekit-studio/src/features/plugin-default/core'));
+plugin.addPlugin(require('../../../rekit-studio/src/features/plugin-terminal/core'));
+plugin.addPlugin(require('../../../rekit-studio/src/features/plugin-scripts/core'));
 // if (process.env.NODE_ENV !== 'production') plugin.addPlugin(require('../rekit-studio/src/features/plugin-cra/core'));
 
 module.exports = global.rekit;

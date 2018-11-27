@@ -16,34 +16,34 @@ const createPlugin = require('./createPlugin');
 const installPlugin = require('./installPlugin');
 
 // If runs under a project
-function getLocalRekitCore() {
-  let cwd = process.cwd();
-  let lastDir = null;
-  let prjRoot = null;
-  // Traverse above until find the package.json.
-  while (cwd && lastDir !== cwd) {
-    if (fs.existsSync(path.join(cwd, 'package.json'))) {
-      prjRoot = cwd;
-      break;
-    }
-    lastDir = cwd;
-    cwd = path.join(cwd, '..');
-  }
+// function getLocalRekitCore() {
+//   let cwd = process.cwd();
+//   let lastDir = null;
+//   let prjRoot = null;
+//   // Traverse above until find the package.json.
+//   while (cwd && lastDir !== cwd) {
+//     if (fs.existsSync(path.join(cwd, 'package.json'))) {
+//       prjRoot = cwd;
+//       break;
+//     }
+//     lastDir = cwd;
+//     cwd = path.join(cwd, '..');
+//   }
 
-  const pkgJson = prjRoot ? path.join(prjRoot, 'package.json') : null;
-  if (!prjRoot || !fs.existsSync(pkgJson)) return null;
-  else {
-    const pj = require(pkgJson);
-    if (
-      !((pj.devDependencies && pj.devDependencies['rekit-core']) || (pj.dependencies && pj.dependencies['rekit-core']))
-    ) {
-      return null;
-    }
-  }
-  return require(resolveCwd('rekit-core'));
-}
+//   const pkgJson = prjRoot ? path.join(prjRoot, 'package.json') : null;
+//   if (!prjRoot || !fs.existsSync(pkgJson)) return null;
+//   else {
+//     const pj = require(pkgJson);
+//     if (
+//       !((pj.devDependencies && pj.devDependencies['rekit-core']) || (pj.dependencies && pj.dependencies['rekit-core']))
+//     ) {
+//       return null;
+//     }
+//   }
+//   return require(resolveCwd('rekit-core'));
+// }
 
-const rekit = getLocalRekitCore();
+// const rekit = getLocalRekitCore();
 
 const parser = new ArgumentParser({
   version: rekitPkgJson.version,
@@ -196,14 +196,14 @@ Object.keys(aliases).forEach(k => {
     args.commandName = aliases[k];
   }
 });
-
+const rekit = require('rekit-core');
 switch (args.commandName) {
   case 'create':
     // Only create command is handled rekit
     createApp(args);
     break;
   case 'create-plugin':
-    createPlugin(args, rekitt);
+    createPlugin(args, rekit);
     console.timeEnd('😃  Done'); // create command doesn't need time end.
     break;
   case 'install':

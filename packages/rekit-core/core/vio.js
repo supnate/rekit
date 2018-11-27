@@ -174,7 +174,7 @@ function move(oldPath, newPath) {
     throw new Error('No file to move');
   }
 
-  if (shell.test('-e', newPath) || fileExists(newPath)) {
+  if (fileExists(newPath)) {
     log('Error: target file already exists: ', 'red', newPath);
     throw new Error('Target file already exists');
   }

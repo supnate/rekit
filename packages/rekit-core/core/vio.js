@@ -123,7 +123,13 @@ function getContent(filePath) {
 // }
 
 function fileExists(filePath) {
-  return ((!!fileLines[filePath] || !!toSave[filePath]) && !toDel[filePath]) || shell.test('-e', paths.map(filePath));
+  if (toDel[filePath]) return false;
+  return (
+    !!_.findKey(mvs, s => s === filePath) || // to be moved
+    !!fileLines[filePath] ||
+    !!toSave[filePath] ||
+    shell.test('-e', paths.map(filePath))
+  );
 }
 
 function fileNotExists(filePath) {
@@ -169,7 +175,7 @@ function save(filePath, lines) {
 // }
 
 function move(oldPath, newPath) {
-  if (toDel[oldPath] || (!fileExists(oldPath) && !shell.test('-e', oldPath))) {
+  if (toDel[oldPath] || !fileExists(oldPath)) {
     log('Error: no file to move: ', 'red', oldPath);
     throw new Error('No file to move');
   }
@@ -178,7 +184,6 @@ function move(oldPath, newPath) {
     log('Error: target file already exists: ', 'red', newPath);
     throw new Error('Target file already exists');
   }
-
   if (fileLines[oldPath]) {
     fileLines[newPath] = fileLines[oldPath];
     delete fileLines[oldPath];

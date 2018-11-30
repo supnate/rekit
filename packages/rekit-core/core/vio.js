@@ -241,19 +241,26 @@ function ls(folder) {
 
   let diskFiles = [];
   let realFolder = folder;
-  if (!shell.test('-e', realFolder)) {
+  if (!shell.test('-e', paths.map(realFolder))) {
     // it may be moved
     _.forOwn(mvDirs, (value, key) => {
       if (_.startsWith(folder, value)) {
-        realFolder = folder.replace(new RegExp(`^${_.escapeRegExp(value)}`), key);
+        realFolder = folder.replace(value, key);
         return false;
       }
       return true;
     });
   }
-  if (shell.test('-e', realFolder)) {
-    diskFiles = shell.ls(realFolder).map(f => paths.join(folder, f));
+
+  const isMovedOut = file => mvs[file] && !mvs[file].startsWith(realFolder);
+
+  if (shell.test('-e', paths.map(realFolder))) {
+    diskFiles = shell
+      .ls(paths.map(realFolder))
+      .map(f => paths.join(folder, f))
+      .filter(f => !toDel[f] && !isMovedOut(f));
   }
+  console.log('real folder', realFolder, diskFiles);
   const memoFiles = Object.keys(toSave).filter(file => _.startsWith(file, folder) && !toDel[file]);
   return _.union(diskFiles, memoFiles);
 }

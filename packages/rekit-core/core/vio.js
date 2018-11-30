@@ -123,12 +123,20 @@ function getContent(filePath) {
 // }
 
 function fileExists(filePath) {
+  let realPath = filePath;
+  _.forOwn(mvDirs, (value, key) => {
+    if (_.startsWith(filePath, value)) {
+      realPath = filePath.replace(value, key);
+      return false;
+    }
+    return true;
+  });
   if (toDel[filePath]) return false;
   return (
     !!_.findKey(mvs, s => s === filePath) || // to be moved
     !!fileLines[filePath] ||
     !!toSave[filePath] ||
-    shell.test('-e', paths.map(filePath))
+    shell.test('-e', paths.map(realPath))
   );
 }
 

@@ -95,4 +95,22 @@ describe('vio', function() {
       expect(res.length).to.equal(2);
     });
   });
+
+  describe('move file/dir in disk folder', () => {
+    paths.setProjectRoot(path.join(__dirname, './test-prj'));
+    it('file exists after move', () => {
+      vio.move('src/common/rootReducer.js', 'src/common/rootReducer2.js');
+      expect(vio.fileExists('src/common/rootReducer2.js')).to.equal(true);
+    });
+
+    it('file exists after move dir', () => {
+      vio.moveDir('src/common', 'src/common2');
+      expect(vio.fileExists('src/common2/rootReducer.js')).to.equal(true);
+    });
+
+    it('file content exists after move dir', () => {
+      vio.moveDir('src/common', 'src/common2');
+      expect(vio.getContent('src/common2/rootReducer.js')).to.exist;
+    });
+  });
 });

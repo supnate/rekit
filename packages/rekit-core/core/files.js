@@ -198,6 +198,8 @@ function sortElements(elements) {
 }
 
 files.readDir = readDir;
+files.getDirElement = getDirElement;
+files.getFileElement = getFileElement;
 // files.setFileChanged = setFileChanged;
 
 module.exports = files;

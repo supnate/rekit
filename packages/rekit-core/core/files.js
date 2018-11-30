@@ -26,7 +26,6 @@ function readDir(dir) {
   dir = dir || paths.map('src');
   if (!watchers[dir]) startWatch(dir);
   if (!cache[dir]) {
-    console.log('no cache');
     cache[dir] = getDirElement(dir);
   }
   const elementById = {};
@@ -47,7 +46,6 @@ function readDir(dir) {
 function startWatch(dir) {
   const w = chokidar.watch(dir, { persistent: true, awaitWriteFinish: true });
   w.on('ready', () => {
-    console.log('watcher ready', dir);
     w.on('add', onAdd);
     w.on('change', onChange);
     w.on('unlink', onUnlink);

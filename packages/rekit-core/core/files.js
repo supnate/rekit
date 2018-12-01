@@ -3,6 +3,7 @@ const shell = require('shelljs');
 const path = require('path');
 const fs = require('fs');
 const paths = require('./paths');
+const config = require('./config');
 const deps = require('./deps');
 const chokidar = require('chokidar');
 const EventEmitter = require('events');
@@ -137,17 +138,24 @@ function getDirElement(dir) {
   };
   allElementById[rDir] = dirEle;
 
-  shell.ls(dir).forEach(file => {
-    file = paths.join(dir, file);
-    const rFile = file.replace(prjRoot, '');
-    dirEle.children.push(rFile);
-    parentHash[rFile] = rDir;
-    if (shell.test('-d', file)) {
-      getDirElement(file);
-    } else {
-      getFileElement(file);
-    }
-  });
+  shell
+    .ls(dir)
+    .filter(
+      file =>
+        path.basename(file) !== 'node_modules' &&
+        !_.includes(config.getRekitConfig().exclude || [], file.replace(prjRoot, ''))
+    )
+    .forEach(file => {
+      file = paths.join(dir, file);
+      const rFile = file.replace(prjRoot, '');
+      dirEle.children.push(rFile);
+      parentHash[rFile] = rDir;
+      if (shell.test('-d', file)) {
+        getDirElement(file);
+      } else {
+        getFileElement(file);
+      }
+    });
   sortElements(dirEle.children, allElementById);
 
   return dirEle;

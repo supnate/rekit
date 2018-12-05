@@ -52,8 +52,7 @@
     "minami": "^1.1.1",
     "npm-run": "^4.1.0",
     "prettier": "^1.12.1",
-    "shelljs": "^0.8.0",
-    "trash": "^4.2.1"
+    "shelljs": "^0.8.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

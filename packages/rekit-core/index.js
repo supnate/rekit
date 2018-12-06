@@ -41,7 +41,7 @@ global.rekit = {
 };
 
 // plugin.loadPlugins();
-
+plugin.addPlugin(require('./plugins/common'));
 // if (process.env.NODE_ENV !== 'production') plugin.addPlugin(require('../rekit-studio/src/features/plugin-cra/core'));
 
 module.exports = global.rekit;

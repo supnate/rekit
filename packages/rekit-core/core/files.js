@@ -139,11 +139,14 @@ function getDirElement(dir) {
   allElementById[rDir] = dirEle;
 
   shell
-    .ls(dir)
+    .ls('-A', dir)
     .filter(
       file =>
-        path.basename(file) !== 'node_modules' &&
-        !_.includes(config.getRekitConfig().exclude || [], file.replace(prjRoot, ''))
+        (path.basename(file) !== 'node_modules' &&
+          path.basename(file) !== '.DS_Store' &&
+          !(path.basename(file).startsWith('.') && shell.test('-d', file)) &&
+          !_.includes(config.getRekitConfig().exclude || [], file.replace(prjRoot, ''))) ||
+        _.includes(config.getRekitConfig().include || [], file.replace(prjRoot, ''))
     )
     .forEach(file => {
       file = paths.join(dir, file);

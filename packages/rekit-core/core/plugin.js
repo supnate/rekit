@@ -8,6 +8,7 @@ const path = require('path');
 const shell = require('shelljs');
 const _ = require('lodash');
 const paths = require('./paths');
+const config = require('./config');
 
 const plugins = [];
 let loaded = false;
@@ -15,7 +16,14 @@ function getPlugins(prop) {
   if (!loaded) {
     loadPlugins();
   }
-  return prop ? plugins.filter(_.property(prop)) : plugins;
+  // get plugins support current app type, like React, Vue etc
+  const appPlugins = plugins.filter(
+    p => !p.appType || _.castArray(p.appType).includes(config.getRekitConfig().appType || 'common') // default app type is common
+  );
+  if (!_.find(appPlugins, p => p.isAppPlugin)) {
+    throw new Error(`No plugin to support current project type: ${config.getRekitConfig().appType || 'common'}`);
+  }
+  return prop ? appPlugins.filter(_.property(prop)) : appPlugins;
 }
 
 // Load plugin instance

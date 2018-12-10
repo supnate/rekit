@@ -60,6 +60,7 @@ function updateFile(filePath, changes) {
 //
 function getModuleResolverAlias() {
   const thePkgJson = config.getPkgJson();
+  if (!thePkgJson) return {};
   const babelPlugins = _.get(thePkgJson, 'babel.plugins');
   const alias = config.getRekitConfig().moduleAlias || {};
   if (_.isArray(babelPlugins)) {

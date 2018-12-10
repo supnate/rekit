@@ -1,14 +1,17 @@
+const fs = require('fs');
 const paths = require('./paths');
 
 let appType;
 function getPkgJson(noCache) {
   const pkgJsonPath = paths.map('package.json');
+  if (!fs.existsSync(pkgJsonPath)) return null;
   if (noCache) delete require.cache[pkgJsonPath];
   return require(pkgJsonPath);
 }
 
 function getRekitConfig(noCache) {
-  let config = getPkgJson(noCache).rekit;
+  const pkgJson = getPkgJson(noCache);
+  let config = pkgJson && pkgJson.rekit || {};
   if (!config) config = {};
   config.appType = appType || config.appType;
   return config;

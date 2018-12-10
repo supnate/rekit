@@ -12,16 +12,22 @@ const config = require('./config');
 
 const plugins = [];
 let loaded = false;
+
 function getPlugins(prop) {
   if (!loaded) {
     loadPlugins();
   }
+
+  const appType = config.getRekitConfig().appType || 'common';
   // get plugins support current app type, like React, Vue etc
   const appPlugins = plugins.filter(
-    p => !p.appType || _.castArray(p.appType).includes(config.getRekitConfig().appType || 'common') // default app type is common
+    p => !p.appType || _.castArray(p.appType).includes(appType) // default app type is common
   );
   if (!_.find(appPlugins, p => p.isAppPlugin)) {
-    throw new Error(`No plugin to support current project type: ${config.getRekitConfig().appType || 'common'}`);
+    console.log('all plugins: ', plugins.map(p => p.name));
+
+    console.log('current plugins: ', appPlugins.map(p => p.name));
+    throw new Error(`No plugin to support current project type: ${appType}`);
   }
   return prop ? appPlugins.filter(_.property(prop)) : appPlugins;
 }

@@ -14,20 +14,7 @@ function setProjectRoot(prjRoot) {
 
 function getProjectRoot() {
   if (!projectRoot) {
-    let cwd = process.cwd();
-    let lastDir = null;
-    let prjRoot;
-    while (cwd && lastDir !== cwd) {
-      const pkgPath = join(cwd, 'package.json');
-      if (fs.existsSync(pkgPath) && require(pkgPath).rekit) {
-        prjRoot = cwd;
-        break;
-      }
-      lastDir = cwd;
-      cwd = join(cwd, '..');
-    }
-    if (!prjRoot) throw new Error('Can not find the Rekit project.');
-    projectRoot = join(/\/$/.test(prjRoot) ? prjRoot : prjRoot + '/');
+    projectRoot = process.cwd();
   }
   return projectRoot;
 }

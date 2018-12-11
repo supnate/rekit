@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 
@@ -14,7 +13,7 @@ function setProjectRoot(prjRoot) {
 
 function getProjectRoot() {
   if (!projectRoot) {
-    projectRoot = process.cwd();
+    setProjectRoot(process.cwd());
   }
   return projectRoot;
 }

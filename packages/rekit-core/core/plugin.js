@@ -11,32 +11,51 @@ const os = require('os');
 const paths = require('./paths');
 const config = require('./config');
 
-const plugins = [];
+let plugins = [];
 let loaded = false;
+let needFilterPlugin = true;
 
-const DEFAULT_PLUGIN_DIR = path.join(os.homeDir(), '.rekit/plugins');
+const DEFAULT_PLUGIN_DIR = path.join(os.homedir(), '.rekit/plugins');
+console.log(DEFAULT_PLUGIN_DIR)
 
 function getPluginsDir() {
   return DEFAULT_PLUGIN_DIR;
 }
 
+function filterPlugins() {
+  const rekitConfig = config.getRekitConfig();
+  let appType = rekitConfig.appType;
+
+  // If no appType configured, set it to the first matched plugin except common.
+  // Pure folder plugin is always loaded.
+  if (
+    !appType
+  ) {
+    const appPlugin = _.find(plugins, p => p.isAppPlugin && p.appType !== 'common');
+    appType = appPlugin.appType;
+  }
+
+  if (!appType) appType = 'common';
+  config.setAppType(appType);
+
+  plugins = plugins.filter(p => {
+    return !p.appType || _.castArray(p.appType).includes(appType);
+  });
+
+  plugins.forEach(p => console.log('Plugin applied: ', p.name, p.ui ? p.ui.root : ''))
+
+  needFilterPlugin = false;
+}
 function getPlugins(prop) {
   if (!loaded) {
     loadPlugins();
   }
 
-  const appType = config.getRekitConfig().appType || 'common';
-  // get plugins support current app type, like React, Vue etc
-  const appPlugins = plugins.filter(
-    p => !p.appType || _.castArray(p.appType).includes(appType) // default app type is common
-  );
-  if (!_.find(appPlugins, p => p.isAppPlugin)) {
-    console.log('all plugins: ', plugins.map(p => p.name));
-
-    console.log('current plugins: ', appPlugins.map(p => p.name));
-    throw new Error(`No plugin to support current project type: ${appType}`);
+  if (needFilterPlugin) {
+    filterPlugins();
   }
-  return prop ? appPlugins.filter(_.property(prop)) : appPlugins;
+
+  return prop ? plugins.filter(_.property(prop)) : plugins;
 }
 
 function isPluginValidForProject(plugin) {
@@ -49,25 +68,7 @@ function isPluginValidForProject(plugin) {
   ) {
     return false;
   }
-  const rekitConfig = config.getRekitConfig();
-  const appType = rekitConfig.appType;
-
-  // If no appType configured, set it to the first matched plugin.
-  // Pure folder plugin is always loaded.
-  if (
-    !appType &&
-    plugin.isAppPlugin &&
-    plugin.appType
-  ) {
-    config.setAppType(appType);
-    return true;
-  }
-
-  // Detect if plugin supports the current appType
-  if (!appType || !plugin.appType || (appType && _.castArray(plugin.appType).includes(appType))) {
-    return true;
-  }
-  return false;
+  return true;
 }
 
 // Load plugin instance, plugin depends on project config
@@ -86,13 +87,11 @@ function loadPlugin(pluginRoot) {
     if (fs.existsSync(path.join(pluginRoot, 'build/main.js'))) {
       pluginInstance.ui = {
         root: path.join(pluginRoot, 'build'),
-        mainJs: path.join(pluginRoot, 'build/main.js'),
       };
     }
 
     // Plugin meta
-    Object.assgin(pluginInstance, _.pick(pkgJson, ['appType', 'name', 'isAppPlugin', 'featureFiles']));
-
+    Object.assign(pluginInstance, _.pick(pkgJson, ['appType', 'name', 'isAppPlugin', 'featureFiles']));
     if (!isPluginValidForProject(pluginInstance)) return null;
     return pluginInstance;
   } catch (e) {
@@ -135,6 +134,10 @@ function loadPlugins() {
 
 // Dynamically add an plugin
 function addPlugin(plugin) {
+  if (!needFilterPlugin) {
+    console.warn('You are adding a plugin after getPlugins is called.');
+  }
+  needFilterPlugin = true;
   if (!plugin.name) throw new Error('Each plugin should have a name.');
   if (_.find(plugins, { name: plugin.name })) {
     console.warn('You should not add a plugin with same name: ' + plugin.name);

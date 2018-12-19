@@ -16,7 +16,6 @@ let loaded = false;
 let needFilterPlugin = true;
 
 const DEFAULT_PLUGIN_DIR = path.join(os.homedir(), '.rekit/plugins');
-console.log(DEFAULT_PLUGIN_DIR)
 
 function getPluginsDir() {
   return DEFAULT_PLUGIN_DIR;
@@ -28,11 +27,9 @@ function filterPlugins() {
 
   // If no appType configured, set it to the first matched plugin except common.
   // Pure folder plugin is always loaded.
-  if (
-    !appType
-  ) {
+  if (!appType) {
     const appPlugin = _.find(plugins, p => p.isAppPlugin && p.appType !== 'common');
-    appType = appPlugin.appType;
+    if (appPlugin) appType = appPlugin.appType;
   }
 
   if (!appType) appType = 'common';
@@ -42,7 +39,7 @@ function filterPlugins() {
     return !p.appType || _.castArray(p.appType).includes(appType);
   });
 
-  plugins.forEach(p => console.log('Plugin applied: ', p.name, p.ui ? p.ui.root : ''))
+  plugins.forEach(p => console.log('Plugin applied: ', p.name, p.ui ? p.ui.root : ''));
 
   needFilterPlugin = false;
 }
@@ -72,8 +69,7 @@ function isPluginValidForProject(plugin) {
 }
 
 // Load plugin instance, plugin depends on project config
-function loadPlugin(pluginRoot) {
-  console.log('Loading plugin: ' + pluginRoot);
+function loadPlugin(pluginRoot, noUI) {
   try {
     const pkgJson = require(paths.join(pluginRoot, 'package.json'));
     const pluginInstance = {};
@@ -84,7 +80,7 @@ function loadPlugin(pluginRoot) {
     }
 
     // UI part
-    if (fs.existsSync(path.join(pluginRoot, 'build/main.js'))) {
+    if (!noUI && fs.existsSync(path.join(pluginRoot, 'build/main.js'))) {
       pluginInstance.ui = {
         root: path.join(pluginRoot, 'build'),
       };
@@ -134,6 +130,11 @@ function loadPlugins() {
 
 // Dynamically add an plugin
 function addPlugin(plugin) {
+  if (!plugin) {
+    console.warn('adding none plugin, ignored: ', plugin);
+    return;
+  }
+  console.log('adding plugin ', plugin.name);
   if (!needFilterPlugin) {
     console.warn('You are adding a plugin after getPlugins is called.');
   }
@@ -147,13 +148,33 @@ function addPlugin(plugin) {
 }
 
 function addPluginByPath(pluginRoot) {
-  const p = loadPlugin(pluginRoot);
-  if (p) plugins.push(p);
+  addPlugin(loadPlugin(pluginRoot));
 }
 
 function removePlugin(pluginName) {
   const removed = _.remove(plugins, { name: pluginName });
   if (!removed.length) console.warn('No plugin was removed: ' + pluginName);
+}
+
+// Load plugins from a plugin project
+function loadDevPlugins(prjRoot) {
+  const devPort = config.getRekitConfig(false, prjRoot).devPort;
+  const featuresDir = path.join(prjRoot, 'src/features');
+  shell
+    .ls(featuresDir)
+    .map(p => path.join(featuresDir, p))
+    .forEach(pluginRoot => {
+      const p = loadPlugin(pluginRoot, true);
+      console.log('load dev plugin: ', pluginRoot);
+      if (!p) return;
+      if (fs.existsSync(path.join(pluginRoot, 'entry.js'))) {
+        p.ui = {
+          root: path.join(pluginRoot, 'public'),
+          rootLink: `http://localhost:${devPort}/static/js/${p.name}.bundle.js`,
+        };
+      }
+      addPlugin(p);
+    });
 }
 
 module.exports = {
@@ -163,4 +184,5 @@ module.exports = {
   addPluginByPath,
   removePlugin,
   getPluginsDir,
+  loadDevPlugins,
 };

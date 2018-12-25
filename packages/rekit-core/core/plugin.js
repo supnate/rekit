@@ -17,6 +17,10 @@ let needFilterPlugin = true;
 
 const DEFAULT_PLUGIN_DIR = path.join(os.homedir(), '.rekit/plugins');
 
+const pluginsDirs = [DEFAULT_PLUGIN_DIR];
+function addPluginsDir(dir) {
+  pluginsDirs.push(dir);
+}
 function getPluginsDir() {
   return DEFAULT_PLUGIN_DIR;
 }
@@ -44,9 +48,9 @@ function filterPlugins() {
   needFilterPlugin = false;
 }
 function getPlugins(prop) {
-  if (!loaded) {
-    loadPlugins();
-  }
+  // if (!loaded) {
+  //   loadPlugins();
+  // }
 
   if (needFilterPlugin) {
     filterPlugins();
@@ -71,6 +75,7 @@ function isPluginValidForProject(plugin) {
 // Load plugin instance, plugin depends on project config
 function loadPlugin(pluginRoot, noUI) {
   try {
+    console.log('load plugin: ', pluginRoot);
     const pkgJson = require(paths.join(pluginRoot, 'package.json'));
     const pluginInstance = {};
     // Core part
@@ -80,9 +85,9 @@ function loadPlugin(pluginRoot, noUI) {
     }
 
     // UI part
-    if (!noUI && fs.existsSync(path.join(pluginRoot, 'build/main.js'))) {
+    if (!noUI && fs.existsSync(path.join(pluginRoot, 'main.js'))) {
       pluginInstance.ui = {
-        root: path.join(pluginRoot, 'build'),
+        root: pluginRoot,
       };
     }
 
@@ -97,35 +102,43 @@ function loadPlugin(pluginRoot, noUI) {
   return null;
 }
 
-function loadPlugins() {
-  if (loaded) return;
-  const localPluginRoot = paths.getLocalPluginRoot();
+function loadPlugins(dir) {
+  console.log('load plugins: ', dir);
+  // if (loaded) return;
+  // const localPluginRoot = paths.getLocalPluginRoot();
 
-  const prjPkgJson = require(paths.map('package.json'));
+  // const prjPkgJson = require(paths.map('package.json'));
 
   // Find local plugins, all local plugins are loaded
-  let pluginFolders = [];
-  if (fs.existsSync(localPluginRoot)) {
-    pluginFolders = pluginFolders.concat(
-      shell
-        .ls(localPluginRoot)
-        .filter(d => fs.existsSync(paths.join(localPluginRoot, d)))
-        .map(d => paths.join(localPluginRoot, d))
-    );
-  }
+  // let pluginFolders = [];
+  // if (fs.existsSync(localPluginRoot)) {
+  //   pluginFolders = pluginFolders.concat(
+  //     shell
+  //       .ls(localPluginRoot)
+  //       .filter(d => fs.existsSync(paths.join(localPluginRoot, d)))
+  //       .map(d => paths.join(localPluginRoot, d))
+  //   );
+  // }
 
-  // Find installed plugins, only those defined in package.rekit.plugins are loaded.
-  if (prjPkgJson.rekit && prjPkgJson.rekit.plugins) {
-    pluginFolders = pluginFolders.concat(
-      prjPkgJson.rekit.plugins.map(
-        p => (path.isAbsolute(p) ? p : require.resolve(/^rekit-plugin-/.test(p) ? p : 'rekit-plugin-' + p))
-      )
-    );
-  }
+  // // Find installed plugins, only those defined in package.rekit.plugins are loaded.
+  // if (prjPkgJson.rekit && prjPkgJson.rekit.plugins) {
+  //   pluginFolders = pluginFolders.concat(
+  //     prjPkgJson.rekit.plugins.map(
+  //       p => (path.isAbsolute(p) ? p : require.resolve(/^rekit-plugin-/.test(p) ? p : 'rekit-plugin-' + p))
+  //     )
+  //   );
+  // }
 
+  // const dirs = _.castArray(getPluginsDir());
+  // dirs.forEach(dir => {
+  fs.readdirSync(dir)
+    .map(d => path.join(dir, d))
+    .filter(d => fs.statSync(d).isDirectory())
+    .forEach(addPluginByPath);
+  // });
   // Create plugin instances
-  pluginFolders.forEach(addPluginByPath);
-  loaded = true;
+  // pluginFolders.forEach(addPluginByPath);
+  // loaded = true;
 }
 
 // Dynamically add an plugin
@@ -185,4 +198,5 @@ module.exports = {
   removePlugin,
   getPluginsDir,
   loadDevPlugins,
+  addPluginsDir,
 };

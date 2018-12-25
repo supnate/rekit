@@ -45,7 +45,7 @@ function readDir(dir) {
 }
 
 function startWatch(dir) {
-  const w = chokidar.watch(dir, { persistent: true, awaitWriteFinish: true });
+  const w = chokidar.watch(dir, { persistent: true, ignored: /node_modules/, awaitWriteFinish: true });
   w.on('ready', () => {
     w.on('add', onAdd);
     w.on('change', onChange);
@@ -112,6 +112,10 @@ function onAddDir(file) {
     children: [],
   };
   const dir = path.dirname(rFile);
+  if (!byId(dir)) {
+    console.warn('files.onAddDir: dir not exists: ', file);
+    return;
+  }
   byId(dir).children.push(rFile);
 
   sortElements(byId(dir).children);

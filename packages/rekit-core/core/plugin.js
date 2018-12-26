@@ -29,28 +29,26 @@ function filterPlugins() {
   const rekitConfig = config.getRekitConfig();
   let appType = rekitConfig.appType;
 
+  console.log('all plugins: ', plugins.map(p => p.name));
   // If no appType configured, set it to the first matched plugin except common.
   // Pure folder plugin is always loaded.
   if (!appType) {
+    plugins = plugins.filter(checkFeatureFiles); // Check folder structure if necessary
     const appPlugin = _.find(plugins, p => p.isAppPlugin && p.appType !== 'common');
-    if (appPlugin) appType = appPlugin.appType;
+    if (appPlugin) appType = _.castArray(appPlugin.appType)[0];
   }
 
   if (!appType) appType = 'common';
   config.setAppType(appType);
-
-  plugins = plugins.filter(p => {
-    return !p.appType || _.castArray(p.appType).includes(appType);
-  });
-
-  plugins.forEach(p => console.log('Plugin applied: ', p.name, p.ui ? p.ui.root : ''));
-
+  plugins = plugins.filter(p => console.log(p.appType, appType) || !p.appType || _.intersection(_.castArray(p.appType), _.castArray(appType)).length > 0);
+  console.log('applied plugins: ', plugins.map(p => p.name));
   needFilterPlugin = false;
 }
 function getPlugins(prop) {
-  // if (!loaded) {
-  //   loadPlugins();
-  // }
+  if (!loaded) {
+    if (fs.existsSync(DEFAULT_PLUGIN_DIR)) loadPlugins(DEFAULT_PLUGIN_DIR);
+    loaded = true;
+  }
 
   if (needFilterPlugin) {
     filterPlugins();
@@ -59,7 +57,7 @@ function getPlugins(prop) {
   return prop ? plugins.filter(_.property(prop)) : plugins;
 }
 
-function isPluginValidForProject(plugin) {
+function checkFeatureFiles(plugin) {
   // Detect if folder structure is for the plugin
   if (
     _.isArray(plugin.featureFiles) &&
@@ -74,8 +72,8 @@ function isPluginValidForProject(plugin) {
 
 // Load plugin instance, plugin depends on project config
 function loadPlugin(pluginRoot, noUI) {
+  // noUI flag is used for loading dev plugins whose ui is from webpack dev server
   try {
-    console.log('load plugin: ', pluginRoot);
     const pkgJson = require(paths.join(pluginRoot, 'package.json'));
     const pluginInstance = {};
     // Core part
@@ -93,7 +91,6 @@ function loadPlugin(pluginRoot, noUI) {
 
     // Plugin meta
     Object.assign(pluginInstance, _.pick(pkgJson, ['appType', 'name', 'isAppPlugin', 'featureFiles']));
-    if (!isPluginValidForProject(pluginInstance)) return null;
     return pluginInstance;
   } catch (e) {
     console.warn(`Failed to load plugin: ${pluginRoot}, ${e}\n${e.stack}`);
@@ -103,42 +100,10 @@ function loadPlugin(pluginRoot, noUI) {
 }
 
 function loadPlugins(dir) {
-  console.log('load plugins: ', dir);
-  // if (loaded) return;
-  // const localPluginRoot = paths.getLocalPluginRoot();
-
-  // const prjPkgJson = require(paths.map('package.json'));
-
-  // Find local plugins, all local plugins are loaded
-  // let pluginFolders = [];
-  // if (fs.existsSync(localPluginRoot)) {
-  //   pluginFolders = pluginFolders.concat(
-  //     shell
-  //       .ls(localPluginRoot)
-  //       .filter(d => fs.existsSync(paths.join(localPluginRoot, d)))
-  //       .map(d => paths.join(localPluginRoot, d))
-  //   );
-  // }
-
-  // // Find installed plugins, only those defined in package.rekit.plugins are loaded.
-  // if (prjPkgJson.rekit && prjPkgJson.rekit.plugins) {
-  //   pluginFolders = pluginFolders.concat(
-  //     prjPkgJson.rekit.plugins.map(
-  //       p => (path.isAbsolute(p) ? p : require.resolve(/^rekit-plugin-/.test(p) ? p : 'rekit-plugin-' + p))
-  //     )
-  //   );
-  // }
-
-  // const dirs = _.castArray(getPluginsDir());
-  // dirs.forEach(dir => {
   fs.readdirSync(dir)
     .map(d => path.join(dir, d))
     .filter(d => fs.statSync(d).isDirectory())
     .forEach(addPluginByPath);
-  // });
-  // Create plugin instances
-  // pluginFolders.forEach(addPluginByPath);
-  // loaded = true;
 }
 
 // Dynamically add an plugin
@@ -147,7 +112,6 @@ function addPlugin(plugin) {
     console.warn('adding none plugin, ignored: ', plugin);
     return;
   }
-  console.log('adding plugin ', plugin.name);
   if (!needFilterPlugin) {
     console.warn('You are adding a plugin after getPlugins is called.');
   }
@@ -178,7 +142,6 @@ function loadDevPlugins(prjRoot) {
     .map(p => path.join(featuresDir, p))
     .forEach(pluginRoot => {
       const p = loadPlugin(pluginRoot, true);
-      console.log('load dev plugin: ', pluginRoot);
       if (!p) return;
       if (fs.existsSync(path.join(pluginRoot, 'entry.js'))) {
         p.ui = {

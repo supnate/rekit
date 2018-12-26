@@ -9,6 +9,7 @@ function getProjectData() {
   if (plugins.length) {
     plugins.forEach(p => Object.assign(prjData, p.app.getProjectData()));
   }
+
   app.lastGetProjectDataTimestamp = files.lastChangeTime;
   return prjData;
 }

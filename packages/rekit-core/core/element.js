@@ -37,9 +37,10 @@ function byId(id) {
 }
 
 function execHooks(beforeAfter, action, type) {
+  console.log('exec hooks: ', beforeAfter, action, type);
   const methodName = _.camelCase(`${beforeAfter}-${action}-${type}`);
   const hooksPlugins = plugin.getPlugins(`hooks.${methodName}`);
-  const args = _.toArray(arguments).slice(2);
+  const args = _.toArray(arguments).slice(3);
   hooksPlugins.forEach(p => p.hooks[methodName].apply(p.hook, args));
 }
 

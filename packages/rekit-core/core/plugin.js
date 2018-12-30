@@ -100,6 +100,7 @@ function loadPlugin(pluginRoot, noUI) {
 }
 
 function loadPlugins(dir) {
+  console.log('load plugins from dir: ', dir);
   fs.readdirSync(dir)
     .map(d => path.join(dir, d))
     .filter(d => fs.statSync(d).isDirectory())

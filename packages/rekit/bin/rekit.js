@@ -15,36 +15,6 @@ const createApp = require('./createApp');
 const createPlugin = require('./createPlugin');
 const installPlugin = require('./installPlugin');
 
-// If runs under a project
-// function getLocalRekitCore() {
-//   let cwd = process.cwd();
-//   let lastDir = null;
-//   let prjRoot = null;
-//   // Traverse above until find the package.json.
-//   while (cwd && lastDir !== cwd) {
-//     if (fs.existsSync(path.join(cwd, 'package.json'))) {
-//       prjRoot = cwd;
-//       break;
-//     }
-//     lastDir = cwd;
-//     cwd = path.join(cwd, '..');
-//   }
-
-//   const pkgJson = prjRoot ? path.join(prjRoot, 'package.json') : null;
-//   if (!prjRoot || !fs.existsSync(pkgJson)) return null;
-//   else {
-//     const pj = require(pkgJson);
-//     if (
-//       !((pj.devDependencies && pj.devDependencies['rekit-core']) || (pj.dependencies && pj.dependencies['rekit-core']))
-//     ) {
-//       return null;
-//     }
-//   }
-//   return require(resolveCwd('rekit-core'));
-// }
-
-// const rekit = getLocalRekitCore();
-
 const parser = new ArgumentParser({
   version: rekitPkgJson.version,
   addHelp: true,
@@ -179,12 +149,6 @@ mvCmd.addArgument('target', {
   help:
     "The target element to reach, in format of <feature>/<name>, e.g.: 'rekit move component user/list-view employee/list'. Name is unnecessary if move a feature.",
 });
-
-// if (rekitCore) {
-//   rekitCore.plugin.getPlugins(rekitCore).forEach(p => {
-//     if (p.config.defineArgs) p.config.defineArgs(addCmd, mvCmd, rmCmd);
-//   });
-// }
 
 const args = parser.parseArgs();
 

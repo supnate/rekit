@@ -6,12 +6,19 @@
  **/
 
 const _ = require('lodash');
+const fs = require('fs');
 const shell = require('shelljs');
 const vio = require('./vio');
 
 // Make sure it works in template
-_.pascalCase = _.flow(_.camelCase, _.upperFirst);
-_.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
+_.pascalCase = _.flow(
+  _.camelCase,
+  _.upperFirst,
+);
+_.upperSnakeCase = _.flow(
+  _.snakeCase,
+  _.toUpper,
+);
 
 /**
  * Process the template file and save the result to virtual IO.
@@ -34,6 +41,11 @@ _.upperSnakeCase = _.flow(_.snakeCase, _.toUpper);
  * // NOTE the result is only in vio, you need to call vio.flush() to write to disk.
  **/
 function generate(targetPath, args) {
+  if (!args.template && args.templateFile && !fs.existsSync(args.templateFile)) {
+    const err = new Error(`No template file found: ${args.templateFile}`);
+    err.code = 'TEMPLATE_FILE_NOT_FOUND';
+    throw err;
+  }
   const tpl = args.template || shell.cat(args.templateFile);
   const compiled = _.template(tpl, args.templateOptions || {});
   const result = compiled(args.context || {});

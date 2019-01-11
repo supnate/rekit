@@ -40,6 +40,7 @@ function execHooks(beforeAfter, action, type) {
   console.log('exec hooks: ', beforeAfter, action, type);
   const methodName = _.camelCase(`${beforeAfter}-${action}-${type}`);
   const hooksPlugins = plugin.getPlugins(`hooks.${methodName}`);
+  console.log('hooks plugins: ', `hooks.${methodName}`, hooksPlugins.length);
   const args = _.toArray(arguments).slice(3);
   hooksPlugins.forEach(p => p.hooks[methodName].apply(p.hook, args));
 }
@@ -49,6 +50,7 @@ function execBeforeHooks() {
   args.unshift('before');
   execHooks.apply(null, args);
 }
+
 function execAfterHooks() {
   const args = _.toArray(arguments);
   args.unshift('after');

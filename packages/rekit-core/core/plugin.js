@@ -40,7 +40,9 @@ function filterPlugins() {
 
   if (!appType) appType = 'common';
   config.setAppType(appType);
-  plugins = plugins.filter(p => console.log(p.appType, appType) || !p.appType || _.intersection(_.castArray(p.appType), _.castArray(appType)).length > 0);
+  plugins = plugins.filter(
+    p => !p.appType || _.intersection(_.castArray(p.appType), _.castArray(appType)).length > 0,
+  );
   console.log('applied plugins: ', plugins.map(p => p.name));
   needFilterPlugin = false;
 }
@@ -61,8 +63,10 @@ function checkFeatureFiles(plugin) {
   // Detect if folder structure is for the plugin
   if (
     _.isArray(plugin.featureFiles) &&
-    !plugin.featureFiles.every(
-      f => (f.startsWith('!') ? !fs.existsSync(paths.map(f.replace('!', ''))) : fs.existsSync(paths.map(f)))
+    !plugin.featureFiles.every(f =>
+      f.startsWith('!')
+        ? !fs.existsSync(paths.map(f.replace('!', '')))
+        : fs.existsSync(paths.map(f)),
     )
   ) {
     return false;
@@ -90,7 +94,10 @@ function loadPlugin(pluginRoot, noUI) {
     }
 
     // Plugin meta
-    Object.assign(pluginInstance, _.pick(pkgJson, ['appType', 'name', 'isAppPlugin', 'featureFiles']));
+    Object.assign(
+      pluginInstance,
+      _.pick(pkgJson, ['appType', 'name', 'isAppPlugin', 'featureFiles']),
+    );
     return pluginInstance;
   } catch (e) {
     console.warn(`Failed to load plugin: ${pluginRoot}, ${e}\n${e.stack}`);
@@ -117,7 +124,10 @@ function addPlugin(plugin) {
     console.warn('You are adding a plugin after getPlugins is called.');
   }
   needFilterPlugin = true;
-  if (!plugin.name) throw new Error('Each plugin should have a name.');
+  if (!plugin.name) {
+    console.log('plugin: ', plugin);
+    throw new Error('Each plugin should have a name.');
+  }
   if (_.find(plugins, { name: plugin.name })) {
     console.warn('You should not add a plugin with same name: ' + plugin.name);
     return;

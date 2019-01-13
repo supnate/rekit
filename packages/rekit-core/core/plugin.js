@@ -87,9 +87,9 @@ function loadPlugin(pluginRoot, noUI) {
     }
 
     // UI part
-    if (!noUI && fs.existsSync(path.join(pluginRoot, 'main.js'))) {
+    if (!noUI && fs.existsSync(path.join(pluginRoot, 'build/main.js'))) {
       pluginInstance.ui = {
-        root: pluginRoot,
+        root: path.join(pluginRoot, 'build'),
       };
     }
 

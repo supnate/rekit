@@ -3,7 +3,6 @@ const { files, paths } = rekit.core;
 
 function create() {}
 function getProjectData() {
-  console.log('prj root: ', paths.getProjectRoot());
   return files.readDir(paths.getProjectRoot());
 }
 

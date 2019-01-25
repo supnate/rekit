@@ -3,11 +3,11 @@ const plugin = require('./plugin');
 
 const app = {};
 
-function getProjectData() {
+function getProjectData(args = {}) {
   const plugins = plugin.getPlugins('app.getProjectData');
   const prjData = {};
   if (plugins.length) {
-    plugins.forEach(p => Object.assign(prjData, p.app.getProjectData()));
+    plugins.forEach(p => Object.assign(prjData, p.app.getProjectData(args)));
   }
 
   app.lastGetProjectDataTimestamp = files.lastChangeTime;

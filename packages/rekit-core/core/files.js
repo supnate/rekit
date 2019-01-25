@@ -10,9 +10,9 @@ const EventEmitter = require('events');
 
 // Maintain file structure in memory and keep sync with disk if any file changed.
 
-const cache = {};
-const parentHash = {};
-const allElementById = {};
+let cache = {};
+let parentHash = {};
+let allElementById = {};
 const byId = id => allElementById[id];
 
 const watchers = {};
@@ -23,7 +23,12 @@ const emitChange = _.debounce(() => {
   files.emit('change');
 }, 100);
 
-function readDir(dir) {
+function readDir(dir, args = {}) {
+  if (args.force) {
+    cache = {};
+    parentHash = {};
+    allElementById = {};
+  }
   dir = dir || paths.map('src');
   if (!watchers[dir]) startWatch(dir);
   if (!cache[dir]) {

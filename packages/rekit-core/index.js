@@ -11,6 +11,8 @@ const ast = require('./core/ast');
 const refactor = require('./core/refactor');
 const deps = require('./core/deps');
 const handleCommand = require('./core/handleCommand');
+const create = require('./core/create');
+const utils = require('./core/utils');
 
 _.pascalCase = _.flow(
   _.camelCase,
@@ -37,6 +39,8 @@ global.rekit = {
     ast,
     deps,
     handleCommand,
+    create,
+    utils,
   },
 };
 

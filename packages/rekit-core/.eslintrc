@@ -8,6 +8,7 @@
     "no-confusing-arrow": 0,
     "arrow-parens": 0,
     "strict": 0,
+    "curly": 0,
     "spaced-comment": 0,
     "prefer-template": 0,
     "comma-dangle": 0,
@@ -21,6 +22,7 @@
     "global-require": 0,
     "no-underscore-dangle": 0,
     "prefer-destructuring": 0,
+    "prefer-promise-reject-errors": 0,
     "import/no-dynamic-require": 0
   }
 }

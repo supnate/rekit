@@ -33,6 +33,11 @@ const createCmd = subparsers.addParser('create', {
   description: 'Create a new Rekit project.',
 });
 
+const listCmd = subparsers.addParser('list', {
+  addHelp: true,
+  description: 'List supported application types.',
+});
+
 createCmd.addArgument('name', {
   help: 'The project name',
 });
@@ -42,15 +47,19 @@ createCmd.addArgument(['--sass'], {
   action: 'storeTrue',
 });
 
+createCmd.addArgument(['--source', '-s'], {
+  help: 'Source for creating the project.',
+});
+
 createCmd.addArgument(['--clean', '-c'], {
   help: 'Create a clean app without sample actions/pages.',
   action: 'storeTrue',
 });
 
-createCmd.addArgument(['--template', '-t'], {
+createCmd.addArgument(['--type', '-t'], {
   help:
-    'Which template to use for creating a project. Clone from "https://github.com/supnate/rekit-boilerplate-${template} Default to cra (create-react-app). If it\'s rekit. Then use supnate/rekit-boilerplate.',
-  defaultValue: 'cra',
+    'Which type of the application to create.',
+  defaultValue: 'rekit-react',
 });
 
 const createPluginCmd = subparsers.addParser('create-plugin', {
@@ -164,7 +173,10 @@ const rekit = require('rekit-core');
 switch (args.commandName) {
   case 'create':
     // Only create command is handled rekit
-    createApp(args);
+    rekit.core.create(args);
+    break;
+  case 'list':
+    //
     break;
   case 'create-plugin':
     createPlugin(args, rekit);

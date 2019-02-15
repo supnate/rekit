@@ -24,7 +24,7 @@ function create(options) {
     };
   if (!options.type) options.type = 'rekit-react';
 
-  const prjDir = path.join(process.cwd(), options.name);
+  const prjDir = path.join(options.position || process.cwd(), options.name);
   return new Promise(async (resolve, reject) => {
     try {
       if (fs.existsSync(prjDir)) {
@@ -114,7 +114,7 @@ function postCreate(prjDir, options) {
   if (fs.existsSync(postCreateScript)) {
     options.status('EXEC_POST_CREATE', 'Post creation...');
     require(postCreateScript)(options);
-    fs.remove(postCreateScript);
+    fs.removeSync(postCreateScript);
   }
 }
 

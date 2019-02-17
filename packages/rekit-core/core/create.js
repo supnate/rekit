@@ -24,7 +24,7 @@ function create(options) {
     };
   if (!options.type) options.type = 'rekit-react';
 
-  const prjDir = path.join(options.position || process.cwd(), options.name);
+  const prjDir = path.join(options.location || process.cwd(), options.name);
   return new Promise(async (resolve, reject) => {
     try {
       if (fs.existsSync(prjDir)) {
@@ -63,6 +63,8 @@ function create(options) {
 
       postCreate(prjDir, options);
       console.log('App creation success.');
+      options.status('CREATION_SUCCESS', 'App creation success.');
+      resolve();
     } catch (err) {
       reject(err);
     }
@@ -109,10 +111,9 @@ function cloneRepo(gitRepo, prjDir) {
 }
 
 function postCreate(prjDir, options) {
-  options.status('POST_CREATE', 'Executing post create script...');
   const postCreateScript = path.join(prjDir, 'postCreate.js');
   if (fs.existsSync(postCreateScript)) {
-    options.status('EXEC_POST_CREATE', 'Post creation...');
+    options.status('POST_CREATE', 'Executing post create script...');
     require(postCreateScript)(options);
     fs.removeSync(postCreateScript);
   }

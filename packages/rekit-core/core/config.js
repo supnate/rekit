@@ -1,5 +1,6 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const paths = require('./paths');
+const chokidar = require('chokidar');
 
 let appType;
 function getPkgJson(noCache, prjRoot) {
@@ -9,12 +10,30 @@ function getPkgJson(noCache, prjRoot) {
   return require(pkgJsonPath);
 }
 
+let rekitConfig = null;
+let rekitConfigWatcher = null;
 function getRekitConfig(noCache, prjRoot) {
-  const pkgJson = getPkgJson(noCache, prjRoot);
-  let config = (pkgJson && pkgJson.rekit) || {};
-  if (!config) config = {};
-  config.appType = appType || config.appType;
-  return config;
+  const rekitConfigFile = prjRoot ? paths.join(prjRoot, '.rekit') : paths.map('.rekit');
+  const pkgJsonPath = prjRoot ? paths.join(prjRoot, 'package.json') : paths.map('package.json');
+  if (!rekitConfigWatcher) {
+    rekitConfigWatcher = chokidar.watch([rekitConfigFile, pkgJsonPath], { persistent: true });
+    rekitConfigWatcher.on('all', () => {
+      rekitConfig = null;
+    });
+  }
+
+  if (rekitConfig) return rekitConfig;
+
+  if (fs.existsSync(rekitConfigFile)) {
+    rekitConfig = fs.readJsonSync(rekitConfigFile);
+  } else {
+    const pkgJson = getPkgJson(true, prjRoot);
+    rekitConfig = pkgJson.rekit;
+  }
+
+  const c = rekitConfig || {};
+  c.appType = appType || c.appType;
+  return c;
 }
 
 function setAppType(_appType) {

@@ -5,6 +5,7 @@
 //  Build scalable web applications with React, Redux and React-router.
 // Usage:
 //  rekit action [...args]
+global.__REKIT_NO_CONFIG_WATCH = true;
 
 const path = require('path');
 const fs = require('fs');
@@ -57,8 +58,7 @@ createCmd.addArgument(['--clean', '-c'], {
 });
 
 createCmd.addArgument(['--type', '-t'], {
-  help:
-    'Which type of the application to create.',
+  help: 'Which type of the application to create.',
   defaultValue: 'rekit-react',
 });
 

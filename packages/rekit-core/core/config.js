@@ -1,6 +1,9 @@
 const fs = require('fs-extra');
 const paths = require('./paths');
 const chokidar = require('chokidar');
+const EventEmitter = require('events');
+
+const config = new EventEmitter();
 
 let appType;
 function getPkgJson(noCache, prjRoot) {
@@ -15,10 +18,11 @@ let rekitConfigWatcher = null;
 function getRekitConfig(noCache, prjRoot) {
   const rekitConfigFile = prjRoot ? paths.join(prjRoot, '.rekit') : paths.map('.rekit');
   const pkgJsonPath = prjRoot ? paths.join(prjRoot, 'package.json') : paths.map('package.json');
-  if (!rekitConfigWatcher) {
+  if (!rekitConfigWatcher && !global.__REKIT_NO_CONFIG_WATCH) {
     rekitConfigWatcher = chokidar.watch([rekitConfigFile, pkgJsonPath], { persistent: true });
     rekitConfigWatcher.on('all', () => {
       rekitConfig = null;
+      config.emit('change');
     });
   }
 
@@ -41,10 +45,12 @@ function setAppType(_appType) {
 }
 
 // Load rekit configuration from package.json
-module.exports = {
+Object.assign(config, {
   css: 'less',
   style: 'less',
   getPkgJson,
   getRekitConfig,
   setAppType,
-};
+});
+
+module.exports = config;

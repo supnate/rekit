@@ -16,7 +16,7 @@ function getPkgJson(noCache, prjRoot) {
 let rekitConfig = null;
 let rekitConfigWatcher = null;
 function getRekitConfig(noCache, prjRoot) {
-  const rekitConfigFile = prjRoot ? paths.join(prjRoot, '.rekit') : paths.map('.rekit');
+  const rekitConfigFile = prjRoot ? paths.join(prjRoot, '.rekitrc') : paths.map('.rekitrc');
   const pkgJsonPath = prjRoot ? paths.join(prjRoot, 'package.json') : paths.map('package.json');
   if (!rekitConfigWatcher && !global.__REKIT_NO_CONFIG_WATCH) {
     rekitConfigWatcher = chokidar.watch([rekitConfigFile, pkgJsonPath], { persistent: true });

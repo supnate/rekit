@@ -16,7 +16,7 @@ function getPkgJson(noCache, prjRoot) {
 let rekitConfig = null;
 let rekitConfigWatcher = null;
 function getRekitConfig(noCache, prjRoot) {
-  const rekitConfigFile = prjRoot ? paths.join(prjRoot, '.rekitrc') : paths.map('.rekitrc');
+  const rekitConfigFile = prjRoot ? paths.join(prjRoot, 'rekit.json') : paths.map('rekit.json');
   const pkgJsonPath = prjRoot ? paths.join(prjRoot, 'package.json') : paths.map('package.json');
   if (!rekitConfigWatcher && !global.__REKIT_NO_CONFIG_WATCH) {
     rekitConfigWatcher = chokidar.watch([rekitConfigFile, pkgJsonPath], { persistent: true });
@@ -29,7 +29,11 @@ function getRekitConfig(noCache, prjRoot) {
   if (rekitConfig) return rekitConfig;
 
   if (fs.existsSync(rekitConfigFile)) {
-    rekitConfig = fs.readJsonSync(rekitConfigFile);
+    try {
+      rekitConfig = fs.readJsonSync(rekitConfigFile);
+    } catch (err) {
+      throw new Error('Config file broken: failed to parse rekit.json');
+    }
   } else {
     const pkgJson = getPkgJson(true, prjRoot);
     rekitConfig = pkgJson.rekit;

@@ -42,7 +42,7 @@ function create(options) {
           const srcDir = path.isAbsolute(options.source) ? options.source : path.join(process.cwd(), options.source);
           options.status('CREATE_APP_COPY_FILES', `Copy files from ${srcDir}...`);
           await fs.copy(srcDir, prjDir, {
-            filter: src => !/\/(\.git|node_modules)\//.test(src),
+            filter: src => !/\/(\.git|node_modules\/|node_modules$)/.test(src),
           });
         }
       } else if (options.type) {
@@ -62,8 +62,7 @@ function create(options) {
       }
 
       postCreate(prjDir, options);
-      console.log('App creation success.');
-      options.status('CREATION_SUCCESS', 'App creation success.');
+      options.status('CREATION_SUCCESS', '😃App creation success.');
       resolve();
     } catch (err) {
       reject(err);

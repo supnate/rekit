@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const path = require('path');
 const paths = require('./paths');
 const chokidar = require('chokidar');
 const EventEmitter = require('events');
@@ -38,12 +39,17 @@ function getRekitConfig(noCache, prjRoot) {
     }
   } else {
     const pkgJson = getPkgJson(true, prjRoot);
-    rekitConfig = pkgJson.rekit;
+    rekitConfig = pkgJson && pkgJson.rekit || {};
   }
 
   const c = rekitConfig || {};
   c.appType = appType || c.appType;
   return c;
+}
+
+function getAppName() {
+  const pkgJson = getPkgJson();
+  return pkgJson ? pkgJson.name : path.basename(__dirname);
 }
 
 function setAppType(_appType) {
@@ -70,6 +76,7 @@ function getPluginRegistry() {
 Object.assign(config, {
   css: 'less',
   style: 'less',
+  getAppName,
   getPkgJson,
   getRekitConfig,
   setAppType,

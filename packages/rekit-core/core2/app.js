@@ -33,6 +33,11 @@ function getRekitProps(file) {
   const ast = vio.getAst(file);
   const ff = {}; // File features
 
+  const cssFile = file.replace(/\.[^\.]+$/, '') + '.' + utils.getCssExt();
+  if (shell.test('-e', cssFile)) {
+    ff.hasCss = true;
+  }
+
   traverse(ast, {
     ImportDeclaration(path) {
       switch (path.node.source.value) {
@@ -71,7 +76,7 @@ function getRekitProps(file) {
   });
   const props = {
     component: ff.importReact &&
-      ff.hasClassAndRenderMethod && {
+      (ff.hasClassAndRenderMethod || ff.hasCss) && {
         connectToStore: ff.connectCall,
       },
     action: ff.exportReducer &&

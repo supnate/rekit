@@ -124,41 +124,47 @@ function postCreate(prjDir, options) {
 function syncAppRegistryRepo() {
   const registryDir = path.join(os.homedir(), '.rekit/app-registry');
   return new Promise((resolve, reject) => {
-    const options = {
-      hostname: 'api.github.com',
-      path: '/repos/rekit/app-registry/git/refs/heads/master',
-      headers: { 'User-Agent': 'rekit-core' },
-    };
+    const appRegistry = config.getAppRegistry();
+    const arr = appRegistry.split('/');
+    const owner = arr[0];
+    const arr2 = arr[1].split('#');
+    const repo = arr2[0];
+    const branch = arr2[1] || 'master';
+    console.log(owner, repo, branch);
     https
-      .get(options, resp => {
-        let data = '';
+      .get(
+        `https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`,
+        { headers: { 'User-Agent': 'rekit-core' } },
+        resp => {
+          let data = '';
 
-        // A chunk of data has been recieved.
-        resp.on('data', chunk => {
-          data += chunk;
-        });
+          // A chunk of data has been recieved.
+          resp.on('data', chunk => {
+            data += chunk;
+          });
 
-        // The whole response has been received. Print out the result.
-        resp.on('end', () => {
-          try {
-            const ref = JSON.parse(data);
-            const lastCommit = ref.object.sha;
-            if (!fs.existsSync(path.join(registryDir, lastCommit))) {
-              fs.removeSync(registryDir);
-              cloneRepo('rekit/app-registry#master', registryDir)
-                .then(() => {
-                  fs.writeFileSync(path.join(registryDir, lastCommit), '');
-                  resolve(lastCommit);
-                })
-                .catch(reject);
-            } else {
-              resolve();
+          // The whole response has been received. Print out the result.
+          resp.on('end', () => {
+            try {
+              const ref = JSON.parse(data);
+              const lastCommit = ref.object.sha;
+              if (!fs.existsSync(path.join(registryDir, lastCommit))) {
+                fs.removeSync(registryDir);
+                cloneRepo(appRegistry, registryDir)
+                  .then(() => {
+                    fs.writeFileSync(path.join(registryDir, lastCommit), '');
+                    resolve(lastCommit);
+                  })
+                  .catch(reject);
+              } else {
+                resolve();
+              }
+            } catch (err) {
+              reject(err);
             }
-          } catch (err) {
-            reject(err);
-          }
-        });
-      })
+          });
+        }
+      )
       .on('error', err => {
         console.log('Failed to get last commit of app registry: ', err);
         reject('FAILED_CHECK_APP_REGISTRY_LATEST_COMMIT');
@@ -168,3 +174,4 @@ function syncAppRegistryRepo() {
 
 module.exports = create;
 module.exports.syncAppRegistryRepo = syncAppRegistryRepo;
+syncAppRegistryRepo();

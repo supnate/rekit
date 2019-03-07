@@ -5,8 +5,8 @@ const EventEmitter = require('events');
 
 const config = new EventEmitter();
 
-let appRegistry = 'https://github.com/rekit/app-registry';
-let pluginRegistry = 'https://github.com/rekit/plugin-registry';
+let appRegistry = 'rekit/app-registry';
+let pluginRegistry = 'rekit/plugin-registry';
 let appType;
 function getPkgJson(noCache, prjRoot) {
   const pkgJsonPath = prjRoot ? paths.join(prjRoot, 'package.json') : paths.map('package.json');

@@ -14,8 +14,8 @@ const path = require('path');
 const https = require('https');
 const fs = require('fs-extra');
 const download = require('download-git-repo');
-const os = require('os');
 const config = require('./config');
+const paths = require('./paths');
 
 function create(options) {
   console.log('Creating app: ', options);
@@ -74,22 +74,11 @@ function create(options) {
 
 function getAppTypes() {
   return new Promise((resolve, reject) => {
-    https
-      .get('https://raw.githubusercontent.com/supnate/rekit-registry/master/appTypes.json', resp => {
-        let data = '';
-
-        // A chunk of data has been recieved.
-        resp.on('data', chunk => {
-          data += chunk;
-        });
-
-        // The whole response has been received. Print out the result.
-        resp.on('end', () => {
-          const appTypes = JSON.parse(data);
-          resolve(appTypes);
-        });
+    syncAppRegistryRepo()
+      .then(() => {
+        resolve(fs.readJsonSync(paths.configFile('app-registry/appTypes.json')));
       })
-      .on('error', err => {
+      .catch(err => {
         console.log('Failed to get app types: ', err);
         reject('GET_APP_TYPES_FAILED');
       });
@@ -122,7 +111,7 @@ function postCreate(prjDir, options) {
 }
 
 function syncAppRegistryRepo() {
-  const registryDir = path.join(os.homedir(), '.rekit/app-registry');
+  const registryDir = paths.configFile('app-registry');
   return new Promise((resolve, reject) => {
     const appRegistry = config.getAppRegistry();
     const arr = appRegistry.split('/');
@@ -174,4 +163,3 @@ function syncAppRegistryRepo() {
 
 module.exports = create;
 module.exports.syncAppRegistryRepo = syncAppRegistryRepo;
-syncAppRegistryRepo();

@@ -5,6 +5,8 @@ const EventEmitter = require('events');
 
 const config = new EventEmitter();
 
+let appRegistry = 'https://github.com/rekit/app-registry';
+let pluginRegistry = 'https://github.com/rekit/plugin-registry';
 let appType;
 function getPkgJson(noCache, prjRoot) {
   const pkgJsonPath = prjRoot ? paths.join(prjRoot, 'package.json') : paths.map('package.json');
@@ -48,6 +50,22 @@ function setAppType(_appType) {
   appType = _appType;
 }
 
+function setAppRegistry(reg) {
+  appRegistry = reg;
+}
+
+function getAppRegistry() {
+  return appRegistry;
+}
+
+function setPluginRegistry(reg) {
+  pluginRegistry = reg;
+}
+
+function getPluginRegistry() {
+  return pluginRegistry;
+}
+
 // Load rekit configuration from package.json
 Object.assign(config, {
   css: 'less',
@@ -55,6 +73,10 @@ Object.assign(config, {
   getPkgJson,
   getRekitConfig,
   setAppType,
+  setAppRegistry,
+  setPluginRegistry,
+  getAppRegistry,
+  getPluginRegistry,
 });
 
 module.exports = config;

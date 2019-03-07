@@ -1,4 +1,5 @@
 const path = require('path');
+const os = require('os');
 const _ = require('lodash');
 
 function join() {
@@ -41,6 +42,10 @@ function getFileId(filePath) {
   return filePath.replace(getProjectRoot()).replace(/^\/?/, '');
 }
 
+const rekitDir = path.join(os.homedir(), './rekit');
+function configFile(file) {
+  return path.join(rekitDir, file);
+}
 module.exports = {
   join,
   map,
@@ -48,6 +53,8 @@ module.exports = {
   setProjectRoot,
   getProjectRoot,
   relative,
+  rekitDir,
+  configFile,
   relativeModuleSource,
   getLocalPluginRoot: () => map('tools/plugins'),
 };

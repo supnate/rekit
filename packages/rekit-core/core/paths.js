@@ -42,7 +42,7 @@ function getFileId(filePath) {
   return filePath.replace(getProjectRoot()).replace(/^\/?/, '');
 }
 
-const rekitDir = path.join(os.homedir(), './rekit');
+const rekitDir = path.join(os.homedir(), '.rekit');
 function configFile(file) {
   return path.join(rekitDir, file);
 }

@@ -146,6 +146,7 @@ function syncAppRegistryRepo() {
                   })
                   .catch(reject);
               } else {
+                console.log('App registry is up to date.');
                 resolve();
               }
             } catch (err) {

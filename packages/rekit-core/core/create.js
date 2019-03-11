@@ -12,6 +12,7 @@
 
 const path = require('path');
 const https = require('https');
+const _ = require('lodash');
 const fs = require('fs-extra');
 const download = require('download-git-repo');
 const config = require('./config');
@@ -51,8 +52,9 @@ function create(options) {
         // Get gitRepo
         options.status('QUERY_APP_TYPES_GIT_REPO', `Looking for the git repo for app type ${options.type}...`);
         const appTypes = await getAppTypes();
-        if (!appTypes[options.type]) reject('APP_TYPE_NOT_SUPPORTED');
-        gitRepo = appTypes[options.type].repo;
+        const appType = _.find(appTypes, { id: options.type });
+        if (!appType) reject('APP_TYPE_NOT_SUPPORTED');
+        gitRepo = appType.repo;
       } else {
         await fs.remove(prjDir);
         reject('NO_SOURCE_OR_APP_TYPE');
@@ -179,4 +181,3 @@ function syncAppRegistryRepo() {
 
 module.exports = create;
 module.exports.syncAppRegistryRepo = syncAppRegistryRepo;
-

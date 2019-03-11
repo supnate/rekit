@@ -114,16 +114,31 @@ function syncAppRegistryRepo() {
   const registryDir = paths.configFile('app-registry');
   return new Promise((resolve, reject) => {
     const appRegistry = config.getAppRegistry();
+    if (path.isAbsolute(appRegistry)) {
+      // if it's local folder, copy to it
+      console.log('Sync app registry from local folder.');
+      fs.removeSync(registryDir);
+      fs.copySync(appRegistry, registryDir);
+      resolve();
+      return;
+    }
     const arr = appRegistry.split('/');
     const owner = arr[0];
     const arr2 = arr[1].split('#');
     const repo = arr2[0];
     const branch = arr2[1] || 'master';
     console.log(owner, repo, branch);
+    const url = `https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`;
+    console.log('url:', url);
     https
       .get(
-        `https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`,
-        { headers: { 'User-Agent': 'rekit-core' } },
+        // url,
+        {
+          hostname: 'api.github.com',
+          path: `/repos/${owner}/${repo}/git/refs/heads/${branch}`,
+          port: 443,
+          headers: { 'User-Agent': 'rekit-core' },
+        },
         resp => {
           let data = '';
 
@@ -164,3 +179,4 @@ function syncAppRegistryRepo() {
 
 module.exports = create;
 module.exports.syncAppRegistryRepo = syncAppRegistryRepo;
+

@@ -9,6 +9,15 @@ const config = new EventEmitter();
 let appRegistry = 'rekit/app-registry';
 let pluginRegistry = 'rekit/plugin-registry';
 let appType;
+if (fs.existsSync(paths.configFile('config.json'))) {
+  try {
+    const rekitConfig = require(paths.configFile('config.json'));
+    appRegistry = rekitConfig.appRegistry;
+    pluginRegistry = rekitConfig.pluginRegistry;
+  } catch (err) {
+    // Do nothing if config.json broken or not exists
+  }
+}
 function getPkgJson(noCache, prjRoot) {
   const pkgJsonPath = prjRoot ? paths.join(prjRoot, 'package.json') : paths.map('package.json');
   if (!fs.existsSync(pkgJsonPath)) return null;
@@ -39,7 +48,7 @@ function getRekitConfig(noCache, prjRoot) {
     }
   } else {
     const pkgJson = getPkgJson(true, prjRoot);
-    rekitConfig = pkgJson && pkgJson.rekit || {};
+    rekitConfig = (pkgJson && pkgJson.rekit) || {};
   }
 
   const c = rekitConfig || {};

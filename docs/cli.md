@@ -84,7 +84,7 @@ Below is the list of all Rekit commands to manage project elements:
           <td>rekit add action &lt;action-name&gt; [-a]</td>
           <td>
             Add a new action. <br />
-            - `-u`: add an async action.
+            - `-a`: add an async action.
           </td>
         </tr>
         <tr>

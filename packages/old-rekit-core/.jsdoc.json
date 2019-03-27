@@ -1,9 +1,0 @@
-{
-  "opts": {
-    "destination": "docs",
-    "recurse": true,
-    "readme": "API.md",
-    "template": "node_modules/docdash"
-  },
-  "plugins": ["plugins/markdown"]
-}

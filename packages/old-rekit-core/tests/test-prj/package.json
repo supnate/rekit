@@ -1,8 +1,0 @@
-{
-  "name": "rekit-test-prj",
-  "version": "0.0.1",
-  "private": true,
-  "description": "This is a fake project for running tests which only contains necessary files for testing.",
-  "rekit": {},
-  "dependencies": {}
-}

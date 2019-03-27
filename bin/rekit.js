@@ -1,10 +1,6 @@
 #! /usr/bin/env node
 'use strict';
 
-// Summary:
-//  Build scalable web applications with React, Redux and React-router.
-// Usage:
-//  rekit action [...args]
 global.__REKIT_NO_CONFIG_WATCH = true;
 
 const ArgumentParser = require('argparse').ArgumentParser;

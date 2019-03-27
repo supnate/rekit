@@ -7,20 +7,16 @@
 //  rekit action [...args]
 global.__REKIT_NO_CONFIG_WATCH = true;
 
-const path = require('path');
-const fs = require('fs');
-const resolveCwd = require('resolve-cwd');
 const ArgumentParser = require('argparse').ArgumentParser;
+const rekit = require('rekit-core');
+const chalk = require('chalk');
 const rekitPkgJson = require('../package.json');
-const createApp = require('./createApp');
-const createPlugin = require('./createPlugin');
-const installPlugin = require('./installPlugin');
 
 const parser = new ArgumentParser({
   version: rekitPkgJson.version,
   addHelp: true,
   allowAbbrev: false,
-  description: 'Build scalable web applications with React, Redux and React-router.',
+  description: 'Rekit command line tools to manage a project.',
 });
 
 const subparsers = parser.addSubparsers({
@@ -34,42 +30,13 @@ const createCmd = subparsers.addParser('create', {
   description: 'Create a new Rekit project.',
 });
 
-const listCmd = subparsers.addParser('list', {
+subparsers.addParser('list', {
   addHelp: true,
   description: 'List supported application types.',
 });
 
 createCmd.addArgument('name', {
   help: 'The project name',
-});
-
-createCmd.addArgument(['--sass'], {
-  help: 'Use sass rather than less.',
-  action: 'storeTrue',
-});
-
-createCmd.addArgument(['--source', '-s'], {
-  help: 'Source for creating the project.',
-});
-
-createCmd.addArgument(['--clean', '-c'], {
-  help: 'Create a clean app without sample actions/pages.',
-  action: 'storeTrue',
-});
-
-createCmd.addArgument(['--type', '-t'], {
-  help: 'Which type of the application to create.',
-  defaultValue: 'rekit-react',
-});
-
-const createPluginCmd = subparsers.addParser('create-plugin', {
-  addHelp: true,
-  description:
-    'Create a Rekit plugin. If under a Rekit project, create a local plugin; otherwise create a plugin as a npm package.',
-});
-
-createPluginCmd.addArgument('name', {
-  help: 'The plugin name',
 });
 
 // Install plugin command
@@ -83,14 +50,14 @@ installPluginCmd.addArgument('name', {
 });
 
 // Uninstall plugin command
-// const uninstallPluginCmd = subparsers.addParser('uninstall', {
-//   addHelp: true,
-//   description: 'Uninstall a Rekit plugin.',
-// });
+const uninstallPluginCmd = subparsers.addParser('uninstall', {
+  addHelp: true,
+  description: 'Uninstall a Rekit plugin.',
+});
 
-// uninstallPluginCmd.addArgument('name', {
-//   help: 'The plugin name',
-// });
+uninstallPluginCmd.addArgument('name', {
+  help: 'The plugin name',
+});
 
 // Add sub-command
 const addCmd = subparsers.addParser('add', {
@@ -107,16 +74,19 @@ addCmd.addArgument('name', {
     "The element name to add, in format of <feature>/<name>, e.g.: 'rekit add component user/list-view'. <name> is unnecessary if add a feature.",
 });
 
+// TODO: move to rekit-react plugin
 addCmd.addArgument(['--connect', '-c'], {
   help: 'Whether to connect to the Redux store. Only used for component.',
   action: 'storeTrue',
 });
 
+// TODO: move to rekit-react plugin
 addCmd.addArgument(['--url-path', '-u'], {
   help: 'The url path added to react router config. Only used for page/component.',
   dest: 'urlPath',
 });
 
+// TODO: move to rekit-react plugin
 addCmd.addArgument(['--async', '-a'], {
   help: 'Whether the action is async using redux-thunk.',
   action: 'storeTrue',
@@ -150,18 +120,15 @@ mvCmd.addArgument('type', {
 });
 
 mvCmd.addArgument('source', {
-  help:
-    "The source element to move, in format of <feature>/<name>, e.g.: 'rekit move component user/list-view employee/list'. Name is unnecessary if move a feature.",
+  help: 'The source element to move.',
 });
 
 mvCmd.addArgument('target', {
-  help:
-    "The target element to reach, in format of <feature>/<name>, e.g.: 'rekit move component user/list-view employee/list'. Name is unnecessary if move a feature.",
+  help: 'The target element to reach.',
 });
 
 const args = parser.parseArgs();
 
-console.time('😃  Done');
 // Convert aliases
 const aliases = { rm: 'remove', mv: 'move' };
 Object.keys(aliases).forEach(k => {
@@ -169,31 +136,28 @@ Object.keys(aliases).forEach(k => {
     args.commandName = aliases[k];
   }
 });
-const rekit = require('rekit-core');
-console.log('rekitcore:', require.resolve('rekit-core'));
+
+console.time('😃  Done');
 switch (args.commandName) {
   case 'create':
-    // Only create command is handled rekit
+    // Create a project
     rekit.core.create(args);
     break;
-  case 'list':
-    //
-    break;
-  case 'create-plugin':
-    createPlugin(args, rekit);
-    console.timeEnd('😃  Done'); // create command doesn't need time end.
-    break;
   case 'install':
-    installPlugin(args, rekit);
+    rekit.core.plugin.install(args.name);
+    break;
+  case 'list':
+    rekit.core.create.getAppTypes().then(appTypes => {
+      console.log(`Found ${appTypes.length} application types supported: `);
+      appTypes.forEach((t, i) => {
+        console.log(`${i + 1}. ${t.name}${chalk.gray('('+t.id+')')}: ${chalk.cyan(t.description)}`);
+      });
+      console.timeEnd('😃  Done');
+    });
     break;
   case 'uninstall':
     break;
   default:
-    // Other command are handled by rekit-core
-    if (!rekit) {
-      console.log('Error: please ensure rekit-core is installed for the project.');
-      process.exit(1);
-    }
     rekit.core.handleCommand(args);
     rekit.core.vio.flush();
     console.timeEnd('😃  Done'); // create command doesn't need time end.

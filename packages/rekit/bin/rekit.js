@@ -170,6 +170,7 @@ Object.keys(aliases).forEach(k => {
   }
 });
 const rekit = require('rekit-core');
+console.log('rekitcore:', require.resolve('rekit-core'));
 switch (args.commandName) {
   case 'create':
     // Only create command is handled rekit

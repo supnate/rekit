@@ -35,6 +35,11 @@ createCmd.addArgument('name', {
   help: 'The project name',
 });
 
+createCmd.addArgument(['--source', '-s'], {
+  help: 'Source template for creating the app. Could be a git repo or local folder.',
+  dest: 'source',
+});
+
 // Install plugin command
 const installPluginCmd = subparsers.addParser('install', {
   addHelp: true,

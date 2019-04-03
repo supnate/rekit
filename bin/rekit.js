@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 'use strict';
 
-global.__REKIT_NO_CONFIG_WATCH = true;
+global.__REKIT_NO_WATCH = true;
 
 const ArgumentParser = require('argparse').ArgumentParser;
 const rekit = require('rekit-core');
@@ -146,7 +146,9 @@ switch (args.commandName) {
     rekit.core.create.getAppTypes().then(appTypes => {
       console.log(`Found ${appTypes.length} application types supported: `);
       appTypes.forEach((t, i) => {
-        console.log(`${i + 1}. ${t.name}${chalk.gray('('+t.id+')')}: ${chalk.cyan(t.description)}`);
+        console.log(
+          `${i + 1}. ${t.name}${chalk.gray('(' + t.id + ')')}: ${chalk.cyan(t.description)}`,
+        );
       });
       console.timeEnd('😃  Done');
     });

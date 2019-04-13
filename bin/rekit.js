@@ -40,6 +40,11 @@ createCmd.addArgument(['--source', '-s'], {
   dest: 'source',
 });
 
+createCmd.addArgument(['--type', '-t'], {
+  help: 'Application type to create, default is rekit-react.',
+  defaultValue: 'rekit-react',
+});
+
 // Install plugin command
 const installPluginCmd = subparsers.addParser('install', {
   addHelp: true,

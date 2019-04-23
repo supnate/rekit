@@ -150,7 +150,7 @@ switch (args.commandName) {
     rekit.core.create(args);
     break;
   case 'install':
-    rekit.core.plugin.install(args.name);
+    rekit.core.plugin.installPlugin(args.name);
     break;
   case 'list':
     rekit.core.create.getAppTypes().then(appTypes => {
@@ -164,6 +164,7 @@ switch (args.commandName) {
     });
     break;
   case 'uninstall':
+    rekit.core.plugin.uninstallPlugin(args.name);
     break;
   default:
     rekit.core.handleCommand(args);

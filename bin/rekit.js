@@ -45,6 +45,16 @@ createCmd.addArgument(['--type', '-t'], {
   defaultValue: 'rekit-react',
 });
 
+createCmd.addArgument(['--clean', '-c'], {
+  help: 'No example code.',
+  action: 'storeTrue',
+});
+
+createCmd.addArgument(['--sass'], {
+  help: 'Use sass as css transpiler.',
+  action: 'storeTrue',
+});
+
 // Install plugin command
 const installPluginCmd = subparsers.addParser('install', {
   addHelp: true,

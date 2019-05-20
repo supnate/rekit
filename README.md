@@ -10,8 +10,8 @@ Rekit is a toolkit for building scalable web applications with React, Redux and 
 
 It helps you focus on business logic rather than dealing with massive libraries, patterns, configurations etc.
 
-[![Build Status](https://travis-ci.org/supnate/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
-[![Coverage Status](https://img.shields.io/codecov/c/github/supnate/rekit/master.svg)](https://codecov.io/github/supnate/rekit)
+[![Build Status](https://travis-ci.org/rekit/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
+[![Coverage Status](https://img.shields.io/codecov/c/github/rekit/rekit/master.svg)](https://codecov.io/github/rekit/rekit)
 [![Gitter](https://badges.gitter.im/supnate/rekit.svg)](https://gitter.im/rekitjs/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 [![Demo](https://img.shields.io/badge/demo-link-blue.svg)](http://demo.rekit.org)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)

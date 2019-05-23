@@ -65,6 +65,10 @@ installPluginCmd.addArgument('name', {
   help: 'The plugin name',
 });
 
+installPluginCmd.addArgument(['--registry'], {
+  help: 'The npm registry to intall Rekit plugin.',
+})
+
 // Uninstall plugin command
 const uninstallPluginCmd = subparsers.addParser('uninstall', {
   addHelp: true,
@@ -160,7 +164,7 @@ switch (args.commandName) {
     rekit.core.create(args);
     break;
   case 'install':
-    rekit.core.plugin.installPlugin(args.name);
+    rekit.core.plugin.installPlugin(args.name, args);
     break;
   case 'list':
     rekit.core.create.getAppTypes().then(appTypes => {

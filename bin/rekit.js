@@ -147,6 +147,16 @@ mvCmd.addArgument('target', {
   help: 'The target element to reach.',
 });
 
+rekit.core.plugin.getPlugins('cli.defineArgs').forEach(p => {
+  p.cli.defineArgs({
+    parser,
+    subparsers,
+    addCmd,
+    rmCmd,
+    mvCmd,
+  });
+});
+
 const args = parser.parseArgs();
 
 // Convert aliases

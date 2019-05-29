@@ -26,9 +26,14 @@ const createCmd = subparsers.addParser('create', {
   description: 'Create a new Rekit project.',
 });
 
-subparsers.addParser('list', {
+subparsers.addParser('app-types', {
   addHelp: true,
   description: 'List supported application types.',
+});
+
+subparsers.addParser('plugins', {
+  addHelp: true,
+  description: 'List installed plugins.',
 });
 
 createCmd.addArgument('name', {
@@ -158,14 +163,26 @@ switch (args.commandName) {
   case 'install':
     rekit.core.plugin.installPlugin(args.name, args);
     break;
-  case 'list': {
+  case 'app-types': {
     const appTypes = rekit.core.app.getAppTypes();
     console.log(`Found ${appTypes.length} application types supported: `);
-    console.log()
+    console.log();
     appTypes.forEach((t, i) => {
       console.log(
-        `  ${i + 1}. ${t.name}${chalk.gray('(' + t.id + ')')}: ${chalk.cyan(t.description)}`,
+        `  ${i + 1}. ${t.name}${chalk.gray('(' + t.id + ')')}${
+          t.disabled ? chalk.red('[disabled]') : ''
+        }: ${chalk.cyan(t.description)}`,
       );
+    });
+    console.log();
+    break;
+  }
+  case 'plugins': {
+    const plugins = rekit.core.plugin.getAllPlugins();
+    console.log(`Found ${plugins.length} plugins installed. `);
+    console.log();
+    plugins.forEach((p, i) => {
+      console.log(`  ${i + 1}. ${p.name} ${chalk.cyan(p.version ? p.version : ' built-in')}`);
     });
     console.log();
     break;

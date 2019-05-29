@@ -67,7 +67,7 @@ installPluginCmd.addArgument('name', {
 
 installPluginCmd.addArgument(['--registry'], {
   help: 'The npm registry to intall Rekit plugin.',
-})
+});
 
 // Uninstall plugin command
 const uninstallPluginCmd = subparsers.addParser('uninstall', {
@@ -158,17 +158,18 @@ switch (args.commandName) {
   case 'install':
     rekit.core.plugin.installPlugin(args.name, args);
     break;
-  case 'list':
-    rekit.core.create.getAppTypes().then(appTypes => {
-      console.log(`Found ${appTypes.length} application types supported: `);
-      appTypes.forEach((t, i) => {
-        console.log(
-          `${i + 1}. ${t.name}${chalk.gray('(' + t.id + ')')}: ${chalk.cyan(t.description)}`,
-        );
-      });
-      console.timeEnd('😃  Done');
+  case 'list': {
+    const appTypes = rekit.core.app.getAppTypes();
+    console.log(`Found ${appTypes.length} application types supported: `);
+    console.log()
+    appTypes.forEach((t, i) => {
+      console.log(
+        `  ${i + 1}. ${t.name}${chalk.gray('(' + t.id + ')')}: ${chalk.cyan(t.description)}`,
+      );
     });
+    console.log();
     break;
+  }
   case 'uninstall':
     rekit.core.plugin.uninstallPlugin(args.name);
     break;

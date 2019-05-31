@@ -178,7 +178,7 @@ switch (args.commandName) {
     break;
   }
   case 'plugins': {
-    const plugins = rekit.core.plugin.getAllPlugins();
+    const plugins = rekit.core.plugin.getInstalledPlugins();
     console.log(`Found ${plugins.length} plugins installed. `);
     console.log();
     plugins.forEach((p, i) => {

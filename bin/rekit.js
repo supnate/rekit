@@ -60,6 +60,12 @@ createCmd.addArgument(['--sass'], {
   action: 'storeTrue',
 });
 
+createCmd.addArgument(['--lang', '--language', '-l'], {
+  dest: 'language',
+  help: 'The language used for the project.',
+  choices: ['ts', 'js', 'typescript', 'javascript'],
+});
+
 // Install plugin command
 const installPluginCmd = subparsers.addParser('install', {
   addHelp: true,

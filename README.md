@@ -6,6 +6,9 @@
 
 > 🎉  [Using Rekit Studio in an Existing React Project](https://medium.com/@nate_wang/using-rekit-studio-in-an-existing-react-project-39713d9667b)
 
+**Try Rekit 3.0 with a desktop app: https://github.com/rekit/rekit-app/releases**
+**Or see the guide for a web version: https://github.com/rekit/rekit/issues/201**
+
 Rekit is a toolkit for building scalable web applications with React, Redux and React-router. It's an all-in-one solution for creating modern React apps.
 
 It helps you focus on business logic rather than dealing with massive libraries, patterns, configurations etc.

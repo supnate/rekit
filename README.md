@@ -1,5 +1,9 @@
 # <img src="/images/logo_text.png?raw=true" width="260">
 
+Rekit 3.0 is out: https://medium.com/@nate_wang/rekit-3-0-531742d0c2c9?sk=5bfe6383ae43d6b18063a070abd79d34
+
+> NOTE: below content is not updated for the new 3.0. Read the article above for more information.
+
 > 🎉  [Rekit Now Creates Apps By Create-react-app](https://medium.com/@nate_wang/rekit-now-creates-apps-by-create-react-app-3f0d82fd64f3)
 
 > 🔥  [Introducing Rekit Studio: a real IDE for React and Redux development](https://medium.com/@nate_wang/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542)

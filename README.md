@@ -2,6 +2,8 @@
 
 **Rekit 3.0 is out:** https://medium.com/@nate_wang/rekit-3-0-531742d0c2c9?sk=5bfe6383ae43d6b18063a070abd79d34
 
+<object type="image/svg+xml" data="https://opencollective.com/rekit/tiers/backers.svg?avatarHeight=40"></object>
+
 > NOTE: below content is not updated for the new 3.0. Read the article above for more information.
 
 ------

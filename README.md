@@ -1,4 +1,4 @@
-# <img src="/images/logo_text.png?raw=true" width="260">
+# <img src="/images/logo_text.png?raw=true" width="260"> [<img align="right" src="https://opencollective.com/rekit/tiers/backers.svg?avatarHeight=60"/>](https://opencollective.com/rekit)
 
 [![Build Status](https://travis-ci.org/rekit/rekit.svg?branch=master)](https://travis-ci.org/supnate/rekit)
 [![Coverage Status](https://img.shields.io/codecov/c/github/rekit/rekit/master.svg)](https://codecov.io/github/rekit/rekit)
@@ -18,11 +18,7 @@ Rekit consists of two pieces:
  - [Rekit Studio](https://medium.com/free-code-camp/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542): A complete IDE for React, Redux, and React Router development
  - [Rekit CLI](http://rekit.js.org/docs/cli.html): A command line tool to create and manage projects, components, actions, etc.
 
-[<img src="https://opencollective.com/rekit/tiers/backers.svg?avatarHeight=60"/>](https://opencollective.com/rekit)
-
 [**Read more about the new Rekit Studio in the blog post**](https://medium.com/@nate_wang/rekit-3-0-531742d0c2c9?sk=5bfe6383ae43d6b18063a070abd79d34)
-
-----
 
 🎉  [Rekit Now Creates Apps By Create-react-app](https://medium.com/@nate_wang/rekit-now-creates-apps-by-create-react-app-3f0d82fd64f3)
 

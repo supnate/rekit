@@ -14,8 +14,9 @@ Rekit is a toolkit for building scalable web applications with React, Redux and 
 
 Rekit creates apps bootstrapped by [create-react-app](https://github.com/facebook/create-react-app) and uses an opinionated way to organize folder and code. It's designed to be scalable, testable and maintainable by using [feature oriented architecture](https://medium.com/@nate_wang/feature-oriented-architecture-for-web-applications-2b48e358afb0), [one action per file pattern](https://medium.com/@nate_wang/a-new-approach-for-managing-redux-actions-91c26ce8b5da#.9em77fuwk). This ensures application logic is well grouped and decoupled.
 
-Rekit consists of two pieces:
- - [Rekit Studio](https://medium.com/free-code-camp/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542): A complete IDE for React, Redux, and React Router development
+Rekit consists of three pieces:
+ - [Rekit App](https://github.com/rekit/rekit-app/releases) Download the latest desktop App for Mac. Windows version is coming...
+ - [Rekit Studio](https://medium.com/free-code-camp/introducing-rekit-studio-a-real-ide-for-react-and-redux-development-baf0c99cb542): A complete web IDE for React, Redux, and React Router development
  - [Rekit CLI](http://rekit.js.org/docs/cli.html): A command line tool to create and manage projects, components, actions, etc.
 
 [**Read more about the new Rekit Studio in the blog post**](https://medium.com/@nate_wang/rekit-3-0-531742d0c2c9?sk=5bfe6383ae43d6b18063a070abd79d34)

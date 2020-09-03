@@ -32,7 +32,7 @@ Below is a quick demo video of how Rekit Studio works:
 
 [<img src="/images/rekit-studio-youtube.png" width="500" alt="Rekit Demo"/>](https://youtu.be/i53XffYtWMc "Rekit Demo")
 
-You can also see the live demo at: http://demo.rekit.org
+You can also see the live demo, but the instructions shown on the intro might be outdated: http://demo.rekit.org
 
 ## Installation
 
